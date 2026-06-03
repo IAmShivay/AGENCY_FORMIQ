@@ -1,0 +1,44 @@
+User-agent: *
+Allow: /
+
+# Allow all crawlers to access public pages
+Allow: /about
+Allow: /services
+Allow: /portfolio
+Allow: /blog
+Allow: /contact
+Allow: /web
+Allow: /mobile
+Allow: /marketing
+Allow: /shopify
+Allow: /ecommerce-marketplace
+Allow: /software-tools
+Allow: /agents
+Allow: /team
+Allow: /privacy
+Allow: /terms
+
+# Disallow admin and user areas
+Disallow: /admin
+Disallow: /user
+Disallow: /employee
+Disallow: /manager
+Disallow: /login
+Disallow: /signup
+
+# Disallow API routes
+Disallow: /api/
+
+# Disallow service checkout pages (private)
+Disallow: /services/checkout
+Disallow: /services/domains
+Disallow: /services/hosting
+
+# Allow specific static assets
+Allow: /images/
+Allow: /favicon.ico
+Allow: /favicon.svg
+Allow: /_next/static/
+
+# Sitemap location
+Sitemap: https://formiqstudio.com/sitemap.xml

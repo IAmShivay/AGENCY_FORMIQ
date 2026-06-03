@@ -1,0 +1,1120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Mode - Professional Agency Colors */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 217 91% 60%; /* Professional Blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 262 83% 58%; /* Accent Purple */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 217 91% 60%;
+    --radius: 0.5rem;
+
+    /* Agency Specific Colors */
+    --neon-cyan: 180 100% 50%;
+    --neon-pink: 330 100% 70%;
+    --neon-green: 120 100% 50%;
+    --neon-orange: 30 100% 60%;
+    --neon-purple: 270 100% 70%;
+    --electric-blue: 210 100% 60%;
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --info: 199 89% 48%;
+  }
+
+  [data-theme="dark"] {
+    /* Dark Mode - Professional Agency Dark Theme */
+    --background: 222 84% 5%; /* Deep Dark Blue */
+    --foreground: 210 40% 98%; /* Almost White */
+    --card: 224 71% 8%; /* Slightly Lighter Dark */
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 180 100% 50%; /* Neon Cyan Primary */
+    --primary-foreground: 222 84% 5%;
+    --secondary: 240 21% 15%; /* Dark Gray */
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 21% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 330 100% 70%; /* Neon Pink Accent */
+    --accent-foreground: 222 84% 5%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 240 21% 15%;
+    --input: 240 21% 15%;
+    --ring: 180 100% 50%;
+
+    /* Enhanced Agency Dark Colors */
+    --neon-cyan: 180 100% 50%;
+    --neon-pink: 330 100% 70%;
+    --neon-green: 120 100% 50%;
+    --neon-orange: 30 100% 60%;
+    --neon-purple: 270 100% 70%;
+    --electric-blue: 210 100% 60%;
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --info: 199 89% 48%;
+
+    /* Dark Mode Specific Gradients */
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(180 100% 50%) 0%,
+      hsl(210 100% 60%) 100%
+    );
+    --gradient-accent: linear-gradient(
+      135deg,
+      hsl(330 100% 70%) 0%,
+      hsl(270 100% 70%) 100%
+    );
+    --gradient-dark: linear-gradient(
+      135deg,
+      hsl(222 84% 5%) 0%,
+      hsl(224 71% 8%) 100%
+    );
+  }
+
+  [data-theme="neon-agency"] {
+    /* Neon Agency Theme - Dark with Neon Accents */
+    --background: 222 84% 5%;
+    --foreground: 210 40% 98%;
+    --card: 224 71% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 180 100% 50%; /* Neon Cyan */
+    --primary-foreground: 222 84% 5%;
+    --secondary: 240 21% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 21% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 330 100% 70%; /* Neon Pink */
+    --accent-foreground: 222 84% 5%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 240 21% 15%;
+    --input: 240 21% 15%;
+    --ring: 180 100% 50%;
+  }
+
+  [data-theme="cyberpunk"] {
+    /* Cyberpunk Theme - Purple and Orange Neon */
+    --background: 222 84% 5%;
+    --foreground: 210 40% 98%;
+    --card: 224 71% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 270 100% 70%; /* Neon Purple */
+    --primary-foreground: 222 84% 5%;
+    --secondary: 240 21% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 21% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 30 100% 60%; /* Neon Orange */
+    --accent-foreground: 222 84% 5%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 240 21% 15%;
+    --input: 240 21% 15%;
+    --ring: 270 100% 70%;
+  }
+
+  [data-theme="matrix"] {
+    /* Matrix Theme - Green Neon on Dark */
+    --background: 222 84% 5%;
+    --foreground: 210 40% 98%;
+    --card: 224 71% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 120 100% 50%; /* Neon Green */
+    --primary-foreground: 222 84% 5%;
+    --secondary: 240 21% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 21% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 180 100% 50%; /* Neon Cyan */
+    --accent-foreground: 222 84% 5%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 240 21% 15%;
+    --input: 240 21% 15%;
+    --ring: 120 100% 50%;
+  }
+
+  [data-theme="electric"] {
+    /* Electric Theme - Blue and Pink Neon */
+    --background: 222 84% 5%;
+    --foreground: 210 40% 98%;
+    --card: 224 71% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 100% 60%; /* Electric Blue */
+    --primary-foreground: 222 84% 5%;
+    --secondary: 240 21% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 21% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 330 100% 70%; /* Neon Pink */
+    --accent-foreground: 222 84% 5%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 240 21% 15%;
+    --input: 240 21% 15%;
+    --ring: 210 100% 60%;
+  }
+
+  /* Light Mode Professional Themes */
+  [data-theme="light-agency"] {
+    /* Light Agency Theme - Professional with Vibrant Accents */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 217 91% 50%; /* Professional Blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 262 83% 48%; /* Professional Purple */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 217 91% 50%;
+  }
+
+  [data-theme="light-creative"] {
+    /* Light Creative Theme - Teal and Orange */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 180 84% 40%; /* Professional Teal */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 25 95% 53%; /* Vibrant Orange */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 180 84% 40%;
+  }
+
+  [data-theme="light-modern"] {
+    /* Light Modern Theme - Purple and Pink */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 270 91% 50%; /* Modern Purple */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 330 81% 60%; /* Professional Pink */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 270 91% 50%;
+  }
+
+  [data-theme="light-tech"] {
+    /* Light Tech Theme - Green and Blue */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 142 76% 36%; /* Professional Green */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 199 89% 48%; /* Tech Blue */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 142 76% 36%;
+  }
+
+  [data-theme="light-premium"] {
+    /* Light Premium Theme - Gold and Navy */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 220 91% 40%; /* Premium Navy */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 45 93% 47%; /* Premium Gold */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 220 91% 40%;
+  }
+
+  /* Light Neon Themes - Vibrant colors on light backgrounds */
+  [data-theme="light-neon-cyan"] {
+    /* Light Neon Cyan Theme */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 180 100% 35%; /* Vibrant Cyan */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 330 100% 45%; /* Vibrant Pink */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 180 100% 35%;
+  }
+
+  [data-theme="light-neon-purple"] {
+    /* Light Neon Purple Theme */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 270 100% 40%; /* Vibrant Purple */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 30 100% 50%; /* Vibrant Orange */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 270 100% 40%;
+  }
+
+  [data-theme="light-neon-green"] {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 184 45% 21%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 184 45% 30%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 184 45% 21%;
+  }
+
+  [data-theme="light-neon-pink"] {
+    /* Light Neon Pink Theme */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 330 100% 40%; /* Vibrant Pink */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 270 100% 40%; /* Vibrant Purple */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 330 100% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .bg-grid-pattern {
+    background-size: 40px 40px;
+    background-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  }
+
+  .dark .bg-grid-pattern,
+  [data-theme="dark"] .bg-grid-pattern,
+  [data-theme="neon-agency"] .bg-grid-pattern,
+  [data-theme="cyberpunk"] .bg-grid-pattern,
+  [data-theme="matrix"] .bg-grid-pattern,
+  [data-theme="electric"] .bg-grid-pattern {
+    background-image: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+
+  /* Enhanced Glassmorphism effects */
+  .glass-effect {
+    @apply bg-background/70 backdrop-blur-sm border border-border/20;
+  }
+
+  .glass-effect-strong {
+    @apply bg-background/80 backdrop-blur-sm border border-border/30 shadow-xl;
+  }
+
+  /* Neon Glow Effects */
+  .neon-glow-primary {
+    box-shadow: 0 0 8px hsl(var(--primary) / 0.5);
+  }
+
+  .neon-glow-accent {
+    box-shadow: 0 0 8px hsl(var(--accent) / 0.5);
+  }
+
+  .neon-text-primary {
+    color: hsl(var(--primary));
+    text-shadow: 0 0 5px hsl(var(--primary) / 0.5);
+  }
+
+  .neon-text-accent {
+    color: hsl(var(--accent));
+    text-shadow: 0 0 5px hsl(var(--accent) / 0.5);
+  }
+
+  /* Agency Gradient Backgrounds */
+  .bg-gradient-agency {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 100%
+    );
+  }
+
+  .bg-gradient-agency-dark {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--card)) 100%
+    );
+  }
+
+  /* Animated gradient text - animation disabled for performance */
+  .animated-gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-indigo-600;
+    background-size: 200% 200%;
+    /* animation: gradientAnimation 8s ease infinite; */
+  }
+
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes neonPulse {
+    0%,
+    100% {
+      box-shadow: 0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary)),
+        0 0 15px hsl(var(--primary));
+    }
+    50% {
+      box-shadow: 0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary)),
+        0 0 30px hsl(var(--primary));
+    }
+  }
+
+  @keyframes neonFlicker {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes floatAnimation {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-neon-pulse {
+    /* animation: neonPulse 2s ease-in-out infinite; */
+  }
+
+  .animate-neon-flicker {
+    /* animation: neonFlicker 1.5s ease-in-out infinite; */
+  }
+
+  .animate-float {
+    /* animation: floatAnimation 3s ease-in-out infinite; */
+  }
+
+  /* Enhanced Tab Styling for Dark Themes */
+  [data-theme="dark"] [data-state="active"],
+  [data-theme="neon-agency"] [data-state="active"],
+  [data-theme="cyberpunk"] [data-state="active"],
+  [data-theme="matrix"] [data-state="active"],
+  [data-theme="electric"] [data-state="active"] {
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.3),
+      0 2px 10px hsl(var(--primary) / 0.1);
+  }
+
+  /* Enhanced Tab Styling for Light Themes */
+  [data-theme="light-agency"] [data-state="active"],
+  [data-theme="light-creative"] [data-state="active"],
+  [data-theme="light-modern"] [data-state="active"],
+  [data-theme="light-tech"] [data-state="active"],
+  [data-theme="light-premium"] [data-state="active"] {
+    box-shadow: 0 2px 8px hsl(var(--primary) / 0.15),
+      0 4px 16px hsl(var(--primary) / 0.1);
+  }
+
+  /* Enhanced Tab Styling for Light Neon Themes */
+  [data-theme="light-neon-cyan"] [data-state="active"],
+  [data-theme="light-neon-purple"] [data-state="active"],
+  [data-theme="light-neon-green"] [data-state="active"],
+  [data-theme="light-neon-pink"] [data-state="active"] {
+    box-shadow: 0 0 8px hsl(var(--primary) / 0.3),
+      0 2px 12px hsl(var(--primary) / 0.2), 0 4px 20px hsl(var(--primary) / 0.1);
+  }
+
+  /* Light Theme Specific Effects */
+  [data-theme="light-agency"] .neon-glow-primary,
+  [data-theme="light-creative"] .neon-glow-primary,
+  [data-theme="light-modern"] .neon-glow-primary,
+  [data-theme="light-tech"] .neon-glow-primary,
+  [data-theme="light-premium"] .neon-glow-primary {
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.2),
+      0 0 30px hsl(var(--primary) / 0.1);
+  }
+
+  [data-theme="light-agency"] .neon-glow-accent,
+  [data-theme="light-creative"] .neon-glow-accent,
+  [data-theme="light-modern"] .neon-glow-accent,
+  [data-theme="light-tech"] .neon-glow-accent,
+  [data-theme="light-premium"] .neon-glow-accent {
+    box-shadow: 0 0 15px hsl(var(--accent) / 0.2),
+      0 0 30px hsl(var(--accent) / 0.1);
+  }
+
+  /* Light Neon Theme Specific Effects */
+  [data-theme="light-neon-cyan"] .neon-glow-primary,
+  [data-theme="light-neon-purple"] .neon-glow-primary,
+  [data-theme="light-neon-green"] .neon-glow-primary,
+  [data-theme="light-neon-pink"] .neon-glow-primary {
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.4),
+      0 0 20px hsl(var(--primary) / 0.2), 0 0 40px hsl(var(--primary) / 0.1);
+  }
+
+  [data-theme="light-neon-cyan"] .neon-glow-accent,
+  [data-theme="light-neon-purple"] .neon-glow-accent,
+  [data-theme="light-neon-green"] .neon-glow-accent,
+  [data-theme="light-neon-pink"] .neon-glow-accent {
+    box-shadow: 0 0 10px hsl(var(--accent) / 0.4),
+      0 0 20px hsl(var(--accent) / 0.2), 0 0 40px hsl(var(--accent) / 0.1);
+  }
+
+  /* Light Theme Button Styles */
+  [data-theme="light-agency"] .btn-neon,
+  [data-theme="light-creative"] .btn-neon,
+  [data-theme="light-modern"] .btn-neon,
+  [data-theme="light-tech"] .btn-neon,
+  [data-theme="light-premium"] .btn-neon {
+    box-shadow: 0 2px 8px hsl(var(--primary) / 0.2);
+  }
+
+  [data-theme="light-agency"] .btn-neon:hover,
+  [data-theme="light-creative"] .btn-neon:hover,
+  [data-theme="light-modern"] .btn-neon:hover,
+  [data-theme="light-tech"] .btn-neon:hover,
+  [data-theme="light-premium"] .btn-neon:hover {
+    box-shadow: 0 4px 16px hsl(var(--primary) / 0.25),
+      0 8px 32px hsl(var(--primary) / 0.15);
+  }
+
+  /* Light Neon Theme Button Styles */
+  [data-theme="light-neon-cyan"] .btn-neon,
+  [data-theme="light-neon-purple"] .btn-neon,
+  [data-theme="light-neon-green"] .btn-neon,
+  [data-theme="light-neon-pink"] .btn-neon {
+    box-shadow: 0 0 8px hsl(var(--primary) / 0.3),
+      0 2px 12px hsl(var(--primary) / 0.2);
+  }
+
+  [data-theme="light-neon-cyan"] .btn-neon:hover,
+  [data-theme="light-neon-purple"] .btn-neon:hover,
+  [data-theme="light-neon-green"] .btn-neon:hover,
+  [data-theme="light-neon-pink"] .btn-neon:hover {
+    box-shadow: 0 0 12px hsl(var(--primary) / 0.4),
+      0 4px 20px hsl(var(--primary) / 0.3), 0 8px 40px hsl(var(--primary) / 0.2);
+  }
+
+  /* Video Options Styling */
+  .video-options {
+    background: hsl(var(--background) / 0.9);
+  }
+
+  /* Remove unwanted outlines */
+  *:focus {
+    outline: none;
+  }
+
+  *:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+
+  /* Remove default button outlines */
+  button:focus {
+    outline: none;
+  }
+
+  /* Remove input outlines and add custom focus styles */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2);
+  }
+
+  /* Custom Brand Slider Animation */
+  .brand-slider-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .brand-slider-track {
+    display: flex;
+    align-items: center;
+    animation: slide 30s linear infinite;
+    width: fit-content;
+    will-change: transform;
+  }
+
+  .brand-slide {
+    flex-shrink: 0;
+  }
+
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Keep animation running continuously - no hover pause */
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .brand-slider-track {
+      animation-duration: 25s;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .brand-slider-track {
+      animation-duration: 20s;
+    }
+  }
+
+  .trusted-brands-slider {
+    overflow: visible !important;
+  }
+
+  .trusted-brands-slider .swiper-slide {
+    height: auto;
+  }
+
+  .trusted-brands-slider .swiper-pagination {
+    position: relative;
+    margin-top: 2rem;
+  }
+
+  .trusted-brands-slider .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    margin: 0 6px;
+    transition: all 0.3s ease;
+  }
+
+  .trusted-brands-slider .swiper-pagination-bullet-active {
+    transform: scale(1.2);
+  }
+
+  /* Hero Brand Slider Navigation */
+  .hero-brand-prev,
+  .hero-brand-next {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .brand-slider:hover .hero-brand-prev,
+  .brand-slider:hover .hero-brand-next {
+    opacity: 1;
+  }
+
+  /* Swiper Navigation Buttons */
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: hsl(var(--primary)) !important;
+    background: hsl(var(--background) / 0.9) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    margin-top: -20px !important;
+    border: 1px solid hsl(var(--border)) !important;
+    transition: background 0.2s ease !important;
+  }
+
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    background: hsl(var(--primary) / 0.1) !important;
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 16px !important;
+    font-weight: bold !important;
+  }
+
+  /* Landing page specific animations - disabled for performance */
+  .animate-float-slow {
+    /* animation: floatSlow 20s ease-in-out infinite; */
+  }
+
+  .animate-slow-spin {
+    /* animation: spin 20s linear infinite; */
+  }
+
+  .animate-pulse-slow {
+    /* animation: pulseSlow 4s ease-in-out infinite; */
+  }
+
+  .animate-bounce-slow {
+    /* animation: bounceSlow 3s ease-in-out infinite; */
+  }
+
+  @keyframes floatSlow {
+    0%,
+    100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-20px) rotate(1deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(-1deg);
+    }
+    75% {
+      transform: translateY(-15px) rotate(0.5deg);
+    }
+  }
+
+  @keyframes pulseSlow {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes bounceSlow {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Conversion-focused styles */
+  .cta-button-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .cta-button-glow:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+  }
+
+  /* Urgency indicators - animation disabled for performance */
+  .urgency-blink {
+    /* animation: urgencyBlink 2s ease-in-out infinite; */
+  }
+
+  @keyframes urgencyBlink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Trust indicators */
+  .trust-badge {
+    @apply bg-gradient-to-r from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20 border border-green-200 dark:border-green-800;
+  }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Premium component styles - animation disabled for performance */
+  .premium-text-gradient {
+    @apply bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    /* animation: gradientAnimation 8s ease infinite; */
+  }
+
+  /* Enhanced Agency Text Effects - animation disabled for performance */
+  .agency-text-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 50%,
+      hsl(var(--primary)) 100%
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* animation: gradientAnimation 6s ease infinite; */
+  }
+
+  .neon-border {
+    border: 1px solid hsl(var(--primary));
+    box-shadow: 0 0 5px hsl(var(--primary) / 0.5),
+      inset 0 0 5px hsl(var(--primary) / 0.1);
+  }
+
+  .neon-card {
+    @apply bg-card/50 border border-primary/20;
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.08);
+  }
+
+  /* Professional Dark Mode Enhancements */
+  .dark-surface {
+    @apply bg-card/80 border border-border/50;
+  }
+
+  .dark-surface-elevated {
+    @apply bg-card/90 border border-border/60 shadow-xl;
+  }
+
+  /* Hover Effects for Dark Mode */
+  .hover-neon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px hsl(var(--primary) / 0.2);
+    transition: all 0.3s ease;
+  }
+
+  /* Agency Button Styles */
+  .btn-neon {
+    @apply bg-primary text-primary-foreground border border-primary;
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .btn-neon:hover {
+    box-shadow: 0 0 12px hsl(var(--primary) / 0.4);
+    transform: translateY(-1px);
+  }
+
+  .premium-button {
+    @apply relative inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-colors duration-200 shadow-lg;
+  }
+
+  .premium-button-outline {
+    @apply relative inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium text-primary bg-transparent border-2 border-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-200 shadow-md;
+  }
+
+  .premium-card {
+    @apply bg-card/60 border border-border/50 rounded-xl shadow-md;
+  }
+
+  .premium-card-hover {
+    @apply hover:shadow-xl hover:border-primary/30 transition-shadow duration-200;
+  }
+
+  .premium-card-gradient {
+    @apply bg-gradient-to-br from-card via-card/95 to-primary/5 border border-primary/20;
+  }
+
+  /* Swiper custom styles */
+  .video-reviews-swiper .swiper-pagination-bullet {
+    background: hsl(var(--primary) / 0.3);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    opacity: 1;
+  }
+
+  .video-reviews-swiper .swiper-pagination-bullet-active {
+    background: hsl(var(--primary));
+    transform: scale(1.2);
+  }
+
+  .video-reviews-swiper .swiper-pagination {
+    bottom: 16px;
+  }
+
+  /* Video card styles simplified for performance */
+  .video-card-center,
+  .video-card-side {
+    transition: box-shadow 0.3s ease;
+  }
+
+  /* Smooth swiper transitions */
+  .video-reviews-swiper .swiper-slide {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .video-reviews-swiper .swiper-slide-active {
+    transform: scale(1.02);
+  }
+
+  /* Landing page specific responsive utilities */
+  @media (max-width: 640px) {
+    .landing-hero-text {
+      font-size: clamp(2rem, 8vw, 3rem);
+      line-height: 1.1;
+    }
+  }
+
+  /* Line Clamp Utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Custom Swiper Styles */
+  .swiper-pagination-bullet {
+    background: rgb(59 130 246 / 0.5) !important;
+    opacity: 1 !important;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: rgb(59 130 246) !important;
+  }
+
+  /* Custom Scrollbar Styles */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.3) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 3px;
+    transition: background 0.2s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
+
+  /* Smooth scrolling for all elements */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom Auto-Scrolling Brands Carousel */
+  .brands-carousel-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 2rem 0;
+  }
+
+  .brands-carousel-track {
+    display: flex;
+    width: calc(200% + 2rem);
+    animation: scroll-brands 30s linear infinite;
+    gap: 1.5rem;
+    will-change: transform;
+  }
+
+  .brands-carousel-slide {
+    flex: 0 0 calc(100% / 6);
+    min-width: 350px;
+  }
+
+  @media (max-width: 1024px) {
+    .brands-carousel-slide {
+      flex: 0 0 calc(100% / 4);
+      min-width: 320px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .brands-carousel-slide {
+      flex: 0 0 calc(100% / 2);
+      min-width: 300px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .brands-carousel-slide {
+      flex: 0 0 100%;
+      min-width: 280px;
+    }
+  }
+
+  @keyframes scroll-brands {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Remove hover pause - keep animation running continuously */
+
+  /* Performance optimizations */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Optimize animations for performance */
+  .animate-float-slow,
+  .animate-pulse {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float-slow,
+    .animate-pulse,
+    .animate-slow-spin {
+      animation: none !important;
+    }
+
+    *:not(.animate-spin) {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+
+  /* Optimize blur effects - use opacity instead of blur for decorative elements */
+  .blur-2xl,
+  .blur-3xl {
+    will-change: auto;
+    transform: translateZ(0);
+  }
+}
