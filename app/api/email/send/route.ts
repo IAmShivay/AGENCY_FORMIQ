@@ -33,8 +33,8 @@ export async function POST(req: NextRequest) {
       to,
       subject,
       text: message,
-      from: process.env.SMTP_FROM || 'contact@formiqstudio.com',
-      replyTo: replyTo || process.env.SMTP_FROM || 'contact@formiqstudio.com'
+      from: process.env.SMTP_FROM || 'hello@formiqstudio.in',
+      replyTo: replyTo || process.env.SMTP_FROM || 'hello@formiqstudio.in'
     });
 
     // If this is a reply to a contact message, update its status

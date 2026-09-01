@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       pdf.setFontSize(16);
       pdf.text('Digital Solutions & Marketing Agency', 20, 30);
       pdf.setFontSize(10);
-      pdf.text('Email: support@formiqstudio.com | Phone: +91 8918349445 | +91 9832078313', 20, 40);
+      pdf.text('Email: hello@formiqstudio.in | Phone: +91 8918349445 | WhatsApp: +1 555-341-9743', 20, 40);
       
       pdf.setFontSize(16);
       pdf.text(`Quotation: ${quotation.quotation_number}`, 20, 60);

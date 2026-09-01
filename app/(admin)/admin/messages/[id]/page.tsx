@@ -148,7 +148,7 @@ export default function MessageDetailPage() {
           subject: replySubject,
           message: replyMessage,
           messageId: message.id,
-          replyTo: 'contact@formiqstudio.com'
+          replyTo: 'hello@formiqstudio.in'
         }),
       });
 

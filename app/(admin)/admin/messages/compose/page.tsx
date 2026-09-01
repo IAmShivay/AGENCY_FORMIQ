@@ -47,7 +47,7 @@ export default function ComposeEmailPage() {
           to,
           subject,
           message,
-          replyTo: 'contact@formiqstudio.com'
+          replyTo: 'hello@formiqstudio.in'
         }),
       });
 

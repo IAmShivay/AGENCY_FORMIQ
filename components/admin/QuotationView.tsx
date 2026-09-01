@@ -318,7 +318,7 @@ const downloadPDF = async () => {
             </div>
             <div className="flex flex-col justify-center">
               <p className="text-sm font-medium">Digital Solutions & Marketing Agency</p>
-              <p className="text-xs text-muted-foreground">support@formiqstudio.com | +91 8918349445</p>
+              <p className="text-xs text-muted-foreground">hello@formiqstudio.in | +91 8918349445</p>
             </div>
           </div>
           <div className="text-right text-sm">
@@ -516,8 +516,8 @@ const downloadPDF = async () => {
           <p>We look forward to working with you!</p>
           <div className="mt-4 space-y-1">
             <p className="font-medium">Digital Solutions & Marketing Agency</p>
-            <p>Email: support@formiqstudio.com</p>
-            <p>Phone: +91 8918349445 | +91 9832078313</p>
+            <p>Email: hello@formiqstudio.in</p>
+            <p>Phone: +91 8918349445 | WhatsApp: +1 555-341-9743</p>
           </div>
         </div>
       </div>

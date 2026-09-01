@@ -302,9 +302,9 @@ export async function generateProposalPDF(proposal: GeneratedProposal, leadData:
     <div class="contact-info">
         <h3>Contact Information</h3>
         <p><strong>FormiqStudio</strong><br>
-        Email: hello@formiqstudio.com<br>
+        Email: hello@formiqstudio.in<br>
         India: +91 8918349445<br>
-        USA: +1 224-523-8210<br>
+        WhatsApp: +1 555-341-9743<br>
         Website: www.formiqstudio.com</p>
     </div>
 </body>

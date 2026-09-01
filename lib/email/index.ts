@@ -86,7 +86,7 @@ export async function sendEmail(options: EmailOptions): Promise<EmailResult> {
     }
 
     // Set default from address if not provided
-    const from = options.from || process.env.SMTP_FROM || 'contact@formiqstudio.com';
+    const from = options.from || process.env.SMTP_FROM || 'hello@formiqstudio.in';
 
     // Send the email
     const info = await transporter.sendMail({

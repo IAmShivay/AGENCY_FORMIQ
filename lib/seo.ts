@@ -8,7 +8,7 @@ export const SEO_CONSTANTS = {
   DEFAULT_OG_IMAGE: '/images/og-image.jpg',
   TWITTER_HANDLE: '@formiqstudio',
   LOGO_URL: '/images/logo.png',
-  COMPANY_EMAIL: 'contact@formiqstudio.com',
+  COMPANY_EMAIL: 'hello@formiqstudio.in',
   COMPANY_PHONE: '+1-XXX-XXX-XXXX',
 };
 
