@@ -1,19 +1,25 @@
 import Hero from '@/components/Hero';
+import SocialProofBar from '@/components/landing/SocialProofBar';
 import Services from '@/components/Services';
+import HowItWorks from '@/components/landing/HowItWorks';
+import ComparisonSection from '@/components/landing/ComparisonSection';
 import PricingSection from '@/components/landing/PricingSection';
 import Testimonials from '@/components/Testimonials';
-import About from '@/components/About';
-import Portfolio from '@/components/Portfolio';
+import FAQSection from '@/components/landing/FAQSection';
+import FinalCTA from '@/components/landing/FinalCTA';
 
 export default function Home() {
   return (
     <div className="overflow-hidden">
       <Hero />
+      <SocialProofBar />
       <Services />
+      <HowItWorks />
+      <ComparisonSection />
       <PricingSection />
       <Testimonials />
-      <About />
-      <Portfolio />
+      <FAQSection />
+      <FinalCTA />
     </div>
   );
 }
