@@ -39,23 +39,24 @@ const HowItWorks = () => {
           </p>
         </div>
 
-        {/* Mobile: horizontal compact row */}
-        <div className="flex sm:hidden gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x snap-mandatory">
+        {/* Mobile: vertical compact list */}
+        <div className="flex sm:hidden flex-col gap-3">
           {steps.map((step, i) => {
             const Icon = step.icon;
             return (
-              <div key={i} className="flex-shrink-0 w-[75vw] snap-center text-center p-4 rounded-xl bg-card border border-border">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
-                    {step.step}
-                  </div>
-                  <Icon className="w-5 h-5 text-primary" />
+              <div key={i} className="flex items-start gap-3 p-3.5 rounded-xl bg-card border border-border">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
+                  {step.step}
                 </div>
-                <h3 className="text-sm font-bold text-foreground mb-1">{step.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed mb-2">{step.description}</p>
-                <span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-1 rounded-full">
-                  {step.time}
-                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <h3 className="text-sm font-bold text-foreground">{step.title}</h3>
+                    <span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full ml-2 flex-shrink-0">
+                      {step.time}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{step.description}</p>
+                </div>
               </div>
             );
           })}
