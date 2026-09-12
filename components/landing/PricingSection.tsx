@@ -105,18 +105,16 @@ const PricingSection = () => {
             </p>
           </motion.div>
 
-          <motion.div
-            variants={containerVariants}
-            className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-16 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x snap-mandatory sm:snap-none"
+          <div
+            className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-16 overflow-x-auto sm:overflow-visible pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x snap-mandatory sm:snap-none scrollbar-hide"
+            style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {pricingPlans.map((plan, index) => {
               const Icon = plan.icon;
               return (
-                <motion.div
+                <div
                   key={index}
-                  variants={itemVariants}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className={`relative rounded-2xl p-4 sm:p-8 border transition-all duration-300 flex-shrink-0 w-[78vw] sm:w-auto snap-center ${
+                  className={`relative rounded-2xl p-4 sm:p-8 border transition-all duration-300 flex-shrink-0 w-[78vw] sm:w-auto snap-center sm:hover:-translate-y-1 sm:hover:scale-[1.02] ${
                     plan.popular
                       ? 'border-primary bg-primary/5 shadow-lg sm:scale-105'
                       : 'border-border/50 bg-card hover:border-primary/30'
@@ -177,17 +175,16 @@ const PricingSection = () => {
                     {plan.cta}
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
-                </motion.div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
 
           <motion.div variants={itemVariants} className="text-center">
-            <div className="bg-background rounded-2xl p-8 border border-border/50 max-w-2xl mx-auto">
-              <h3 className="text-xl font-bold mb-2">Not sure which plan is right?</h3>
-              <p className="text-muted-foreground mb-4">
-                Book a free 15-minute call. We'll understand your business and recommend
-                the right plan. No pressure, no sales pitch.
+            <div className="bg-background rounded-2xl p-5 sm:p-8 border border-border/50 max-w-2xl mx-auto">
+              <h3 className="text-base sm:text-xl font-bold mb-1.5 sm:mb-2">Not sure which plan?</h3>
+              <p className="text-xs sm:text-base text-muted-foreground mb-3 sm:mb-4">
+                Free 15-minute call. No pressure, no sales pitch.
               </p>
               <a href="https://wa.me/918918349445?text=Hi%2C%20I%20want%20a%20free%20consultation" target="_blank" rel="noopener noreferrer">
                 <Button variant="default">
