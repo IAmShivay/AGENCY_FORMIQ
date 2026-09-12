@@ -107,7 +107,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Phone</label>
-                  <Input name="phone" type="tel" placeholder="+1 (555) 123-4567" required />
+                  <Input name="phone" type="tel" placeholder="+91 98320 78313" required />
                 </div>
               </div>
               <div>
@@ -151,7 +151,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium">Email</p>
-                    <p className="text-muted-foreground">hello@formiqstudio.com</p>
+                    <p className="text-muted-foreground">hello@formiqstudio.in</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -160,7 +160,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium">Phone</p>
-                    <p className="text-muted-foreground">+91 9832078313</p>
+                    <p className="text-muted-foreground">+91 8918349445 (Call) / +91 9832078313 (WhatsApp)</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -169,7 +169,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium">Address</p>
-                    <p className="text-muted-foreground">West Bengal,City Center,713212</p>
+                    <p className="text-muted-foreground">Arrah Shree Pally, Durgapur, West Bengal 713212</p>
                   </div>
                 </div>
               </div>
