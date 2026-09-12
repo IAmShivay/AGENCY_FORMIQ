@@ -20,10 +20,10 @@ const ComparisonSection = () => {
   const freelancerCount = rows.filter(r => r.freelancer).length;
 
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-background via-muted/20 to-background">
+    <section className="py-10 sm:py-20 md:py-28 bg-gradient-to-b from-background via-muted/20 to-background">
       <div className="max-w-5xl mx-auto px-4">
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-foreground leading-tight">
+        <div className="text-center mb-6 sm:mb-12 md:mb-16">
+          <h2 className="text-xl sm:text-4xl md:text-5xl font-extrabold mb-2 sm:mb-4 text-foreground leading-tight">
             Why Businesses <span className="text-primary">Choose Us</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -33,21 +33,21 @@ const ComparisonSection = () => {
         </div>
 
         {/* Score cards - mobile & desktop */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-8 sm:mb-10">
-          <div className="text-center p-4 sm:p-6 rounded-2xl bg-primary/10 border-2 border-primary/30">
-            <div className="text-3xl sm:text-4xl font-extrabold text-primary">{usCount}/{rows.length}</div>
-            <div className="text-xs sm:text-sm font-bold text-primary mt-1">FormiqStudio</div>
-            <div className="text-[10px] sm:text-xs text-primary/70 mt-0.5">Rs 6,999/mo</div>
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-5 sm:mb-10">
+          <div className="text-center p-3 sm:p-6 rounded-xl sm:rounded-2xl bg-primary/10 border-2 border-primary/30">
+            <div className="text-2xl sm:text-4xl font-extrabold text-primary">{usCount}/{rows.length}</div>
+            <div className="text-[10px] sm:text-sm font-bold text-primary mt-0.5">FormiqStudio</div>
+            <div className="text-[9px] sm:text-xs text-primary/70">Rs 6,999/mo</div>
           </div>
-          <div className="text-center p-4 sm:p-6 rounded-2xl bg-muted/50 border border-border">
-            <div className="text-3xl sm:text-4xl font-extrabold text-muted-foreground">{themCount}/{rows.length}</div>
-            <div className="text-xs sm:text-sm font-medium text-muted-foreground mt-1">Typical Agency</div>
-            <div className="text-[10px] sm:text-xs text-muted-foreground/70 mt-0.5">Rs 25,000+/mo</div>
+          <div className="text-center p-3 sm:p-6 rounded-xl sm:rounded-2xl bg-muted/50 border border-border">
+            <div className="text-2xl sm:text-4xl font-extrabold text-muted-foreground">{themCount}/{rows.length}</div>
+            <div className="text-[10px] sm:text-sm font-medium text-muted-foreground mt-0.5">Agency</div>
+            <div className="text-[9px] sm:text-xs text-muted-foreground/70">Rs 25K+/mo</div>
           </div>
-          <div className="text-center p-4 sm:p-6 rounded-2xl bg-muted/50 border border-border">
-            <div className="text-3xl sm:text-4xl font-extrabold text-muted-foreground">{freelancerCount}/{rows.length}</div>
-            <div className="text-xs sm:text-sm font-medium text-muted-foreground mt-1">Freelancer</div>
-            <div className="text-[10px] sm:text-xs text-muted-foreground/70 mt-0.5">Unreliable</div>
+          <div className="text-center p-3 sm:p-6 rounded-xl sm:rounded-2xl bg-muted/50 border border-border">
+            <div className="text-2xl sm:text-4xl font-extrabold text-muted-foreground">{freelancerCount}/{rows.length}</div>
+            <div className="text-[10px] sm:text-sm font-medium text-muted-foreground mt-0.5">Freelancer</div>
+            <div className="text-[9px] sm:text-xs text-muted-foreground/70">Unreliable</div>
           </div>
         </div>
 

@@ -88,7 +88,7 @@ const PricingSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="pricing" className="py-20 bg-gradient-to-br from-muted/20 to-muted/40">
+    <section ref={sectionRef} id="pricing" className="py-10 sm:py-16 md:py-20 bg-gradient-to-br from-muted/20 to-muted/40">
       <div className="container mx-auto px-4">
         <motion.div
           variants={containerVariants}
@@ -96,18 +96,18 @@ const PricingSection = () => {
           animate={isInView ? "visible" : "hidden"}
           className="max-w-6xl mx-auto"
         >
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <motion.div variants={itemVariants} className="text-center mb-6 sm:mb-12">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-1.5 sm:mb-4">
               Simple Pricing. Real Results.
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xs sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
               No hidden fees. No contracts. Same expert team that agencies charge Rs 50,000+ for.
             </p>
           </motion.div>
 
           <motion.div
             variants={containerVariants}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-16"
           >
             {pricingPlans.map((plan, index) => {
               const Icon = plan.icon;
@@ -116,7 +116,7 @@ const PricingSection = () => {
                   key={index}
                   variants={itemVariants}
                   whileHover={{ y: -5, scale: 1.02 }}
-                  className={`relative rounded-2xl p-8 border transition-all duration-300 ${
+                  className={`relative rounded-2xl p-5 sm:p-8 border transition-all duration-300 ${
                     plan.popular
                       ? 'border-primary bg-primary/5 shadow-lg scale-105'
                       : 'border-border/50 bg-card hover:border-primary/30'
@@ -131,7 +131,7 @@ const PricingSection = () => {
                     </div>
                   )}
 
-                  <div className="text-center mb-8">
+                  <div className="text-center mb-5 sm:mb-8">
                     <div className={`inline-flex p-3 rounded-lg mb-4 ${
                       plan.popular ? 'bg-primary/20' : 'bg-muted'
                     }`}>
@@ -151,7 +151,7 @@ const PricingSection = () => {
                     )}
                   </div>
 
-                  <div className="space-y-3 mb-8">
+                  <div className="space-y-2 sm:space-y-3 mb-5 sm:mb-8">
                     {plan.features.map((feature, featureIndex) => (
                       <div key={featureIndex} className="flex items-center">
                         <Check className="w-4 h-4 text-primary mr-3 flex-shrink-0" />
