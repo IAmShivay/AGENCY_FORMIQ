@@ -107,7 +107,7 @@ const PricingSection = () => {
 
           <motion.div
             variants={containerVariants}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-16"
+            className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-16 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x snap-mandatory sm:snap-none"
           >
             {pricingPlans.map((plan, index) => {
               const Icon = plan.icon;
@@ -116,9 +116,9 @@ const PricingSection = () => {
                   key={index}
                   variants={itemVariants}
                   whileHover={{ y: -5, scale: 1.02 }}
-                  className={`relative rounded-2xl p-5 sm:p-8 border transition-all duration-300 ${
+                  className={`relative rounded-2xl p-4 sm:p-8 border transition-all duration-300 flex-shrink-0 w-[78vw] sm:w-auto snap-center ${
                     plan.popular
-                      ? 'border-primary bg-primary/5 shadow-lg scale-105'
+                      ? 'border-primary bg-primary/5 shadow-lg sm:scale-105'
                       : 'border-border/50 bg-card hover:border-primary/30'
                   }`}
                 >
@@ -132,19 +132,19 @@ const PricingSection = () => {
                   )}
 
                   <div className="text-center mb-5 sm:mb-8">
-                    <div className={`inline-flex p-3 rounded-lg mb-4 ${
+                    <div className={`inline-flex p-2 sm:p-3 rounded-lg mb-3 sm:mb-4 ${
                       plan.popular ? 'bg-primary/20' : 'bg-muted'
                     }`}>
-                      <Icon className={`w-8 h-8 ${
+                      <Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${
                         plan.popular ? 'text-primary' : 'text-muted-foreground'
                       }`} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                    <p className="text-muted-foreground mb-4">{plan.description}</p>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">{plan.name}</h3>
+                    <p className="text-xs sm:text-base text-muted-foreground mb-3 sm:mb-4">{plan.description}</p>
 
-                    <div className="mb-2">
-                      <span className="text-4xl font-bold">{plan.price}</span>
-                      <span className="text-lg text-muted-foreground">{plan.period}</span>
+                    <div className="mb-1 sm:mb-2">
+                      <span className="text-2xl sm:text-4xl font-bold">{plan.price}</span>
+                      <span className="text-sm sm:text-lg text-muted-foreground">{plan.period}</span>
                     </div>
                     {plan.popular && (
                       <p className="text-xs text-primary font-medium">That's just Rs 233/day</p>
