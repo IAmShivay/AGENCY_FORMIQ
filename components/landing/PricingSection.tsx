@@ -68,7 +68,7 @@ const pricingPlans = [
 
 const openWhatsApp = (planName: string) => {
   window.open(
-    `https://wa.me/918918349445?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(planName)}%20plan`,
+    `https://wa.me/919832078313?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(planName)}%20plan`,
     '_blank'
   );
 };
@@ -210,7 +210,7 @@ const PricingSection = () => {
               <p className="text-xs sm:text-base text-muted-foreground mb-3 sm:mb-4">
                 Free 15-minute call. No pressure, no sales pitch.
               </p>
-              <a href="https://wa.me/918918349445?text=Hi%2C%20I%20want%20a%20free%20consultation" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20a%20free%20consultation" target="_blank" rel="noopener noreferrer">
                 <Button variant="default">
                   Book Free Consultation <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>

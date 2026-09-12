@@ -2,14 +2,14 @@
 
 export const SEO_CONSTANTS = {
   SITE_NAME: 'FormiqStudio',
-  SITE_URL: 'https://formiqstudio.com',
-  DEFAULT_TITLE: 'FormiqStudio - Digital Marketing & Development Agency',
-  DEFAULT_DESCRIPTION: 'Transforming businesses through innovative software solutions, digital marketing, AI-driven automation, web development, mobile apps, and comprehensive digital marketing services.',
+  SITE_URL: 'https://formiqstudio.in',
+  DEFAULT_TITLE: 'FormiqStudio - Website, Ads & Social Media for Local Businesses',
+  DEFAULT_DESCRIPTION: 'FormiqStudio helps local businesses in Kolkata, Durgapur & Asansol get more customers with professional websites, Facebook & Instagram ads, and social media management. Starting Rs 6,999/month.',
   DEFAULT_OG_IMAGE: '/images/og-image.jpg',
   TWITTER_HANDLE: '@formiqstudio',
   LOGO_URL: '/images/logo.png',
   COMPANY_EMAIL: 'hello@formiqstudio.in',
-  COMPANY_PHONE: '+1-XXX-XXX-XXXX',
+  COMPANY_PHONE: '+91-8918349445',
 };
 
 export interface SEOData {
@@ -110,11 +110,14 @@ export function generateLocalBusinessStructuredData() {
     email: SEO_CONSTANTS.COMPANY_EMAIL,
     address: {
       '@type': 'PostalAddress',
-      addressCountry: 'US',
-      // Add specific address details when available
+      streetAddress: 'Arrah Shree Pally',
+      addressLocality: 'Durgapur',
+      addressRegion: 'West Bengal',
+      postalCode: '713212',
+      addressCountry: 'IN',
     },
-    openingHours: 'Mo-Fr 09:00-18:00',
-    priceRange: '$$',
+    openingHours: 'Mo-Sa 10:00-19:00',
+    priceRange: 'Rs 6,999 - Rs 14,999',
     sameAs: [
       'https://www.linkedin.com/company/formiqstudio',
       'https://twitter.com/formiqstudio',

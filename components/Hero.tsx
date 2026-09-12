@@ -53,7 +53,7 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-1">
-              <a href="https://wa.me/918918349445?text=Hi%2C%20I%20want%20to%20know%20about%20the%20Rs%206999%20plan" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+              <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20to%20know%20about%20the%20Rs%206999%20plan" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                 <button className="w-full px-7 py-4 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#1da851] transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-lg shadow-[#25D366]/20">
                   WhatsApp Us Now
                   <ArrowRight className="w-5 h-5" />

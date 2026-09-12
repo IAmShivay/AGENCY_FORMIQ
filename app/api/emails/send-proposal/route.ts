@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
         <p><strong>FormiqStudio</strong><br>
         Email: hello@formiqstudio.in<br>
         India: +91 8918349445<br>
-        WhatsApp: +1 555-341-9743<br>
+        WhatsApp: +91 9832078313<br>
         Website: www.formiqstudio.com</p>
     </div>
 </body>

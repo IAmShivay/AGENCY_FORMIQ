@@ -99,7 +99,7 @@ const ComparisonSection = () => {
 
         {/* CTA */}
         <div className="text-center mt-10">
-          <a href="https://wa.me/918918349445?text=Hi%2C%20I%20want%20the%20Growth%20Plan" target="_blank" rel="noopener noreferrer">
+          <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20the%20Growth%20Plan" target="_blank" rel="noopener noreferrer">
             <button className="px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 inline-flex items-center gap-2 text-base shadow-lg shadow-primary/20">
               Get All 9 Features for Rs 6,999/mo
               <ArrowRight className="w-5 h-5" />

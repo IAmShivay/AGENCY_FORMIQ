@@ -120,7 +120,7 @@ export default function ProposalManager({ leadId, proposals, onRefresh }: Propos
           
           <div class="footer">
             <p>FormiqStudio - Crafting Infinite Digital Experiences</p>
-            <p>Email: hello@formiqstudio.in | Phone: +91 8918349445 | WhatsApp: +1 555-341-9743</p>
+            <p>Email: hello@formiqstudio.in | Phone: +91 8918349445 | WhatsApp: +91 9832078313</p>
           </div>
         </body>
         </html>

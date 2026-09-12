@@ -81,7 +81,7 @@ export default function Testimonials() {
         </div>
 
         <div className="text-center mt-6 sm:mt-10">
-          <a href="https://wa.me/918918349445?text=Hi%2C%20I%20want%20similar%20results" target="_blank" rel="noopener noreferrer">
+          <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20similar%20results" target="_blank" rel="noopener noreferrer">
             <button className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all text-sm sm:text-base shadow-lg shadow-primary/20">
               Get Results Like These
               <ArrowRight className="w-4 h-4" />

@@ -517,7 +517,7 @@ const downloadPDF = async () => {
           <div className="mt-4 space-y-1">
             <p className="font-medium">Digital Solutions & Marketing Agency</p>
             <p>Email: hello@formiqstudio.in</p>
-            <p>Phone: +91 8918349445 | WhatsApp: +1 555-341-9743</p>
+            <p>Phone: +91 8918349445 | WhatsApp: +91 9832078313</p>
           </div>
         </div>
       </div>

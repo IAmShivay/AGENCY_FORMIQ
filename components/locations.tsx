@@ -13,8 +13,8 @@ const OfficeLocationsMap = () => {
         {
             id: 1,
             name: "FormiqStudio System Inc",
-            address: "West Bengal India, Durgapur,713212",
-            phone: "+1 555-341-9743",
+            address: "Arrah Shree Pally, Durgapur, West Bengal 713212",
+            phone: "+91 9832078313",
             email: "hello@formiqstudio.in",
             coordinates: { lat: 23.55000000, lng: -87.32000000 },
             mapUrl: "https://maps.google.com/maps?q=Durgapur+City+Centre+West+Bengal&t=&z=13&ie=UTF8&iwloc=&output=embed"

@@ -99,7 +99,7 @@ const FounderSection = () => {
               <p className="text-xs text-muted-foreground mt-2 font-medium">- Shivay, Founder</p>
             </blockquote>
 
-            <a href="https://wa.me/918918349445?text=Hi%20Shivay%2C%20I%20want%20to%20discuss%20my%20business" target="_blank" rel="noopener noreferrer">
+            <a href="https://wa.me/919832078313?text=Hi%20Shivay%2C%20I%20want%20to%20discuss%20my%20business" target="_blank" rel="noopener noreferrer">
               <button className="px-7 py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 inline-flex items-center gap-2 text-sm shadow-lg shadow-primary/20 mt-1">
                 Talk to Shivay Directly
                 <ArrowRight className="w-4 h-4" />

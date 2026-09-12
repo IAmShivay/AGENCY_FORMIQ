@@ -173,7 +173,7 @@ class EmailService {
               <strong>FormiqStudio</strong><br>
               Digital Solutions & Marketing Agency<br>
               Email: hello@formiqstudio.in<br>
-              Phone: +91 8918349445 | +1 555-341-9743
+              Phone: +91 8918349445 | +91 9832078313
             </div>
             <p style="margin-top: 20px; font-size: 11px; color: #999;">
               This email was sent from FormiqStudio. If you have any questions, please contact us at the above email address.
