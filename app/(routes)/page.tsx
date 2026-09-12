@@ -11,7 +11,7 @@ import FinalCTA from '@/components/landing/FinalCTA';
 
 export default function Home() {
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-x-clip">
       <Hero />
       <SocialProofBar />
       <HowItWorks />
