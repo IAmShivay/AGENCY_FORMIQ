@@ -2,52 +2,51 @@
 
 import Link from "next/link";
 import {
-  Code2,
-  MessageSquare,
-  Database,
   Globe,
-  Shield,
-  ShoppingCart,
+  Megaphone,
+  Palette,
+  BarChart3,
+  MapPin,
+  Smartphone,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 
 const services = [
   {
-    icon: Code2,
-    title: "Web Development",
-    description: "Full-stack web apps, APIs, SaaS platforms, and cloud-native solutions built for scale.",
-    href: "/web",
-  },
-  {
-    icon: Database,
-    title: "Mobile Apps",
-    description: "Native and cross-platform mobile apps with seamless UX for iOS and Android.",
-    href: "/mobile",
-  },
-  {
-    icon: ShoppingCart,
-    title: "E-commerce & Marketplace",
-    description: "Amazon, Flipkart, Meesho — store setup, listing optimization, and ad campaigns.",
-    href: "/ecommerce-marketplace",
-  },
-  {
     icon: Globe,
-    title: "Digital Marketing",
-    description: "SEO, email campaigns, social media, and data-driven strategies that convert.",
-    href: "/marketing",
+    title: "Website Design & Development",
+    description: "Professional, fast-loading websites that look great on every device. Built to convert visitors into customers.",
+    href: "/contact",
   },
   {
-    icon: Shield,
-    title: "Shopify",
-    description: "Complete Shopify store design, development, optimization, and management.",
-    href: "/shopify",
+    icon: Megaphone,
+    title: "Facebook & Instagram Ads",
+    description: "Targeted ad campaigns that reach the right people in your area. We handle everything from creative to optimization.",
+    href: "/contact",
   },
   {
-    icon: MessageSquare,
-    title: "AI & ML",
-    description: "Intelligent automation agents, workflow tools, and AI-powered business solutions.",
-    href: "/agents",
+    icon: Palette,
+    title: "Social Media Management",
+    description: "Consistent, engaging posts designed for your brand. We plan, create, and schedule content every week.",
+    href: "/contact",
+  },
+  {
+    icon: BarChart3,
+    title: "Google Ads & SEO",
+    description: "Show up when customers search for your services. Rank higher on Google and get more calls.",
+    href: "/contact",
+  },
+  {
+    icon: MapPin,
+    title: "Google My Business",
+    description: "Optimize your Google listing so local customers find you first. Reviews, photos, and posts managed.",
+    href: "/contact",
+  },
+  {
+    icon: Smartphone,
+    title: "E-commerce & Online Store",
+    description: "Sell your products online with a fully functional store. Payment integration, inventory, and shipping set up.",
+    href: "/contact",
   },
 ];
 
@@ -55,21 +54,15 @@ const Services = () => {
   return (
     <section className="py-12 md:py-16 bg-background relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        {/* Header */}
         <div className="text-center mb-8 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-5">
-            <Sparkles className="w-4 h-4" />
-            What We Do
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
-            Services We Offer
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+            Everything Your Business Needs to Grow Online
           </h2>
           <p className="text-lg text-muted-foreground">
-            From software development to digital marketing — everything your business needs to grow.
+            Stop juggling multiple freelancers. One team, one plan, all your digital marketing handled.
           </p>
         </div>
 
-        {/* Services Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {services.map((service, index) => {
             const Icon = service.icon;
@@ -91,14 +84,13 @@ const Services = () => {
           })}
         </div>
 
-        {/* CTA */}
         <div className="text-center mt-8">
-          <Link href="/contact">
+          <a href="https://wa.me/918918349445?text=Hi%2C%20I%20want%20to%20know%20about%20your%20services" target="_blank" rel="noopener noreferrer">
             <button className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200">
-              Start Your Project
+              Get a Free Quote
               <ArrowRight className="w-4 h-4" />
             </button>
-          </Link>
+          </a>
         </div>
       </div>
     </section>

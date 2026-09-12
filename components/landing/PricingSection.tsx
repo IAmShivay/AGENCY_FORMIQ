@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Check, Star, ArrowRight, Zap, Crown, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,16 +8,12 @@ import { Button } from '@/components/ui/button';
 const PricingSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'project'>('project');
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
     }
   };
 
@@ -34,87 +30,65 @@ const PricingSection = () => {
     {
       name: "Starter",
       icon: Zap,
-      description: "Perfect for small businesses and startups",
-      price: {
-        project: "$5,000",
-        monthly: "$500"
-      },
-      originalPrice: {
-        project: "$7,500",
-        monthly: "$750"
-      },
+      description: "Just need a website? We've got you.",
+      price: "Rs 14,999",
+      period: "one-time",
       popular: false,
       features: [
-        "Custom web application",
-        "Responsive design",
-        "Basic integrations",
-        "3 months support",
-        "Source code included",
-        "Basic documentation",
-        "Email support"
+        "Professional 5-page website",
+        "Mobile responsive design",
+        "Contact form & WhatsApp integration",
+        "Google Maps & directions",
+        "Basic SEO setup",
+        "Free hosting for 1 year",
+        "Delivered in 15 days",
       ],
-      deliveryTime: "15-20 days",
-      cta: "Get Started"
+      cta: "Get Started",
     },
     {
-      name: "Professional",
+      name: "Growth Plan",
       icon: Crown,
-      description: "Ideal for growing businesses",
-      price: {
-        project: "$12,000",
-        monthly: "$1,200"
-      },
-      originalPrice: {
-        project: "$18,000",
-        monthly: "$1,800"
-      },
+      description: "Website + Ads + Social Media. Everything you need.",
+      price: "Rs 6,999",
+      period: "/month",
       popular: true,
       features: [
-        "Everything in Starter",
-        "Advanced integrations",
-        "Database optimization",
-        "6 months support",
-        "Admin dashboard",
-        "API development",
-        "Priority support",
-        "Performance monitoring",
-        "Security audit"
+        "Professional website (built & maintained)",
+        "Facebook & Instagram ad campaigns",
+        "Ad creative design by our team",
+        "Social media management (12 posts/month)",
+        "Google My Business optimization",
+        "Monthly performance report",
+        "Dedicated account manager",
+        "In-person meetings available",
+        "Cancel anytime - no lock-in",
       ],
-      deliveryTime: "20-30 days",
-      cta: "Most Popular"
+      cta: "Start Growing",
     },
     {
-      name: "Enterprise",
+      name: "Scale",
       icon: Rocket,
-      description: "For large organizations with complex needs",
-      price: {
-        project: "Custom",
-        monthly: "$2,500+"
-      },
-      originalPrice: {
-        project: null,
-        monthly: null
-      },
+      description: "For businesses ready to dominate their market.",
+      price: "Rs 14,999",
+      period: "/month",
       popular: false,
       features: [
-        "Everything in Professional",
-        "Custom architecture",
-        "Unlimited integrations",
-        "12 months support",
-        "Dedicated team",
-        "24/7 support",
-        "Advanced analytics",
-        "Custom training",
-        "SLA guarantee",
-        "White-label options"
+        "Everything in Growth Plan",
+        "Google Ads management",
+        "Advanced landing pages",
+        "Lead tracking dashboard",
+        "Email marketing automation",
+        "24 social media posts/month",
+        "Video content creation",
+        "Competitor analysis",
+        "Priority support",
       ],
-      deliveryTime: "30-45 days",
-      cta: "Contact Sales"
-    }
+      cta: "Let's Talk",
+    },
   ];
 
   return (
-    <section ref={sectionRef} className="py-20 bg-gradient-to-br from-muted/20 to-muted/40">
+    <section ref={sectionRef} id="pricing" className="py-20 bg-gradient-to-br from-muted/20 to-muted/40">
       <div className="container mx-auto px-4">
         <motion.div
           variants={containerVariants}
@@ -122,43 +96,16 @@ const PricingSection = () => {
           animate={isInView ? "visible" : "hidden"}
           className="max-w-6xl mx-auto"
         >
-          {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Transparent Pricing, Exceptional Value
+              Simple Pricing. Real Results.
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Choose the perfect plan for your business. All plans include our 
-              30-day money-back guarantee.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              No hidden fees. No contracts. Same expert team that agencies charge Rs 50,000+ for.
             </p>
-
-            {/* Billing Toggle */}
-            <div className="inline-flex items-center bg-background rounded-lg p-1 border border-border/50">
-              <button
-                onClick={() => setBillingCycle('project')}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-                  billingCycle === 'project'
-                    ? 'bg-primary text-primary-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Project-Based
-              </button>
-              <button
-                onClick={() => setBillingCycle('monthly')}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-                  billingCycle === 'monthly'
-                    ? 'bg-primary text-primary-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Monthly Retainer
-              </button>
-            </div>
           </motion.div>
 
-          {/* Pricing Cards */}
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
           >
@@ -175,7 +122,6 @@ const PricingSection = () => {
                       : 'border-border/50 bg-card hover:border-primary/30'
                   }`}
                 >
-                  {/* Popular Badge */}
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                       <div className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium flex items-center">
@@ -185,7 +131,6 @@ const PricingSection = () => {
                     </div>
                   )}
 
-                  {/* Plan Header */}
                   <div className="text-center mb-8">
                     <div className={`inline-flex p-3 rounded-lg mb-4 ${
                       plan.popular ? 'bg-primary/20' : 'bg-muted'
@@ -196,34 +141,16 @@ const PricingSection = () => {
                     </div>
                     <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
                     <p className="text-muted-foreground mb-4">{plan.description}</p>
-                    
-                    {/* Pricing */}
-                    <div className="mb-4">
-                      {plan.originalPrice[billingCycle] && (
-                        <div className="text-sm text-muted-foreground line-through mb-1">
-                          {plan.originalPrice[billingCycle]}
-                        </div>
-                      )}
-                      <div className="text-4xl font-bold">
-                        {plan.price[billingCycle]}
-                        {billingCycle === 'monthly' && plan.price[billingCycle] !== 'Custom' && (
-                          <span className="text-lg text-muted-foreground">/month</span>
-                        )}
-                      </div>
-                      {billingCycle === 'project' && (
-                        <div className="text-sm text-muted-foreground mt-1">
-                          One-time payment
-                        </div>
-                      )}
-                    </div>
 
-                    {/* Delivery Time */}
-                    <div className="text-sm text-primary font-medium">
-                      ⚡ Delivery: {plan.deliveryTime}
+                    <div className="mb-2">
+                      <span className="text-4xl font-bold">{plan.price}</span>
+                      <span className="text-lg text-muted-foreground">{plan.period}</span>
                     </div>
+                    {plan.popular && (
+                      <p className="text-xs text-primary font-medium">That's just Rs 233/day</p>
+                    )}
                   </div>
 
-                  {/* Features */}
                   <div className="space-y-3 mb-8">
                     {plan.features.map((feature, featureIndex) => (
                       <div key={featureIndex} className="flex items-center">
@@ -233,7 +160,6 @@ const PricingSection = () => {
                     ))}
                   </div>
 
-                  {/* CTA Button */}
                   <Button
                     className={`w-full ${
                       plan.popular
@@ -242,10 +168,10 @@ const PricingSection = () => {
                     }`}
                     variant={plan.popular ? 'default' : 'outline'}
                     onClick={() => {
-                      const contactSection = document.getElementById('contact-form');
-                      if (contactSection) {
-                        contactSection.scrollIntoView({ behavior: 'smooth' });
-                      }
+                      window.open(
+                        `https://wa.me/918918349445?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(plan.name)}%20plan`,
+                        '_blank'
+                      );
                     }}
                   >
                     {plan.cta}
@@ -256,19 +182,19 @@ const PricingSection = () => {
             })}
           </motion.div>
 
-          {/* Money Back Guarantee */}
           <motion.div variants={itemVariants} className="text-center">
             <div className="bg-background rounded-2xl p-8 border border-border/50 max-w-2xl mx-auto">
-              <div className="flex items-center justify-center mb-4">
-                <div className="p-3 rounded-full bg-green-100 dark:bg-green-900/30">
-                  <Check className="w-6 h-6 text-green-600 dark:text-green-400" />
-                </div>
-              </div>
-              <h3 className="text-xl font-bold mb-2">30-Day Money-Back Guarantee</h3>
-              <p className="text-muted-foreground">
-                Not satisfied with our work? Get a full refund within 30 days. 
-                No questions asked. Your success is our priority.
+              <h3 className="text-xl font-bold mb-2">Not sure which plan is right?</h3>
+              <p className="text-muted-foreground mb-4">
+                Book a free 15-minute call. We'll understand your business and recommend
+                the right plan. No pressure, no sales pitch.
               </p>
+              <a href="https://wa.me/918918349445?text=Hi%2C%20I%20want%20a%20free%20consultation" target="_blank" rel="noopener noreferrer">
+                <Button variant="default">
+                  Book Free Consultation
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </a>
             </div>
           </motion.div>
         </motion.div>

@@ -1,7 +1,8 @@
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
-import About from '@/components/About';
+import PricingSection from '@/components/landing/PricingSection';
 import Testimonials from '@/components/Testimonials';
+import About from '@/components/About';
 import Portfolio from '@/components/Portfolio';
 
 export default function Home() {
@@ -9,8 +10,9 @@ export default function Home() {
     <div className="overflow-hidden">
       <Hero />
       <Services />
-      <About />
+      <PricingSection />
       <Testimonials />
+      <About />
       <Portfolio />
     </div>
   );
