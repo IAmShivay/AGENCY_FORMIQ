@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Send, CheckCircle, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
+import { trackLead } from '@/lib/meta-pixel';
 
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,6 +32,18 @@ const ContactForm = () => {
         return;
       }
       setIsSubmitted(true);
+      trackLead({ content_name: payload.subject as string });
+      fetch('/api/meta-capi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventName: 'Lead',
+          phone: payload.phone,
+          email: payload.email,
+          sourceUrl: window.location.href,
+          customData: { content_name: payload.subject },
+        }),
+      }).catch(() => {});
       (e.target as HTMLFormElement).reset();
     } catch {
       setError('Something went wrong. Please try WhatsApp instead.');
