@@ -33,6 +33,7 @@ const ContactForm = () => {
       }
       setIsSubmitted(true);
       trackLead({ content_name: payload.subject as string });
+      // Meta CAPI
       fetch('/api/meta-capi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -42,6 +43,16 @@ const ContactForm = () => {
           email: payload.email,
           sourceUrl: window.location.href,
           customData: { content_name: payload.subject },
+        }),
+      }).catch(() => {});
+      // AiSensy WhatsApp
+      fetch('/api/whatsapp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: payload.phone,
+          name: payload.name,
+          service: payload.subject,
         }),
       }).catch(() => {});
       (e.target as HTMLFormElement).reset();
