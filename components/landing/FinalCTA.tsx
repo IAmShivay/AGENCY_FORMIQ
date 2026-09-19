@@ -1,8 +1,12 @@
 "use client";
 
-import { ArrowRight, Phone } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowRight, Phone, Sparkles } from 'lucide-react';
+import LeadFormOverlay from '@/components/LeadFormOverlay';
 
 const FinalCTA = () => {
+  const [showLeadForm, setShowLeadForm] = useState(false);
+
   return (
     <section className="py-12 sm:py-20 md:py-24 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
@@ -20,6 +24,10 @@ const FinalCTA = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button onClick={() => setShowLeadForm(true)} className="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-lg shadow-primary/20">
+            <Sparkles className="w-5 h-5" />
+            Get Free Consultation
+          </button>
           <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20to%20start%20the%20Growth%20Plan" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
             <button className="w-full px-8 py-4 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#1da851] transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-lg shadow-[#25D366]/20">
               Start on WhatsApp
@@ -38,6 +46,8 @@ const FinalCTA = () => {
           Available for in-person meetings in Kolkata, Durgapur & Asansol
         </p>
       </div>
+
+      <LeadFormOverlay open={showLeadForm} onClose={() => setShowLeadForm(false)} />
     </section>
   );
 };

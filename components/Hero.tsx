@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from 'react';
-import { ArrowRight, CheckCircle, Phone, Play } from "lucide-react";
+import { ArrowRight, CheckCircle, Phone, Play, Sparkles } from "lucide-react";
 import { trackContact } from '@/lib/meta-pixel';
+import LeadFormOverlay from './LeadFormOverlay';
 
 const Hero = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [showLeadForm, setShowLeadForm] = useState(false);
 
   return (
     <div className="relative w-full bg-gradient-to-br from-background via-background to-primary/5 overflow-hidden">
@@ -54,15 +56,19 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-1">
+              <button onClick={() => setShowLeadForm(true)} className="w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-[15px] shadow-lg shadow-primary/20 whitespace-nowrap">
+                <Sparkles className="w-4 h-4 flex-shrink-0" />
+                Free Consultation
+              </button>
               <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20to%20know%20about%20the%20Rs%206999%20plan" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackContact('whatsapp_hero')}>
-                <button className="w-full px-7 py-4 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#1da851] transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-lg shadow-[#25D366]/20">
-                  WhatsApp Us Now
-                  <ArrowRight className="w-5 h-5" />
+                <button className="w-full px-5 sm:px-6 py-3 sm:py-3.5 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#1da851] transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-[15px] shadow-lg shadow-[#25D366]/20 whitespace-nowrap">
+                  WhatsApp Us
+                  <ArrowRight className="w-4 h-4 flex-shrink-0" />
                 </button>
               </a>
-              <a href="tel:+918918349445" className="w-full sm:w-auto" onClick={() => trackContact('phone_hero')}>
-                <button className="w-full px-7 py-4 border-2 border-border text-foreground rounded-xl font-semibold hover:bg-muted transition-all duration-200 flex items-center justify-center gap-2 text-base">
-                  <Phone className="w-5 h-5" />
+              <a href="tel:+918918349445" className="w-full sm:w-auto hidden lg:block" onClick={() => trackContact('phone_hero')}>
+                <button className="w-full px-5 sm:px-6 py-3 sm:py-3.5 border-2 border-border text-foreground rounded-xl font-semibold hover:bg-muted transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-[15px] whitespace-nowrap">
+                  <Phone className="w-4 h-4 flex-shrink-0" />
                   +91 8918349445
                 </button>
               </a>
@@ -136,6 +142,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      <LeadFormOverlay open={showLeadForm} onClose={() => setShowLeadForm(false)} />
     </div>
   );
 };

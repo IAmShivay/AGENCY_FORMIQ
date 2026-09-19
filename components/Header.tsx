@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/button';
 // ThemeSwitcher removed - using light mode only
 import Logo from './Logo';
+import LeadFormOverlay from './LeadFormOverlay';
 import {
   ChevronDown,
   ArrowRight,
@@ -36,6 +37,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [showLeadForm, setShowLeadForm] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -200,13 +202,11 @@ const Header = () => {
 
             {/* CTA Button */}
             <div className="hidden sm:block">
-              <Link href="/contact">
-                <Button className="rounded-xl bg-primary hover:bg-primary/90 text-white px-6 lg:px-8 xl:px-10 py-3 lg:py-4 flex items-center gap-2 shadow-sm hover:shadow text-sm lg:text-base font-semibold">
-                  <span className="hidden md:inline">Get Started</span>
-                  <span className="md:hidden">Start</span>
-                  <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5" />
-                </Button>
-              </Link>
+              <Button onClick={() => setShowLeadForm(true)} className="rounded-xl bg-primary hover:bg-primary/90 text-white px-6 lg:px-8 xl:px-10 py-3 lg:py-4 flex items-center gap-2 shadow-sm hover:shadow text-sm lg:text-base font-semibold">
+                <span className="hidden md:inline">Get Started</span>
+                <span className="md:hidden">Start</span>
+                <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5" />
+              </Button>
             </div>
           </div>
         </div>
@@ -284,7 +284,7 @@ const Header = () => {
                 ))}
 
                 <div className="pt-4 md:pt-6 mt-4 md:mt-6 border-t border-gray-100 dark:border-gray-700 sm:hidden">
-                  <Button className="w-full rounded-xl bg-primary hover:bg-primary/90 text-white py-3 md:py-4 flex items-center justify-center gap-2 font-semibold">
+                  <Button onClick={() => { setIsMobileMenuOpen(false); setShowLeadForm(true); }} className="w-full rounded-xl bg-primary hover:bg-primary/90 text-white py-3 md:py-4 flex items-center justify-center gap-2 font-semibold">
                     Get Started
                     <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                   </Button>
@@ -294,6 +294,7 @@ const Header = () => {
           )}
         </AnimatePresence>
       </div>
+      <LeadFormOverlay open={showLeadForm} onClose={() => setShowLeadForm(false)} />
     </header>
   );
 };
