@@ -1,23 +1,12 @@
 'use client';
 
-import { Phone } from 'lucide-react';
 import { trackContact } from '@/lib/meta-pixel';
 
 const WhatsAppChat = () => {
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 items-end">
-      {/* Call Now button */}
-      <a
-        href="tel:+918918349445"
-        onClick={() => trackContact('phone_floating')}
-        className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 hover:scale-110 transition-transform duration-200"
-        aria-label="Call now"
-      >
-        <Phone className="w-5 h-5 text-primary-foreground" />
-      </a>
-
       {/* WhatsApp button */}
-      <a
+      <
         href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20to%20know%20about%20your%20services"
         target="_blank"
         rel="noopener noreferrer"
