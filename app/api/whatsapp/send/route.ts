@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
                 type: 'body',
                 parameters: [
                   { type: 'text', text: name },
-                  { type: 'text', text: service || 'Growth Plan' },
                 ],
               },
             ],
