@@ -26,7 +26,7 @@ jobs:
           cache: "npm"
 
       - name: Install Infisical CLI
-        run: curl -1sLf 'https://raw.githubusercontent.com/Infisical/infisical/main/scripts/install.sh' | bash
+        run: npm install -g @infisical/cli
 
       - name: Export secrets to .env
         run: |
