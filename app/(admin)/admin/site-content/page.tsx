@@ -87,24 +87,24 @@ export default function SiteContentPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Homepage Media</h1>
-          <p className="text-sm text-muted-foreground mt-1">Manage the video and images on your homepage hero section</p>
+          <h1 className="text-3xl font-bold text-foreground">Homepage Media</h1>
+          <p className="mt-2 text-muted-foreground">Manage the video and images on your homepage hero section</p>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-all disabled:opacity-50 text-sm"
+          className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
         >
-          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+          {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
           Save Changes
         </button>
       </div>
 
       {/* Hero Video */}
-      <div className="bg-card rounded-2xl border border-border p-6 space-y-4">
+      <div className="bg-card rounded-lg border border-border shadow-sm p-6 space-y-4">
         <div className="flex items-center gap-2 mb-2">
           <Video className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">Hero Video</h2>
@@ -117,7 +117,7 @@ export default function SiteContentPage() {
             value={media.video_url}
             onChange={(e) => setMedia((prev) => ({ ...prev, video_url: e.target.value }))}
             placeholder="https://videos.pexels.com/..."
-            className="w-full px-4 py-2.5 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+            className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
           />
           <p className="text-xs text-muted-foreground mt-1">Direct MP4 link or YouTube embed URL</p>
         </div>
@@ -130,9 +130,9 @@ export default function SiteContentPage() {
               value={media.video_thumbnail}
               onChange={(e) => setMedia((prev) => ({ ...prev, video_thumbnail: e.target.value }))}
               placeholder="https://images.pexels.com/..."
-              className="flex-1 px-4 py-2.5 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+              className="flex-1 px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
             />
-            <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-secondary text-foreground rounded-xl cursor-pointer hover:bg-secondary/80 transition-all text-sm">
+            <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-secondary text-foreground rounded-md cursor-pointer hover:bg-secondary/80 transition-all text-sm">
               {uploading === 'video_thumbnail' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
               Upload
               <input
@@ -147,7 +147,7 @@ export default function SiteContentPage() {
             </label>
           </div>
           {media.video_thumbnail && (
-            <div className="mt-3 rounded-xl overflow-hidden border border-border w-48 aspect-video">
+            <div className="mt-3 rounded-md overflow-hidden border border-border w-48 aspect-video">
               <img src={media.video_thumbnail} alt="Thumbnail preview" className="w-full h-full object-cover" />
             </div>
           )}
@@ -155,7 +155,7 @@ export default function SiteContentPage() {
       </div>
 
       {/* Gallery Images */}
-      <div className="bg-card rounded-2xl border border-border p-6 space-y-4">
+      <div className="bg-card rounded-lg border border-border shadow-sm p-6 space-y-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <Image className="w-5 h-5 text-primary" />
@@ -171,7 +171,7 @@ export default function SiteContentPage() {
 
         <div className="space-y-4">
           {media.gallery.map((item, index) => (
-            <div key={index} className="flex gap-3 items-start p-4 bg-muted/30 rounded-xl border border-border">
+            <div key={index} className="flex gap-3 items-start p-4 bg-muted/30 rounded-md border border-border">
               <div className="flex-1 space-y-3">
                 <div className="flex gap-3">
                   <input
@@ -229,13 +229,13 @@ export default function SiteContentPage() {
       </div>
 
       {/* Preview */}
-      <div className="bg-card rounded-2xl border border-border p-6">
+      <div className="bg-card rounded-lg border border-border shadow-sm p-6">
         <div className="flex items-center gap-2 mb-4">
           <Eye className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">Preview</h2>
         </div>
         <div className="space-y-3">
-          <div className="rounded-xl overflow-hidden aspect-video bg-black border border-border">
+          <div className="rounded-md overflow-hidden aspect-video bg-black border border-border">
             <img src={media.video_thumbnail} alt="Hero preview" className="w-full h-full object-cover" />
           </div>
           <div className="grid grid-cols-3 gap-2">
