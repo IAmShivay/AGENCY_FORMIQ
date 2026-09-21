@@ -18,7 +18,11 @@ import {
   Settings,
   Clock,
   Wrench,
-  Info
+  Info,
+  CreditCard,
+  Loader2,
+  Link as LinkIcon,
+  Copy,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -76,6 +80,7 @@ export default function QuotationView({ quotationId }: QuotationViewProps) {
   const router = useRouter();
   const [quotation, setQuotation] = useState<QuotationData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [generatingLink, setGeneratingLink] = useState(false);
 
   useEffect(() => {
     fetchQuotation();
@@ -97,6 +102,37 @@ export default function QuotationView({ quotationId }: QuotationViewProps) {
       toast.error('Failed to fetch quotation');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const generatePaymentLink = async () => {
+    if (!quotation) return;
+    setGeneratingLink(true);
+    try {
+      const res = await fetch('/api/payments/cashfree/create-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quotation_id: quotation.id }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success('Payment link generated!');
+        setQuotation((prev) => prev ? { ...prev, payment_link: data.payment_link } as any : null);
+      } else {
+        toast.error(data.error || 'Failed to generate payment link');
+      }
+    } catch {
+      toast.error('Failed to generate payment link');
+    } finally {
+      setGeneratingLink(false);
+    }
+  };
+
+  const copyPaymentLink = () => {
+    const link = (quotation as any)?.payment_link;
+    if (link) {
+      navigator.clipboard.writeText(link);
+      toast.success('Payment link copied!');
     }
   };
 
@@ -305,6 +341,17 @@ const downloadPDF = async () => {
             <Share2 className="w-4 h-4 mr-2" />
             Share Link
           </Button>
+          {(quotation as any)?.payment_link ? (
+            <Button variant="outline" onClick={copyPaymentLink} className="text-green-600 border-green-200 hover:bg-green-50">
+              <Copy className="w-4 h-4 mr-2" />
+              Copy Payment Link
+            </Button>
+          ) : (
+            <Button onClick={generatePaymentLink} disabled={generatingLink} className="bg-amber-500 hover:bg-amber-600 text-white">
+              {generatingLink ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <CreditCard className="w-4 h-4 mr-2" />}
+              Generate Payment Link
+            </Button>
+          )}
         </div>
       </div>
 

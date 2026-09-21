@@ -13,6 +13,8 @@ import {
   Settings,
   PenTool,
   Loader2,
+  ImageIcon,
+  CreditCard,
 } from 'lucide-react';
 import { Toaster } from 'sonner';
 import { DashboardThemeProvider, useDashboardTheme } from '@/components/DashboardThemeProvider';
@@ -186,6 +188,20 @@ export default function AdminLayout({
                 </Link>
               )}
 
+              {/* Site Content - Admin Only */}
+              {tabAccess?.blogs && (
+                <Link
+                  href="/admin/site-content"
+                  className={`group flex items-center px-4 py-3 text-muted-foreground hover:text-foreground rounded-xl transition-all duration-200 ${pathname?.startsWith('/admin/site-content') ? 'bg-primary/10 text-foreground border-l-4 border-primary' : 'hover:bg-secondary/50'}`}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <div className={`p-1 mr-3 rounded-lg ${pathname?.startsWith('/admin/site-content') ? 'bg-primary text-primary-foreground' : 'bg-secondary text-primary group-hover:bg-primary/10'} transition-colors duration-200`}>
+                    <ImageIcon className="w-5 h-5" />
+                  </div>
+                  <span>Site Content</span>
+                </Link>
+              )}
+
               {/* Lead Management - Admin and Manager Access */}
               {(tabAccess?.leads || tabAccess?.employees || tabAccess?.activities) && (
                 <div className="mt-8 mb-4 px-4">
@@ -203,6 +219,20 @@ export default function AdminLayout({
                     <UserCheck className="w-5 h-5" />
                   </div>
                   <span>Leads</span>
+                </Link>
+              )}
+
+              {/* Billing - Admin/Manager Access */}
+              {canAccessAdminDashboard && (
+                <Link
+                  href="/admin/billing"
+                  className={`group flex items-center px-4 py-3 text-muted-foreground hover:text-foreground rounded-xl transition-all duration-200 ${pathname?.startsWith('/admin/billing') ? 'bg-primary/10 text-foreground border-l-4 border-primary' : 'hover:bg-secondary/50'}`}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <div className={`p-1 mr-3 rounded-lg ${pathname?.startsWith('/admin/billing') ? 'bg-primary text-primary-foreground' : 'bg-secondary text-primary group-hover:bg-primary/10'} transition-colors duration-200`}>
+                    <CreditCard className="w-5 h-5" />
+                  </div>
+                  <span>Billing & Payments</span>
                 </Link>
               )}
 
@@ -410,8 +440,10 @@ export default function AdminLayout({
               <div>
                 <h2 className="text-xl font-semibold text-foreground">
                   {pathname === '/admin' && 'Dashboard'}
+                  {pathname?.startsWith('/admin/site-content') && 'Site Content'}
                   {pathname?.startsWith('/admin/blogs') && 'Blog Management'}
                   {pathname?.startsWith('/admin/authors') && 'Author Management'}
+                  {pathname?.startsWith('/admin/billing') && 'Billing & Payments'}
                   {pathname?.startsWith('/admin/quotations') && 'Quotation Management'}
                   {pathname?.startsWith('/admin/terms') && 'Terms & Conditions'}
                   {pathname?.startsWith('/admin/signatures') && 'Digital Signatures'}

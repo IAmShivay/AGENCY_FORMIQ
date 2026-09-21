@@ -293,6 +293,37 @@ export default function PublicQuotationPage(props: { params: Promise<{ id: strin
           </div>
         )}
 
+        {/* Pay Now */}
+        {(quotation as any).payment_link && (quotation as any).payment_status !== 'paid' && (
+          <div className="border-t pt-6">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 text-center">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Ready to proceed?</h3>
+              <p className="text-sm text-gray-600 mb-4">Make a secure payment to get started with your project.</p>
+              <a
+                href={(quotation as any).payment_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
+              >
+                Pay &#8377;{quotation.total_amount.toLocaleString('en-IN')}
+              </a>
+              <p className="text-xs text-gray-500 mt-3">Powered by Cashfree | Secure Payment</p>
+            </div>
+          </div>
+        )}
+
+        {(quotation as any).payment_status === 'paid' && (
+          <div className="border-t pt-6">
+            <div className="bg-green-50 rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="text-lg font-bold text-green-800">Payment Received</h3>
+              <p className="text-sm text-green-600">Thank you! Your payment has been confirmed.</p>
+            </div>
+          </div>
+        )}
+
         {/* Footer */}
         <div className="border-t pt-6 text-center text-sm text-gray-500">
           <p>Thank you for considering FormiqStudio for your project.</p>

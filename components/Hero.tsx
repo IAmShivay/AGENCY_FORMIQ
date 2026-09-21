@@ -1,13 +1,19 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowRight, CheckCircle, Phone, Play, Sparkles } from "lucide-react";
 import { trackContact } from '@/lib/meta-pixel';
 import LeadFormOverlay from './LeadFormOverlay';
+import { getHeroMedia, DEFAULT_HERO_MEDIA, type HeroMedia } from '@/lib/siteContent';
 
 const Hero = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [showLeadForm, setShowLeadForm] = useState(false);
+  const [media, setMedia] = useState<HeroMedia>(DEFAULT_HERO_MEDIA);
+
+  useEffect(() => {
+    getHeroMedia().then(setMedia);
+  }, []);
 
   return (
     <div className="relative w-full bg-gradient-to-br from-background via-background to-primary/5 overflow-hidden">
@@ -60,7 +66,7 @@ const Hero = () => {
                 <Sparkles className="w-4 h-4 flex-shrink-0" />
                 Free Consultation
               </button>
-              <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20to%20know%20about%20the%20Rs%206999%20plan" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackContact('whatsapp_hero')}>
+              <a href="https://wa.me/15553419743" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackContact('whatsapp_hero')}>
                 <button className="w-full px-5 sm:px-6 py-3 sm:py-3.5 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#1da851] transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-[15px] shadow-lg shadow-[#25D366]/20 whitespace-nowrap">
                   WhatsApp Us
                   <ArrowRight className="w-4 h-4 flex-shrink-0" />
@@ -98,7 +104,7 @@ const Hero = () => {
               {!isVideoPlaying ? (
                 <>
                   <img
-                    src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    src={media.video_thumbnail}
                     alt="FormiqStudio - Watch how we help local businesses grow"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
@@ -120,20 +126,16 @@ const Hero = () => {
                   autoPlay
                   playsInline
                 >
-                  <source src="https://videos.pexels.com/video-files/3129671/3129671-sd_640_360_30fps.mp4" type="video/mp4" />
+                  <source src={media.video_url} type="video/mp4" />
                 </video>
               )}
             </div>
 
             {/* Mini proof below video */}
             <div className="grid grid-cols-3 gap-2 mt-3">
-              {[
-                { src: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=300", label: "Client Meetings" },
-                { src: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=300", label: "Ad Campaigns" },
-                { src: "https://images.pexels.com/photos/4348401/pexels-photo-4348401.jpeg?auto=compress&cs=tinysrgb&w=300", label: "Global Work" },
-              ].map((img, i) => (
+              {media.gallery.map((img, i) => (
                 <div key={i} className="relative rounded-xl overflow-hidden aspect-[4/3]">
-                  <img src={img.src} alt={img.label} className="w-full h-full object-cover" />
+                  <img src={img.url} alt={img.label} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <span className="absolute bottom-1.5 left-2 text-white text-[9px] sm:text-[10px] font-medium">{img.label}</span>
                 </div>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import { type LucideIcon } from 'lucide-react';
+import ContactForm from './landing/ContactForm';
 
 interface ServiceFeature {
   title: string;
@@ -237,36 +238,8 @@ export default function ServicePageLayout({
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-20 px-4 md:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="p-8 md:p-12 rounded-2xl bg-primary/5 border border-primary/20">
-              <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-6">
-                <CtaIcon className="w-8 h-8 text-primary" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                {ctaTitle}
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                {ctaSubtitle}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/contact">
-                  <Button size="lg" className="text-lg px-8 py-4 h-auto">
-                    Start Your Project
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </Link>
-                <Link href="/contact">
-                  <Button variant="outline" size="lg" className="text-lg px-8 py-4 h-auto">
-                    Schedule Consultation
-                    <ArrowUpRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* CTA + Contact Form */}
+        <ContactForm />
       </div>
     </div>
   );
