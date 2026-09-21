@@ -6,7 +6,6 @@ import ComparisonSection from '@/components/landing/ComparisonSection';
 import PricingSection from '@/components/landing/PricingSection';
 import Testimonials from '@/components/Testimonials';
 import FAQSection from '@/components/landing/FAQSection';
-import ContactForm from '@/components/landing/ContactForm';
 import FinalCTA from '@/components/landing/FinalCTA';
 
 export default function Home() {
@@ -20,7 +19,6 @@ export default function Home() {
       <PricingSection />
       <Testimonials />
       <FAQSection />
-      <ContactForm />
       <FinalCTA />
     </div>
   );
