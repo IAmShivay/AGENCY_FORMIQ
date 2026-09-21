@@ -103,19 +103,6 @@ export default function SiteContentPage() {
         </button>
       </div>
 
-      {/* Setup notice */}
-      <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl text-sm text-amber-800 dark:text-amber-200">
-        <strong>First time?</strong> Run this SQL in your Supabase SQL editor:
-        <pre className="mt-2 p-3 bg-amber-100 dark:bg-amber-900/40 rounded-lg text-xs overflow-x-auto">
-{`CREATE TABLE IF NOT EXISTS site_content (
-  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-  key text UNIQUE NOT NULL,
-  value jsonb NOT NULL DEFAULT '{}',
-  updated_at timestamptz DEFAULT now()
-);`}
-        </pre>
-      </div>
-
       {/* Hero Video */}
       <div className="bg-card rounded-2xl border border-border p-6 space-y-4">
         <div className="flex items-center gap-2 mb-2">
