@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useAnimation, useInView } from "framer-motion";
 import Image from 'next/image';
 import Link from 'next/link';
-import { ExternalLink, Globe, Smartphone, PaintBucket, ArrowRight, Code, Eye, Gamepad2, BarChart3, TrendingUp, Users } from "lucide-react";
+import { ExternalLink, Globe, Smartphone, PaintBucket, ArrowRight, Code, Eye, ShoppingCart, BarChart3, MessageSquare, Palette } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import ProjectModal from './ProjectModal';
 
@@ -55,160 +55,120 @@ const PortfolioShowcase = () => {
   const portfolioProjects = [
     {
       id: 1,
-      title: "Gaming Platform",
-      description: "Multiplayer gaming platform with real-time matchmaking, tournaments, and social features.",
-      image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=400&fit=crop",
-      heroImage: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=600&fit=crop",
-      category: "Gaming Platform",
-      tags: ["React", "Node.js", "Socket.io", "MongoDB"],
+      title: "LuxeHouse - Premium Furniture E-commerce",
+      description: "Complete e-commerce platform for a premium furniture brand in Durgapur. Custom product configurator, Cashfree payments, automated GST invoicing, and a full admin dashboard to manage orders, gallery, and inventory.",
+      image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop",
+      heroImage: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=600&fit=crop",
+      category: "E-Commerce Platform",
+      tags: ["React", "TypeScript", "Express", "MongoDB", "Cashfree"],
       type: "website",
-      icon: Gamepad2,
-      results: "50K+ active players",
-      timeline: "4 months",
-      teamSize: "8 developers",
-      technologies: ["React", "Node.js", "Socket.io", "MongoDB", "Redis", "AWS", "WebRTC"],
-      challenge: "Building a real-time multiplayer gaming platform that could handle thousands of concurrent players while maintaining low latency and ensuring fair gameplay. The platform needed to support multiple game types, tournaments, and social features.",
-      solution: "We developed a scalable microservices architecture using Node.js and Socket.io for real-time communication. Implemented Redis for session management and caching, with MongoDB for persistent data storage. Used WebRTC for peer-to-peer connections in certain game modes.",
+      icon: ShoppingCart,
+      results: "40% more inquiries",
+      timeline: "2 months",
+      teamSize: "2 developers",
+      technologies: ["React", "Vite", "TypeScript", "Express", "MongoDB", "Cashfree", "Cloudinary", "PM2"],
+      challenge: "LuxeHouse needed a professional online presence to compete with national furniture brands while managing custom orders, invoices, and inventory from a single dashboard.",
+      solution: "We built a full-stack e-commerce platform with real-time product customization, automated invoice generation with GST calculations, and integrated WhatsApp for customer communication.",
       keyFeatures: [
-        "Real-time multiplayer gameplay",
-        "Tournament management system",
-        "Player ranking and leaderboards",
-        "In-game chat and voice communication",
-        "Anti-cheat detection system",
-        "Payment integration for tournaments",
-        "Mobile-responsive design",
-        "Admin dashboard for game management"
+        "Product Configurator with real-time preview",
+        "Admin Dashboard for orders & inventory",
+        "Automated Invoice Generator with GST",
+        "Gallery Management via Cloudinary",
+        "Cashfree Payment Integration",
+        "WhatsApp Integration for customer support",
+        "Responsive mobile-first design",
+        "SEO-optimized product pages"
       ],
-      impact: "The platform successfully launched with over 50,000 registered players within the first 3 months. Tournament participation increased by 300%, and player retention improved by 45% compared to the client's previous platform.",
+      impact: "LuxeHouse saw a 40% increase in customer inquiries within the first month. Invoice processing became 3x faster with automated GST calculations, and the brand now competes professionally against national furniture chains.",
       metrics: [
-        { value: "50K+", label: "Active Players" },
-        { value: "300%", label: "Tournament Growth" },
-        { value: "45%", label: "Retention Increase" }
+        { value: "40%", label: "More Inquiries" },
+        { value: "3x", label: "Faster Invoicing" },
+        { value: "100%", label: "Online Presence" }
       ],
       testimonial: {
-        quote: "The gaming platform exceeded our expectations. The real-time features work flawlessly, and our player engagement has never been higher.",
-        author: "Alex Chen",
-        position: "CEO, GameHub Studios"
+        quote: "FormiqStudio built us a platform that rivals national furniture brands. Our customers love the online experience and we save hours on invoicing every week.",
+        author: "LuxeHouse Team",
+        position: "Durgapur"
       },
-      liveUrl: "https://gaming-007.vercel.app/",
-      githubUrl: "https://github.com/example/gaming-platform"
+      liveUrl: "https://furniture.formiqstudio.in"
     },
     {
       id: 2,
-      title: "Business SaaS Platform",
-      description: "Comprehensive business management SaaS with CRM, project management, and analytics.",
+      title: "ClearCRM - SaaS CRM Platform",
+      description: "Enterprise-grade CRM with native WhatsApp Business integration, AI-powered chatbot flows, visual workflow builder, lead pipeline management, and multi-tenant architecture built for Indian businesses.",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
       heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop",
-      category: "SaaS Platform",
-      tags: ["Next.js", "PostgreSQL", "Stripe", "TypeScript"],
+      category: "SaaS CRM",
+      tags: ["Next.js", "TypeScript", "MongoDB", "WhatsApp API", "Claude AI"],
       type: "website",
-      icon: BarChart3,
-      results: "200% productivity boost",
-      timeline: "6 months",
-      teamSize: "12 developers",
-      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Stripe", "AWS", "Docker", "Kubernetes"],
-      challenge: "Creating an all-in-one business management platform that could replace multiple existing tools while being intuitive enough for non-technical users. The platform needed to handle complex workflows, integrations, and scale to thousands of businesses.",
-      solution: "Built a modular SaaS platform using Next.js and TypeScript for type safety. Implemented a microservices architecture with PostgreSQL for data persistence and Prisma for database management. Created a flexible plugin system for custom integrations.",
+      icon: MessageSquare,
+      results: "80% faster responses",
+      timeline: "3 months",
+      teamSize: "2 developers",
+      technologies: ["Next.js", "TypeScript", "MongoDB", "WhatsApp Cloud API", "Claude AI", "RTK Query"],
+      challenge: "Businesses needed an affordable CRM that natively integrates WhatsApp Business for Indian market communication patterns, replacing expensive tools that don't support WhatsApp workflows.",
+      solution: "Built a multi-tenant SaaS CRM with visual WhatsApp flow builder, AI-powered auto-replies using Claude, and a complete lead-to-invoice pipeline. Each business gets its own workspace with team collaboration features.",
       keyFeatures: [
-        "Customer relationship management",
-        "Project and task management",
-        "Advanced analytics and reporting",
-        "Team collaboration tools",
-        "Invoice and payment processing",
-        "API integrations with 50+ tools",
-        "Custom workflow automation",
-        "Multi-tenant architecture"
+        "Visual WhatsApp Bot Builder",
+        "Lead Pipeline with drag-and-drop",
+        "Invoice Management with GST",
+        "AI Auto-replies powered by Claude",
+        "Team Collaboration & roles",
+        "Multi-workspace architecture",
+        "Automated follow-up sequences",
+        "Analytics & reporting dashboard"
       ],
-      impact: "The platform helped businesses reduce operational overhead by 40% and improve team productivity by 200%. Over 500 companies adopted the platform within 6 months, generating $2M+ in recurring revenue.",
+      impact: "ClearCRM is serving multiple businesses with 80% faster lead response times. Automated follow-ups save teams 15+ hours per week, and the WhatsApp integration has become the primary sales channel for most users.",
       metrics: [
-        { value: "500+", label: "Companies" },
-        { value: "200%", label: "Productivity Boost" },
-        { value: "$2M+", label: "ARR Generated" }
+        { value: "80%", label: "Faster Responses" },
+        { value: "15+", label: "Hours Saved/Week" },
+        { value: "Multi", label: "Tenant SaaS" }
       ],
       testimonial: {
-        quote: "This SaaS platform transformed how we manage our business. Everything we need is in one place, and the automation features saved us countless hours.",
-        author: "Sarah Johnson",
-        position: "Operations Director, TechFlow Inc"
+        quote: "Finally a CRM that understands how Indian businesses communicate. The WhatsApp integration alone has transformed our sales process.",
+        author: "ClearCRM User",
+        position: "Early Adopter"
       },
-      liveUrl: "https://turinos.ai/"
+      liveUrl: "https://crm.formiqstudio.in"
     },
     {
       id: 3,
-      title: "LuckShack Casino",
-      description: "Feature-rich e-commerce casino platform with secure payments, live games, and personalized user experiences.",
-      image: "https://images.unsplash.com/photo-1605870445919-838d190e8e1b?w=600&h=400&fit=crop",
-      heroImage: "https://images.unsplash.com/photo-1596838132731-31a4e5f9a4a4?w=1200&h=600&fit=crop",
-      category: "E-commerce & Gaming",
-      tags: ["Next.js", "Node.js", "WebSockets", "MongoDB"],
-      type: "website",
-      icon: TrendingUp,
-      results: "50K+ active players",
-      timeline: "3 months",
-      teamSize: "8 developers",
-      technologies: ["Next.js", "Node.js", "WebSockets", "MongoDB", "Redis", "Docker", "AWS", "Stripe"],
-      challenge: "Building a secure, high-performance casino platform with real-time multiplayer games, payment processing, and regulatory compliance. The system needed to handle thousands of concurrent users while maintaining low latency for live games.",
-      solution: "Developed a scalable architecture using Next.js for the frontend and Node.js for the backend. Implemented WebSockets for real-time game updates and chat. Used MongoDB for data storage and Redis for session management and caching. Integrated with Stripe for secure payment processing.",
+      title: "Annvaya - Superfoods Brand Identity",
+      description: "Complete brand identity and packaging design for an organic superfoods and herbal products company. Earthy, premium aesthetic targeting health-conscious urban consumers across India.",
+      image: "https://images.unsplash.com/photo-1505576399279-0d754687a2d8?w=600&h=400&fit=crop",
+      heroImage: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&h=600&fit=crop",
+      category: "Branding & Packaging",
+      tags: ["Brand Identity", "Packaging", "Social Media", "Design System"],
+      type: "design",
+      icon: Palette,
+      results: "Premium brand launch",
+      timeline: "1 month",
+      teamSize: "2 designers",
+      technologies: ["Figma", "Adobe Illustrator", "Adobe Photoshop", "Canva"],
+      challenge: "Annvaya needed a brand identity that conveyed premium quality, organic authenticity, and trustworthiness in a crowded superfoods market dominated by established players.",
+      solution: "Created a cohesive brand identity system with earthy color palette, custom typography, and packaging designs that stand out on shelves. Developed social media templates for consistent brand presence across Instagram and Facebook.",
       keyFeatures: [
-        "Real-time multiplayer games",
-        "Secure payment processing",
-        "User account management",
-        "Live dealer integration",
-        "Loyalty rewards system",
-        "Responsive design for all devices",
-        "Chat and social features",
-        "Advanced security measures"
+        "Logo Design with multiple variants",
+        "Packaging Design for product range",
+        "Brand Guidelines document",
+        "Social Media Creative templates",
+        "Color palette & typography system",
+        "Marketing collateral designs",
+        "Product photography direction",
+        "Print-ready packaging files"
       ],
-      impact: "LuckShack attracted over 50,000 active players within the first month of launch. The platform maintains 99.9% uptime with sub-100ms response times for real-time games, resulting in a 45% higher user retention rate compared to industry averages.",
+      impact: "Annvaya launched with a premium brand identity that positioned them alongside established superfoods brands. The packaging design received positive feedback from distributors, and social media engagement increased significantly with the templated creative system.",
       metrics: [
-        { value: "50K+", label: "Active Players" },
-        { value: "99.9%", label: "Uptime" },
-        { value: "45%", label: "Higher Retention" }
+        { value: "100%", label: "Brand System" },
+        { value: "15+", label: "SKU Packaging" },
+        { value: "50+", label: "Social Templates" }
       ],
       testimonial: {
-        quote: "The LuckShack platform exceeded all our expectations. The real-time gaming experience is smooth and engaging, and our players love the intuitive interface.",
-        author: "Mitch Newby",
-        position: "Owner, LuckShack"
+        quote: "The brand identity FormiqStudio created perfectly captures our vision of premium, organic products. Distributors and customers alike are impressed by our packaging.",
+        author: "Annvaya Team",
+        position: "Founders"
       },
-      liveUrl: "https://luckshack.com"
-    },
-    {
-      id: 4,
-      title: "Sales CRM System",
-      description: "Advanced CRM system with lead management, sales pipeline, and performance analytics.",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop",
-      heroImage: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200&h=600&fit=crop",
-      category: "CRM Platform",
-      tags: ["Vue.js", "Laravel", "MySQL", "Elasticsearch"],
-      type: "website",
-      icon: Users,
-      results: "40% increase in sales",
-      timeline: "4 months",
-      teamSize: "9 developers",
-      technologies: ["Vue.js", "Laravel", "MySQL", "Elasticsearch", "Redis", "AWS", "Twilio", "Stripe"],
-      challenge: "Creating a comprehensive CRM system that could handle complex sales processes, automate follow-ups, and provide detailed analytics. The system needed to integrate with multiple communication channels and existing business tools.",
-      solution: "Developed a feature-rich CRM using Vue.js for the frontend and Laravel for the backend. Implemented Elasticsearch for advanced search capabilities and integrated with Twilio for communication features. Built automated workflow engine for sales process optimization.",
-      keyFeatures: [
-        "Lead capture and qualification",
-        "Sales pipeline management",
-        "Automated email sequences",
-        "Call logging and recording",
-        "Performance analytics and reporting",
-        "Team collaboration tools",
-        "Mobile app for field sales",
-        "Integration with 30+ tools"
-      ],
-      impact: "Sales teams using the CRM saw a 40% increase in conversion rates and 50% reduction in lead response time. The platform helped manage over $50M in sales pipeline within the first year.",
-      metrics: [
-        { value: "40%", label: "Sales Increase" },
-        { value: "50%", label: "Faster Response" },
-        { value: "$50M+", label: "Pipeline Managed" }
-      ],
-      testimonial: {
-        quote: "This CRM revolutionized our sales process. The automation features and analytics helped us close more deals and understand our customers better.",
-        author: "Jennifer Davis",
-        position: "Sales Director, Growth Solutions"
-      },
-      liveUrl: "https://sales.formiqstudio.com"
+      liveUrl: "#"
     }
   ];
 

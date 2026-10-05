@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { FaFacebookF, FaInstagram, FaGoogle, FaShopify, FaHashtag } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaGoogle, FaShopify, FaHashtag, FaShoppingBag, FaVideo, FaBullhorn, FaPaintBrush } from "react-icons/fa";
 import { SiGooglemaps } from "react-icons/si";
 import { HiGlobeAlt } from "react-icons/hi";
 import { ReactNode } from "react";
@@ -19,6 +19,10 @@ const services: Service[] = [
   { icon: <FaGoogle className="w-6 h-6 text-[#4285F4]" />, title: "Google Ads & SEO", description: "Rank higher. Show up when customers search for you." },
   { icon: <SiGooglemaps className="w-6 h-6 text-[#4285F4]" />, title: "Google Business", description: "Local listing optimized so customers find you first." },
   { icon: <FaShopify className="w-5 h-5 sm:w-6 sm:h-6 text-[#96BF48]" />, title: "E-commerce", description: "Online store with payments, inventory & shipping." },
+  { icon: <FaShoppingBag className="w-6 h-6 text-[#FF6B35]" />, title: "D2C Solutions", description: "End-to-end Direct-to-Consumer brand building. From Shopify stores to marketplace integration, we launch and scale D2C brands." },
+  { icon: <FaVideo className="w-6 h-6 text-[#E74C3C]" />, title: "Video Editing & Production", description: "Scroll-stopping reels, product videos, testimonial edits, and ad creatives. We edit content that converts viewers into buyers." },
+  { icon: <FaBullhorn className="w-6 h-6 text-[#F39C12]" />, title: "Meta & Google Advertising", description: "Data-driven ad campaigns across Facebook, Instagram, and Google. Creative strategy, audience targeting, and performance optimization." },
+  { icon: <FaPaintBrush className="w-6 h-6 text-[#9B59B6]" />, title: "Creative Design", description: "Brand identity, social media creatives, packaging design, pitch decks, and marketing collateral that makes your brand unforgettable." },
 ];
 
 const Services = () => {

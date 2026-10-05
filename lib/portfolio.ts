@@ -57,49 +57,96 @@ export interface DesignProject {
 const fallbackWebsites: WebsiteProject[] = [
   {
     id: '1',
-    title: 'E-Commerce Platform',
-    description: 'A modern e-commerce solution with advanced filtering and payment integration.',
+    title: 'LuxeHouse - Premium Furniture E-commerce',
+    description: 'Built a complete e-commerce platform for a premium furniture brand in Durgapur. Features custom product configurator, Cashfree payment integration, invoice generation with GST support, and admin dashboard.',
     image: '/images/portfolio/website-1.jpg',
-    tags: ['Next.js', 'Tailwind CSS', 'Stripe'],
-    link: '#',
+    tags: ['React', 'Vite', 'TypeScript', 'Express', 'MongoDB', 'Cashfree', 'Cloudinary', 'PM2'],
+    link: 'https://furniture.formiqstudio.in',
     category: 'E-Commerce',
-    completion_date: 'March 2024',
-    features: ['Product Search', 'User Accounts', 'Secure Payments', 'Order Tracking'],
-    live_link: 'https://example.com',
-    repo_link: 'https://github.com',
-    case_study_challenge: 'The client needed a modern e-commerce platform that could handle their large product catalog while providing a seamless shopping experience for customers.',
-    case_study_solution: 'We developed a custom e-commerce solution using Next.js for the frontend and a headless CMS for content management, with Stripe integration for payments.',
-    case_study_results: 'The new platform increased conversion rates by 35% and reduced cart abandonment by 25% within the first three months after launch.',
-    case_study_testimonial: 'The team at formiqstudio delivered an exceptional e-commerce platform that exceeded our expectations. Our customers love the new shopping experience!',
-    case_study_screens: ['/images/portfolio/ecom-screen-1.jpg', '/images/portfolio/ecom-screen-2.jpg']
+    completion_date: '2025',
+    features: ['Product Configurator', 'Admin Dashboard', 'Invoice Generator', 'Gallery Management', 'Cashfree Payments', 'WhatsApp Integration'],
+    live_link: 'https://furniture.formiqstudio.in',
+    repo_link: '',
+    case_study_challenge: 'LuxeHouse needed a professional online presence to compete with national furniture brands while managing custom orders, invoices, and inventory from a single dashboard.',
+    case_study_solution: 'We built a full-stack e-commerce platform with real-time product customization, automated invoice generation with GST calculations, and integrated WhatsApp for customer communication.',
+    case_study_results: '40% increase in customer inquiries, 3x faster invoice processing, professional online presence matching national competitors',
+    case_study_testimonial: '',
+    case_study_screens: []
+  },
+  {
+    id: '2',
+    title: 'ClearCRM - SaaS CRM Platform',
+    description: 'Enterprise-grade CRM with WhatsApp Business integration, AI-powered chatbot flows, visual workflow builder, lead management, and multi-tenant architecture.',
+    image: '/images/portfolio/website-2.jpg',
+    tags: ['Next.js', 'TypeScript', 'MongoDB', 'WhatsApp Cloud API', 'Claude AI', 'RTK Query'],
+    link: 'https://crm.formiqstudio.in',
+    category: 'SaaS',
+    completion_date: '2025',
+    features: ['WhatsApp Bot Builder', 'Lead Pipeline', 'Invoice Management', 'AI Auto-replies', 'Team Collaboration', 'Multi-workspace'],
+    live_link: 'https://crm.formiqstudio.in',
+    repo_link: '',
+    case_study_challenge: 'Businesses needed an affordable CRM that natively integrates WhatsApp Business for Indian market communication patterns.',
+    case_study_solution: 'Built a multi-tenant SaaS CRM with visual WhatsApp flow builder, AI-powered auto-replies, and complete lead-to-invoice pipeline.',
+    case_study_results: 'Serving multiple businesses, 80% faster lead response time, automated follow-ups saving 15+ hours/week',
+    case_study_testimonial: '',
+    case_study_screens: []
+  },
+  {
+    id: '3',
+    title: 'ShivayDev - Developer Portfolio',
+    description: 'Modern developer portfolio showcasing projects, skills, and experience with smooth animations and responsive design.',
+    image: '/images/portfolio/website-3.jpg',
+    tags: ['React', 'Vite', 'TailwindCSS', 'Framer Motion'],
+    link: 'https://shivaydev.formiqstudio.in',
+    category: 'Portfolio',
+    completion_date: '2025',
+    features: ['Project Showcase', 'Skills Matrix', 'Contact Form', 'Responsive Design'],
+    live_link: 'https://shivaydev.formiqstudio.in',
+    repo_link: '',
+    case_study_challenge: '',
+    case_study_solution: '',
+    case_study_results: '',
+    case_study_testimonial: '',
+    case_study_screens: []
   }
 ];
 
 const fallbackApps: AppProject[] = [
   {
     id: '1',
-    title: 'Health & Fitness App',
-    description: 'A comprehensive fitness tracking application with personalized workout plans, nutrition guidance, and progress analytics.',
+    title: 'JourneyLogs - Travel Blog Platform',
+    description: 'A travel blogging platform where users can document their journeys with rich media, maps, and social features. Deployed on Cloudflare Workers for global edge performance.',
     image: '/images/portfolio/app-1.jpg',
-    tags: ['React Native', 'Firebase', 'Redux', 'Health API'],
-    platforms: ['iOS', 'Android'],
+    tags: ['TanStack Start', 'Supabase', 'Cloudflare Workers', 'TypeScript'],
+    platforms: ['Web'],
     link: '#',
-    features: ['Activity Tracking', 'Meal Planning', 'Progress Analytics', 'Community Forums'],
-    year: '2024'
+    features: ['Rich Text Editor', 'Media Uploads', 'Map Integration', 'Social Sharing'],
+    year: '2025'
   }
 ];
 
 const fallbackDesigns: DesignProject[] = [
   {
     id: '1',
-    title: 'Brand Identity System',
-    description: 'Complete brand identity including logo, color palette, typography, and brand guidelines.',
+    title: 'FormiqStudio Brand Identity',
+    description: 'Complete brand identity system including logo design, color palette, typography guide, social media templates, and marketing collateral for the agency itself.',
     image: '/images/portfolio/design-1.jpg',
     category: 'Branding',
-    client: 'TechStart Solutions',
+    client: 'FormiqStudio',
     link: '#',
-    year: '2024',
-    services: ['Logo Design', 'Brand Guidelines', 'Marketing Materials']
+    year: '2025',
+    services: ['Logo Design', 'Brand Guidelines', 'Social Media Templates', 'Business Cards', 'Pitch Deck']
+  },
+  {
+    id: '2',
+    title: 'Annvaya - Superfoods Brand',
+    description: 'Brand identity and packaging design for an organic superfoods and herbal products company. Earthy, premium aesthetic targeting health-conscious urban consumers.',
+    image: '/images/portfolio/design-2.jpg',
+    category: 'Branding & Packaging',
+    client: 'Annvaya',
+    link: '#',
+    year: '2025',
+    services: ['Logo Design', 'Packaging Design', 'Brand Guidelines', 'Social Media Creatives']
   }
 ];
 
