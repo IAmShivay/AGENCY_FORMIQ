@@ -20,6 +20,8 @@ import {
   LayoutGrid,
   AppWindow,
   PaintBucket,
+  Target,
+  Sparkles,
   ShoppingBag,
   ShoppingCart,
   Home,
@@ -86,7 +88,9 @@ const Header = () => {
       dropdown: [
         { href: '/portfolio/websites', label: 'Websites', icon: <LayoutGrid className="w-4 h-4" /> },
         { href: '/portfolio/applications', label: 'Applications', icon: <AppWindow className="w-4 h-4" /> },
-        { href: '/portfolio/design', label: 'Design Work', icon: <PaintBucket className="w-4 h-4" /> }
+        { href: '/portfolio/design', label: 'Design Work', icon: <PaintBucket className="w-4 h-4" /> },
+        { href: '/portfolio/creatives', label: 'Creatives', icon: <Sparkles className="w-4 h-4" /> },
+        { href: '/portfolio/ads-seo', label: 'Ads & SEO', icon: <Target className="w-4 h-4" /> }
       ]
     },
     {
