@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Globe, Monitor, Code, ExternalLink, X } from 'lucide-react';
+import { Globe, Monitor, ExternalLink, X } from 'lucide-react';
 import { WebsiteProject as DBWebsiteProject, getWebsiteProjects } from '@/lib/portfolio';
 
 // Define TypeScript interface for the project structure
@@ -320,113 +320,76 @@ const WebsitesPortfolio = () => {
           </div>
         )}
 
-        {/* Project Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Project Grid - Compact horizontal cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
           {!loading && filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="group bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 flex flex-col h-full border border-border/20"
+              className="group bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border/20 flex flex-row h-[180px] md:h-[200px]"
             >
-              {/* Project Image with Overlay */}
-              <div className="h-56 overflow-hidden relative">
+              {/* Project Image - Left side */}
+              <div className="w-[140px] md:w-[200px] shrink-0 overflow-hidden relative">
                 <div
-                  className="w-full h-full bg-muted flex items-center justify-center transform group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full bg-muted flex items-center justify-center transform group-hover:scale-105 transition-transform duration-500"
                   style={{
                     backgroundImage: `url(${project.image})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
                 >
-                  {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/70 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <a
-                      href={project.liveLink}
-                      className="mx-2 p-3 bg-background rounded-full text-primary hover:bg-background/90 transition-colors"
-                      aria-label="View live site"
-                    >
-                      <ExternalLink className="w-5 h-5" />
-                    </a>
-                    <a
-                      href={project.repoLink}
-                      className="mx-2 p-3 bg-background rounded-full text-primary hover:bg-background/90 transition-colors"
-                      aria-label="View repository"
-                    >
-                      <Code className="w-5 h-5" />
-                    </a>
-                  </div>
-
-                  {/* Placeholder for when images are not available */}
                   {!project.image.startsWith('http') && (
-                    <span className="text-muted-foreground">Image Placeholder</span>
+                    <Globe className="w-8 h-8 text-muted-foreground/40" />
                   )}
                 </div>
-
                 {/* Category Badge */}
-                <div className="absolute top-4 right-4">
-                  <span className="px-3 py-1 bg-primary/90 text-primary-foreground text-sm font-medium rounded-full neon-glow-primary">
-                    {project.category}
-                  </span>
-                </div>
+                <span className="absolute top-2 left-2 px-2 py-0.5 bg-primary/90 text-primary-foreground text-[11px] font-medium rounded-full">
+                  {project.category}
+                </span>
+                {/* Live link on hover */}
+                {project.liveLink && project.liveLink !== '#' && (
+                  <a href={project.liveLink} target="_blank" rel="noopener noreferrer"
+                    className="absolute bottom-2 right-2 p-2 bg-card/90 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-card"
+                    title="Visit site">
+                    <ExternalLink className="w-3.5 h-3.5 text-primary" />
+                  </a>
+                )}
               </div>
 
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors">
+              {/* Content - Right side */}
+              <div className="p-4 flex-1 flex flex-col min-w-0 justify-between">
+                <div className="min-w-0">
+                  <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors truncate">
                     {project.title}
                   </h3>
-                  <p className="text-muted-foreground mb-4">
+                  <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
                     {project.description}
                   </p>
 
-                  {/* Completion Date */}
-                  <div className="mb-4 flex items-center">
-                    <Monitor className="w-4 h-4 mr-2 text-primary" />
-                    <span className="text-sm text-muted-foreground">
-                      {project.completionDate}
-                    </span>
-                  </div>
-
-                  {/* Features */}
-                  <div className="mb-4">
-                    <h4 className="text-sm font-medium mb-2">Key Features:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.features.map((feature, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 bg-accent/10 text-accent text-xs rounded"
-                        >
-                          {feature}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Technology Tags */}
-                  <div className="mb-5">
-                    <h4 className="text-sm font-medium mb-2">Technologies:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full border border-primary/20"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {project.tags.slice(0, 3).map((tag, index) => (
+                      <span key={index} className="px-2 py-0.5 bg-primary/10 text-primary text-[11px] rounded-full border border-primary/20">
+                        {tag}
+                      </span>
+                    ))}
+                    {project.tags.length > 3 && (
+                      <span className="text-[11px] text-muted-foreground">+{project.tags.length - 3}</span>
+                    )}
                   </div>
                 </div>
 
-                {/* CTA Button - Fixed alignment at the bottom */}
-                <div className="mt-4">
+                {/* Bottom row */}
+                <div className="flex items-center justify-between mt-2">
+                  {project.completionDate && (
+                    <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+                      <Monitor className="w-3 h-3" /> {project.completionDate}
+                    </span>
+                  )}
                   <button
                     onClick={() => openCaseStudy(project)}
-                    className="inline-flex items-center justify-center w-full px-4 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-colors duration-300 neon-glow-primary"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-medium rounded-lg transition-colors"
                   >
-                    View Case Study
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
+                    Case Study <ExternalLink className="w-3 h-3" />
                   </button>
                 </div>
               </div>
@@ -533,27 +496,20 @@ const WebsitesPortfolio = () => {
                 </div>
               </div>
 
-              {/* Visit Links */}
-              <div className="flex flex-wrap gap-4 justify-center mt-8">
-                <a
-                  href={selectedProject.liveLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  Visit Live Site
-                  <ExternalLink className="w-4 h-4 ml-2" />
-                </a>
-                <a
-                  href={selectedProject.repoLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 bg-muted hover:bg-muted/80 text-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-border"
-                >
-                  View Code
-                  <Code className="w-4 h-4 ml-2" />
-                </a>
-              </div>
+              {/* Visit Link */}
+              {selectedProject.liveLink && selectedProject.liveLink !== '#' && (
+                <div className="flex justify-center mt-8">
+                  <a
+                    href={selectedProject.liveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    Visit Live Site
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>
