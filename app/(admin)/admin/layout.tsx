@@ -367,6 +367,41 @@ export default function AdminLayout({
                 </Link>
               )}
 
+              {tabAccess?.portfolioCreatives && (
+                <Link
+                  href="/admin/portfolio/creatives"
+                  className={`group flex items-center px-4 py-3 text-muted-foreground hover:text-foreground rounded-xl transition-all duration-200 ${pathname?.startsWith('/admin/portfolio/creatives') ? 'bg-primary/10 text-foreground border-l-4 border-primary' : 'hover:bg-secondary/50'}`}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <div className={`p-1 mr-3 rounded-lg ${pathname.startsWith('/admin/portfolio/creatives') ? 'bg-primary text-primary-foreground' : 'bg-secondary text-primary group-hover:bg-primary/10'} transition-colors duration-200`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                      <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                      <path d="M2 2l7.586 7.586"></path>
+                      <circle cx="11" cy="11" r="2"></circle>
+                    </svg>
+                  </div>
+                  <span>Creatives</span>
+                </Link>
+              )}
+
+              {tabAccess?.portfolioAdsSeo && (
+                <Link
+                  href="/admin/portfolio/ads-seo"
+                  className={`group flex items-center px-4 py-3 text-muted-foreground hover:text-foreground rounded-xl transition-all duration-200 ${pathname?.startsWith('/admin/portfolio/ads-seo') ? 'bg-primary/10 text-foreground border-l-4 border-primary' : 'hover:bg-secondary/50'}`}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <div className={`p-1 mr-3 rounded-lg ${pathname.startsWith('/admin/portfolio/ads-seo') ? 'bg-primary text-primary-foreground' : 'bg-secondary text-primary group-hover:bg-primary/10'} transition-colors duration-200`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="20" x2="18" y2="10"></line>
+                      <line x1="12" y1="20" x2="12" y2="4"></line>
+                      <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                  </div>
+                  <span>Ads & SEO</span>
+                </Link>
+              )}
+
               {/* System Management - Admin and Manager Access */}
               {(tabAccess?.messages || tabAccess?.system) && (
                 <div className="mt-8 mb-4 px-4">

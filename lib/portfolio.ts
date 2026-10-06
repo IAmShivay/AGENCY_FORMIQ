@@ -53,6 +53,36 @@ export interface DesignProject {
   updated_at?: string;
 }
 
+export interface CreativeProject {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  category: string;
+  client: string;
+  deliverables: string[];
+  tags: string[];
+  media_urls: string[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface AdsSeoProject {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  category: string;
+  client: string;
+  platform: string;
+  results: string[];
+  tags: string[];
+  metrics: { label: string; value: string }[];
+  media_urls: string[];
+  created_at?: string;
+  updated_at?: string;
+}
+
 // Fallback data for static generation and error cases
 const fallbackWebsites: WebsiteProject[] = [
   {
@@ -354,5 +384,45 @@ export async function getAppProjectsByYear(year: string): Promise<AppProject[]> 
   } catch (error) {
     console.error('Error in getAppProjectsByYear:', error);
     return fallbackApps.filter(project => project.year === year);
+  }
+}
+
+// Creative projects
+export async function getCreativeProjects(): Promise<CreativeProject[]> {
+  try {
+    const { data, error } = await supabase
+      .from('portfolio_creatives')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching creative projects:', error);
+      return [];
+    }
+
+    return data as CreativeProject[];
+  } catch (error) {
+    console.error('Error in getCreativeProjects:', error);
+    return [];
+  }
+}
+
+// Ads & SEO projects
+export async function getAdsSeoProjects(): Promise<AdsSeoProject[]> {
+  try {
+    const { data, error } = await supabase
+      .from('portfolio_ads_seo')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching ads/seo projects:', error);
+      return [];
+    }
+
+    return data as AdsSeoProject[];
+  } catch (error) {
+    console.error('Error in getAdsSeoProjects:', error);
+    return [];
   }
 }

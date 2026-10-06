@@ -24,18 +24,18 @@ const FinalCTA = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button onClick={() => setShowLeadForm(true)} className="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-lg shadow-primary/20">
+          <button onClick={() => setShowLeadForm(true)} className="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-lg shadow-primary/20 whitespace-nowrap">
             <Sparkles className="w-5 h-5" />
             Get Free Consultation
           </button>
           <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20to%20start%20the%20Growth%20Plan" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-            <button className="w-full px-8 py-4 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#1da851] transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-lg shadow-[#25D366]/20">
+            <button className="w-full px-8 py-4 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#1da851] transition-all duration-200 flex items-center justify-center gap-2 text-base shadow-lg shadow-[#25D366]/20 whitespace-nowrap">
               Start on WhatsApp
               <ArrowRight className="w-5 h-5" />
             </button>
           </a>
           <a href="tel:+918918349445" className="w-full sm:w-auto">
-            <button className="w-full px-8 py-4 border-2 border-border bg-card text-foreground rounded-xl font-semibold hover:bg-muted transition-all duration-200 flex items-center justify-center gap-2 text-base">
+            <button className="w-full px-8 py-4 border-2 border-border bg-card text-foreground rounded-xl font-semibold hover:bg-muted transition-all duration-200 flex items-center justify-center gap-2 text-base whitespace-nowrap">
               <Phone className="w-5 h-5" />
               Call Us Now
             </button>

@@ -18,6 +18,8 @@ export interface TabAccess {
   portfolioWebsites: boolean;
   portfolioApps: boolean;
   portfolioDesigns: boolean;
+  portfolioCreatives: boolean;
+  portfolioAdsSeo: boolean;
   messages: boolean;
   system: boolean;
 }
@@ -106,7 +108,9 @@ export class RoleManager {
       portfolioWebsites: isAdmin,
       portfolioApps: isAdmin,
       portfolioDesigns: isAdmin,
-      
+      portfolioCreatives: isAdmin,
+      portfolioAdsSeo: isAdmin,
+
       // Contact messages - Admin and Manager
       messages: isAdmin || isManager,
       
@@ -142,6 +146,8 @@ export class RoleManager {
       '/admin/portfolio/websites': 'portfolioWebsites',
       '/admin/portfolio/apps': 'portfolioApps',
       '/admin/portfolio/designs': 'portfolioDesigns',
+      '/admin/portfolio/creatives': 'portfolioCreatives',
+      '/admin/portfolio/ads-seo': 'portfolioAdsSeo',
       '/admin/messages': 'messages',
       '/admin/system': 'system',
     };
