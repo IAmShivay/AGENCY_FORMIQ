@@ -27,9 +27,9 @@ export default function Testimonials() {
         {/* Mobile: horizontal scroll */}
         <div className="flex sm:hidden gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x snap-mandatory">
           {testimonials.map((t, i) => (
-            <div key={i} className="flex-shrink-0 w-[80vw] snap-center p-4 rounded-xl bg-card border border-border">
+            <figure key={i} className="flex-shrink-0 w-[80vw] snap-center p-4 rounded-xl bg-card border border-border">
               <div className="flex items-center justify-between mb-2.5">
-                <div className="flex gap-0.5">
+                <div className="flex gap-0.5" role="img" aria-label="5 star rating">
                   {[...Array(5)].map((_, j) => (
                     <Star key={j} className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
                   ))}
@@ -38,26 +38,26 @@ export default function Testimonials() {
                   {t.result}
                 </span>
               </div>
-              <p className="text-xs text-foreground leading-relaxed mb-3">&ldquo;{t.quote}&rdquo;</p>
-              <div className="flex items-center gap-2.5 pt-2.5 border-t border-border">
+              <blockquote className="text-xs text-foreground leading-relaxed mb-3">&ldquo;{t.quote}&rdquo;</blockquote>
+              <figcaption className="flex items-center gap-2.5 pt-2.5 border-t border-border">
                 <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
                   {t.name[0]}
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-foreground">{t.name}</p>
+                  <cite className="text-xs font-semibold text-foreground not-italic">{t.name}</cite>
                   <p className="text-[10px] text-muted-foreground">{t.role}, {t.location}</p>
                 </div>
-              </div>
-            </div>
+              </figcaption>
+            </figure>
           ))}
         </div>
 
         {/* Desktop: grid */}
         <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {testimonials.map((t, i) => (
-            <div key={i} className="group p-5 sm:p-6 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300">
+            <figure key={i} className="group p-5 sm:p-6 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex gap-0.5">
+                <div className="flex gap-0.5" role="img" aria-label="5 star rating">
                   {[...Array(5)].map((_, j) => (
                     <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                   ))}
@@ -66,17 +66,17 @@ export default function Testimonials() {
                   {t.result}
                 </span>
               </div>
-              <p className="text-[15px] text-foreground leading-relaxed mb-5">&ldquo;{t.quote}&rdquo;</p>
-              <div className="flex items-center gap-3 pt-4 border-t border-border">
+              <blockquote className="text-[15px] text-foreground leading-relaxed mb-5">&ldquo;{t.quote}&rdquo;</blockquote>
+              <figcaption className="flex items-center gap-3 pt-4 border-t border-border">
                 <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
                   {t.name[0]}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                  <cite className="text-sm font-semibold text-foreground not-italic">{t.name}</cite>
                   <p className="text-xs text-muted-foreground">{t.role}, {t.location}</p>
                 </div>
-              </div>
-            </div>
+              </figcaption>
+            </figure>
           ))}
         </div>
 

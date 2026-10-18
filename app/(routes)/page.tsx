@@ -1,10 +1,9 @@
 import Hero from '@/components/Hero';
-import SocialProofBar from '@/components/landing/SocialProofBar';
 import HowItWorks from '@/components/landing/HowItWorks';
-import Services from '@/components/Services';
-import ComparisonSection from '@/components/landing/ComparisonSection';
-import PricingSection from '@/components/landing/PricingSection';
 import Testimonials from '@/components/Testimonials';
+import PricingSection from '@/components/landing/PricingSection';
+import ComparisonSection from '@/components/landing/ComparisonSection';
+import Services from '@/components/Services';
 import FAQSection from '@/components/landing/FAQSection';
 import FinalCTA from '@/components/landing/FinalCTA';
 
@@ -12,12 +11,11 @@ export default function Home() {
   return (
     <div className="overflow-x-clip">
       <Hero />
-      <SocialProofBar />
       <HowItWorks />
-      <Services />
-      <ComparisonSection />
-      <PricingSection />
       <Testimonials />
+      <PricingSection />
+      <ComparisonSection />
+      <Services />
       <FAQSection />
       <FinalCTA />
     </div>

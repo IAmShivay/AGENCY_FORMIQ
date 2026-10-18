@@ -1,19 +1,106 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { ArrowRight, CheckCircle, Phone, Play, Sparkles } from "lucide-react";
+import { useState, useEffect, useRef } from 'react';
+import { ArrowRight, CheckCircle, Phone, Sparkles, Volume2, VolumeX, RotateCcw } from "lucide-react";
 import { trackContact } from '@/lib/meta-pixel';
 import LeadFormOverlay from './LeadFormOverlay';
 import { getHeroMedia, DEFAULT_HERO_MEDIA, type HeroMedia } from '@/lib/siteContent';
 
 const Hero = () => {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [showLeadForm, setShowLeadForm] = useState(false);
   const [media, setMedia] = useState<HeroMedia>(DEFAULT_HERO_MEDIA);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isEnded, setIsEnded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     getHeroMedia().then(setMedia);
   }, []);
+
+  useEffect(() => {
+    const unlockAudio = () => {
+      if (videoRef.current && videoRef.current.muted) {
+        videoRef.current.muted = false;
+        setIsMuted(false);
+      }
+    };
+
+    window.addEventListener("pointerdown", unlockAudio, { passive: true });
+    window.addEventListener("touchstart", unlockAudio, { passive: true });
+    window.addEventListener("click", unlockAudio, { passive: true });
+    window.addEventListener("scroll", unlockAudio, { passive: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", unlockAudio);
+      window.removeEventListener("touchstart", unlockAudio);
+      window.removeEventListener("click", unlockAudio);
+      window.removeEventListener("scroll", unlockAudio);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.muted = false;
+      setIsMuted(false);
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          if (videoRef.current) {
+            videoRef.current.muted = true;
+            setIsMuted(true);
+            videoRef.current.play().catch(() => {});
+          }
+        });
+      }
+    }
+  }, []);
+
+  const handleVideoEnded = () => {
+    setIsEnded(true);
+  };
+
+  const handleReplay = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setIsEnded(false);
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.muted = false;
+      setIsMuted(false);
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const toggleMute = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (videoRef.current) {
+      const nextMuted = !videoRef.current.muted;
+      videoRef.current.muted = nextMuted;
+      setIsMuted(nextMuted);
+      if (videoRef.current.paused && !isEnded) {
+        videoRef.current.play().catch(() => {});
+      }
+    }
+  };
+
+  const handleVideoClick = () => {
+    if (isEnded) {
+      handleReplay();
+      return;
+    }
+    if (videoRef.current) {
+      if (videoRef.current.muted) {
+        videoRef.current.muted = false;
+        setIsMuted(false);
+      } else {
+        if (videoRef.current.paused) {
+          videoRef.current.play().catch(() => {});
+        } else {
+          videoRef.current.pause();
+        }
+      }
+    }
+  };
 
   return (
     <div className="relative w-full bg-gradient-to-br from-background via-background to-primary/5 overflow-hidden">
@@ -22,7 +109,6 @@ const Hero = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-24 pb-16 sm:pt-28 sm:pb-20 md:pt-32 md:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
-          {/* Left - Content */}
           <div className="text-center lg:text-left space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
               <span className="relative flex h-2 w-2">
@@ -80,7 +166,6 @@ const Hero = () => {
               </a>
             </div>
 
-            {/* Trust bar */}
             <div className="grid grid-cols-3 gap-3 max-w-sm mx-auto lg:mx-0 pt-2">
               {[
                 { stat: "50+", label: "Businesses" },
@@ -95,43 +180,61 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Right - Video */}
           <div className="lg:sticky lg:top-24">
             <div
-              className="relative rounded-2xl overflow-hidden shadow-2xl border border-border aspect-video bg-black cursor-pointer group"
-              onClick={() => setIsVideoPlaying(true)}
+              className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-primary/30 ring-4 ring-primary/10 aspect-video bg-black cursor-pointer group"
+              onClick={handleVideoClick}
             >
-              {!isVideoPlaying ? (
-                <>
-                  <img
-                    src={media.video_thumbnail}
-                    alt="FormiqStudio - Watch how we help local businesses grow"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary/90 flex items-center justify-center shadow-xl shadow-primary/30 group-hover:scale-110 transition-transform duration-300">
-                      <Play className="w-7 h-7 sm:w-8 sm:h-8 text-primary-foreground ml-1" fill="currentColor" />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-white font-bold text-sm sm:text-base">Watch: How we help local businesses grow</p>
-                    <p className="text-white/70 text-xs sm:text-sm mt-0.5">60 seconds. No fluff.</p>
-                  </div>
-                </>
-              ) : (
-                <video
-                  className="w-full h-full object-cover"
-                  controls
-                  autoPlay
-                  playsInline
+              <video
+                ref={videoRef}
+                className="w-full h-full object-cover"
+                poster={
+                  media.video_thumbnail && !media.video_thumbnail.includes("pexels")
+                    ? media.video_thumbnail
+                    : "https://res.cloudinary.com/dzwekdoeo/video/upload/v1792316284/MINE_ounxke.jpg"
+                }
+                autoPlay
+                playsInline
+                onEnded={handleVideoEnded}
+              >
+                <source
+                  src={
+                    media.video_url && !media.video_url.includes("pexels")
+                      ? media.video_url
+                      : "https://res.cloudinary.com/dzwekdoeo/video/upload/v1792316284/MINE_ounxke.mp4"
+                  }
+                  type="video/mp4"
+                />
+              </video>
+
+              {isEnded && (
+                <div
+                  className="absolute inset-0 bg-black/65 backdrop-blur-sm flex flex-col items-center justify-center cursor-pointer z-30 transition-all"
+                  onClick={handleReplay}
                 >
-                  <source src={media.video_url} type="video/mp4" />
-                </video>
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary flex items-center justify-center text-primary-foreground shadow-2xl hover:scale-110 active:scale-95 transition-transform mb-2">
+                    <RotateCcw className="w-8 h-8" />
+                  </div>
+                  <p className="text-white font-bold text-sm sm:text-base drop-shadow-md">
+                    Replay Video
+                  </p>
+                </div>
               )}
+
+              <button
+                type="button"
+                onClick={toggleMute}
+                className="absolute top-3 right-3 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all active:scale-95 border border-white/10 z-20"
+                aria-label="Toggle Sound"
+              >
+                {isMuted ? (
+                  <VolumeX className="w-4 h-4 text-primary animate-pulse" />
+                ) : (
+                  <Volume2 className="w-4 h-4 text-green-400" />
+                )}
+              </button>
             </div>
 
-            {/* Mini proof below video */}
             <div className="grid grid-cols-3 gap-2 mt-3">
               {media.gallery.map((img, i) => (
                 <div key={i} className="relative rounded-xl overflow-hidden aspect-[4/3]">

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import Script from 'next/script';
 
 const faqs = [
   {
@@ -38,11 +39,29 @@ const faqs = [
   },
 ];
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a,
+    },
+  })),
+};
+
 const FAQSection = () => {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
     <section id="faq" className="py-10 sm:py-16 bg-background">
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <div className="max-w-3xl mx-auto px-4">
         <div className="text-center mb-6 sm:mb-10">
           <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-1.5 sm:mb-3 text-foreground">
@@ -53,29 +72,32 @@ const FAQSection = () => {
           </p>
         </div>
 
-        <div className="space-y-3">
+        <dl className="space-y-3">
           {faqs.map((faq, i) => (
             <div
               key={i}
               className="rounded-xl border border-border bg-card overflow-hidden"
             >
-              <button
-                onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between p-4 text-left"
-              >
-                <span className="text-sm font-medium text-foreground pr-4">{faq.q}</span>
-                <ChevronDown className={`w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform duration-200 ${
-                  open === i ? 'rotate-180' : ''
-                }`} />
-              </button>
+              <dt>
+                <button
+                  onClick={() => setOpen(open === i ? null : i)}
+                  aria-expanded={open === i}
+                  className="w-full flex items-center justify-between p-4 text-left"
+                >
+                  <span className="text-sm font-medium text-foreground pr-4">{faq.q}</span>
+                  <ChevronDown className={`w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform duration-200 ${
+                    open === i ? 'rotate-180' : ''
+                  }`} />
+                </button>
+              </dt>
               {open === i && (
-                <div className="px-4 pb-4">
+                <dd className="px-4 pb-4">
                   <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
-                </div>
+                </dd>
               )}
             </div>
           ))}
-        </div>
+        </dl>
       </div>
     </section>
   );
