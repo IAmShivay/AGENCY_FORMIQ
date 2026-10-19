@@ -40,7 +40,7 @@ export default function LandingLayout({ children }: { children: ReactNode }) {
                 <div className="flex items-center justify-center w-6 h-6 bg-purple-100 rounded-full mr-2 group-hover:bg-purple-200 transition-colors">
                   <Mail className="w-3 h-3 text-purple-600" />
                 </div>
-                <span className="text-muted-foreground group-hover:text-purple-600 transition-colors font-medium">hello@formiqstudio.com</span>
+                <span className="text-muted-foreground group-hover:text-purple-600 transition-colors font-medium">hello@formiqstudio.in</span>
               </div>
             </div>
           </div>

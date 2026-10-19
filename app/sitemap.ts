@@ -1,11 +1,11 @@
 import { MetadataRoute } from 'next';
 import { getBlogPosts, getAllTags, getAllCategories } from '@/lib/blog';
-import { getWebsiteProjects, getAppProjects } from '@/lib/portfolio';
+import { getWebsiteProjects, getAppProjects, getCreativeProjects, getAdsSeoProjects } from '@/lib/portfolio';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://formiqstudio.com';
+  const baseUrl = 'https://formiqstudio.in';
   
-  // Static pages
+  // Static pages — priority tuned for local SEO & AI discovery
   const staticPages = [
     {
       url: baseUrl,
@@ -31,6 +31,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
+    // Portfolio sub-hubs — high value for AI/tech keyword discovery
+    {
+      url: `${baseUrl}/portfolio/websites`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/portfolio/applications`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/portfolio/creatives`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/portfolio/ads-seo`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/portfolio/designs`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
@@ -41,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
-      priority: 0.7,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/web`,
@@ -83,7 +114,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/agents`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
-      priority: 0.7,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/team`,
@@ -140,31 +171,45 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching blog data for sitemap:', error);
   }
 
-  // Portfolio pages
+  // Portfolio pages — dynamic per project
   let portfolioPages: MetadataRoute.Sitemap = [];
   try {
-    const [websites, apps] = await Promise.all([
+    const [websites, apps, creatives, adsSeo] = await Promise.all([
       getWebsiteProjects(),
-      getAppProjects()
+      getAppProjects(),
+      getCreativeProjects().catch(() => []),
+      getAdsSeoProjects().catch(() => []),
     ]);
 
-    // Website portfolio pages
     const websitePages = websites.map((website) => ({
       url: `${baseUrl}/portfolio/websites/${website.id}`,
-      lastModified: new Date(website.updated_at || website.created_at || new Date()),
+      lastModified: new Date((website as any).updated_at || (website as any).created_at || new Date()),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     }));
 
-    // App portfolio pages
     const appPages = apps.map((app) => ({
       url: `${baseUrl}/portfolio/apps/${app.id}`,
-      lastModified: new Date(app.updated_at || app.created_at || new Date()),
+      lastModified: new Date((app as any).updated_at || (app as any).created_at || new Date()),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     }));
 
-    portfolioPages = [...websitePages, ...appPages];
+    const creativePages = (creatives as any[]).map((c) => ({
+      url: `${baseUrl}/portfolio/creatives/${c.id}`,
+      lastModified: new Date(c.updated_at || c.created_at || new Date()),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    }));
+
+    const adsSeoPages = (adsSeo as any[]).map((a) => ({
+      url: `${baseUrl}/portfolio/ads-seo/${a.id}`,
+      lastModified: new Date(a.updated_at || a.created_at || new Date()),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    }));
+
+    portfolioPages = [...websitePages, ...appPages, ...creativePages, ...adsSeoPages];
   } catch (error) {
     console.error('Error fetching portfolio data for sitemap:', error);
   }

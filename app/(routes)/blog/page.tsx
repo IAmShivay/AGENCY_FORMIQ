@@ -3,10 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
 import { getBlogPosts } from '@/lib/blog';
-
-// Set dynamic rendering to ensure real-time data
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+import BlogAdUnit from '@/components/ads/BlogAdUnit';
 
 export const metadata: Metadata = {
   title: 'Blog | formiqstudio - Insights on Web Development, Design & Digital Marketing',
@@ -14,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Blog | formiqstudio - Insights on Web Development, Design & Digital Marketing',
     description: 'Explore the latest insights, trends, and tips on web development, design, digital marketing, and technology from the formiqstudio team.',
-    url: 'https://formiqstudio.com/blog',
+    url: 'https://formiqstudio.in/blog',
     siteName: 'formiqstudio',
     images: [
       {
@@ -24,9 +21,10 @@ export const metadata: Metadata = {
         alt: 'formiqstudio Blog',
       },
     ],
-    locale: 'en_US',
+    locale: 'en_IN',
     type: 'website',
   },
+  alternates: { canonical: 'https://formiqstudio.in/blog' },
 };
 
 export default async function BlogPage() {
@@ -66,6 +64,9 @@ export default async function BlogPage() {
             ))}
           </div>
         </div>
+
+        {/* Blog-only Ad — top (below hero) */}
+        <BlogAdUnit slot="1111111111" label="Advertisement — Blog Top" className="max-w-4xl mx-auto" />
 
         {/* Featured Post */}
         {posts.length > 0 && (
@@ -122,6 +123,9 @@ export default async function BlogPage() {
             </Link>
           </div>
         )}
+
+        {/* Blog-only Ad — in-feed between featured and grid */}
+        <BlogAdUnit slot="2222222222" label="Advertisement — In Feed" className="mb-12" />
 
         {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

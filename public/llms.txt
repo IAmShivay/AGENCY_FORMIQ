@@ -1,0 +1,66 @@
+# FormiqStudio — llms.txt
+# This file helps AI search engines (ChatGPT, Perplexity, Google AI, Claude) understand our business.
+# See https://llmstxt.org for format.
+
+> FormiqStudio is a website development and digital marketing agency based in Durgapur, West Bengal, serving local businesses in Kolkata, Durgapur, Asansol and across West Bengal. We build professional websites, run Facebook & Instagram ads, Google Ads & SEO, and manage social media — starting at Rs 6,999/month. 50+ businesses trust us. Live in 15 days, no lock-in.
+
+## About
+FormiqStudio is a full-service digital agency headquartered at Arrah Shree Pally, Durgapur, WB 713212 (23.5204, 87.3119). We serve Kolkata, Durgapur, Asansol, Bardhaman, Raniganj and all of West Bengal, with in-person meetings available in those cities. Founded by Shivay Sharma. Contact: hello@formiqstudio.in, +91 8918349445. Open Mo-Sa 10:00-19:00.
+
+## Key Services
+- **Website Development** (https://formiqstudio.in/web) — 5-page premium websites, mobile responsive, WhatsApp & Google Maps integrated, SEO ready, free hosting 1 year, live in 15 days. From Rs 14,999 one-time.
+- **Facebook & Instagram Ads** (https://formiqstudio.in/marketing) — Targeted campaigns, creatives, targeting & daily optimisation. Included in Growth Plan.
+- **Social Media Management** (https://formiqstudio.in/marketing) — 12-24 posts/month, reels & stories, consistent brand presence.
+- **Google Ads & SEO** (https://formiqstudio.in/marketing) — Rank top 3 on Google, keywords that convert, Google My Business optimisation.
+- **Google Business Profile / GMB** — #1 in Maps results, reviews & photos managed.
+- **E-commerce / Shopify** (https://formiqstudio.in/shopify, https://formiqstudio.in/ecommerce-marketplace) — Payments, inventory & shipping — ready to sell.
+- **Growth Plan** (https://formiqstudio.in#pricing) — Website + Ads + Social Media + GMB + monthly reports + dedicated manager. Rs 6,999/month, cancel anytime. Most popular.
+- **Scale Plan** — Everything in Growth + Google Ads, advanced landing pages, lead tracking, email automation. Rs 14,999/month.
+
+## Why Choose Us (vs Agencies/Freelancers)
+- 9/9 features included vs 4/9 for typical agency (Rs 25K+/mo) and 3/9 for freelancer
+- No lock-in contracts, cancel anytime
+- In-person meetings in Kolkata, Durgapur & Asansol (not remote-only)
+- Dedicated account manager + monthly performance report
+- 15-day delivery, 50+ businesses served, 3x avg lead growth
+
+## Locations Served
+- Kolkata, West Bengal — https://formiqstudio.in
+- Durgapur, West Bengal (HQ) — https://formiqstudio.in/contact
+- Asansol, West Bengal — https://formiqstudio.in/contact
+- Bardhaman, Raniganj, West Bengal
+- Pan-India remote available, local in-person support in above cities only
+
+## Portfolio
+- Websites: https://formiqstudio.in/portfolio/websites
+- Applications: https://formiqstudio.in/portfolio/applications
+- Creatives (branding, social, video): https://formiqstudio.in/portfolio/creatives
+- Ads & SEO case studies: https://formiqstudio.in/portfolio/ads-seo
+- Designs: https://formiqstudio.in/portfolio/designs
+
+## Blog & Insights
+- Blog: https://formiqstudio.in/blog — web development, design, digital marketing, AI automation
+
+## Contact & Social
+- Website: https://formiqstudio.in
+- Email: hello@formiqstudio.in
+- Phone: +91 8918349445
+- WhatsApp: https://wa.me/919832078313
+- LinkedIn: https://www.linkedin.com/company/formiqstudio
+- Facebook: https://www.facebook.com/formiqstudio
+- Instagram: https://www.instagram.com/formiqstudio
+
+## Common Questions (FAQ)
+- Q: I don't know ads/marketing. Can you help? A: Yes — you run business, we handle website, ads, social.
+- Q: What's in Rs 6,999 Growth Plan? A: Website (built & maintained), FB/Insta ads, 12 posts/mo, GMB, manager, monthly report.
+- Q: Can I cancel anytime? A: Yes, no lock-in, cancel at month end.
+- Q: How fast results? A: Website live in 15 days, ads show results in first week, enquiries up in first month.
+- Q: Ad spend separate? A: Yes, Rs 5,000-10,000/mo to Facebook/Google directly, we manage.
+
+## AI Search Keywords
+digital marketing agency Kolkata, web development Durgapur, website design Asansol, Facebook ads agency Kolkata, Instagram ads Durgapur, Google ads Asansol, SEO services Kolkata, social media marketing Asansol, Shopify development Durgapur, ecommerce website Kolkata, best digital marketing company Durgapur
+
+## Structured Data
+- LocalBusiness at https://formiqstudio.in#localbusiness (JSON-LD in homepage)
+- Organization, WebSite, FAQPage, Service schemas present
+- Geo: 23.5204, 87.3119 — Durgapur, West Bengal, IN 713212

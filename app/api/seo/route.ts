@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
             seoData = {
               title: `${post.title} | FormiqStudio Blog`,
               description: post.excerpt,
-              canonical: `https://formiqstudio.com/blog/${post.slug}`,
+              canonical: `https://formiqstudio.in/blog/${post.slug}`,
               ogImage: post.coverImage,
               ogType: 'article',
               publishedTime: post.date,
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
                 publisher: {
                   '@type': 'Organization',
                   name: 'FormiqStudio',
-                  logo: 'https://formiqstudio.com/images/logo.png',
+                  logo: 'https://formiqstudio.in/images/logo.png',
                 },
               },
             };
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
             seoData = {
               title: `${website.title} | FormiqStudio Portfolio`,
               description: website.description,
-              canonical: `https://formiqstudio.com/portfolio/websites/${website.id}`,
+              canonical: `https://formiqstudio.in/portfolio/websites/${website.id}`,
               ogImage: website.image,
               ogType: 'website',
             };
@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
             seoData = {
               title: `${app.title} | FormiqStudio Portfolio`,
               description: app.description,
-              canonical: `https://formiqstudio.com/portfolio/apps/${app.id}`,
+              canonical: `https://formiqstudio.in/portfolio/apps/${app.id}`,
               ogImage: app.image,
               ogType: 'website',
             };
@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
 }
 
 function getDefaultSEOData(path: string) {
-  const baseUrl = 'https://formiqstudio.com';
+  const baseUrl = 'https://formiqstudio.in';
   const defaultData = {
     title: 'FormiqStudio - Digital Marketing & Development Agency',
     description: 'Transforming businesses through innovative software solutions, digital marketing, AI-driven automation, web development, mobile apps, and comprehensive digital marketing services.',

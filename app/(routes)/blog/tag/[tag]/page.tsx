@@ -34,7 +34,7 @@ export async function generateMetadata(props: { params: Promise<{ tag: string }>
     openGraph: {
       title: `${formattedTag} Articles | formiqstudio Blog`,
       description: `Explore our collection of articles tagged with ${formattedTag} - insights and expertise from the formiqstudio team.`,
-      url: `https://formiqstudio.com/blog/tag/${tag}`,
+      url: `https://formiqstudio.in/blog/tag/${tag}`,
       siteName: 'formiqstudio',
       images: [
         {

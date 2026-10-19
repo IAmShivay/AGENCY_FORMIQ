@@ -1,4 +1,42 @@
+# General crawlers
 User-agent: *
+Allow: /
+
+# AI Search & LLM crawlers - explicitly allowed for GEO/AI visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: FacebookBot
 Allow: /
 
 # Allow all crawlers to access public pages
@@ -17,6 +55,11 @@ Allow: /agents
 Allow: /team
 Allow: /privacy
 Allow: /terms
+Allow: /portfolio/websites
+Allow: /portfolio/applications
+Allow: /portfolio/creatives
+Allow: /portfolio/ads-seo
+Allow: /portfolio/designs
 
 # Disallow admin and user areas
 Disallow: /admin
@@ -39,6 +82,7 @@ Allow: /images/
 Allow: /favicon.ico
 Allow: /favicon.svg
 Allow: /_next/static/
+Allow: /llms.txt
 
 # Sitemap location
-Sitemap: https://formiqstudio.com/sitemap.xml
+Sitemap: https://formiqstudio.in/sitemap.xml

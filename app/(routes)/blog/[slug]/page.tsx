@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
 import { getBlogPost, getRelatedPosts, getBlogPosts, BlogPost } from '@/lib/blog';
 import StructuredData from '@/components/seo/StructuredData';
+import BlogAdUnit from '@/components/ads/BlogAdUnit';
 
 // Set dynamic rendering to ensure real-time data
 export const dynamic = 'force-dynamic';
@@ -35,11 +36,11 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   return {
     title: `${post.title} | formiqstudio Blog`,
     description: post.excerpt,
-    metadataBase: new URL('https://formiqstudio.com'),
+    metadataBase: new URL('https://formiqstudio.in'),
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      url: `https://formiqstudio.com/blog/${post.slug}`,
+      url: `https://formiqstudio.in/blog/${post.slug}`,
       siteName: 'formiqstudio',
       images: [
         {
@@ -62,7 +63,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       images: [post.coverImage],
     },
     alternates: {
-      canonical: `https://formiqstudio.com/blog/${post.slug}`,
+      canonical: `https://formiqstudio.in/blog/${post.slug}`,
     },
   };
 }
@@ -86,9 +87,9 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
 
   return (
     <>
-      {/* Article Structured Data */}
+      {/* BlogPosting + Breadcrumb Structured Data — critical for SEO/AI citations */}
       <StructuredData
-        type="article"
+        type="blogPosting"
         data={{
           headline: post.title,
           description: post.excerpt,
@@ -97,14 +98,28 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
           dateModified: post.date,
           author: {
             name: post.author.name,
-            url: `https://formiqstudio.com/team/${post.author.name.toLowerCase().replace(' ', '-')}`
+            url: `https://formiqstudio.in/team/${post.author.name.toLowerCase().replace(' ', '-')}`,
+            image: post.author.avatar,
           },
           publisher: {
             name: "FormiqStudio",
-            logo: "https://formiqstudio.com/images/logo.png"
+            logo: "https://formiqstudio.in/images/logo.png"
           },
-          url: `https://formiqstudio.com/blog/${post.slug}`,
-          tags: post.tags
+          url: `https://formiqstudio.in/blog/${post.slug}`,
+          tags: post.tags,
+          wordCount: post.content.replace(/<[^>]*>/g, ' ').split(/\s+/).length,
+          timeRequired: `PT${post.readingTime}M`,
+        }}
+      />
+      <StructuredData
+        type="breadcrumb"
+        data={{
+          items: [
+            { name: "Home", url: "https://formiqstudio.in" },
+            { name: "Blog", url: "https://formiqstudio.in/blog" },
+            { name: post.category, url: `https://formiqstudio.in/blog/category/${post.category.toLowerCase().replace(/ /g, '-')}` },
+            { name: post.title, url: `https://formiqstudio.in/blog/${post.slug}` },
+          ]
         }}
       />
 
@@ -170,7 +185,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 </p>
                 <div className="flex space-x-3">
                   <a
-                    href={`https://www.facebook.com/sharer/sharer.php?u=https://formiqstudio.com/blog/${post.slug}`}
+                    href={`https://www.facebook.com/sharer/sharer.php?u=https://formiqstudio.in/blog/${post.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
@@ -179,7 +194,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                     <Facebook className="w-5 h-5" />
                   </a>
                   <a
-                    href={`https://twitter.com/intent/tweet?url=https://formiqstudio.com/blog/${post.slug}&text=${post.title}`}
+                    href={`https://twitter.com/intent/tweet?url=https://formiqstudio.in/blog/${post.slug}&text=${post.title}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 bg-primary/70 text-white rounded-full hover:bg-primary/80 transition-colors"
@@ -188,7 +203,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                     <Twitter className="w-5 h-5" />
                   </a>
                   <a
-                    href={`https://www.linkedin.com/shareArticle?mini=true&url=https://formiqstudio.com/blog/${post.slug}&title=${post.title}&summary=${post.excerpt}`}
+                    href={`https://www.linkedin.com/shareArticle?mini=true&url=https://formiqstudio.in/blog/${post.slug}&title=${post.title}&summary=${post.excerpt}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 bg-primary/80 text-white rounded-full hover:bg-primary/90 transition-colors"
@@ -227,7 +242,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                   <p className="font-medium mb-4 text-gray-700 dark:text-gray-300">Share</p>
                   <div className="flex flex-col space-y-3">
                     <a
-                      href={`https://www.facebook.com/sharer/sharer.php?u=https://formiqstudio.com/blog/${post.slug}`}
+                      href={`https://www.facebook.com/sharer/sharer.php?u=https://formiqstudio.in/blog/${post.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors flex items-center justify-center"
@@ -236,7 +251,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                       <Facebook className="w-5 h-5" />
                     </a>
                     <a
-                      href={`https://twitter.com/intent/tweet?url=https://formiqstudio.com/blog/${post.slug}&text=${post.title}`}
+                      href={`https://twitter.com/intent/tweet?url=https://formiqstudio.in/blog/${post.slug}&text=${post.title}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 bg-primary/70 text-white rounded-full hover:bg-primary/80 transition-colors flex items-center justify-center"
@@ -245,7 +260,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                       <Twitter className="w-5 h-5" />
                     </a>
                     <a
-                      href={`https://www.linkedin.com/shareArticle?mini=true&url=https://formiqstudio.com/blog/${post.slug}&title=${post.title}&summary=${post.excerpt}`}
+                      href={`https://www.linkedin.com/shareArticle?mini=true&url=https://formiqstudio.in/blog/${post.slug}&title=${post.title}&summary=${post.excerpt}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 bg-primary/80 text-white rounded-full hover:bg-primary/90 transition-colors flex items-center justify-center"
@@ -264,8 +279,11 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-primary prose-a:text-primary prose-img:rounded-lg"
                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
 
+                {/* Blog-only Ad — in-article (between content and tags) */}
+                <BlogAdUnit slot="3333333333" label="Advertisement — In Article" />
+
                 {/* Tags */}
-                <div className="mt-12 pt-6 border-t border-gray-100 dark:border-gray-700">
+                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
                   <div className="flex flex-wrap gap-2">
                     {post.tags.map((tag) => (
                       <Link
@@ -311,6 +329,9 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                   <SidebarNewsletterForm />
                 </div>
 
+                {/* Blog-only Ad — sidebar */}
+                <BlogAdUnit slot="4444444444" label="Advertisement — Sidebar" />
+
                 {relatedPosts.length > 0 && (
                   <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mt-6">
                     <h3 className="font-bold text-lg mb-4 text-primary">Related Articles</h3>
@@ -352,6 +373,9 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
             </div>
           </div>
         </div>
+
+        {/* Blog-only Ad — bottom below article */}
+        <BlogAdUnit slot="5555555555" label="Advertisement — Below Article" className="max-w-7xl mx-auto mt-8" />
 
         {/* More Related Posts - Bottom Section */}
         {relatedPosts.length > 0 && (

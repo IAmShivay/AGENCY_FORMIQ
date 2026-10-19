@@ -27,7 +27,7 @@ export default function SEOHead({
   noindex = false,
   nofollow = false,
 }: SEOProps) {
-  const baseUrl = 'https://formiqstudio.com';
+  const baseUrl = 'https://formiqstudio.in';
   const fullCanonical = canonical ? `${baseUrl}${canonical}` : baseUrl;
   const fullOgImage = ogImage.startsWith('http') ? ogImage : `${baseUrl}${ogImage}`;
 

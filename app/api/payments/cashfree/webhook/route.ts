@@ -21,25 +21,25 @@ function verifyWebhookSignature(body: string, signature: string): boolean {
 async function sendPaymentReceipt(payment: any, quotation: any) {
   try {
     // Send receipt to client
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.com'}/api/email/send`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.in'}/api/email/send`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: payment.client_email,
         subject: `Payment Receipt - ${quotation.quotation_number}`,
-        message: `Dear ${payment.client_name},\n\nThank you for your payment!\n\nPayment Details:\n- Quotation: ${quotation.quotation_number}\n- Amount: ₹${payment.amount.toLocaleString('en-IN')}\n- Transaction ID: ${payment.transaction_id}\n- Date: ${new Date().toLocaleDateString('en-IN')}\n\nYou can view your quotation at: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.com'}/quote/${quotation.id}\n\nThank you for choosing FormiqStudio!\n\nBest regards,\nFormiqStudio Team`,
+        message: `Dear ${payment.client_name},\n\nThank you for your payment!\n\nPayment Details:\n- Quotation: ${quotation.quotation_number}\n- Amount: ₹${payment.amount.toLocaleString('en-IN')}\n- Transaction ID: ${payment.transaction_id}\n- Date: ${new Date().toLocaleDateString('en-IN')}\n\nYou can view your quotation at: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.in'}/quote/${quotation.id}\n\nThank you for choosing FormiqStudio!\n\nBest regards,\nFormiqStudio Team`,
         replyTo: 'hello@formiqstudio.in',
       }),
     });
 
     // Send notification to admin
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.com'}/api/email/send`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.in'}/api/email/send`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: 'hello@formiqstudio.in',
         subject: `Payment Received - ${quotation.quotation_number} - ₹${payment.amount.toLocaleString('en-IN')}`,
-        message: `Payment received!\n\nClient: ${payment.client_name}\nEmail: ${payment.client_email}\nQuotation: ${quotation.quotation_number}\nAmount: ₹${payment.amount.toLocaleString('en-IN')}\nTransaction ID: ${payment.transaction_id}\nGateway: Cashfree\nDate: ${new Date().toLocaleDateString('en-IN')}\n\nView quotation: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.com'}/admin/quotations`,
+        message: `Payment received!\n\nClient: ${payment.client_name}\nEmail: ${payment.client_email}\nQuotation: ${quotation.quotation_number}\nAmount: ₹${payment.amount.toLocaleString('en-IN')}\nTransaction ID: ${payment.transaction_id}\nGateway: Cashfree\nDate: ${new Date().toLocaleDateString('en-IN')}\n\nView quotation: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.in'}/admin/quotations`,
         replyTo: payment.client_email,
       }),
     });

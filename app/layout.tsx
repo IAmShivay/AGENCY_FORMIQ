@@ -9,51 +9,67 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'FormiqStudio - Digital Marketing & Development Agency',
-    template: '%s | FormiqStudio'
+    default: 'FormiqStudio - Website Development & Digital Marketing Agency in Kolkata, Durgapur & Asansol | Get More Customers',
+    template: '%s | FormiqStudio',
   },
-  description: 'Transforming businesses through innovative software solutions, digital marketing, AI-driven automation, web development, mobile apps, and comprehensive digital marketing services.',
+  description: 'FormiqStudio helps local businesses in Kolkata, Durgapur & Asansol get more customers with professional websites, Facebook & Instagram ads, Google Ads & SEO, and social media management. 50+ businesses trust us. Starting at Rs 6,999/month. Free consultation, no lock-in, live in 15 days.',
   keywords: [
-    'digital marketing agency',
-    'web development',
-    'mobile app development',
-    'AI automation',
-    'software solutions',
-    'SEO services',
-    'social media marketing',
-    'e-commerce development',
-    'Shopify development',
-    'custom software',
-    'digital transformation',
-    'marketing automation'
+    // Core + Local intent (high-volume)
+    'digital marketing agency Kolkata',
+    'digital marketing agency Durgapur',
+    'digital marketing agency Asansol',
+    'web development Kolkata',
+    'web development Durgapur',
+    'website design Asansol',
+    'best website development company Kolkata',
+    'best digital marketing company Durgapur',
+    // Service + Location long-tail
+    'Facebook ads agency Kolkata',
+    'Instagram ads management Durgapur',
+    'Google ads agency Asansol',
+    'SEO services Kolkata',
+    'SEO company Durgapur',
+    'social media marketing Asansol',
+    'Google My Business optimisation Kolkata',
+    'ecommerce website development Kolkata',
+    'Shopify development Durgapur',
+    // Branded & AI discovery
+    'FormiqStudio',
+    'FormiqStudio reviews',
+    'tech agency West Bengal',
+    'AI automation agency Kolkata',
   ],
-  authors: [{ name: 'FormiqStudio Team' }],
+  authors: [{ name: 'FormiqStudio Team', url: 'https://formiqstudio.in/about' }],
   creator: 'FormiqStudio',
   publisher: 'FormiqStudio',
-  metadataBase: new URL('https://formiqstudio.com'),
+  metadataBase: new URL('https://formiqstudio.in'),
   alternates: {
     canonical: '/',
+    languages: {
+      'en-IN': '/',
+      'en': '/',
+    },
   },
   openGraph: {
     type: 'website',
-    locale: 'en_US',
-    url: 'https://formiqstudio.com',
+    locale: 'en_IN',
+    url: 'https://formiqstudio.in',
     siteName: 'FormiqStudio',
-    title: 'FormiqStudio - Digital Marketing & Development Agency',
-    description: 'Transforming businesses through innovative software solutions, digital marketing, AI-driven automation, web development, mobile apps, and comprehensive digital marketing services.',
+    title: 'FormiqStudio — Get More Customers Without the Confusion | Kolkata, Durgapur & Asansol',
+    description: 'Website + Ads + Social Media — all included. 50+ local businesses trust us. Starting Rs 6,999/month. No lock-in, live in 15 days, in-person support in Kolkata, Durgapur & Asansol.',
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'FormiqStudio - Digital Marketing & Development Agency',
+        alt: 'FormiqStudio - Website, Ads & Social Media for Local Businesses in Kolkata, Durgapur & Asansol',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FormiqStudio - Digital Marketing & Development Agency',
-    description: 'Transforming businesses through innovative software solutions, digital marketing, AI-driven automation, web development, mobile apps, and comprehensive digital marketing services.',
+    title: 'FormiqStudio — Get More Customers Without the Confusion',
+    description: 'Website + Ads + Social Media for local businesses in Kolkata, Durgapur & Asansol. Starting Rs 6,999/month. 50+ businesses trust us.',
     images: ['/images/og-image.jpg'],
     creator: '@formiqstudio',
     site: '@formiqstudio',
@@ -71,30 +87,17 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      {
-        url: '/favicon.png',
-        sizes: '32x32',
-        type: 'image/png',
-      },
-      {
-        url: '/favicon.png',
-        sizes: '192x192',
-        type: 'image/png',
-      },
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.png', sizes: '192x192', type: 'image/png' },
     ],
-    apple: [
-      {
-        url: '/favicon.png',
-        sizes: '180x180',
-        type: 'image/png',
-      },
-    ],
+    apple: [{ url: '/favicon.png', sizes: '180x180', type: 'image/png' }],
     shortcut: '/favicon.png',
   },
   manifest: '/manifest.json',
   verification: {
-    google: 'your-google-verification-code', // Add your actual Google verification code
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'your-google-verification-code',
   },
+  category: 'Business',
 };
 
 export default function RootLayout({
@@ -145,9 +148,9 @@ export default function RootLayout({
           type="organization"
           data={{
             name: "FormiqStudio",
-            url: "https://formiqstudio.com",
-            logo: "https://formiqstudio.com/images/logo.png",
-            description: "Transforming businesses through innovative software solutions, digital marketing, AI-driven automation, web development, mobile apps, and comprehensive digital marketing services.",
+            url: "https://formiqstudio.in",
+            logo: "https://formiqstudio.in/images/logo.png",
+            description: "FormiqStudio helps local businesses in Kolkata, Durgapur & Asansol get more customers with professional websites, Facebook & Instagram ads, Google Ads & SEO, and social media management. 50+ businesses trust us.",
             contactPoint: {
               telephone: "+91 8918349445",
               contactType: "customer service",
@@ -162,19 +165,49 @@ export default function RootLayout({
           }}
         />
 
+        {/* LocalBusiness Structured Data - Critical for Local SEO & Google Maps */}
+        <StructuredData
+          type="localBusiness"
+          data={{
+            name: "FormiqStudio",
+            url: "https://formiqstudio.in",
+            logo: "https://formiqstudio.in/images/logo.png",
+            description: "Website development, Facebook & Instagram ads, Google Ads & SEO, and social media management for local businesses in Kolkata, Durgapur & Asansol. Starting Rs 6,999/month. 50+ businesses trust us. Live in 15 days.",
+            telephone: "+91 8918349445",
+            email: "hello@formiqstudio.in",
+            address: {
+              streetAddress: "Arrah Shree Pally",
+              addressLocality: "Durgapur",
+              addressRegion: "West Bengal",
+              postalCode: "713212",
+              addressCountry: "IN",
+            },
+            geo: { latitude: "23.5204", longitude: "87.3119" },
+            areaServed: ["Kolkata", "Durgapur", "Asansol", "West Bengal", "Bardhaman", "Raniganj"],
+            openingHours: "Mo-Sa 10:00-19:00",
+            priceRange: "Rs 6,999 - Rs 14,999",
+            sameAs: [
+              "https://www.linkedin.com/company/formiqstudio",
+              "https://twitter.com/formiqstudio",
+              "https://www.facebook.com/formiqstudio",
+              "https://www.instagram.com/formiqstudio"
+            ]
+          }}
+        />
+
         {/* Website Structured Data */}
         <StructuredData
           type="website"
           data={{
             name: "FormiqStudio",
-            url: "https://formiqstudio.com",
-            description: "Digital Marketing & Development Agency specializing in innovative software solutions, web development, mobile apps, and AI-driven automation.",
+            url: "https://formiqstudio.in",
+            description: "Website, Ads & Social Media for local businesses in Kolkata, Durgapur & Asansol. 50+ businesses trust us. Starting Rs 6,999/month.",
             publisher: {
               name: "FormiqStudio",
-              url: "https://formiqstudio.com"
+              url: "https://formiqstudio.in"
             },
             potentialAction: {
-              target: "https://formiqstudio.com/search?q={search_term_string}",
+              target: "https://formiqstudio.in/search?q={search_term_string}",
               queryInput: "required name=search_term_string"
             }
           }}

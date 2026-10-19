@@ -229,9 +229,9 @@ export default function PrivacyPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild>
-                  <a href="mailto:hello@formiqstudio.com" className="flex items-center">
+                  <a href="mailto:hello@formiqstudio.in" className="flex items-center">
                     <Mail className="w-4 h-4 mr-2" />
-                    hello@formiqstudio.com
+                    hello@formiqstudio.in
                   </a>
                 </Button>
                 <Button variant="outline" asChild>

@@ -113,10 +113,17 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border pt-4 sm:pt-6">
+        <div className="border-t border-border pt-4 sm:pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
             &copy; {currentYear} <span className="font-medium text-foreground">FormiqStudio</span>. All rights reserved.
           </p>
+          <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+            <a href="/llms.txt" className="hover:text-primary transition-colors" title="AI crawlers: llms.txt for ChatGPT, Perplexity, Claude">llms.txt</a>
+            <span className="text-border">•</span>
+            <a href="/sitemap.xml" className="hover:text-primary transition-colors">Sitemap</a>
+            <span className="text-border">•</span>
+            <a href="/robots.txt" className="hover:text-primary transition-colors">Robots</a>
+          </div>
         </div>
       </div>
     </footer>

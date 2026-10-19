@@ -33,7 +33,7 @@ export async function generateMetadata(props: { params: Promise<{ category: stri
     openGraph: {
       title: `${formattedCategory} Articles | formiqstudio Blog`,
       description: `Explore our collection of articles about ${formattedCategory.toLowerCase()} - tips, trends, and insights from the formiqstudio team.`,
-      url: `https://formiqstudio.com/blog/category/${category}`,
+      url: `https://formiqstudio.in/blog/category/${category}`,
       siteName: 'formiqstudio',
       images: [
         {

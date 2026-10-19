@@ -25,8 +25,8 @@ const CashfreePaymentService: PaymentService = {
           customer_name: details.customerName || '',
         },
         order_meta: {
-          return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.com'}/quote/${details.metadata?.quotation_id}?payment=success&order_id={order_id}`,
-          notify_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.com'}/api/payments/cashfree/webhook`,
+          return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.in'}/quote/${details.metadata?.quotation_id}?payment=success&order_id={order_id}`,
+          notify_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.in'}/api/payments/cashfree/webhook`,
         },
         order_note: details.description,
       });
@@ -119,8 +119,8 @@ export async function createPaymentLink(params: {
         send_email: false,
       },
       link_meta: {
-        return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.com'}/quote/${params.quotation_id}?payment=success`,
-        notify_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.com'}/api/payments/cashfree/webhook`,
+        return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.in'}/quote/${params.quotation_id}?payment=success`,
+        notify_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://formiqstudio.in'}/api/payments/cashfree/webhook`,
       },
       link_notes: {
         quotation_id: params.quotation_id,

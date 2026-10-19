@@ -24,7 +24,7 @@ const OfficeLocationsMap = () => {
             name: "Opening Soon",
             address: "Kolkata, West Bengal, India",
             phone: "XXX-XXX-XXXX",
-            email: "kolkata@formiqstudio.com",
+            email: "kolkata@formiqstudio.in",
             coordinates: { lat: 40.7128, lng: -74.0060 },
             mapUrl: "https://maps.google.com/maps?q=Kolkata+West+Bengal&t=&z=13&ie=UTF8&iwloc=&output=embed"
         },
@@ -33,7 +33,7 @@ const OfficeLocationsMap = () => {
             name: "Opening Soon",
             address: "Chennai, Tamil Nadu, India",
             phone: "XXX-XXX-XXXX",
-            email: "chennai@formiqstudio.com",
+            email: "chennai@formiqstudio.in",
             coordinates: { lat: 51.5074, lng: -0.1278 },
             mapUrl: "https://maps.google.com/maps?q=Query+One+Tamil+Nadu&t=&z=13&ie=UTF8&iwloc=&output=embed"
         }
