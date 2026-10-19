@@ -3,7 +3,7 @@ import Hero from '@/components/Hero';
 import TrustBar from '@/components/landing/TrustBar';
 import HowItWorks from '@/components/landing/HowItWorks';
 import Services from '@/components/Services';
-import AIBookingAgents from '@/components/landing/AIBookingAgents';
+// import AIBookingAgents from '@/components/landing/AIBookingAgents';
 import PricingSection from '@/components/landing/PricingSection';
 import Testimonials from '@/components/Testimonials';
 import FAQSection from '@/components/landing/FAQSection';
@@ -39,7 +39,7 @@ export default function Home() {
       <TrustBar />
       <HowItWorks />
       <Services />
-      <AIBookingAgents />
+      {/* <AIBookingAgents /> — never miss a booking — commented for now */}
       <PricingSection />
       <Testimonials />
       <FAQSection />
