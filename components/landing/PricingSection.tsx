@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Check, Star, ArrowRight, Zap, Crown, Rocket } from 'lucide-react';
+import { Check, X, Star, ArrowRight, Zap, Crown, Rocket, ShieldCheck, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const pricingPlans = [
@@ -40,7 +40,7 @@ const pricingPlans = [
       "Monthly performance report",
       "Dedicated account manager",
       "In-person meetings available",
-      "Cancel anytime - no lock-in",
+      "Cancel anytime — no lock-in",
     ],
     cta: "Start Growing",
   },
@@ -76,75 +76,88 @@ const openWhatsApp = (planName: string) => {
 const PricingSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
-
   const popular = pricingPlans.find(p => p.popular)!;
   const others = pricingPlans.filter(p => !p.popular);
 
+  const compareRows = [
+    { feature: "Facebook & Instagram Ads", us: true, them: true, freelancer: false },
+    { feature: "Social Media Management", us: true, them: false, freelancer: true },
+    { feature: "Google My Business Setup", us: true, them: false, freelancer: false },
+    { feature: "In-Person Meetings", us: true, them: false, freelancer: false },
+    { feature: "No Lock-in · Cancel Anytime", us: true, them: false, freelancer: true },
+  ];
+
   return (
-    <section ref={sectionRef} id="pricing" className="py-10 sm:py-16 md:py-20 bg-gradient-to-br from-muted/20 to-muted/40">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          className="max-w-6xl mx-auto"
-        >
-          <div className="text-center mb-6 sm:mb-12">
-            <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-1.5 sm:mb-4">
+    <section ref={sectionRef} id="pricing" className="py-8 sm:py-12 md:py-16 bg-muted/20 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-primary/[0.03] rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative container mx-auto px-4">
+        <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} className="max-w-6xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/15 text-xs font-semibold tracking-widest text-primary uppercase mb-3">
+              <Sparkles className="w-3 h-3" /> Pricing
+            </div>
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 tracking-tight">
               Simple Pricing. Real Results.
             </h2>
-            <p className="text-xs sm:text-base text-muted-foreground max-w-2xl mx-auto">
-              No hidden fees. No contracts. Same expert team that agencies charge Rs 50,000+ for.
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
+              No hidden fees. No contracts. Same expert team that agencies charge{' '}
+              <span className="font-semibold text-foreground">Rs 50,000+</span> for.
             </p>
+            <div className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-medium text-emerald-700">
+              <ShieldCheck className="w-3.5 h-3.5" /> 30-day money-back guarantee · No questions asked
+            </div>
           </div>
 
           {/* Mobile: popular card + compact others */}
           <div className="sm:hidden space-y-3 mb-6">
-            {/* Popular plan - full card */}
-            <div className="relative rounded-2xl p-4 border-2 border-primary bg-primary/5 shadow-lg">
+            <div className="relative rounded-[20px] p-5 border-2 border-primary bg-card shadow-xl shadow-primary/10 overflow-hidden">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="bg-primary text-primary-foreground px-3 py-0.5 rounded-full text-xs font-bold flex items-center gap-1">
-                  <Star className="w-3 h-3" /> Most Popular
+                <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+                  <Star className="w-3 h-3 fill-white" /> Most Popular
                 </span>
               </div>
-              <div className="text-center mt-2 mb-3">
+              <div className="text-center mt-3 mb-4">
                 <h3 className="text-lg font-bold">{popular.name}</h3>
-                <div className="mt-1">
-                  <span className="text-2xl font-extrabold">{popular.price}</span>
+                <p className="text-xs text-muted-foreground mt-0.5">{popular.description}</p>
+                <div className="mt-3">
+                  <span className="text-3xl font-extrabold tracking-tight">{popular.price}</span>
                   <span className="text-sm text-muted-foreground">{popular.period}</span>
                 </div>
-                <p className="text-[10px] text-primary font-medium mt-0.5">Rs 233/day</p>
+                <p className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full mt-2">Rs 233/day · Best value</p>
               </div>
-              <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 mb-3">
+              <div className="space-y-2 mb-4">
                 {popular.features.map((f, i) => (
-                  <div key={i} className="flex items-start gap-1.5">
-                    <Check className="w-3 h-3 text-primary mt-0.5 flex-shrink-0" />
-                    <span className="text-[11px] text-foreground leading-tight">{f}</span>
+                  <div key={i} className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-primary" strokeWidth={3} />
+                    </div>
+                    <span className="text-xs font-medium text-foreground leading-tight">{f}</span>
                   </div>
                 ))}
               </div>
-              <Button className="w-full bg-primary hover:bg-primary/90" onClick={() => openWhatsApp(popular.name)}>
+              <Button className="w-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 h-11 text-sm font-semibold" onClick={() => openWhatsApp(popular.name)}>
                 {popular.cta} <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
+              <p className="text-center text-[10px] text-muted-foreground mt-2">No lock-in · Cancel anytime</p>
             </div>
 
-            {/* Other plans - compact rows */}
             {others.map((plan, i) => {
               const Icon = plan.icon;
               return (
-                <div key={i} className="rounded-xl p-3.5 border border-border bg-card flex items-center justify-between gap-3">
+                <div key={i} className="rounded-2xl p-4 border border-border bg-card shadow-sm flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-4 h-4 text-muted-foreground" />
+                    <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center flex-shrink-0 border border-border">
+                      <Icon className="w-5 h-5 text-muted-foreground" />
                     </div>
                     <div className="min-w-0">
                       <h3 className="text-sm font-bold text-foreground">{plan.name}</h3>
-                      <p className="text-[11px] text-muted-foreground">{plan.price} <span className="text-[10px]">{plan.period}</span></p>
+                      <p className="text-xs text-muted-foreground">{plan.price} <span className="text-[11px]">{plan.period}</span></p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => openWhatsApp(plan.name)}
-                    className="flex-shrink-0 px-3 py-1.5 text-xs font-semibold border border-border rounded-lg hover:bg-muted transition-colors"
-                  >
+                  <button onClick={() => openWhatsApp(plan.name)} className="flex-shrink-0 px-4 py-2 text-xs font-semibold bg-card border border-border rounded-xl hover:bg-muted hover:border-primary/20 transition-colors shadow-sm">
                     {plan.cta}
                   </button>
                 </div>
@@ -152,48 +165,56 @@ const PricingSection = () => {
             })}
           </div>
 
-          {/* Desktop: 3-col grid */}
-          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          {/* Desktop: 3-col grid - 3 cols from sm to avoid orphan line on tablet */}
+          <div className="hidden sm:grid sm:grid-cols-3 gap-4 lg:gap-6 mb-10">
             {pricingPlans.map((plan, index) => {
               const Icon = plan.icon;
               return (
                 <div
                   key={index}
-                  className={`relative rounded-2xl p-8 border transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${
+                  className={`relative rounded-[20px] p-5 md:p-7 lg:p-8 border flex flex-col transition-all duration-300 ${
                     plan.popular
-                      ? 'border-primary bg-primary/5 shadow-lg scale-105'
-                      : 'border-border/50 bg-card hover:border-primary/30'
+                      ? 'border-primary bg-card shadow-2xl shadow-primary/15 lg:scale-105 z-10'
+                      : 'border-border bg-card shadow-sm hover:shadow-lg hover:border-primary/15 hover:-translate-y-1'
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <div className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium flex items-center">
-                        <Star className="w-4 h-4 mr-1" /> Most Popular
+                    <>
+                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                        <div className="bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-primary/25 whitespace-nowrap">
+                          <Star className="w-3.5 h-3.5 fill-white" /> Most Popular
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )}
-                  <div className="text-center mb-8">
-                    <div className={`inline-flex p-3 rounded-lg mb-4 ${plan.popular ? 'bg-primary/20' : 'bg-muted'}`}>
-                      <Icon className={`w-8 h-8 ${plan.popular ? 'text-primary' : 'text-muted-foreground'}`} />
+                  <div className="text-center mb-6 mt-2">
+                    <div className={`inline-flex p-3 rounded-xl mb-4 border ${plan.popular ? 'bg-primary/10 border-primary/20' : 'bg-muted border-border'}`}>
+                      <Icon className={`w-6 h-6 ${plan.popular ? 'text-primary' : 'text-muted-foreground'}`} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                    <p className="text-muted-foreground mb-4">{plan.description}</p>
-                    <div className="mb-2">
-                      <span className="text-4xl font-bold">{plan.price}</span>
-                      <span className="text-lg text-muted-foreground">{plan.period}</span>
+                    <h3 className="text-xl font-bold mb-1">{plan.name}</h3>
+                    <p className="text-sm text-muted-foreground mb-4 min-h-[40px]">{plan.description}</p>
+                    <div className="mb-1">
+                      <span className="text-3xl font-extrabold tracking-tight">{plan.price}</span>
+                      <span className="text-sm text-muted-foreground">{plan.period}</span>
                     </div>
-                    {plan.popular && <p className="text-xs text-primary font-medium">That's just Rs 233/day</p>}
+                    {plan.popular ? (
+                      <p className="inline-flex text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">Rs 233/day · Cancel anytime</p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground h-5" />
+                    )}
                   </div>
-                  <div className="space-y-3 mb-8">
+                  <div className="space-y-2.5 mb-6 flex-1">
                     {plan.features.map((f, fi) => (
-                      <div key={fi} className="flex items-center">
-                        <Check className="w-4 h-4 text-primary mr-3 flex-shrink-0" />
-                        <span className="text-sm">{f}</span>
+                      <div key={fi} className="flex items-start gap-2.5">
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${plan.popular ? 'bg-primary/10' : 'bg-muted'}`}>
+                          <Check className={`w-3 h-3 ${plan.popular ? 'text-primary' : 'text-muted-foreground'}`} strokeWidth={3} />
+                        </div>
+                        <span className="text-sm leading-snug text-foreground">{f}</span>
                       </div>
                     ))}
                   </div>
                   <Button
-                    className={`w-full ${plan.popular ? 'bg-primary hover:bg-primary/90' : 'bg-background hover:bg-muted border border-border'}`}
+                    className={`w-full h-11 font-semibold ${plan.popular ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-card hover:bg-muted border border-border text-foreground hover:border-primary/20'}`}
                     variant={plan.popular ? 'default' : 'outline'}
                     onClick={() => openWhatsApp(plan.name)}
                   >
@@ -204,14 +225,52 @@ const PricingSection = () => {
             })}
           </div>
 
+          {/* Mini comparison - premium table */}
+          <div className="max-w-3xl mx-auto mb-10 sm:mb-12">
+            <p className="text-center text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-3">
+              Why businesses choose us over alternatives
+            </p>
+            <div className="rounded-2xl border border-border overflow-hidden bg-card shadow-sm">
+              <div className="grid grid-cols-4 px-4 py-3 bg-muted/40 border-b border-border text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                <div>Feature</div>
+                <div className="text-center">
+                  <span className="inline-flex items-center gap-1 text-primary"><Crown className="w-3 h-3" /> Formiq</span>
+                </div>
+                <div className="text-center">Agency</div>
+                <div className="text-center">Freelancer</div>
+              </div>
+              {compareRows.map((row, i) => (
+                <div key={i} className={`grid grid-cols-4 px-4 py-3.5 items-center text-xs sm:text-sm ${i % 2 === 1 ? 'bg-muted/20' : 'bg-card'} ${i < compareRows.length - 1 ? 'border-b border-border/40' : ''}`}>
+                  <div className="font-medium text-foreground pr-2 text-[12px] sm:text-sm">{row.feature}</div>
+                  <div className="flex justify-center">
+                    {row.us ? (
+                      <div className="w-6 h-6 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                        <Check className="w-3.5 h-3.5 text-primary" strokeWidth={3} />
+                      </div>
+                    ) : (
+                      <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center">
+                        <X className="w-3.5 h-3.5 text-muted-foreground/40" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex justify-center">{row.them ? <Check className="w-4 h-4 text-muted-foreground" /> : <X className="w-4 h-4 text-muted-foreground/25" />}</div>
+                  <div className="flex justify-center">{row.freelancer ? <Check className="w-4 h-4 text-muted-foreground" /> : <X className="w-4 h-4 text-muted-foreground/25" />}</div>
+                </div>
+              ))}
+            </div>
+            <p className="text-center text-xs text-muted-foreground mt-2.5">
+              <span className="font-semibold text-foreground">Rs 6,999/mo</span> vs Rs 25K+/mo agency · Freelancers miss key pieces
+            </p>
+          </div>
+
           <div className="text-center">
-            <div className="bg-background rounded-2xl p-5 sm:p-8 border border-border/50 max-w-2xl mx-auto">
-              <h3 className="text-base sm:text-xl font-bold mb-1.5 sm:mb-2">Not sure which plan?</h3>
-              <p className="text-xs sm:text-base text-muted-foreground mb-3 sm:mb-4">
-                Free 15-minute call. No pressure, no sales pitch.
+            <div className="bg-card rounded-[20px] p-6 sm:p-8 border border-border shadow-sm max-w-2xl mx-auto">
+              <h3 className="text-base sm:text-lg font-bold mb-1.5">Not sure which plan fits you?</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Free 15-minute call. We’ll recommend the right plan — no pressure, no sales pitch.
               </p>
               <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20a%20free%20consultation" target="_blank" rel="noopener noreferrer">
-                <Button variant="default">
+                <Button size="lg" className="shadow-lg shadow-primary/15">
                   Book Free Consultation <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </a>

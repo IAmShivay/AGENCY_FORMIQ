@@ -4,10 +4,10 @@
 
 @layer base {
   :root {
-    /* Light Mode - Professional Agency Colors */
-    --background: 0 0% 100%;
+    /* Light Mode - Warm Off-White for eye comfort (2025 best practice: #F8F9FC not pure white) */
+    --background: 210 40% 98%; /* #F8F9FC - cool off-white, premium + eye-friendly */
     --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
+    --card: 0 0% 100%; /* Pure white cards for subtle layering against off-white bg */
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
@@ -15,7 +15,7 @@
     --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96%;
     --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
+    --muted: 210 40% 97%; /* Slightly lighter muted to stay above page bg */
     --muted-foreground: 215 16% 47%;
     --accent: 262 83% 58%; /* Accent Purple */
     --accent-foreground: 0 0% 100%;

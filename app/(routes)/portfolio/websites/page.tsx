@@ -554,12 +554,16 @@ const WebsitesPortfolio = () => {
             Let's create a website that drives results and provides exceptional user experiences.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="px-8 py-3 bg-background hover:bg-background/90 text-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-              Start a Project
-            </button>
-            <button className="px-8 py-3 bg-transparent hover:bg-primary/20 text-primary-foreground border-2 border-primary-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-              View More Work
-            </button>
+            <a href="https://wa.me/919832078313?text=Hi%2C%20I%20need%20a%20website%20for%20my%20business" target="_blank" rel="noopener noreferrer">
+              <button className="px-8 py-3 bg-background hover:bg-background/90 text-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                Start a Project
+              </button>
+            </a>
+            <a href="/portfolio">
+              <button className="px-8 py-3 bg-transparent hover:bg-white/10 text-primary-foreground border-2 border-primary-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                View More Work
+              </button>
+            </a>
           </div>
         </div>
       </div>

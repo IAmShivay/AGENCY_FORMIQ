@@ -299,12 +299,16 @@ const DesignsPortfolio = () => {
             Let's create a visual identity that captures your brand's essence and connects with your audience.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-              Start Your Project
-            </button>
-            <button className="px-8 py-3 bg-white hover:bg-gray-100 text-primary border border-primary font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-              View More Designs
-            </button>
+            <a href="https://wa.me/919832078313?text=Hi%2C%20I%20need%20a%20design%20project" target="_blank" rel="noopener noreferrer">
+              <button className="px-8 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                Start Your Project
+              </button>
+            </a>
+            <a href="/portfolio">
+              <button className="px-8 py-3 bg-white hover:bg-gray-100 text-primary border border-primary font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                View More Designs
+              </button>
+            </a>
           </div>
         </div>
       </div>

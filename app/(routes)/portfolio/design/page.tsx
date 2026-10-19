@@ -302,9 +302,11 @@ const DesignPortfolio = () => {
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             Let's collaborate to create designs that elevate your business and connect with your audience.
           </p>
-          <button className="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            Start a Project
-          </button>
+          <a href="https://wa.me/919832078313?text=Hi%2C%20I%20need%20help%20with%20branding%20and%20design" target="_blank" rel="noopener noreferrer">
+            <button className="px-8 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              Start a Project
+            </button>
+          </a>
         </div>
       </div>
 
