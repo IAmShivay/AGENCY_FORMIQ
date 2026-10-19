@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Bot, Phone, Sparkles, ArrowRight, Utensils, Stethoscope, Headset, X, Mic } from "lucide-react";
-import Script from "next/script";
+import { useState, useEffect } from "react";
+import { Bot, Phone, Sparkles, ArrowRight, Utensils, Stethoscope, Scissors, X, Mic, ExternalLink } from "lucide-react";
 
 const demos = [
   {
@@ -24,18 +23,37 @@ const demos = [
     iconColor: "text-emerald-600",
   },
   {
-    id: "agent_8501m5awm7n1f9b8arx2wzdf8d9w",
-    title: "Cold Outreach",
-    desc: "Your business — website + ads pitch, books meeting, multilingual",
-    icon: Headset,
-    badge: "Live",
-    color: "from-primary/10 to-violet-500/10 border-primary/20",
-    iconColor: "text-primary",
+    id: "agent_5001m5ayj1kkevb8nv9ds3fysras",
+    title: "Salon & Spa",
+    desc: "Beauty booking — haircut, facial, spa, nail art, stylist pref",
+    icon: Scissors,
+    badge: "Demo",
+    color: "from-pink-500/10 to-rose-500/10 border-pink-200/50",
+    iconColor: "text-pink-600",
   },
 ];
 
 export default function AIBookingAgents() {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [signedUrl, setSignedUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const src = "https://unpkg.com/@elevenlabs/convai-widget-embed";
+    if (document.querySelector(`script[src="${src}"]`)) return;
+    const s = document.createElement("script");
+    s.src = src;
+    s.async = true;
+    s.type = "text/javascript";
+    document.body.appendChild(s);
+  }, []);
+
+  useEffect(() => {
+    if (!activeId) { setSignedUrl(null); return; }
+    fetch(`/api/elevenlabs/signed-url?agent_id=${encodeURIComponent(activeId)}`)
+      .then(r => r.json())
+      .then(d => setSignedUrl(d.signed_url || null))
+      .catch(() => setSignedUrl(null));
+  }, [activeId]);
 
   return (
     <section className="py-8 sm:py-10 bg-muted/20 border-y border-border/40 relative overflow-hidden">
@@ -58,7 +76,7 @@ export default function AIBookingAgents() {
             </span>
           </div>
           <a href="/agents" className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
-            View all 10 agents <ArrowRight className="w-3 h-3" />
+            View all agents <ArrowRight className="w-3 h-3" />
           </a>
         </div>
 
@@ -83,7 +101,11 @@ export default function AIBookingAgents() {
                 <h3 className="text-sm font-bold text-foreground">{d.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed mt-1 line-clamp-2 flex-1">{d.desc}</p>
                 <button
-                  onClick={() => setActiveId(isActive ? null : d.id)}
+                  onClick={async () => {
+                    if (isActive) { setActiveId(null); return; }
+                    try { await navigator.mediaDevices.getUserMedia({ audio: true }).then(s => s.getTracks().forEach(t => t.stop())); } catch {}
+                    setActiveId(d.id);
+                  }}
                   className={`mt-3 inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${isActive ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/15"}`}
                 >
                   <Phone className="w-3 h-3" /> {isActive ? "Close Demo" : "Try Live Call"}
@@ -91,15 +113,27 @@ export default function AIBookingAgents() {
 
                 {/* Inline widget when active */}
                 {isActive && (
-                  <div className="mt-3 rounded-xl border border-border bg-muted/30 p-2">
+                  <div className="mt-3 rounded-xl border border-border bg-card p-2.5 shadow-inner">
                     <div className="flex items-center gap-2 mb-2 px-1">
-                      <Mic className="w-3 h-3 text-primary" />
-                      <span className="text-xs font-semibold text-foreground">Speaking with {d.title} Agent</span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-xs font-semibold text-foreground">Live — {d.title} Agent</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">Click Start Call below → Allow mic</span>
                       <button onClick={() => setActiveId(null)} className="ml-auto p-1 hover:bg-muted rounded">
                         <X className="w-3 h-3" />
                       </button>
                     </div>
-                    <elevenlabs-convai agent-id={d.id}></elevenlabs-convai>
+                    {signedUrl ? (
+                      <div key={signedUrl} className="h-[220px] rounded-lg border border-border/50 bg-card overflow-hidden">
+                        <elevenlabs-convai signed-url={signedUrl} variant="expanded"></elevenlabs-convai>
+                      </div>
+                    ) : (
+                      <div className="h-[100px] flex items-center justify-center text-xs text-muted-foreground">
+                        Preparing call… allow mic when prompted
+                      </div>
+                    )}
+                    <p className="text-[11px] text-muted-foreground text-center mt-2">
+                      Having trouble? <a href={`https://elevenlabs.io/app/talk-to?agent_id=${d.id}`} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">Open in ElevenLabs <ExternalLink className="w-3 h-3" /></a>
+                    </p>
                   </div>
                 )}
               </div>
@@ -108,11 +142,10 @@ export default function AIBookingAgents() {
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-3">
-          Add-on to Growth Plan <span className="font-semibold text-foreground">Rs 3-5k/mo</span> per agent • Powered by ElevenLabs • <a href="/agents" className="text-primary hover:underline">See all 10 →</a>
+          Add-on to Growth Plan <span className="font-semibold text-foreground">Rs 3-5k/mo</span> per agent • Powered by ElevenLabs • <a href="/agents" className="text-primary hover:underline">See all →</a>
         </p>
       </div>
 
-      <Script src="https://elevenlabs.io/convai/widget/index.js" strategy="lazyOnload" />
     </section>
   );
 }
@@ -121,7 +154,7 @@ export default function AIBookingAgents() {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      "elevenlabs-convai": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & { "agent-id": string }, HTMLElement>;
+      "elevenlabs-convai": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & { "agent-id"?: string; "signed-url"?: string; variant?: string }, HTMLElement>;
     }
   }
 }
