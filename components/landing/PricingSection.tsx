@@ -88,12 +88,12 @@ const PricingSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="pricing" className="py-8 sm:py-12 md:py-16 bg-muted/20 relative overflow-hidden">
+    <section ref={sectionRef} id="pricing" className="py-8 sm:py-12 md:py-16 bg-muted/20 relative overflow-visible">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-primary/[0.03] rounded-full blur-3xl" />
       </div>
 
-      <div className="relative container mx-auto px-4">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} className="max-w-6xl mx-auto">
           <div className="text-center mb-6 sm:mb-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/15 text-xs font-semibold tracking-widest text-primary uppercase mb-3">
@@ -111,68 +111,79 @@ const PricingSection = () => {
             </div>
           </div>
 
-          {/* Mobile: popular card + compact others */}
-          <div className="sm:hidden space-y-3 mb-6">
-            <div className="relative rounded-[20px] p-5 border-2 border-primary bg-card shadow-xl shadow-primary/10 overflow-hidden">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
-                  <Star className="w-3 h-3 fill-white" /> Most Popular
-                </span>
-              </div>
-              <div className="text-center mt-3 mb-4">
-                <h3 className="text-lg font-bold">{popular.name}</h3>
-                <p className="text-xs text-muted-foreground mt-0.5">{popular.description}</p>
-                <div className="mt-3">
-                  <span className="text-3xl font-extrabold tracking-tight">{popular.price}</span>
-                  <span className="text-sm text-muted-foreground">{popular.period}</span>
-                </div>
-                <p className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full mt-2">Rs 233/day · Best value</p>
-              </div>
-              <div className="space-y-2 mb-4">
-                {popular.features.map((f, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Check className="w-3 h-3 text-primary" strokeWidth={3} />
+          {/* Mobile: horizontal swipeable - snap scroll */}
+          <div className="sm:hidden mb-6 -mx-4">
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-4 pt-5 pb-4 scrollbar-none scroll-smooth overflow-y-visible" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', overflowY: 'visible' }}>
+              {pricingPlans.map((plan, idx) => {
+                const Icon = plan.icon;
+                const isPopular = plan.popular;
+                return (
+                  <div
+                    key={idx}
+                    className={`relative flex-shrink-0 w-[85vw] max-w-[320px] snap-center rounded-[20px] p-5 border flex flex-col overflow-visible ${
+                      isPopular
+                        ? 'border-2 border-primary bg-card shadow-xl shadow-primary/10'
+                        : 'border border-border bg-card shadow-sm'
+                    }`}
+                  >
+                    {isPopular && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg whitespace-nowrap">
+                          <Star className="w-3 h-3 fill-white" /> Most Popular
+                        </span>
+                      </div>
+                    )}
+                    <div className="text-center mt-3 mb-4">
+                      <div className={`inline-flex p-2.5 rounded-xl mb-3 border ${isPopular ? 'bg-primary/10 border-primary/20' : 'bg-muted border-border'}`}>
+                        <Icon className={`w-5 h-5 ${isPopular ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <h3 className="text-lg font-bold">{plan.name}</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5 min-h-[32px]">{plan.description}</p>
+                      <div className="mt-3">
+                        <span className="text-3xl font-extrabold tracking-tight">{plan.price}</span>
+                        <span className="text-sm text-muted-foreground">{plan.period}</span>
+                      </div>
+                      {isPopular ? (
+                        <p className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full mt-2">Rs 233/day · Best value</p>
+                      ) : (
+                        <p className="text-[11px] text-muted-foreground mt-2 h-[18px]" />
+                      )}
                     </div>
-                    <span className="text-xs font-medium text-foreground leading-tight">{f}</span>
+                    <div className="space-y-2 mb-4 flex-1">
+                      {plan.features.map((f, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isPopular ? 'bg-primary/10' : 'bg-muted'}`}>
+                            <Check className={`w-3 h-3 ${isPopular ? 'text-primary' : 'text-muted-foreground'}`} strokeWidth={3} />
+                          </div>
+                          <span className="text-xs font-medium text-foreground leading-tight">{f}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <Button
+                      className={`w-full h-11 text-sm font-semibold ${isPopular ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-card hover:bg-muted border border-border text-foreground hover:border-primary/20'}`}
+                      variant={isPopular ? 'default' : 'outline'}
+                      onClick={() => openWhatsApp(plan.name)}
+                    >
+                      {plan.cta} <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                    {isPopular && <p className="text-center text-[10px] text-muted-foreground mt-2">No lock-in · Cancel anytime</p>}
                   </div>
-                ))}
-              </div>
-              <Button className="w-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 h-11 text-sm font-semibold" onClick={() => openWhatsApp(popular.name)}>
-                {popular.cta} <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-              <p className="text-center text-[10px] text-muted-foreground mt-2">No lock-in · Cancel anytime</p>
+                );
+              })}
             </div>
-
-            {others.map((plan, i) => {
-              const Icon = plan.icon;
-              return (
-                <div key={i} className="rounded-2xl p-4 border border-border bg-card shadow-sm flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center flex-shrink-0 border border-border">
-                      <Icon className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="text-sm font-bold text-foreground">{plan.name}</h3>
-                      <p className="text-xs text-muted-foreground">{plan.price} <span className="text-[11px]">{plan.period}</span></p>
-                    </div>
-                  </div>
-                  <button onClick={() => openWhatsApp(plan.name)} className="flex-shrink-0 px-4 py-2 text-xs font-semibold bg-card border border-border rounded-xl hover:bg-muted hover:border-primary/20 transition-colors shadow-sm">
-                    {plan.cta}
-                  </button>
-                </div>
-              );
-            })}
+            <p className="text-center text-[11px] text-muted-foreground flex items-center justify-center gap-1.5 mt-1">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> Swipe to compare plans <span className="text-primary">→</span>
+            </p>
           </div>
 
           {/* Desktop: 3-col grid - 3 cols from sm to avoid orphan line on tablet */}
-          <div className="hidden sm:grid sm:grid-cols-3 gap-4 lg:gap-6 mb-10">
+          <div className="hidden sm:grid sm:grid-cols-3 gap-4 lg:gap-6 mb-10 pt-5">
             {pricingPlans.map((plan, index) => {
               const Icon = plan.icon;
               return (
                 <div
                   key={index}
-                  className={`relative rounded-[20px] p-5 md:p-7 lg:p-8 border flex flex-col transition-all duration-300 ${
+                  className={`relative rounded-[20px] p-5 md:p-7 lg:p-8 border flex flex-col transition-all duration-300 overflow-visible ${
                     plan.popular
                       ? 'border-primary bg-card shadow-2xl shadow-primary/15 lg:scale-105 z-10'
                       : 'border-border bg-card shadow-sm hover:shadow-lg hover:border-primary/15 hover:-translate-y-1'

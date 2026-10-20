@@ -18,7 +18,8 @@ const FinalCTA = () => {
       {/* Grid pattern */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`, backgroundSize: '32px 32px' }} />
 
-      <div className="relative max-w-3xl mx-auto px-4 text-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/10 text-xs font-semibold tracking-widest text-white/90 uppercase mb-4 backdrop-blur">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> 2 slots left this month
         </div>
@@ -57,6 +58,7 @@ const FinalCTA = () => {
         <p className="text-xs text-white/40 mt-4">
           Or <a href="tel:+918918349445" className="text-white/80 hover:text-white font-medium inline-flex items-center gap-1 underline-offset-4 hover:underline"><Phone className="w-3 h-3" /> +91 8918349445</a> · In-person in Kolkata, Durgapur & Asansol · Reply in 2 hours
         </p>
+        </div>
       </div>
 
       <LeadFormOverlay open={showLeadForm} onClose={() => setShowLeadForm(false)} />

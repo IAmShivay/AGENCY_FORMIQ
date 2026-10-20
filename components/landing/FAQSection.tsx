@@ -50,20 +50,21 @@ const FAQSection = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <div className="max-w-3xl mx-auto px-4">
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/15 text-xs font-semibold tracking-widest text-primary uppercase mb-3">
-            <HelpCircle className="w-3 h-3" /> FAQ
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/15 text-xs font-semibold tracking-widest text-primary uppercase mb-3">
+              <HelpCircle className="w-3 h-3" /> FAQ
+            </div>
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 text-foreground tracking-tight">
+              Common Questions
+            </h2>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              Everything you need to know before getting started
+            </p>
           </div>
-          <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 text-foreground tracking-tight">
-            Common Questions
-          </h2>
-          <p className="text-sm sm:text-base text-muted-foreground">
-            Everything you need to know before getting started
-          </p>
-        </div>
 
-        <dl className="space-y-3">
+          <dl className="space-y-3">
           {faqs.map((faq, i) => {
             const isOpen = open === i;
             return (
@@ -117,6 +118,7 @@ const FAQSection = () => {
               Chat on WhatsApp
             </button>
           </a>
+        </div>
         </div>
       </div>
     </section>

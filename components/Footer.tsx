@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Star } from 'lucide-react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import Logo from './Logo';
 
@@ -17,7 +17,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-card border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12 pb-6 sm:pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-6 sm:pb-8">
 
         {/* Mobile: compact single column */}
         <div className="sm:hidden space-y-5 mb-5">
@@ -42,6 +42,34 @@ const Footer = () => {
             <MapPin className="w-3 h-3 text-primary" />
             Arrah Shree Pally, Arrah Shree Pally, Durgapur, WB 713212 713212
           </div>
+          {/* Mobile Google Review QR */}
+          <a
+            href="https://g.page/r/CdyKwEPD_8rDEBM/review"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-br from-amber-50 to-card border border-amber-200/60"
+          >
+            <img
+              src="/images/google-review-qr.png"
+              alt="Scan QR to rate FormiqStudio on Google"
+              width={56}
+              height={56}
+              className="w-14 h-14 rounded-lg bg-white p-1 border border-border shadow-sm object-contain flex-shrink-0"
+              loading="lazy"
+            />
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-foreground flex items-center gap-1">
+                Rate us on Google <span className="text-[#4285F4]">→</span>
+              </p>
+              <p className="text-[11px] text-muted-foreground">Scan with Camera · 30 sec · 5★</p>
+              <div className="flex gap-0.5 mt-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3 h-3 text-amber-500 fill-amber-500" />
+                ))}
+                <span className="text-[10px] font-semibold text-amber-700 ml-1">4.9/5 · 50+ reviews</span>
+              </div>
+            </div>
+          </a>
         </div>
 
         {/* Desktop: 4 columns */}
@@ -110,6 +138,40 @@ const Footer = () => {
                 Arrah Shree Pally, Durgapur, WB 713212
               </div>
             </div>
+            {/* Google Review QR - Footer */}
+            <a
+              href="https://g.page/r/CdyKwEPD_8rDEBM/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 flex items-center gap-3 p-3 rounded-xl bg-gradient-to-br from-amber-50 to-card border border-amber-200/60 hover:border-amber-300 hover:shadow-md transition-all group"
+            >
+              <div className="relative flex-shrink-0">
+                <img
+                  src="/images/google-review-qr.png"
+                  alt="Scan QR to rate FormiqStudio on Google"
+                  width={64}
+                  height={64}
+                  className="w-16 h-16 rounded-lg bg-white p-1 border border-border shadow-sm object-contain"
+                  loading="lazy"
+                />
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-[#4285F4] rounded-full flex items-center justify-center border-2 border-white">
+                  <Star className="w-2.5 h-2.5 text-white fill-white" />
+                </div>
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+                  Rate us on Google
+                  <span className="text-[#4285F4]">→</span>
+                </p>
+                <p className="text-[11px] text-muted-foreground leading-tight">Scan to leave a 5★ review</p>
+                <div className="flex gap-0.5 mt-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 text-amber-500 fill-amber-500" />
+                  ))}
+                  <span className="text-[10px] font-semibold text-amber-700 ml-1">4.9/5</span>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
 

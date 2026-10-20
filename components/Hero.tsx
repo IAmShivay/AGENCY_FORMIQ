@@ -98,7 +98,7 @@ const Hero = () => {
       {/* Subtle dot grid */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`, backgroundSize: '24px 24px' }} />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-24 pb-8 sm:pt-28 sm:pb-10 md:pt-32 md:pb-12">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 sm:pt-28 sm:pb-10 md:pt-32 md:pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
           <div className="text-center lg:text-left space-y-6">
@@ -203,7 +203,7 @@ const Hero = () => {
                 poster={
                   media.video_thumbnail && !media.video_thumbnail.includes("pexels")
                     ? media.video_thumbnail
-                    : "https://res.cloudinary.com/dzwekdoeo/video/upload/v1792316284/MINE_ounxke.jpg"
+                    : "https://res.cloudinary.com/dyiso4ohk/image/upload/v1792491779/WhatsApp_Image_2026-10-20_yp1tak.jpg"
                 }
                 autoPlay
                 playsInline
@@ -213,7 +213,7 @@ const Hero = () => {
                   src={
                     media.video_url && !media.video_url.includes("pexels")
                       ? media.video_url
-                      : "https://res.cloudinary.com/dzwekdoeo/video/upload/v1792316284/MINE_ounxke.mp4"
+                      : "https://res.cloudinary.com/dyiso4ohk/video/upload/v1792491766/GROWTH_eqyg8v.mp4"
                   }
                   type="video/mp4"
                 />
