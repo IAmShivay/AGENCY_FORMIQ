@@ -150,7 +150,7 @@ const Hero = () => {
                 Free Consultation
                 <ArrowRight className="w-4 h-4 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" />
               </button>
-              <a href="https://wa.me/15553419743" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackContact('whatsapp_hero')}>
+              <a href="https://wa.me/919832078313" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackContact('whatsapp_hero')}>
                 <button className="w-full px-6 py-3.5 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#1da851] transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-[15px] shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap">
                   WhatsApp Us
                   <ArrowRight className="w-4 h-4 flex-shrink-0" />
