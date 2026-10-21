@@ -62,6 +62,55 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Office & Culture - Video + Images (same as Hero) */}
+      <section className="py-10 px-4 md:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 border border-primary/15 text-xs font-semibold tracking-widest text-primary uppercase mb-3">
+              Inside FormiqStudio
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">How We Help You Grow</h2>
+            <p className="text-sm text-muted-foreground mt-2 max-w-2xl mx-auto">Same growth system we use for 50+ local businesses — watch our office culture and strategy in action.</p>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl border border-border bg-black aspect-video">
+              <video
+                className="w-full h-full object-cover"
+                poster="https://res.cloudinary.com/dyiso4ohk/image/upload/v1792491779/WhatsApp_Image_2026-10-20_yp1tak.jpg"
+                controls
+                playsInline
+              >
+                <source src="https://res.cloudinary.com/dyiso4ohk/video/upload/v1792491766/GROWTH_eqyg8v.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div className="space-y-4">
+              <div className="relative rounded-2xl overflow-hidden border border-border shadow-sm">
+                <img
+                  src="https://res.cloudinary.com/dyiso4ohk/image/upload/v1792491779/WhatsApp_Image_2026-10-20_yp1tak.jpg"
+                  alt="FormiqStudio Office - Durgapur"
+                  className="w-full h-auto object-cover aspect-[4/3]"
+                  loading="lazy"
+                />
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+                  <p className="text-white text-xs font-semibold">Our Office — Arrah Shree Pally, Durgapur</p>
+                </div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden border border-border shadow-sm">
+                <img
+                  src="https://res.cloudinary.com/dyiso4ohk/image/upload/v1792491788/Tech_Office_Services_Whiteboard_hwvgvb.png"
+                  alt="Strategy Whiteboard - Tech Office Services"
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-3">
+                  <p className="text-white text-xs font-semibold">Strategy Board — Planning Growth Campaigns</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Our Story */}
       <section className="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-muted/20">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">

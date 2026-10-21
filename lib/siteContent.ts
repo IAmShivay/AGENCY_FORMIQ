@@ -7,12 +7,12 @@ export interface HeroMedia {
 }
 
 const DEFAULT_HERO_MEDIA: HeroMedia = {
-  video_url: 'https://res.cloudinary.com/dzwekdoeo/video/upload/v1792316284/MINE_ounxke.mp4',
-  video_thumbnail: 'https://res.cloudinary.com/dzwekdoeo/video/upload/v1792316284/MINE_ounxke.jpg',
+  video_url: 'https://res.cloudinary.com/dyiso4ohk/video/upload/v1792491766/GROWTH_eqyg8v.mp4',
+  video_thumbnail: 'https://res.cloudinary.com/dyiso4ohk/image/upload/v1792491779/WhatsApp_Image_2026-10-20_yp1tak.jpg',
   gallery: [
+    { url: 'https://res.cloudinary.com/dyiso4ohk/image/upload/v1792491779/WhatsApp_Image_2026-10-20_yp1tak.jpg', label: 'Our Office' },
+    { url: 'https://res.cloudinary.com/dyiso4ohk/image/upload/v1792491788/Tech_Office_Services_Whiteboard_hwvgvb.png', label: 'Strategy Board' },
     { url: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Client Meetings' },
-    { url: 'https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Ad Campaigns' },
-    { url: 'https://images.pexels.com/photos/4348401/pexels-photo-4348401.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Global Work' },
   ],
 };
 

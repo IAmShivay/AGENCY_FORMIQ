@@ -112,7 +112,7 @@ const Header = () => {
           : 'py-3 md:py-4 lg:py-5 bg-transparent'
         }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 md:gap-6 lg:gap-8">
           {/* Logo */}
           <div className="flex-shrink-0">

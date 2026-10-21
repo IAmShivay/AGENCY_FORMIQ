@@ -24,7 +24,7 @@ const services: Service[] = [
 const Services = () => {
   return (
     <section className="py-6 sm:py-8 bg-background relative overflow-hidden border-y border-border/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Minimal header - single line */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 sm:mb-6">
           <div className="flex items-center gap-3">

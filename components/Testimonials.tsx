@@ -18,7 +18,7 @@ export default function Testimonials() {
         <div className="absolute top-20 right-0 w-[600px] h-[400px] bg-primary/[0.02] rounded-full blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-xs font-semibold tracking-widest text-amber-700 uppercase mb-3">
             <Star className="w-3 h-3 fill-amber-500 text-amber-500" /> Real results
