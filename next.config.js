@@ -2,6 +2,7 @@
 const nextConfig = {
   // Enable compression for better performance
   compress: true,
+  serverExternalPackages: ['isomorphic-dompurify', 'jsdom'],
   // Enable experimental features for better SEO
   experimental: {
     scrollRestoration: true,

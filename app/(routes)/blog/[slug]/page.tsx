@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import DOMPurify from 'isomorphic-dompurify';
 import { getBlogPost, getRelatedPosts, getBlogPosts, BlogPost } from '@/lib/blog';
+import { sanitizeHtml } from '@/lib/sanitize';
 import StructuredData from '@/components/seo/StructuredData';
 import BlogAdUnit from '@/components/ads/BlogAdUnit';
 
@@ -76,6 +76,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
   }
 
   const relatedPosts = await getRelatedPosts(post.slug, post.category);
+  const safeContent = await sanitizeHtml(post.content);
 
   const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
     month: 'long',
@@ -264,7 +265,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
             <div className="lg:col-span-7">
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
                 <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-primary prose-a:text-primary prose-img:rounded-lg"
-                     dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
+                     dangerouslySetInnerHTML={{ __html: safeContent }} />
 
                 <BlogAdUnit slot="3314049659" label="Advertisement — In Article" />
 
