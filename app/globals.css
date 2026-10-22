@@ -1118,3 +1118,7 @@
     transform: translateZ(0);
   }
 }
+
+.blog-ad:has(ins.adsbygoogle[data-ad-status="unfilled"]) {
+  display: none;
+}

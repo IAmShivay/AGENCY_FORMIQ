@@ -50,7 +50,7 @@ export default function BlogAdUnit({
   }
 
   return (
-    <div className={`my-6 overflow-hidden rounded-xl border border-border/50 bg-card ${className}`} aria-label={label}>
+    <div className={`blog-ad my-6 overflow-hidden rounded-xl border border-border/50 bg-card ${className}`} aria-label={label}>
       <p className="px-3 py-1 text-center text-[10px] font-semibold tracking-widest text-muted-foreground uppercase bg-muted/30 border-b border-border/50">
         {label}
       </p>
