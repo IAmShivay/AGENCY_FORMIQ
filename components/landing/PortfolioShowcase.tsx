@@ -330,7 +330,7 @@ const PortfolioShowcase = () => {
           {/* CTA Section */}
           <motion.div variants={itemVariants} className="text-center">
             <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-2xl p-8 border border-primary/20">
-              <h3 className="text-2xl font-bold mb-4 animated-gradient-text">
+              <h3 className="text-2xl font-bold mb-4 text-foreground">
                 Ready to Join Our Success Stories?
               </h3>
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
