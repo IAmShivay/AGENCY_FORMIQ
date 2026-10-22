@@ -53,7 +53,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-16">
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto mb-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary">
             Our Blog

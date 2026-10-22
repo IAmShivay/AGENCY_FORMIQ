@@ -26,10 +26,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const post = await getBlogPost(params.slug);
 
   if (!post) {
-    return {
-      title: 'Blog Post Not Found',
-      description: 'The requested blog post could not be found.',
-    };
+    notFound();
   }
 
   return {
@@ -122,7 +119,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
       />
 
       <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-16">
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             <div className="lg:col-span-2 flex flex-col justify-center">

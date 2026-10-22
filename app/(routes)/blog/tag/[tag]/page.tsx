@@ -25,6 +25,11 @@ export async function generateMetadata(props: { params: Promise<{ tag: string }>
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
+  const posts = await getBlogPostsByTag(tag);
+  if (posts.length === 0) {
+    notFound();
+  }
+
   return {
     title: `${formattedTag} Articles | formiqstudio Blog`,
     description: `Explore our collection of articles tagged with ${formattedTag} - insights and expertise from the formiqstudio team.`,
@@ -63,7 +68,7 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-16">
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto mb-16 text-center">
           <div className="inline-flex items-center justify-center mb-6">
             <Tag className="w-8 h-8 text-primary mr-3" />
