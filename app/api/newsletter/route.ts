@@ -51,11 +51,25 @@ async function sendWelcomeEmail(email: string) {
   }
 }
 
-export async function GET() {
-  return NextResponse.json({
+export async function GET(request: NextRequest) {
+  const status = {
     brevoApiKey: Boolean(BREVO_API_KEY),
     brevoListId: Boolean(BREVO_LIST_ID),
     webhookSecret: Boolean(process.env.SUPABASE_WEBHOOK_SECRET),
+  };
+
+  const secret = process.env.SUPABASE_WEBHOOK_SECRET;
+  if (!secret || request.headers.get('x-webhook-secret') !== secret || !BREVO_API_KEY) {
+    return NextResponse.json(status);
+  }
+
+  const res = await fetch('https://api.brevo.com/v3/account', { headers: { 'api-key': BREVO_API_KEY } });
+  const data = await res.json().catch(() => ({}));
+  return NextResponse.json({
+    ...status,
+    brevoReachable: res.ok,
+    brevoStatus: res.status,
+    brevoError: res.ok ? undefined : data.message,
   });
 }
 
@@ -87,13 +101,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to subscribe. Please try again.' }, { status: 500 });
     }
 
-    addToBrevo(normalizedEmail).catch((err) =>
-      console.error('Brevo sync failed:', err)
-    );
-
-    sendWelcomeEmail(normalizedEmail).catch((err) =>
-      console.error('Welcome email failed:', err)
-    );
+    await Promise.all([
+      addToBrevo(normalizedEmail).catch((err) => console.error('Brevo sync failed:', err)),
+      sendWelcomeEmail(normalizedEmail).catch((err) => console.error('Welcome email failed:', err)),
+    ]);
 
     return NextResponse.json({ message: 'Successfully subscribed!' });
   } catch (error) {

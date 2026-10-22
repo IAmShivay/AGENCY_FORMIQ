@@ -201,7 +201,7 @@ const PortfolioShowcase = () => {
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 animated-gradient-text">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 text-foreground tracking-tight">
               Our Success Stories
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -222,8 +222,7 @@ const PortfolioShowcase = () => {
                 <motion.div
                   key={project.id}
                   variants={itemVariants}
-                  whileHover={{ y: -5 }}
-                  className={`group relative overflow-hidden rounded-2xl transition-all duration-300 cursor-pointer hover:z-10 ${
+                  className={`group relative overflow-hidden rounded-2xl transition-all duration-300 cursor-pointer ${
                     isFeatured
                       ? 'bg-gradient-to-br from-card via-card/95 to-primary/10 border-2 border-primary/30 shadow-xl hover:shadow-2xl'
                       : 'bg-gradient-to-br from-card via-card/95 to-primary/5 border border-primary/20 hover:border-primary/40 shadow-lg hover:shadow-xl'
