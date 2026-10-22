@@ -51,6 +51,14 @@ async function sendWelcomeEmail(email: string) {
   }
 }
 
+export async function GET() {
+  return NextResponse.json({
+    brevoApiKey: Boolean(BREVO_API_KEY),
+    brevoListId: Boolean(BREVO_LIST_ID),
+    webhookSecret: Boolean(process.env.SUPABASE_WEBHOOK_SECRET),
+  });
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();

@@ -31,7 +31,8 @@ import {
   Server,
   BarChart4,
   Wrench,
-  Code
+  Code,
+  BookOpen
 } from 'lucide-react';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
@@ -92,6 +93,11 @@ const Header = () => {
         { href: '/portfolio/creatives', label: 'Creatives', icon: <Sparkles className="w-4 h-4" /> },
         { href: '/portfolio/ads-seo', label: 'Ads & SEO', icon: <Target className="w-4 h-4" /> }
       ]
+    },
+    {
+      href: '/blog',
+      label: 'Blog',
+      icon: <BookOpen className="w-4 h-4" />
     },
     {
       href: '/about',

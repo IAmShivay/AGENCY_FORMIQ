@@ -34,6 +34,7 @@ const Footer = () => {
           </div>
           <div className="flex gap-4 text-xs text-muted-foreground">
             <Link href="/about" className="hover:text-primary">About</Link>
+            <Link href="/blog" className="hover:text-primary">Blog</Link>
             <Link href="/contact" className="hover:text-primary">Contact</Link>
             <Link href="/privacy" className="hover:text-primary">Privacy</Link>
             <Link href="/terms" className="hover:text-primary">Terms</Link>
@@ -96,6 +97,7 @@ const Footer = () => {
             <ul className="space-y-2.5">
               {[
                 { href: "/about", label: "About Us" },
+                { href: "/blog", label: "Blog" },
                 { href: "/contact", label: "Contact" },
                 { href: "/privacy", label: "Privacy" },
                 { href: "/terms", label: "Terms" },

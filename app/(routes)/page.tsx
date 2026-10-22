@@ -5,6 +5,7 @@ import HowItWorks from '@/components/landing/HowItWorks';
 import Services from '@/components/Services';
 import PortfolioShowcase from '@/components/landing/PortfolioShowcase';
 import Testimonials from '@/components/Testimonials';
+import LatestBlogPosts from '@/components/landing/LatestBlogPosts';
 import PricingSection from '@/components/landing/PricingSection';
 import AIBookingAgents from '@/components/landing/AIBookingAgents';
 import FAQSection from '@/components/landing/FAQSection';
@@ -42,6 +43,7 @@ export default function Home() {
       <Services />
       <PortfolioShowcase />
       <Testimonials />
+      <LatestBlogPosts />
       <AIBookingAgents />
       <PricingSection />
       <FAQSection />
