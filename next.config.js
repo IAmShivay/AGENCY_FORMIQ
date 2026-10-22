@@ -1,3 +1,10 @@
+console.log(
+  '[build-env] NEXT_PUBLIC_* present:',
+  Object.keys(process.env).filter((k) => k.startsWith('NEXT_PUBLIC_')).join(', ') || '(none)',
+  '| ADSENSE_ID set:',
+  Boolean(process.env.NEXT_PUBLIC_ADSENSE_ID)
+);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Enable compression for better performance
