@@ -8,10 +8,9 @@ import { getBlogPost, getRelatedPosts, getBlogPosts, BlogPost } from '@/lib/blog
 import StructuredData from '@/components/seo/StructuredData';
 import BlogAdUnit from '@/components/ads/BlogAdUnit';
 
-// Set dynamic rendering to ensure real-time data
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-import { ArrowLeft, Calendar, Clock, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { Calendar, Clock, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
 import NewsletterForm from '../components/NewsletterForm';
 import SidebarNewsletterForm from '../components/SidebarNewsletterForm';
 
@@ -78,7 +77,6 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
 
   const relatedPosts = await getRelatedPosts(post.slug, post.category);
 
-  // Format date
   const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
@@ -87,7 +85,6 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
 
   return (
     <>
-      {/* BlogPosting + Breadcrumb Structured Data — critical for SEO/AI citations */}
       <StructuredData
         type="blogPosting"
         data={{
@@ -125,18 +122,8 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
 
       <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-16">
         <div className="container mx-auto px-4">
-        {/* Back to Blog */}
-        <div className="mb-8 max-w-7xl mx-auto">
-          <Link href="/blog" className="inline-flex items-center text-primary hover:underline transition-colors">
-            {/* <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Blog */}
-          </Link>
-        </div>
-
-        {/* Hero Section */}
         <div className="max-w-7xl mx-auto mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-            {/* Left Column - Article Header */}
             <div className="lg:col-span-2 flex flex-col justify-center">
               <div className="flex flex-wrap items-center gap-2 mb-4">
                 <Link
@@ -159,7 +146,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-full overflow-hidden mr-4 border-2 border-primary">
                   <Image
-                    src={post.author.avatar}
+                    src={post.author.avatar || '/images/default-avatar.svg'}
                     alt={post.author.name}
                     width={48}
                     height={48}
@@ -177,7 +164,6 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 {post.readingTime} min read
               </div>
 
-              {/* Social Share - Mobile Only */}
               <div className="lg:hidden mt-4 mb-6 pt-4 border-t border-gray-100 dark:border-gray-700">
                 <p className="font-medium mb-3 flex items-center">
                   <Share2 className="w-4 h-4 mr-2" />
@@ -215,7 +201,6 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
               </div>
             </div>
 
-            {/* Right Column - Featured Image */}
             <div className="lg:col-span-3 rounded-2xl overflow-hidden shadow-xl">
               <div className="relative w-full aspect-[16/9] lg:aspect-[3/2]">
                 <Image
@@ -227,15 +212,18 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
               </div>
+              {post.coverImage.includes('unsplash.com') && (
+                <p className="text-xs text-gray-400 dark:text-gray-500 text-right px-3 py-1">
+                  Photo from <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">Unsplash</a>
+                </p>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Main Content Area */}
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-            {/* Left Sidebar - Social Share & TOC (Desktop) */}
             <div className="hidden lg:block lg:col-span-2">
               <div className="sticky top-24">
                 <div className="mb-8">
@@ -273,16 +261,13 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
               </div>
             </div>
 
-            {/* Center - Article Content */}
             <div className="lg:col-span-7">
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
                 <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-primary prose-a:text-primary prose-img:rounded-lg"
                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
 
-                {/* Blog-only Ad — in-article (between content and tags) */}
-                <BlogAdUnit slot="3333333333" label="Advertisement — In Article" />
+                <BlogAdUnit slot="3314049659" label="Advertisement — In Article" />
 
-                {/* Tags */}
                 <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
                   <div className="flex flex-wrap gap-2">
                     {post.tags.map((tag) => (
@@ -298,13 +283,12 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 </div>
               </div>
 
-              {/* Author Bio */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
                 <h3 className="text-xl font-bold mb-4">About the Author</h3>
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
                   <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 border-2 border-primary">
                     <Image
-                      src={post.author.avatar}
+                      src={post.author.avatar || '/images/default-avatar.svg'}
                       alt={post.author.name}
                       width={80}
                       height={80}
@@ -320,7 +304,6 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
               </div>
             </div>
 
-            {/* Right Sidebar - Related Content */}
             <div className="lg:col-span-3">
               <div className="sticky top-24">
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
@@ -329,8 +312,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                   <SidebarNewsletterForm />
                 </div>
 
-                {/* Blog-only Ad — sidebar */}
-                <BlogAdUnit slot="4444444444" label="Advertisement — Sidebar" />
+                <BlogAdUnit slot="1967424375" label="Advertisement — Sidebar" />
 
                 {relatedPosts.length > 0 && (
                   <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mt-6">
@@ -374,10 +356,8 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
           </div>
         </div>
 
-        {/* Blog-only Ad — bottom below article */}
-        <BlogAdUnit slot="5555555555" label="Advertisement — Below Article" className="max-w-7xl mx-auto mt-8" />
+        <BlogAdUnit slot="6239595890" label="Advertisement — Below Article" className="max-w-7xl mx-auto mt-8" />
 
-        {/* More Related Posts - Bottom Section */}
         {relatedPosts.length > 0 && (
           <div className="max-w-7xl mx-auto mt-16 lg:mt-24">
             <h2 className="text-2xl font-bold mb-8 text-center">Discover More</h2>
@@ -409,7 +389,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                       <div className="flex items-center mt-auto pt-4 border-t border-gray-100 dark:border-gray-700">
                         <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
                           <Image
-                            src={relatedPost.author.avatar}
+                            src={relatedPost.author.avatar || '/images/default-avatar.svg'}
                             alt="Testimonial"
                             width={32}
                             height={32}
@@ -435,7 +415,6 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
           </div>
         )}
 
-        {/* Newsletter CTA */}
         <div className="max-w-7xl mx-auto mt-16 lg:mt-24">
           <div className="bg-gradient-to-r from-primary/10 via-primary/10 to-primary/10 rounded-2xl overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

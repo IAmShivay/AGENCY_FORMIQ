@@ -3,10 +3,10 @@ import Hero from '@/components/Hero';
 import TrustBar from '@/components/landing/TrustBar';
 import HowItWorks from '@/components/landing/HowItWorks';
 import Services from '@/components/Services';
-import AIBookingAgents from '@/components/landing/AIBookingAgents';
-import PricingSection from '@/components/landing/PricingSection';
+import PortfolioShowcase from '@/components/landing/PortfolioShowcase';
 import Testimonials from '@/components/Testimonials';
-import GoogleReviewSection from '@/components/GoogleReviewSection';
+import PricingSection from '@/components/landing/PricingSection';
+import AIBookingAgents from '@/components/landing/AIBookingAgents';
 import FAQSection from '@/components/landing/FAQSection';
 import FinalCTA from '@/components/landing/FinalCTA';
 
@@ -40,10 +40,10 @@ export default function Home() {
       <TrustBar />
       <HowItWorks />
       <Services />
+      <PortfolioShowcase />
+      <Testimonials />
       <AIBookingAgents />
       <PricingSection />
-      <Testimonials />
-      <GoogleReviewSection />
       <FAQSection />
       <FinalCTA />
     </div>

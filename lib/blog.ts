@@ -410,6 +410,67 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   }
 }
 
+// Paginated version — returns posts for the given page + total count
+const POSTS_PER_PAGE = 9;
+
+export async function getBlogPostsPaginated(page: number = 1): Promise<{ posts: BlogPost[]; total: number; perPage: number }> {
+  const from = (page - 1) * POSTS_PER_PAGE;
+  const to = from + POSTS_PER_PAGE - 1;
+
+  try {
+    const { data, error, count } = await supabase
+      .from('blog_posts')
+      .select(`
+        id,
+        title,
+        slug,
+        excerpt,
+        content,
+        created_at,
+        cover_image,
+        category,
+        tags,
+        reading_time,
+        author_id,
+        blog_authors:author_id(id, name, role, avatar, bio)
+      `, { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(from, to);
+
+    if (error) {
+      console.error('Error fetching paginated blog posts:', error);
+      const sliced = fallbackPosts.slice(from, to + 1);
+      return { posts: sliced, total: fallbackPosts.length, perPage: POSTS_PER_PAGE };
+    }
+
+    const posts = (data || []).map((post: any) => ({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt,
+      content: post.content,
+      date: post.created_at,
+      coverImage: post.cover_image,
+      category: post.category,
+      tags: post.tags || [],
+      readingTime: post.reading_time,
+      author: {
+        id: post.blog_authors?.id || '',
+        name: post.blog_authors?.name || '',
+        role: post.blog_authors?.role || '',
+        avatar: post.blog_authors?.avatar || '',
+        bio: post.blog_authors?.bio || '',
+      },
+    }));
+
+    return { posts, total: count ?? 0, perPage: POSTS_PER_PAGE };
+  } catch (error) {
+    console.error('Error in getBlogPostsPaginated:', error);
+    const sliced = fallbackPosts.slice(from, to + 1);
+    return { posts: sliced, total: fallbackPosts.length, perPage: POSTS_PER_PAGE };
+  }
+}
+
 // Function to get a single blog post by slug
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   console.log('Getting blog post with slug:', slug);

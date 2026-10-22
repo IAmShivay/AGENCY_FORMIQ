@@ -212,7 +212,7 @@ const PortfolioShowcase = () => {
           {/* Featured Projects Grid */}
           <motion.div
             variants={containerVariants}
-            className="grid md:grid-cols-2 gap-8 mb-12"
+            className="grid md:grid-cols-2 gap-8 mb-12 isolate"
           >
             {portfolioProjects.map((project, index) => {
               const Icon = project.icon;
@@ -222,8 +222,8 @@ const PortfolioShowcase = () => {
                 <motion.div
                   key={project.id}
                   variants={itemVariants}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className={`group relative overflow-hidden rounded-2xl transition-all duration-300 cursor-pointer ${
+                  whileHover={{ y: -5 }}
+                  className={`group relative overflow-hidden rounded-2xl transition-all duration-300 cursor-pointer hover:z-10 ${
                     isFeatured
                       ? 'bg-gradient-to-br from-card via-card/95 to-primary/10 border-2 border-primary/30 shadow-xl hover:shadow-2xl'
                       : 'bg-gradient-to-br from-card via-card/95 to-primary/5 border border-primary/20 hover:border-primary/40 shadow-lg hover:shadow-xl'

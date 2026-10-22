@@ -4,13 +4,11 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 import { getBlogPostsByTag, getBlogPosts, BlogPost, getAllTags } from '@/lib/blog';
 
-// Set dynamic rendering to ensure real-time data
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 import { notFound } from 'next/navigation';
 import { Tag } from 'lucide-react';
 
-// This function is required for static site generation with Next.js when using output: 'export'
 export async function generateStaticParams(): Promise<{ tag: string }[]> {
   const tags = await getAllTags();
 
@@ -19,7 +17,6 @@ export async function generateStaticParams(): Promise<{ tag: string }[]> {
   }));
 }
 
-// Generate metadata for SEO
 export async function generateMetadata(props: { params: Promise<{ tag: string }> }): Promise<Metadata> {
   const params = await props.params;
   const tag = params.tag;
@@ -67,7 +64,6 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4">
-        {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
           <div className="inline-flex items-center justify-center mb-6">
             <Tag className="w-8 h-8 text-primary mr-3" />
@@ -80,7 +76,6 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
           </p>
         </div>
 
-        {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
@@ -115,7 +110,7 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
                   <div className="flex items-center mt-auto pt-4 border-t border-gray-100 dark:border-gray-700">
                     <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
                       <Image
-                        src={post.author.avatar}
+                        src={post.author.avatar || '/images/default-avatar.svg'}
                         alt={post.author.name}
                         width={32}
                         height={32}
@@ -130,7 +125,6 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
           ))}
         </div>
 
-        {/* Back to Blog */}
         <div className="text-center mt-16">
           <Link
             href="/blog"

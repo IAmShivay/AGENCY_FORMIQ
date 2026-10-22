@@ -4,12 +4,10 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 import { getBlogPostsByCategory, getBlogPosts, BlogPost, getAllCategories } from '@/lib/blog';
 
-// Set dynamic rendering to ensure real-time data
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 import { notFound } from 'next/navigation';
 
-// Generate static params for all categories at build time
 export async function generateStaticParams(): Promise<{ category: string }[]> {
   const categories = await getAllCategories();
 
@@ -18,7 +16,6 @@ export async function generateStaticParams(): Promise<{ category: string }[]> {
   }));
 }
 
-// Generate metadata for SEO
 export async function generateMetadata(props: { params: Promise<{ category: string }> }): Promise<Metadata> {
   const params = await props.params;
   const category = params.category;
@@ -63,7 +60,6 @@ export default async function CategoryPage(props: { params: Promise<{ category: 
     notFound();
   }
 
-  // Categories for filtering
   const categories = [
     { name: 'All', slug: 'all' },
     { name: 'Web Development', slug: 'web-development' },
@@ -75,7 +71,6 @@ export default async function CategoryPage(props: { params: Promise<{ category: 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4">
-        {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary">
             {formattedCategory} Articles
@@ -84,7 +79,6 @@ export default async function CategoryPage(props: { params: Promise<{ category: 
             Explore our collection of articles about {formattedCategory.toLowerCase()}.
           </p>
 
-          {/* Category Filter */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {categories.map((cat) => (
               <Link
@@ -102,7 +96,6 @@ export default async function CategoryPage(props: { params: Promise<{ category: 
           </div>
         </div>
 
-        {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
@@ -137,7 +130,7 @@ export default async function CategoryPage(props: { params: Promise<{ category: 
                   <div className="flex items-center mt-auto pt-4 border-t border-gray-100 dark:border-gray-700">
                     <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
                       <Image
-                        src={post.author.avatar}
+                        src={post.author.avatar || '/images/default-avatar.svg'}
                         alt={post.author.name}
                         width={32}
                         height={32}
@@ -152,7 +145,6 @@ export default async function CategoryPage(props: { params: Promise<{ category: 
           ))}
         </div>
 
-        {/* Empty State */}
         {posts.length === 0 && (
           <div className="text-center py-16">
             <div className="bg-white dark:bg-gray-800 max-w-md mx-auto rounded-xl shadow-md p-8">
