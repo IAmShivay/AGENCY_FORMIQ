@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import './globals.css';
 
 export default function GlobalError({
@@ -25,12 +26,12 @@ export default function GlobalError({
             >
               Try again
             </button>
-            <a
+            <Link
               href="/"
               className="px-6 py-3 rounded-full border border-gray-300 text-gray-900 font-medium hover:bg-gray-100 transition-colors"
             >
               Go to homepage
-            </a>
+            </Link>
           </div>
           <p className="mt-8 text-sm text-gray-500">
             Need help?{' '}
