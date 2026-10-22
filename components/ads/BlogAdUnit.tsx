@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { ADSENSE_PUBLISHER_ID } from "@/lib/adsense";
 
 interface BlogAdUnitProps {
   slot: string;
@@ -10,8 +11,6 @@ interface BlogAdUnitProps {
   label?: string;
 }
 
-// Reusable AdSense unit - ONLY used inside /blog routes
-// Publisher ID from env NEXT_PUBLIC_ADSENSE_ID or fallback placeholder
 export default function BlogAdUnit({
   slot,
   publisherId,
@@ -19,7 +18,7 @@ export default function BlogAdUnit({
   className = "",
   label = "Advertisement",
 }: BlogAdUnitProps) {
-  const pubId = publisherId || process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-0000000000000000";
+  const pubId = publisherId || ADSENSE_PUBLISHER_ID;
   const isPlaceholder = pubId.includes("0000000000000000");
 
   useEffect(() => {

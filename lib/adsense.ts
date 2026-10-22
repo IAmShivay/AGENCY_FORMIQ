@@ -1,0 +1,1 @@
+export const ADSENSE_PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-9499003155506450';
