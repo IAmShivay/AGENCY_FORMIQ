@@ -225,20 +225,20 @@ export default function DomainSearchPage() {
 
       {/* Search Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 md:p-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+        <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-xl p-6 md:p-8">
+          <h2 className="text-2xl font-bold text-foreground dark:text-white mb-6 text-center">
             Search for your domain name
           </h2>
           <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-grow">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                <Search className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
               </div>
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="focus:ring-primary focus:border-primary block w-full rounded-md pl-10 sm:text-lg border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-white py-3"
+                className="focus:ring-primary focus:border-primary block w-full rounded-md pl-10 sm:text-lg border-border dark:border-neutral-700 dark:bg-neutral-700 dark:text-white py-3"
                 placeholder="Enter your domain name"
               />
             </div>
@@ -258,7 +258,7 @@ export default function DomainSearchPage() {
                   setSearchTerm(searchTerm || 'example');
                   handleSearch({ preventDefault: () => {} } as React.FormEvent);
                 }}
-                className="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="px-4 py-2 bg-muted dark:bg-neutral-700 rounded-full text-sm font-medium text-foreground dark:text-neutral-300 hover:bg-muted dark:hover:bg-neutral-600 transition-colors"
               >
                 {ext.name}
               </button>
@@ -270,20 +270,20 @@ export default function DomainSearchPage() {
       {/* Search Results */}
       {searchResults.length > 0 && (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Search Results</h2>
+          <h2 className="text-2xl font-bold text-foreground dark:text-white mb-6">Search Results</h2>
 
-          <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+          <div className="bg-card dark:bg-neutral-800 shadow-md rounded-lg overflow-hidden">
+            <ul className="divide-y divide-border dark:divide-neutral-700">
               {searchResults.map((result) => (
-                <li key={result.domain} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <li key={result.domain} className="px-6 py-4 hover:bg-muted dark:hover:bg-neutral-700 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       {result.available ? (
-                        <Check className="h-5 w-5 text-green-500 mr-3" />
+                        <Check className="h-5 w-5 text-foreground mr-3" />
                       ) : (
-                        <X className="h-5 w-5 text-red-500 mr-3" />
+                        <X className="h-5 w-5 text-foreground mr-3" />
                       )}
-                      <span className="text-lg font-medium text-gray-900 dark:text-white">
+                      <span className="text-lg font-medium text-foreground dark:text-white">
                         {result.domain}
                       </span>
                       {result.popular && (
@@ -295,14 +295,14 @@ export default function DomainSearchPage() {
                     <div className="flex items-center">
                       {result.available ? (
                         <>
-                          <span className="text-lg font-medium text-gray-900 dark:text-white mr-4">
+                          <span className="text-lg font-medium text-foreground dark:text-white mr-4">
                             ${result.price}/year
                           </span>
                           <button
                             onClick={() => toggleDomainSelection(result.domain)}
                             className={`px-4 py-2 rounded-md text-sm font-medium ${
                               selectedDomains.includes(result.domain)
-                                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                                ? 'bg-muted text-foreground dark:bg-neutral-900 dark:text-neutral-200'
                                 : 'bg-primary text-white hover:bg-primary/90'
                             } transition-colors`}
                           >
@@ -310,7 +310,7 @@ export default function DomainSearchPage() {
                           </button>
                         </>
                       ) : (
-                        <span className="text-sm font-medium text-red-500">
+                        <span className="text-sm font-medium text-foreground">
                           Not Available
                         </span>
                       )}
@@ -332,14 +332,14 @@ export default function DomainSearchPage() {
                   const domainInfo = searchResults.find(r => r.domain === domain);
                   return (
                     <li key={domain} className="flex justify-between">
-                      <span className="font-medium text-gray-800 dark:text-gray-200">{domain}</span>
-                      <span className="font-medium text-gray-800 dark:text-gray-200">${domainInfo?.price}/year</span>
+                      <span className="font-medium text-foreground dark:text-neutral-200">{domain}</span>
+                      <span className="font-medium text-foreground dark:text-neutral-200">${domainInfo?.price}/year</span>
                     </li>
                   );
                 })}
                 <li className="flex justify-between pt-4 border-t border-primary/20 dark:border-primary/20">
-                  <span className="font-bold text-gray-900 dark:text-white">Total</span>
-                  <span className="font-bold text-gray-900 dark:text-white">
+                  <span className="font-bold text-foreground dark:text-white">Total</span>
+                  <span className="font-bold text-foreground dark:text-white">
                     ${selectedDomains.reduce((sum, domain) => {
                       const domainInfo = searchResults.find(r => r.domain === domain);
                       return sum + (domainInfo?.price || 0);
@@ -388,27 +388,27 @@ export default function DomainSearchPage() {
       />
 
       {/* Related Services */}
-      <div className="py-16 bg-white dark:bg-gray-900">
+      <div className="py-16 bg-card dark:bg-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-base text-primary dark:text-primary/70 font-semibold tracking-wide uppercase">More Services</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-foreground dark:text-white sm:text-4xl">
               Complete Your Online Presence
             </p>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-300 mx-auto">
+            <p className="mt-4 max-w-2xl text-xl text-muted-foreground dark:text-neutral-300 mx-auto">
               Explore our other services to enhance your website and reach more customers.
             </p>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {/* Web Hosting */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="p-6">
                 <div className="w-12 h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Server className="h-6 w-6 text-primary dark:text-primary/70" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Web Hosting</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                <h3 className="text-xl font-bold text-foreground dark:text-white mb-2">Web Hosting</h3>
+                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
                   Fast and reliable hosting solutions for your website with 99.9% uptime guarantee.
                 </p>
                 <Link href="/services/hosting" className="text-primary dark:text-primary/70 font-medium hover:text-primary/80 inline-flex items-center">
@@ -418,13 +418,13 @@ export default function DomainSearchPage() {
             </div>
 
             {/* Cloud Services */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="p-6">
                 <div className="w-12 h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Cloud className="h-6 w-6 text-primary dark:text-primary/70" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Cloud Services</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                <h3 className="text-xl font-bold text-foreground dark:text-white mb-2">Cloud Services</h3>
+                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
                   Scalable cloud solutions for businesses of all sizes with flexible resources.
                 </p>
                 <Link href="/services/cloud" className="text-primary dark:text-primary/70 font-medium hover:text-primary/80 inline-flex items-center">
@@ -434,13 +434,13 @@ export default function DomainSearchPage() {
             </div>
 
             {/* Email Services */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="p-6">
                 <div className="w-12 h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Mail className="h-6 w-6 text-primary dark:text-primary/70" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Email Services</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                <h3 className="text-xl font-bold text-foreground dark:text-white mb-2">Email Services</h3>
+                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
                   Professional email solutions with your domain name for a consistent brand identity.
                 </p>
                 <Link href="/services/email" className="text-primary dark:text-primary/70 font-medium hover:text-primary/80 inline-flex items-center">
@@ -450,13 +450,13 @@ export default function DomainSearchPage() {
             </div>
 
             {/* Marketing Tools */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="p-6">
                 <div className="w-12 h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <BarChart4 className="h-6 w-6 text-primary dark:text-primary/70" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Marketing Tools</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                <h3 className="text-xl font-bold text-foreground dark:text-white mb-2">Marketing Tools</h3>
+                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
                   Comprehensive marketing tools to grow your online presence and reach more customers.
                 </p>
                 <Link href="/services/marketing" className="text-primary dark:text-primary/70 font-medium hover:text-primary/80 inline-flex items-center">

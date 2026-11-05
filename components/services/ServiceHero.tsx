@@ -50,7 +50,7 @@ const ServiceHero: React.FC<ServiceHeroProps> = ({ title, description, imagePath
           </div>
           <div className="relative h-64 sm:h-80 md:h-96 lg:h-full">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 dark:from-primary/10 dark:to-accent/10 rounded-xl transform rotate-3"></div>
-            <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-xl shadow-lg transform -rotate-3 overflow-hidden">
+            <div className="absolute inset-0 bg-card dark:bg-neutral-800 rounded-xl shadow-lg transform -rotate-3 overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center">
                 <Image
                   src={imagePath}

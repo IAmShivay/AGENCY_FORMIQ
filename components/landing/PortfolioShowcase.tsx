@@ -259,7 +259,7 @@ const PortfolioShowcase = () => {
                       <Button
                         size="sm"
                         variant="secondary"
-                        className="bg-white/90 hover:bg-white text-black"
+                        className="bg-white/90 hover:bg-white text-foreground"
                         onClick={() => openProjectModal(project)}
                       >
                         <Eye className="w-4 h-4 mr-1" />
@@ -291,8 +291,8 @@ const PortfolioShowcase = () => {
 
                     {/* Results */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center text-green-600">
-                        <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                      <div className="flex items-center text-foreground">
+                        <div className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></div>
                         <span className="text-sm font-medium">{project.results}</span>
                       </div>
                       <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />

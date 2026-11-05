@@ -163,7 +163,7 @@ const SocialProof = () => {
                     <p className="text-xs opacity-90">{team.description}</p>
                   </div>
                   <div className="absolute top-3 right-3">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                   </div>
                 </motion.div>
               ))}
@@ -203,7 +203,7 @@ const SocialProof = () => {
                 {/* Result Highlight - Fixed position */}
                 <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-md p-2 mb-3 border border-primary/20 relative z-10">
                   <p className="text-primary font-semibold text-xs flex items-center">
-                    <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                    <span className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></span>
                     {testimonial.result}
                   </p>
                 </div>
@@ -218,7 +218,7 @@ const SocialProof = () => {
                       height={40}
                       className="rounded-full mr-3 border-2 border-primary/20"
                     />
-                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-white"></div>
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold text-sm truncate">{testimonial.name}</p>

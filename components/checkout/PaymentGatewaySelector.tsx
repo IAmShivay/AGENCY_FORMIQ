@@ -36,7 +36,7 @@ const PaymentGatewaySelector: React.FC<PaymentGatewaySelectorProps> = ({
 
   return (
     <div className="mt-6">
-      <div className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+      <div className="text-lg font-medium text-foreground dark:text-white mb-4">
         Select Payment Method
       </div>
       <div className="space-y-4">
@@ -46,11 +46,11 @@ const PaymentGatewaySelector: React.FC<PaymentGatewaySelectorProps> = ({
             className={`relative rounded-lg border p-4 flex items-center cursor-pointer transition-all ${
               selectedGateway === option.id
                 ? 'border-primary bg-primary/10 dark:bg-primary/10 dark:border-primary/70'
-                : 'border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
+                : 'border-border dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-600'
             }`}
             onClick={() => onSelect(option.id)}
           >
-            <div className="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-md overflow-hidden">
+            <div className="flex-shrink-0 h-12 w-12 flex items-center justify-center bg-card dark:bg-neutral-800 rounded-md overflow-hidden">
               <div className="relative h-8 w-8">
                 <Image
                   src={option.icon}
@@ -61,10 +61,10 @@ const PaymentGatewaySelector: React.FC<PaymentGatewaySelectorProps> = ({
               </div>
             </div>
             <div className="ml-4 flex-1">
-              <div className="text-base font-medium text-gray-900 dark:text-white">
+              <div className="text-base font-medium text-foreground dark:text-white">
                 {option.name}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-sm text-muted-foreground dark:text-neutral-400">
                 {option.description}
               </div>
             </div>
@@ -73,11 +73,11 @@ const PaymentGatewaySelector: React.FC<PaymentGatewaySelectorProps> = ({
                 className={`h-5 w-5 rounded-full border flex items-center justify-center ${
                   selectedGateway === option.id
                     ? 'border-primary bg-primary dark:border-primary/70 dark:bg-primary/70'
-                    : 'border-gray-300 dark:border-gray-600'
+                    : 'border-border dark:border-neutral-600'
                 }`}
               >
                 {selectedGateway === option.id && (
-                  <div className="h-2 w-2 rounded-full bg-white"></div>
+                  <div className="h-2 w-2 rounded-full bg-card"></div>
                 )}
               </div>
             </div>

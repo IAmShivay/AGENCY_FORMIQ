@@ -1,9 +1,22 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { ArrowRight, CheckCircle, Phone, Sparkles, Volume2, VolumeX, RotateCcw, Star, ShieldCheck, Zap } from "lucide-react";
+import dynamic from 'next/dynamic';
+import { ArrowRight, Check, Phone, Volume2, VolumeX, RotateCcw, Star } from "lucide-react";
 import LeadFormOverlay from './LeadFormOverlay';
+import Magnetic from './studio/Magnetic';
 import { getHeroMedia, DEFAULT_HERO_MEDIA, type HeroMedia } from '@/lib/siteContent';
+import { gsap, SplitText, useGSAP, introReady, shouldPlayEntrance } from '@/lib/studio-motion';
+
+// Canvas backdrop is client-only and off the critical path.
+const AttentionField = dynamic(() => import('./studio/AttentionField'), { ssr: false });
+
+/** WhatsApp mark in currentColor, so it follows the monochrome theme. */
+const WhatsAppGlyph = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
+    <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z" />
+  </svg>
+);
 
 const Hero = () => {
   const [showLeadForm, setShowLeadForm] = useState(false);
@@ -11,6 +24,22 @@ const Hero = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [isEnded, setIsEnded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const root = useRef<HTMLDivElement>(null);
+
+  // Entrance: headline words rise out of line masks, then the rest follows.
+  useGSAP(() => {
+    if (!shouldPlayEntrance()) return;
+    gsap.set('[data-hero-title]', { autoAlpha: 0 });
+    gsap.set('[data-hero-in]', { y: 28, autoAlpha: 0 });
+    Promise.all([introReady, document.fonts.ready]).then(() => {
+      if (!root.current) return;
+      const split = SplitText.create('[data-hero-title]', { type: 'words,lines', mask: 'lines' });
+      gsap.set('[data-hero-title]', { autoAlpha: 1 });
+      gsap.timeline({ defaults: { ease: 'expo.out' } })
+        .from(split.words, { yPercent: 110, duration: 1.2, stagger: 0.06 })
+        .to('[data-hero-in]', { y: 0, autoAlpha: 1, duration: 1.1, stagger: 0.07 }, 0.3);
+    });
+  }, { scope: root });
 
   useEffect(() => {
     getHeroMedia().then(setMedia);
@@ -87,113 +116,98 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative w-full bg-background overflow-hidden">
-      {/* Premium mesh gradients */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-[700px] h-[700px] bg-primary/[0.06] rounded-full blur-[120px]" />
-        <div className="absolute top-20 -left-40 w-[500px] h-[500px] bg-primary/[0.04] rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[300px] bg-gradient-to-t from-primary/[0.03] to-transparent blur-2xl" />
-      </div>
-      {/* Subtle dot grid */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`, backgroundSize: '24px 24px' }} />
+    <div ref={root} data-hero className="relative w-full bg-background overflow-hidden">
+      <AttentionField />
+      {/* Keeps the copy legible where the crowd drifts behind it */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_60%_55%_at_25%_42%,hsl(var(--background)/0.94)_35%,transparent_80%)]" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 sm:pt-28 sm:pb-10 md:pt-32 md:pb-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 sm:pt-32 md:pt-36 lg:pb-28">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr,0.9fr] gap-12 lg:gap-14 items-center">
 
-          <div className="text-center lg:text-left space-y-6">
-            {/* Eyebrow - premium pill with trust */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-card border border-border shadow-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          <div className="space-y-7">
+            <div data-hero-in className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] sm:text-xs uppercase tracking-[0.16em] text-muted-foreground">
+              <span className="inline-flex items-center gap-2 text-foreground">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-foreground opacity-60" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-foreground" />
+                </span>
+                Kolkata · Durgapur · Asansol
               </span>
-              <span className="text-xs sm:text-[13px] font-semibold text-foreground">Serving Kolkata, Durgapur & Asansol</span>
-              <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground border-l border-border pl-2.5 ml-1">
-                <Star className="w-3 h-3 text-amber-500 fill-amber-500" /> 4.9/5 · 50+ clients
-              </span>
+              <span className="hidden sm:inline-block w-6 h-px bg-border" />
+              <span className="inline-flex items-center gap-1"><Star className="w-3 h-3 fill-current" /> 4.9/5 · 50+ clients</span>
             </div>
 
-            <h1 className="text-[2rem] sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold leading-[1.05] tracking-tight text-foreground">
-              Get More Customers{' '}
-              <span className="relative inline-block">
-                <span className="relative z-10 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Without the Confusion</span>
-                <div className="absolute bottom-1 left-0 right-0 h-3 bg-primary/10 -rotate-1 rounded-sm" />
-              </span>
+            <h1 data-hero-title className="text-[2.6rem] leading-[0.98] min-[400px]:text-5xl sm:text-6xl lg:text-[4.6rem] xl:text-[5.4rem] font-bold tracking-[-0.05em] text-foreground">
+              Get more customers <span className="text-outline">without</span> the confusion.
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0">
+            <p data-hero-in className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
               We build your website, run your ads, and manage your social media.
               You focus on your business. Starting at just{' '}
-              <span className="text-foreground font-bold bg-primary/10 px-2 py-0.5 rounded-lg border border-primary/10">Rs 6,999/month</span>
+              <span className="text-foreground font-semibold underline decoration-1 underline-offset-4">Rs 6,999/month</span>
             </p>
 
-            {/* Benefits - premium check list with subtle bg */}
-            <div className="space-y-2.5 max-w-md mx-auto lg:mx-0 p-3.5 rounded-2xl bg-card border border-border/60 shadow-sm">
+            <ul data-hero-in className="space-y-2.5 max-w-md">
               {[
                 "Website + Ads + Social Media — all included",
                 "No contracts. Cancel anytime.",
                 "We can meet you in person — we're local",
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-2.5 text-sm sm:text-[14px] text-foreground">
-                  <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
-                  </div>
+                <li key={i} className="flex items-center gap-3 text-sm sm:text-[15px] text-foreground">
+                  <span className="w-5 h-5 rounded-full border border-foreground/25 flex items-center justify-center flex-shrink-0">
+                    <Check className="w-3 h-3" strokeWidth={3} />
+                  </span>
                   <span className="font-medium">{item}</span>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-1">
-              <button onClick={() => setShowLeadForm(true)} className="w-full sm:w-auto px-6 py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-[15px] shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap group">
-                <Sparkles className="w-4 h-4 flex-shrink-0 group-hover:rotate-12 transition-transform" />
-                Free Consultation
-                <ArrowRight className="w-4 h-4 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" />
-              </button>
-              <a href="https://wa.me/919832078313" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" data-track-source="hero">
-                <button className="w-full px-6 py-3.5 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#1da851] transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-[15px] shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap">
-                  WhatsApp Us
-                  <ArrowRight className="w-4 h-4 flex-shrink-0" />
+            <div data-hero-in className="flex flex-col sm:flex-row flex-wrap gap-3 pt-1">
+              <Magnetic>
+                <button onClick={() => setShowLeadForm(true)} className="btn-ink btn-ink-invert h-14 px-7 bg-primary text-primary-foreground rounded-full font-semibold flex items-center justify-center gap-2 text-[15px] whitespace-nowrap group">
+                  Free consultation
+                  <ArrowRight className="w-4 h-4 flex-shrink-0 transition-transform duration-500 group-hover:translate-x-1" />
                 </button>
-              </a>
-              <a href="tel:+918918349445" className="w-full sm:w-auto hidden lg:block" data-track-source="hero">
-                <button className="w-full px-6 py-3.5 bg-card border border-border text-foreground rounded-xl font-semibold hover:bg-muted transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-[15px] shadow-sm hover:shadow whitespace-nowrap">
-                  <Phone className="w-4 h-4 flex-shrink-0" />
-                  +91 8918349445
-                </button>
+              </Magnetic>
+              <Magnetic>
+                <a href="https://wa.me/919832078313" target="_blank" rel="noopener noreferrer" data-track-source="hero" className="btn-ink h-14 px-7 border border-foreground/20 text-foreground rounded-full font-semibold flex items-center justify-center gap-2 text-[15px] whitespace-nowrap">
+                  <WhatsAppGlyph className="w-[18px] h-[18px]" />
+                  WhatsApp us
+                </a>
+              </Magnetic>
+              <a href="tel:+918918349445" data-track-source="hero" className="hidden lg:inline-flex h-14 px-4 items-center gap-2 text-[15px] font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap">
+                <Phone className="w-4 h-4" /> <span className="link-draw">+91 8918349445</span>
               </a>
             </div>
 
-            {/* Avatar stack + trust */}
-            <div className="flex items-center justify-center lg:justify-start gap-3 pt-1">
+            <div data-hero-in className="flex items-center gap-3 pt-1">
               <div className="flex -space-x-2">
-                {[0,1,2].map(i => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-background bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground shadow-sm" style={{ background: `hsl(${217 + i*15} 20% 92%)` }}>
-                    {['R','A','S'][i]}
-                  </div>
+                {['R', 'A', 'S'].map((ch) => (
+                  <div key={ch} className="w-9 h-9 rounded-full border-2 border-background bg-muted flex items-center justify-center text-xs font-bold text-foreground">{ch}</div>
                 ))}
-                <div className="w-8 h-8 rounded-full border-2 border-background bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shadow-sm">+47</div>
+                <div className="w-9 h-9 rounded-full border-2 border-background bg-foreground flex items-center justify-center text-[11px] font-bold text-background">+47</div>
               </div>
-              <div className="text-left">
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 text-amber-500 fill-amber-500" />)}
-                  <span className="text-xs font-bold text-foreground ml-1">4.9/5</span>
+              <div>
+                <div className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 text-foreground fill-current" />)}
+                  <span className="text-xs font-bold text-foreground ml-1.5">4.9/5</span>
                 </div>
-                <p className="text-[11px] text-muted-foreground">Trusted by 50+ local businesses</p>
+                <p className="text-[12px] text-muted-foreground">Trusted by 50+ local businesses</p>
               </div>
             </div>
           </div>
 
-          <div className="lg:sticky lg:top-24 space-y-3">
+          <div data-hero-in className="space-y-3">
             <div
-              className="relative rounded-[20px] overflow-hidden shadow-2xl border border-border bg-black cursor-pointer group"
+              data-cursor={isEnded ? 'Replay' : isMuted ? 'Sound' : 'Pause'}
+              className="relative rounded-[22px] overflow-hidden border border-border bg-neutral-950 cursor-pointer shadow-[0_40px_80px_-40px_hsl(0_0%_0%/0.45)]"
               onClick={handleVideoClick}
             >
-              {/* Floating badges */}
-              <div className="absolute top-3 left-3 z-20 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/95 backdrop-blur border border-border shadow-lg text-xs font-semibold text-foreground">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Live in 15 days
+              <div className="absolute top-3 left-3 z-20 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-background text-foreground font-mono text-[11px] uppercase tracking-[0.12em]">
+                <span className="w-1.5 h-1.5 rounded-full bg-foreground animate-pulse" /> Live in 15 days
               </div>
-              <div className="absolute bottom-3 left-3 z-20 hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-primary-foreground shadow-lg text-xs font-bold">
-                <Zap className="w-3.5 h-3.5" /> Rs 6,999/mo
+              <div className="absolute bottom-3 left-3 z-20 hidden sm:flex items-center px-3 py-1.5 rounded-full bg-foreground text-background font-mono text-[11px] uppercase tracking-[0.12em]">
+                Rs 6,999/mo
               </div>
 
               <video
@@ -219,54 +233,59 @@ const Hero = () => {
               </video>
 
               {isEnded && (
-                <div
-                  className="absolute inset-0 bg-black/65 backdrop-blur-sm flex flex-col items-center justify-center cursor-pointer z-30 transition-all"
-                  onClick={handleReplay}
-                >
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary flex items-center justify-center text-primary-foreground shadow-2xl hover:scale-110 active:scale-95 transition-transform mb-2">
-                    <RotateCcw className="w-8 h-8" />
+                <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center cursor-pointer z-30" onClick={handleReplay}>
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white flex items-center justify-center text-black hover:scale-105 active:scale-95 transition-transform mb-2">
+                    <RotateCcw className="w-7 h-7" />
                   </div>
-                  <p className="text-white font-bold text-sm sm:text-base drop-shadow-md">Replay Video</p>
+                  <p className="text-white font-mono text-xs uppercase tracking-[0.16em]">Replay</p>
                 </div>
               )}
 
               <button
                 type="button"
                 onClick={toggleMute}
-                className="absolute top-3 right-3 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all active:scale-95 border border-white/10 z-20"
+                className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center rounded-full bg-black/70 hover:bg-black text-white transition-colors active:scale-95 border border-white/10 z-20"
                 aria-label="Toggle Sound"
               >
-                {isMuted ? <VolumeX className="w-4 h-4 text-white" /> : <Volume2 className="w-4 h-4 text-white" />}
+                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
               </button>
-
-              {/* Bottom gradient */}
               <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
             </div>
 
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2" data-no-reveal>
               {media.gallery.map((img, i) => (
-                <div key={i} className="relative rounded-xl overflow-hidden aspect-[4/3] border border-border shadow-sm group/gallery hover:shadow-md transition-shadow">
-                  <img src={img.url} alt={img.label} className="w-full h-full object-cover group-hover/gallery:scale-105 transition-transform duration-500" />
+                <div key={i} className="relative rounded-xl overflow-hidden aspect-[4/3] border border-border group/gallery">
+                  <img src={img.url} alt={img.label} className="w-full h-full object-cover grayscale group-hover/gallery:grayscale-0 group-hover/gallery:scale-105 transition-[filter,transform] duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                  <span className="absolute bottom-1.5 left-2 text-white text-[9px] sm:text-[10px] font-semibold drop-shadow">{img.label}</span>
+                  <span className="absolute bottom-1.5 left-2 text-white font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.1em]">{img.label}</span>
                 </div>
               ))}
             </div>
 
-            {/* Micro stats bar under video */}
-            <div className="hidden sm:grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 border-y border-border" data-no-reveal>
               {[
                 { stat: "50+", label: "Businesses grown" },
                 { stat: "3×", label: "Avg. lead growth" },
-                { stat: "15 Days", label: "To go live" },
+                { stat: "15", label: "Days to go live" },
               ].map((item, i) => (
-                <div key={i} className="text-center p-2.5 rounded-xl bg-card border border-border shadow-sm">
-                  <div className="text-sm font-extrabold text-foreground">{item.stat}</div>
-                  <div className="text-[10px] text-muted-foreground font-medium">{item.label}</div>
+                <div key={i} className="py-3 px-2 text-center [&:not(:last-child)]:border-r border-border">
+                  <div className="text-xl sm:text-2xl font-bold tracking-[-0.04em] text-foreground font-display">{item.stat}</div>
+                  <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.12em] text-muted-foreground mt-0.5">{item.label}</div>
                 </div>
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Bottom rail */}
+      <div className="absolute bottom-12 sm:bottom-14 inset-x-0 pointer-events-none">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+          <span className="inline-flex items-center gap-2">
+            <span className="relative block w-px h-7 bg-border overflow-hidden"><span className="absolute inset-x-0 top-0 h-1/2 bg-foreground studio-cue" /></span>
+            Scroll
+          </span>
+          <span className="hidden lg:inline">Your ad pulls the crowd in · click to launch a campaign</span>
         </div>
       </div>
       <LeadFormOverlay open={showLeadForm} onClose={() => setShowLeadForm(false)} />

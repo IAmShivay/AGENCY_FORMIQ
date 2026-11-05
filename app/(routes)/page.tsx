@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Hero from '@/components/Hero';
+import ServicesBand from '@/components/studio/ServicesBand';
 import TrustBar from '@/components/landing/TrustBar';
 import HowItWorks from '@/components/landing/HowItWorks';
 import Services from '@/components/Services';
@@ -38,6 +39,7 @@ export default function Home() {
   return (
     <div className="overflow-x-clip">
       <Hero />
+      <ServicesBand />
       <TrustBar />
       <HowItWorks />
       <Services />

@@ -60,12 +60,12 @@ export default function MarketingToolsPage() {
 
       {/* Coming Soon */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-12">
+        <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-xl p-12">
           <div className="inline-flex items-center justify-center p-4 bg-primary/10 dark:bg-primary/10 rounded-full mb-6">
             <BarChart4 className="h-12 w-12 text-primary dark:text-primary/70" />
           </div>
-          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Coming Soon</h2>
-          <p className="mt-4 text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-extrabold text-foreground dark:text-white">Coming Soon</h2>
+          <p className="mt-4 text-xl text-muted-foreground dark:text-neutral-400 max-w-2xl mx-auto">
             We're working hard to bring you our marketing tools. Please check back soon or contact us for more information.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
@@ -78,7 +78,7 @@ export default function MarketingToolsPage() {
             </Link>
             <Link
               href="/services/domains"
-              className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="inline-flex items-center px-6 py-3 border border-border dark:border-neutral-600 text-base font-medium rounded-md text-foreground dark:text-neutral-300 bg-card dark:bg-neutral-800 hover:bg-muted dark:hover:bg-neutral-700"
             >
               Explore Other Services
             </Link>

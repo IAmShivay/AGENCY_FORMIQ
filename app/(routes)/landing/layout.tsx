@@ -23,11 +23,11 @@ export default function LandingLayout({ children }: { children: ReactNode }) {
             {/* Contact Info */}
             <div className="hidden lg:flex items-center space-x-4 text-sm">
               <div className="flex items-center group cursor-pointer">
-                <div className="flex items-center justify-center w-6 h-6 bg-green-100 rounded-full mr-2 group-hover:bg-green-200 transition-colors">
-                  <Phone className="w-3 h-3 text-green-600" />
+                <div className="flex items-center justify-center w-6 h-6 bg-muted rounded-full mr-2 group-hover:bg-muted transition-colors">
+                  <Phone className="w-3 h-3 text-foreground" />
                 </div>
                 <span className="mr-1">🇮🇳</span>
-                <span className="text-muted-foreground group-hover:text-green-600 transition-colors font-medium">+91 89183 49445</span>
+                <span className="text-muted-foreground group-hover:text-foreground transition-colors font-medium">+91 89183 49445</span>
               </div>
               <div className="flex items-center group cursor-pointer">
                 <div className="flex items-center justify-center w-6 h-6 bg-primary/10 rounded-full mr-2 group-hover:bg-primary/20 transition-colors">
@@ -37,10 +37,10 @@ export default function LandingLayout({ children }: { children: ReactNode }) {
                 <span className="text-muted-foreground group-hover:text-primary transition-colors font-medium">+1 224-523-8210</span>
               </div>
               <div className="flex items-center group cursor-pointer">
-                <div className="flex items-center justify-center w-6 h-6 bg-purple-100 rounded-full mr-2 group-hover:bg-purple-200 transition-colors">
-                  <Mail className="w-3 h-3 text-purple-600" />
+                <div className="flex items-center justify-center w-6 h-6 bg-muted rounded-full mr-2 group-hover:bg-muted transition-colors">
+                  <Mail className="w-3 h-3 text-foreground" />
                 </div>
-                <span className="text-muted-foreground group-hover:text-purple-600 transition-colors font-medium">hello@formiqstudio.in</span>
+                <span className="text-muted-foreground group-hover:text-foreground transition-colors font-medium">hello@formiqstudio.in</span>
               </div>
             </div>
           </div>

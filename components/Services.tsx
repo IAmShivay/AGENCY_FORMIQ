@@ -13,15 +13,17 @@ interface Service {
 }
 
 const services: Service[] = [
-  { icon: <HiGlobeAlt className="w-4 h-4 text-blue-600" />, title: "Website", desc: "Premium site that converts" },
-  { icon: <FaFacebookF className="w-3.5 h-3.5 text-[#1877F2]" />, title: "Meta Ads", desc: "Creatives + targeting + optimisation" },
-  { icon: <FaInstagram className="w-4 h-4 text-[#E1306C]" />, title: "Social Media", desc: "12 posts/mo · Reels & stories" },
-  { icon: <FaGoogle className="w-3.5 h-3.5 text-[#4285F4]" />, title: "Google Ads & SEO", desc: "Top 3 on Google" },
-  { icon: <SiGooglemaps className="w-4 h-4 text-emerald-600" />, title: "Google Business", desc: "#1 in Maps" },
-  { icon: <FaShopify className="w-3.5 h-3.5 text-[#96BF48]" />, title: "E-commerce", desc: "Store ready to sell" },
+  { icon: <HiGlobeAlt className="w-4 h-4 text-foreground" />, title: "Website", desc: "Premium site that converts" },
+  { icon: <FaFacebookF className="w-3.5 h-3.5 text-foreground" />, title: "Meta Ads", desc: "Creatives + targeting + optimisation" },
+  { icon: <FaInstagram className="w-4 h-4 text-foreground" />, title: "Social Media", desc: "12 posts/mo · Reels & stories" },
+  { icon: <FaGoogle className="w-3.5 h-3.5 text-foreground" />, title: "Google Ads & SEO", desc: "Top 3 on Google" },
+  { icon: <SiGooglemaps className="w-4 h-4 text-foreground" />, title: "Google Business", desc: "#1 in Maps" },
+  { icon: <FaShopify className="w-3.5 h-3.5 text-foreground" />, title: "E-commerce", desc: "Store ready to sell" },
 ];
 
-const Services = () => {
+/** `headingLevel` lets the /services page own the h1; on the homepage this stays an h2. */
+const Services = ({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' }) => {
+  const Heading = headingLevel;
   return (
     <section className="py-6 sm:py-8 bg-background relative overflow-hidden border-y border-border/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,9 +33,9 @@ const Services = () => {
             <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/15 text-[11px] font-semibold tracking-widest text-primary uppercase">
               <Sparkles className="w-3 h-3" /> Services
             </span>
-            <h2 className="text-base sm:text-xl font-bold text-foreground tracking-tight">
+            <Heading className="text-base sm:text-xl font-bold text-foreground tracking-tight">
               Everything you need to grow <span className="text-primary">— all included</span>
-            </h2>
+            </Heading>
           </div>
           <a href="/services" className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
             Explore all <ArrowRight className="w-3 h-3" />

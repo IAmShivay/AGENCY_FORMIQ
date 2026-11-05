@@ -290,7 +290,7 @@ const ApplicationsPortfolio = () => {
 
                   {/* Tech Tags */}
                   <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Technologies</h4>
+                    <h4 className="text-sm font-semibold text-muted-foreground dark:text-neutral-400 mb-2">Technologies</h4>
                     <div className="flex flex-wrap gap-2">
                       {filteredProjects[0].tags.map((tag, index) => (
                         <span
@@ -305,12 +305,12 @@ const ApplicationsPortfolio = () => {
 
                   {/* Key Features */}
                   <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Key Features</h4>
+                    <h4 className="text-sm font-semibold text-muted-foreground dark:text-neutral-400 mb-2">Key Features</h4>
                     <div className="grid grid-cols-2 gap-2">
                       {filteredProjects[0].features.map((feature, index) => (
                         <div key={index} className="flex items-center">
                           <div className="h-2 w-2 rounded-full bg-primary mr-2"></div>
-                          <span className="text-sm text-gray-600 dark:text-gray-300">{feature}</span>
+                          <span className="text-sm text-muted-foreground dark:text-neutral-300">{feature}</span>
                         </div>
                       ))}
                     </div>
@@ -318,7 +318,7 @@ const ApplicationsPortfolio = () => {
 
                   {/* Platforms */}
                   <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Available On</h4>
+                    <h4 className="text-sm font-semibold text-muted-foreground dark:text-neutral-400 mb-2">Available On</h4>
                     <div className="flex flex-wrap gap-2">
                       {filteredProjects[0].platforms.map((platform, index) => (
                         <span
@@ -350,12 +350,12 @@ const ApplicationsPortfolio = () => {
             {filteredProjects.slice(1).map((project) => (
               <div
                 key={project.id}
-                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col"
+                className="bg-card dark:bg-neutral-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col"
               >
                 <div className="relative">
                   <div className="h-56 overflow-hidden">
                     <div
-                      className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center transform hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full bg-muted dark:bg-neutral-700 flex items-center justify-center transform hover:scale-105 transition-transform duration-500"
                       style={{
                         backgroundImage: `url(${project.image})`,
                         backgroundSize: 'cover',
@@ -363,7 +363,7 @@ const ApplicationsPortfolio = () => {
                       }}
                     >
                       {!project.image.startsWith('http') && (
-                        <span className="text-gray-400">Image Placeholder</span>
+                        <span className="text-muted-foreground">Image Placeholder</span>
                       )}
                     </div>
                   </div>
@@ -377,10 +377,10 @@ const ApplicationsPortfolio = () => {
                 </div>
 
                 <div className="p-6 flex-grow flex flex-col">
-                  <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white">
+                  <h3 className="text-xl font-bold mb-3 text-foreground dark:text-white">
                     {project.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                  <p className="text-muted-foreground dark:text-neutral-300 mb-4 line-clamp-3">
                     {project.description}
                   </p>
 
@@ -403,13 +403,13 @@ const ApplicationsPortfolio = () => {
                       {project.tags.slice(0, 3).map((tag, index) => (
                         <span
                           key={index}
-                          className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-xs"
+                          className="px-2 py-1 bg-muted dark:bg-neutral-700 text-muted-foreground dark:text-neutral-300 rounded text-xs"
                         >
                           {tag}
                         </span>
                       ))}
                       {project.tags.length > 3 && (
-                        <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-xs">
+                        <span className="px-2 py-1 bg-muted dark:bg-neutral-700 text-muted-foreground dark:text-neutral-300 rounded text-xs">
                           +{project.tags.length - 3} more
                         </span>
                       )}
@@ -432,12 +432,12 @@ const ApplicationsPortfolio = () => {
 
           {/* Empty State */}
           {!loading && filteredProjects.length === 0 && (
-            <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-xl shadow">
-              <AppWindow className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+            <div className="text-center py-16 bg-card dark:bg-neutral-800 rounded-xl shadow">
+              <AppWindow className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
               {searchQuery || selectedPlatform !== 'All' ? (
                 <>
                   <h3 className="text-2xl font-bold mb-2">No applications found</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  <p className="text-muted-foreground dark:text-neutral-400 mb-6">
                     Try adjusting your search or filter to find what you're looking for.
                   </p>
                   <button
@@ -450,7 +450,7 @@ const ApplicationsPortfolio = () => {
               ) : (
                 <>
                   <h3 className="text-2xl font-bold mb-2">No applications available yet</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  <p className="text-muted-foreground dark:text-neutral-400 mb-6">
                     We're currently working on adding our application projects. Please check back later.
                   </p>
                 </>
@@ -461,24 +461,24 @@ const ApplicationsPortfolio = () => {
       </div>
 
       {/* Statistics Section */}
-      <div className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 py-16 mt-20">
+      <div className="bg-gradient-to-r from-muted to-muted/40 dark:from-neutral-800 dark:to-neutral-900 py-16 mt-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-4xl font-bold text-primary mb-2">20+</div>
-              <div className="text-gray-600 dark:text-gray-300">Applications Delivered</div>
+              <div className="text-muted-foreground dark:text-neutral-300">Applications Delivered</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-primary mb-2">5M+</div>
-              <div className="text-gray-600 dark:text-gray-300">User Downloads</div>
+              <div className="text-muted-foreground dark:text-neutral-300">User Downloads</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-primary mb-2">12</div>
-              <div className="text-gray-600 dark:text-gray-300">Industry Awards</div>
+              <div className="text-muted-foreground dark:text-neutral-300">Industry Awards</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-primary mb-2">98%</div>
-              <div className="text-gray-600 dark:text-gray-300">Client Satisfaction</div>
+              <div className="text-muted-foreground dark:text-neutral-300">Client Satisfaction</div>
             </div>
           </div>
         </div>
@@ -488,7 +488,7 @@ const ApplicationsPortfolio = () => {
       <div className="bg-primary/5 dark:bg-primary/10 py-20">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Have an application idea?</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
             Let's turn your vision into a powerful digital solution that users will love.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -498,7 +498,7 @@ const ApplicationsPortfolio = () => {
               </button>
             </a>
             <a href="/portfolio">
-              <button className="px-8 py-3 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-primary font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <button className="px-8 py-3 bg-card dark:bg-neutral-800 hover:bg-muted dark:hover:bg-neutral-700 text-primary font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 View All Applications
               </button>
             </a>
@@ -509,15 +509,15 @@ const ApplicationsPortfolio = () => {
       {/* Project Details Popup */}
       {isPopupOpen && selectedProject && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-card dark:bg-neutral-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             {/* Popup Header */}
-            <div className="sticky top-0 bg-white dark:bg-gray-800 p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center z-10">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedProject.title}</h2>
+            <div className="sticky top-0 bg-card dark:bg-neutral-800 p-6 border-b border-border dark:border-neutral-700 flex justify-between items-center z-10">
+              <h2 className="text-2xl font-bold text-foreground dark:text-white">{selectedProject.title}</h2>
               <button
                 onClick={closeProjectDetails}
-                className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="p-2 rounded-full bg-muted dark:bg-neutral-700 hover:bg-muted dark:hover:bg-neutral-600 transition-colors"
               >
-                <X className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                <X className="w-5 h-5 text-foreground dark:text-neutral-300" />
               </button>
             </div>
 
@@ -525,7 +525,7 @@ const ApplicationsPortfolio = () => {
             <div className="p-6">
               {/* Project Image */}
               <div
-                className="w-full h-80 bg-gray-200 dark:bg-gray-700 rounded-xl mb-8"
+                className="w-full h-80 bg-muted dark:bg-neutral-700 rounded-xl mb-8"
                 style={{
                   backgroundImage: `url(${selectedProject.image})`,
                   backgroundSize: 'cover',
@@ -538,14 +538,14 @@ const ApplicationsPortfolio = () => {
                 {/* Left Column - Project Details */}
                 <div className="md:col-span-2 space-y-6">
                   <div>
-                    <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Project Overview</h3>
-                    <p className="text-gray-700 dark:text-gray-300">{selectedProject.description}</p>
+                    <h3 className="text-xl font-bold mb-3 text-foreground dark:text-white">Project Overview</h3>
+                    <p className="text-foreground dark:text-neutral-300">{selectedProject.description}</p>
                   </div>
 
                   {/* Features */}
                   {selectedProject.features && selectedProject.features.length > 0 && (
                     <div>
-                      <h3 className="text-lg font-bold mb-3 text-gray-900 dark:text-white">Key Features</h3>
+                      <h3 className="text-lg font-bold mb-3 text-foreground dark:text-white">Key Features</h3>
                       <ul className="space-y-2">
                         {selectedProject.features.map((feature, index) => (
                           <li key={index} className="flex items-start gap-2">
@@ -554,7 +554,7 @@ const ApplicationsPortfolio = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
                             </div>
-                            <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                            <span className="text-foreground dark:text-neutral-300">{feature}</span>
                           </li>
                         ))}
                       </ul>
@@ -564,7 +564,7 @@ const ApplicationsPortfolio = () => {
                   {/* Technologies */}
                   {selectedProject.tags && selectedProject.tags.length > 0 && (
                     <div>
-                      <h3 className="text-lg font-bold mb-3 text-gray-900 dark:text-white">Technologies Used</h3>
+                      <h3 className="text-lg font-bold mb-3 text-foreground dark:text-white">Technologies Used</h3>
                       <div className="flex flex-wrap gap-2">
                         {selectedProject.tags.map((tag, index) => (
                           <span
@@ -580,13 +580,13 @@ const ApplicationsPortfolio = () => {
                 </div>
 
                 {/* Right Column - Project Metadata */}
-                <div className="bg-gray-50 dark:bg-gray-700/50 p-6 rounded-xl space-y-4">
+                <div className="bg-muted dark:bg-neutral-700/50 p-6 rounded-xl space-y-4">
                   {/* Year */}
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Year</h4>
-                      <p className="text-gray-700 dark:text-gray-300">{selectedProject.year}</p>
+                      <h4 className="text-sm font-semibold text-foreground dark:text-white">Year</h4>
+                      <p className="text-foreground dark:text-neutral-300">{selectedProject.year}</p>
                     </div>
                   </div>
 
@@ -594,10 +594,10 @@ const ApplicationsPortfolio = () => {
                   <div className="flex items-start gap-3">
                     <Layers className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Platforms</h4>
+                      <h4 className="text-sm font-semibold text-foreground dark:text-white">Platforms</h4>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {selectedProject.platforms.map((platform, index) => (
-                          <span key={index} className="inline-flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                          <span key={index} className="inline-flex items-center gap-1 text-foreground dark:text-neutral-300">
                             {getPlatformIcon(platform)}
                             {platform}{index < selectedProject.platforms.length - 1 ? ',' : ''}
                           </span>
@@ -623,10 +623,10 @@ const ApplicationsPortfolio = () => {
 
               {/* App Screenshots - Placeholder for future enhancement */}
               <div className="mt-8">
-                <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">App Screenshots</h3>
-                <div className="bg-gray-100 dark:bg-gray-700 rounded-xl p-8 text-center">
-                  <Smartphone className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                  <p className="text-gray-500 dark:text-gray-400">App screenshots will be available soon.</p>
+                <h3 className="text-xl font-bold mb-4 text-foreground dark:text-white">App Screenshots</h3>
+                <div className="bg-muted dark:bg-neutral-700 rounded-xl p-8 text-center">
+                  <Smartphone className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
+                  <p className="text-muted-foreground dark:text-neutral-400">App screenshots will be available soon.</p>
                 </div>
               </div>
             </div>

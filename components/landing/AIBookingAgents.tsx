@@ -12,24 +12,24 @@ const demos = [
     title: "Restaurant",
     desc: "Table booking in 60s — party size, date, time, upsell Chef special",
     icon: Utensils,
-    color: "from-orange-500/10 to-amber-500/10 border-orange-200/50",
-    iconColor: "text-orange-600",
+    color: "from-primary to-primary/80 border-border",
+    iconColor: "text-foreground",
   },
   {
     id: "agent_7501m5awkxrxedkatv8eb12wd7vf",
     title: "Dental Clinic",
     desc: "Appointment booking — name, phone, treatment, SMS reminder",
     icon: Stethoscope,
-    color: "from-emerald-500/10 to-teal-500/10 border-emerald-200/50",
-    iconColor: "text-emerald-600",
+    color: "from-primary to-primary/80 border-border",
+    iconColor: "text-foreground",
   },
   {
     id: "agent_5001m5ayj1kkevb8nv9ds3fysras",
     title: "Salon & Spa",
     desc: "Beauty booking — haircut, facial, spa, nail art, stylist pref",
     icon: Scissors,
-    color: "from-pink-500/10 to-rose-500/10 border-pink-200/50",
-    iconColor: "text-pink-600",
+    color: "from-primary to-primary/80 border-border",
+    iconColor: "text-foreground",
   },
 ];
 
@@ -156,14 +156,14 @@ export default function AIBookingAgents() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/15 text-[11px] font-semibold tracking-widest text-violet-600 uppercase">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-foreground/25 text-[11px] font-semibold tracking-widest text-foreground uppercase">
               <Bot className="w-3 h-3" /> Add-on
             </span>
             <h2 className="text-sm sm:text-base font-bold text-foreground">
               AI Booking Agents <span className="font-normal text-muted-foreground">— never miss a booking</span>
             </h2>
             <span className="hidden sm:inline-flex items-center gap-1 text-xs text-muted-foreground">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Live demos
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> Live demos
             </span>
           </div>
           <a href="/agents" className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
@@ -187,7 +187,7 @@ export default function AIBookingAgents() {
                 <h3 className="text-sm font-bold text-foreground">{d.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed mt-1 line-clamp-2 flex-1">{d.desc}</p>
                 {micError?.id === d.id && (
-                  <p className="text-[11px] text-red-500 mt-1.5 leading-snug">{micError.msg}</p>
+                  <p className="text-[11px] text-foreground mt-1.5 leading-snug">{micError.msg}</p>
                 )}
                 <button
                   onClick={async () => {
@@ -236,7 +236,7 @@ export default function AIBookingAgents() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="relative px-5 pt-5 pb-4 bg-gradient-to-br from-primary/10 via-transparent to-violet-500/10">
+            <div className="relative px-5 pt-5 pb-4 bg-gradient-to-br from-primary/10 via-transparent to-primary/80">
               <button onClick={endCall} className="absolute top-3 right-3 p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" aria-label="Close">
                 <X className="w-4 h-4" />
               </button>
@@ -282,7 +282,7 @@ export default function AIBookingAgents() {
                 </div>
               ))}
               {error && (
-                <p className="text-xs text-red-500 text-center pt-2">{error}</p>
+                <p className="text-xs text-foreground text-center pt-2">{error}</p>
               )}
             </div>
 
@@ -290,14 +290,14 @@ export default function AIBookingAgents() {
             <div className="px-5 py-4 border-t border-border flex items-center justify-center gap-3">
               <button
                 onClick={toggleMute}
-                className={`p-3 rounded-full transition-colors ${muted ? "bg-red-500 text-white" : "bg-muted text-foreground hover:bg-muted/80"}`}
+                className={`p-3 rounded-full transition-colors ${muted ? "bg-primary text-primary-foreground" : "bg-muted text-foreground hover:bg-muted/80"}`}
                 aria-label={muted ? "Unmute" : "Mute"}
               >
                 {muted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
               </button>
               <button
                 onClick={endCall}
-                className="px-5 py-3 rounded-full bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors inline-flex items-center gap-2"
+                className="px-5 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors inline-flex items-center gap-2"
               >
                 <PhoneOff className="w-4 h-4" /> End Call
               </button>

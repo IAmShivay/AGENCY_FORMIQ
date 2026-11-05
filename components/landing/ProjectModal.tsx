@@ -106,7 +106,7 @@ const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
                   <div className="text-center p-4 bg-primary/5 rounded-lg border border-primary/20">
                     <Target className="w-8 h-8 text-primary mx-auto mb-2" />
                     <div className="text-sm text-muted-foreground">Result</div>
-                    <div className="font-semibold text-green-600">{project.results}</div>
+                    <div className="font-semibold text-foreground">{project.results}</div>
                   </div>
                 </div>
 
@@ -131,10 +131,10 @@ const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
                 {/* Challenge */}
                 <div className="mb-8">
                   <h3 className="text-xl font-bold mb-4 flex items-center">
-                    <Target className="w-5 h-5 mr-2 text-orange-500" />
+                    <Target className="w-5 h-5 mr-2 text-foreground" />
                     Challenge
                   </h3>
-                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+                  <div className="bg-muted border border-border rounded-lg p-6">
                     <p className="text-muted-foreground leading-relaxed">{project.challenge}</p>
                   </div>
                 </div>
@@ -152,7 +152,7 @@ const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
                     <div className="grid md:grid-cols-2 gap-3">
                       {project.keyFeatures.map((feature: string, index: number) => (
                         <div key={index} className="flex items-center">
-                          <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                          <CheckCircle className="w-4 h-4 text-foreground mr-2 flex-shrink-0" />
                           <span className="text-sm">{feature}</span>
                         </div>
                       ))}
@@ -163,17 +163,17 @@ const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
                 {/* Results & Impact */}
                 <div className="mb-8">
                   <h3 className="text-xl font-bold mb-4 flex items-center">
-                    <Shield className="w-5 h-5 mr-2 text-green-500" />
+                    <Shield className="w-5 h-5 mr-2 text-foreground" />
                     Results & Impact
                   </h3>
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                  <div className="bg-muted border border-border rounded-lg p-6">
                     <p className="text-muted-foreground leading-relaxed mb-4">{project.impact}</p>
                     
                     {/* Metrics */}
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {project.metrics.map((metric: any, index: number) => (
                         <div key={index} className="text-center">
-                          <div className="text-2xl font-bold text-green-600">{metric.value}</div>
+                          <div className="text-2xl font-bold text-foreground">{metric.value}</div>
                           <div className="text-sm text-muted-foreground">{metric.label}</div>
                         </div>
                       ))}

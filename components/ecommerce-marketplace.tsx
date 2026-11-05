@@ -18,7 +18,7 @@ const data = {
       name: 'Amazon',
       description: "World's largest online marketplace",
       features: ['Product Listing', 'PPC Advertising', 'Brand Store', 'FBA Management'],
-      color: 'from-orange-500 to-yellow-500',
+      color: 'from-primary to-primary/80',
     },
     {
       name: 'Flipkart',

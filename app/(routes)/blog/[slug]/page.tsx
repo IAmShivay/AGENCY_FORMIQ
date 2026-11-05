@@ -118,7 +118,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
         }}
       />
 
-      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-16">
+      <div className="bg-muted dark:bg-neutral-900 min-h-screen pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -130,8 +130,8 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 >
                   {post.category}
                 </Link>
-                <span className="text-gray-400">•</span>
-                <span className="text-gray-500 dark:text-gray-400 text-sm flex items-center">
+                <span className="text-muted-foreground">•</span>
+                <span className="text-muted-foreground dark:text-neutral-400 text-sm flex items-center">
                   <Calendar className="w-4 h-4 mr-1" />
                   {formattedDate}
                 </span>
@@ -153,16 +153,16 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 </div>
                 <div>
                   <p className="font-medium">{post.author.name}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{post.author.role}</p>
+                  <p className="text-sm text-muted-foreground dark:text-neutral-400">{post.author.role}</p>
                 </div>
               </div>
 
-              <div className="flex items-center mb-6 text-gray-500 dark:text-gray-400 text-sm">
+              <div className="flex items-center mb-6 text-muted-foreground dark:text-neutral-400 text-sm">
                 <Clock className="w-4 h-4 mr-1" />
                 {post.readingTime} min read
               </div>
 
-              <div className="lg:hidden mt-4 mb-6 pt-4 border-t border-gray-100 dark:border-gray-700">
+              <div className="lg:hidden mt-4 mb-6 pt-4 border-t border-border dark:border-neutral-700">
                 <p className="font-medium mb-3 flex items-center">
                   <Share2 className="w-4 h-4 mr-2" />
                   Share this article
@@ -211,8 +211,8 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
               </div>
               {post.coverImage.includes('unsplash.com') && (
-                <p className="text-xs text-gray-400 dark:text-gray-500 text-right px-3 py-1">
-                  Photo from <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">Unsplash</a>
+                <p className="text-xs text-muted-foreground dark:text-neutral-500 text-right px-3 py-1">
+                  Photo from <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-muted-foreground">Unsplash</a>
                 </p>
               )}
             </div>
@@ -225,7 +225,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
             <div className="hidden lg:block lg:col-span-2">
               <div className="sticky top-24">
                 <div className="mb-8">
-                  <p className="font-medium mb-4 text-gray-700 dark:text-gray-300">Share</p>
+                  <p className="font-medium mb-4 text-foreground dark:text-neutral-300">Share</p>
                   <div className="flex flex-col space-y-3">
                     <a
                       href={`https://www.facebook.com/sharer/sharer.php?u=https://formiqstudio.in/blog/${post.slug}`}
@@ -260,19 +260,19 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
             </div>
 
             <div className="lg:col-span-7">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
+              <div className="bg-card dark:bg-neutral-800 rounded-2xl shadow-lg p-6 md:p-8">
                 <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-primary prose-a:text-primary prose-img:rounded-lg"
                      dangerouslySetInnerHTML={{ __html: safeContent }} />
 
                 <BlogAdUnit slot="3314049659" label="Advertisement — In Article" />
 
-                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+                <div className="mt-8 pt-6 border-t border-border dark:border-neutral-700">
                   <div className="flex flex-wrap gap-2">
                     {post.tags.map((tag) => (
                       <Link
                         key={tag}
                         href={`/blog/tag/${tag.toLowerCase().replace(/ /g, '-')}`}
-                        className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                        className="px-3 py-1 bg-muted dark:bg-neutral-700 text-foreground dark:text-neutral-300 rounded-full text-sm hover:bg-muted dark:hover:bg-neutral-600 transition-colors"
                       >
                         #{tag}
                       </Link>
@@ -281,7 +281,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
+              <div className="bg-card dark:bg-neutral-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
                 <h3 className="text-xl font-bold mb-4">About the Author</h3>
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
                   <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 border-2 border-primary">
@@ -295,8 +295,8 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                   </div>
                   <div className="text-center sm:text-left">
                     <p className="font-medium text-lg">{post.author.name}</p>
-                    <p className="text-gray-500 dark:text-gray-400 mb-3">{post.author.role}</p>
-                    <p className="text-gray-600 dark:text-gray-300">{post.author.bio}</p>
+                    <p className="text-muted-foreground dark:text-neutral-400 mb-3">{post.author.role}</p>
+                    <p className="text-muted-foreground dark:text-neutral-300">{post.author.bio}</p>
                   </div>
                 </div>
               </div>
@@ -304,16 +304,16 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
 
             <div className="lg:col-span-3">
               <div className="sticky top-24">
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div className="bg-card dark:bg-neutral-800 rounded-2xl shadow-lg p-6">
                   <h3 className="font-bold text-lg mb-4 text-primary">Subscribe to our Newsletter</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Stay updated with our latest insights on web development, design, and digital marketing.</p>
+                  <p className="text-sm text-muted-foreground dark:text-neutral-300 mb-4">Stay updated with our latest insights on web development, design, and digital marketing.</p>
                   <SidebarNewsletterForm />
                 </div>
 
                 <BlogAdUnit slot="1967424375" label="Advertisement — Sidebar" />
 
                 {relatedPosts.length > 0 && (
-                  <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mt-6">
+                  <div className="bg-card dark:bg-neutral-800 rounded-2xl shadow-lg p-6 mt-6">
                     <h3 className="font-bold text-lg mb-4 text-primary">Related Articles</h3>
                     <div className="space-y-4">
                       {relatedPosts.slice(0, 3).map((relatedPost) => (
@@ -331,7 +331,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                               <h4 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
                                 {relatedPost.title}
                               </h4>
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                              <p className="text-xs text-muted-foreground dark:text-neutral-400 mt-1">
                                 {new Date(relatedPost.date).toLocaleDateString('en-US', {
                                   month: 'short',
                                   day: 'numeric'
@@ -362,7 +362,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {relatedPosts.slice(0, 3).map((relatedPost) => (
                 <Link key={relatedPost.slug} href={`/blog/${relatedPost.slug}`} className="group">
-                  <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col">
+                  <div className="bg-card dark:bg-neutral-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col">
                     <div className="relative h-48">
                       <Image
                         src={relatedPost.coverImage}
@@ -381,10 +381,10 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                       <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
                         {relatedPost.title}
                       </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 mb-4">
+                      <p className="text-sm text-muted-foreground dark:text-neutral-300 line-clamp-3 mb-4">
                         {relatedPost.excerpt}
                       </p>
-                      <div className="flex items-center mt-auto pt-4 border-t border-gray-100 dark:border-gray-700">
+                      <div className="flex items-center mt-auto pt-4 border-t border-border dark:border-neutral-700">
                         <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
                           <Image
                             src={relatedPost.author.avatar || '/images/default-avatar.svg'}
@@ -396,7 +396,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                         </div>
                         <div className="flex-grow">
                           <p className="text-sm font-medium">{relatedPost.author.name}</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                          <p className="text-xs text-muted-foreground dark:text-neutral-400">
                             {new Date(relatedPost.date).toLocaleDateString('en-US', {
                               month: 'short',
                               day: 'numeric',
@@ -420,7 +420,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 <h3 className="text-2xl md:text-3xl font-bold mb-4">Join Our Community</h3>
                 <p className="text-lg mb-6">Get weekly insights on web development, design trends, and digital marketing strategies.</p>
                 <NewsletterForm />
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                <p className="text-sm text-muted-foreground dark:text-neutral-400 mt-4">
                   By subscribing, you agree to our Privacy Policy and consent to receive updates from our company.
                 </p>
               </div>
@@ -430,7 +430,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                   <div className="relative w-full max-w-sm">
                     <div className="absolute -top-12 -left-12 w-24 h-24 bg-primary/20 rounded-full"></div>
                     <div className="absolute -bottom-16 -right-16 w-32 h-32 bg-primary/20 rounded-full"></div>
-                    <div className="relative z-10 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl transform rotate-3">
+                    <div className="relative z-10 bg-card dark:bg-neutral-800 p-8 rounded-xl shadow-xl transform rotate-3">
                       <div className="flex items-center mb-4">
                         <div className="w-10 h-10 rounded-full overflow-hidden mr-3 border border-primary">
                           <Image
@@ -443,7 +443,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                         </div>
                         <div>
                           <p className="font-medium">Shiv Kumar Sharma</p>
-                          <p className="text-xs text-gray-500">Web Developer</p>
+                          <p className="text-xs text-muted-foreground">Web Developer</p>
                         </div>
                       </div>
                       <p className="text-sm italic">&quot;The formiqstudio newsletter has been an incredible resource for staying up-to-date with the latest web development trends. Highly recommended!&quot;</p>

@@ -67,7 +67,7 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
   }
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-16">
+    <div className="bg-muted dark:bg-neutral-900 min-h-screen pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto mb-16 text-center">
           <div className="inline-flex items-center justify-center mb-6">
@@ -76,7 +76,7 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
               #{formattedTag}
             </h1>
           </div>
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-xl text-muted-foreground dark:text-neutral-400 mb-8">
             Explore our collection of articles tagged with {formattedTag.toLowerCase()}.
           </p>
         </div>
@@ -84,7 +84,7 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
-              <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+              <div className="bg-card dark:bg-neutral-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                 <div className="relative h-56">
                   <Image
                     src={post.coverImage}
@@ -98,7 +98,7 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
                     <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
                       {post.category}
                     </span>
-                    <span className="ml-auto text-gray-500 dark:text-gray-400 text-sm">
+                    <span className="ml-auto text-muted-foreground dark:text-neutral-400 text-sm">
                       {new Date(post.date).toLocaleDateString('en-US', {
                         month: 'long',
                         day: 'numeric',
@@ -109,10 +109,10 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
                   <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
                     {post.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 flex-grow">
+                  <p className="text-muted-foreground dark:text-neutral-400 mb-4 flex-grow">
                     {post.excerpt}
                   </p>
-                  <div className="flex items-center mt-auto pt-4 border-t border-gray-100 dark:border-gray-700">
+                  <div className="flex items-center mt-auto pt-4 border-t border-border dark:border-neutral-700">
                     <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
                       <Image
                         src={post.author.avatar || '/images/default-avatar.svg'}

@@ -36,7 +36,7 @@ export default function SidebarNewsletterForm() {
 
   if (status === 'success') {
     return (
-      <p className="text-green-600 text-sm font-medium py-2">{message}</p>
+      <p className="text-foreground text-sm font-medium py-2">{message}</p>
     );
   }
 
@@ -48,7 +48,7 @@ export default function SidebarNewsletterForm() {
           placeholder="Your email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:outline-none"
+          className="w-full px-4 py-2 rounded-lg bg-muted dark:bg-neutral-700 focus:ring-2 focus:ring-primary focus:outline-none"
           required
           disabled={status === 'loading'}
         />
@@ -61,7 +61,7 @@ export default function SidebarNewsletterForm() {
         </button>
       </form>
       {status === 'error' && (
-        <p className="text-red-500 text-sm mt-2">{message}</p>
+        <p className="text-foreground text-sm mt-2">{message}</p>
       )}
     </div>
   );

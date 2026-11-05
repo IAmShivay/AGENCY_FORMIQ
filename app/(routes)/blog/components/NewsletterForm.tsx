@@ -55,10 +55,10 @@ export default function NewsletterForm() {
         </button>
       </form>
       {status === 'success' && (
-        <p className="text-green-600 text-sm mt-2">{message}</p>
+        <p className="text-foreground text-sm mt-2">{message}</p>
       )}
       {status === 'error' && (
-        <p className="text-red-500 text-sm mt-2">{message}</p>
+        <p className="text-foreground text-sm mt-2">{message}</p>
       )}
     </div>
   );

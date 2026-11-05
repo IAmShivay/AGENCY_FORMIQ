@@ -106,7 +106,7 @@ const PricingSection = () => {
               No hidden fees. No contracts. Same expert team that agencies charge{' '}
               <span className="font-semibold text-foreground">Rs 25,000+</span> for.
             </p>
-            <div className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-medium text-emerald-700">
+            <div className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full bg-muted border border-border text-xs font-medium text-foreground">
               <ShieldCheck className="w-3.5 h-3.5" /> 30-day money-back guarantee · No questions asked
             </div>
           </div>
@@ -144,7 +144,7 @@ const PricingSection = () => {
                         <span className="text-sm text-muted-foreground">{plan.period}</span>
                       </div>
                       {isPopular ? (
-                        <p className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full mt-2">Rs 233/day · Best value</p>
+                        <p className="inline-flex items-center gap-1 text-[11px] font-semibold text-foreground bg-muted border border-border px-2 py-0.5 rounded-full mt-2">Rs 233/day · Best value</p>
                       ) : (
                         <p className="text-[11px] text-muted-foreground mt-2 h-[18px]" />
                       )}
@@ -209,7 +209,7 @@ const PricingSection = () => {
                       <span className="text-sm text-muted-foreground">{plan.period}</span>
                     </div>
                     {plan.popular ? (
-                      <p className="inline-flex text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">Rs 233/day · Cancel anytime</p>
+                      <p className="inline-flex text-xs font-semibold text-foreground bg-muted border border-border px-2.5 py-1 rounded-full">Rs 233/day · Cancel anytime</p>
                     ) : (
                       <p className="text-xs text-muted-foreground h-5" />
                     )}

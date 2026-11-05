@@ -114,15 +114,15 @@ export default function SoftwareToolsPage() {
   const getPricingColor = (pricing: string) => {
     switch (pricing) {
       case 'Free':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+        return 'bg-muted text-foreground dark:bg-neutral-900/30 dark:text-neutral-300';
       case 'Freemium':
         return 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary/70';
       case 'Paid':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+        return 'bg-muted text-foreground dark:bg-neutral-900/30 dark:text-neutral-300';
       case 'Enterprise':
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        return 'bg-muted text-foreground dark:bg-neutral-700 dark:text-neutral-300';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        return 'bg-muted text-foreground dark:bg-neutral-700 dark:text-neutral-300';
     }
   };
 
@@ -163,7 +163,7 @@ export default function SoftwareToolsPage() {
   return (
     <div className="overflow-hidden">
       {/* Hero Section with advanced 3D-like elements */}
-      <div className="relative bg-gradient-to-br from-primary/5 via-primary/5 to-white dark:from-gray-900 dark:via-primary/5 dark:to-gray-900 min-h-[90vh] flex items-center py-20 px-4">
+      <div className="relative bg-gradient-to-br from-primary/5 via-primary/5 to-white dark:from-neutral-900 dark:via-primary/5 dark:to-neutral-900 min-h-[90vh] flex items-center py-20 px-4">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Gradient orbs */}
@@ -177,7 +177,7 @@ export default function SoftwareToolsPage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 0.2, scale: 1 }}
             transition={{ duration: 2, delay: 0.5 }}
-            className="absolute top-1/4 -right-40 w-[30rem] h-[30rem] rounded-full bg-gradient-to-l from-accent to-purple-500 blur-3xl dark:opacity-20"
+            className="absolute top-1/4 -right-40 w-[30rem] h-[30rem] rounded-full bg-gradient-to-l from-accent to-primary/80 blur-3xl dark:opacity-20"
           ></motion.div>
 
           {/* Animated grid pattern */}
@@ -271,7 +271,7 @@ export default function SoftwareToolsPage() {
               animate="visible"
               variants={containerVariants}
             >
-              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-sm mb-6">
+              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm rounded-full shadow-sm mb-6">
                 <Sparkles className="h-4 w-4 text-primary" />
                 <span className="text-sm font-medium text-primary">Next-Generation Tools</span>
               </motion.div>
@@ -281,7 +281,7 @@ export default function SoftwareToolsPage() {
                 Digital Workflow
               </motion.h1>
 
-              <motion.p variants={itemVariants} className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+              <motion.p variants={itemVariants} className="text-xl text-foreground dark:text-neutral-300 mb-8 leading-relaxed">
                 Discover our suite of cutting-edge software tools designed to enhance productivity,
                 streamline marketing efforts, and accelerate development workflows.
               </motion.p>
@@ -302,14 +302,14 @@ export default function SoftwareToolsPage() {
               <motion.div variants={itemVariants} className="mt-12 flex items-center gap-6">
                 <div className="flex -space-x-3">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xs font-medium">
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-neutral-800 bg-muted dark:bg-neutral-700 flex items-center justify-center text-xs font-medium">
                       {i}
                     </div>
                   ))}
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">Trusted by 1,000+ companies</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">From startups to enterprise organizations</div>
+                  <div className="text-sm font-medium text-foreground dark:text-white">Trusted by 1,000+ companies</div>
+                  <div className="text-xs text-muted-foreground dark:text-neutral-400">From startups to enterprise organizations</div>
                 </div>
               </motion.div>
             </motion.div>
@@ -323,7 +323,7 @@ export default function SoftwareToolsPage() {
             >
               {/* Main featured tool card */}
               <motion.div
-                className="absolute top-0 right-0 w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700 z-30"
+                className="absolute top-0 right-0 w-full max-w-md bg-card dark:bg-neutral-800 rounded-2xl shadow-2xl overflow-hidden border border-border dark:border-neutral-700 z-30"
                 initial={{ y: 50 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
@@ -331,7 +331,7 @@ export default function SoftwareToolsPage() {
                 <div className="h-40 bg-gradient-to-r from-primary to-primary relative overflow-hidden">
                   <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
                   <div className="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-md rounded-full">
-                    <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                    <Star className="w-5 h-5 text-muted-foreground fill-current" />
                   </div>
                   <div className="absolute bottom-4 left-4 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-medium text-white">
                     Featured Tool
@@ -342,16 +342,16 @@ export default function SoftwareToolsPage() {
                     <div className="p-3 rounded-xl bg-primary/10 text-primary">
                       <Zap className="h-6 w-6" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    <h3 className="text-xl font-bold text-foreground dark:text-white">
                       AI-Powered Productivity Suite
                     </h3>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 mb-6">
+                  <p className="text-muted-foreground dark:text-neutral-300 mb-6">
                     Boost your team's efficiency with our all-in-one productivity solution powered by advanced AI capabilities.
                   </p>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-1">
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800">
+                      <Badge variant="outline" className="bg-muted text-foreground border-border dark:bg-neutral-900/30 dark:text-neutral-400 dark:border-neutral-800">
                         New
                       </Badge>
                       <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 dark:bg-primary/10 dark:text-primary/70 dark:border-primary/20">
@@ -366,8 +366,8 @@ export default function SoftwareToolsPage() {
               </motion.div>
 
               {/* Background stacked cards for 3D effect */}
-              <div className="absolute top-10 right-10 w-full max-w-md h-[300px] bg-gray-100 dark:bg-gray-700 rounded-2xl shadow-lg z-20 transform rotate-[-6deg]"></div>
-              <div className="absolute top-16 right-5 w-full max-w-md h-[300px] bg-gray-200 dark:bg-gray-600 rounded-2xl shadow-lg z-10 transform rotate-[-12deg]"></div>
+              <div className="absolute top-10 right-10 w-full max-w-md h-[300px] bg-muted dark:bg-neutral-700 rounded-2xl shadow-lg z-20 transform rotate-[-6deg]"></div>
+              <div className="absolute top-16 right-5 w-full max-w-md h-[300px] bg-muted dark:bg-neutral-600 rounded-2xl shadow-lg z-10 transform rotate-[-12deg]"></div>
             </motion.div>
           </div>
         </div>
@@ -376,7 +376,7 @@ export default function SoftwareToolsPage() {
       {/* Search and Filter Section */}
       <div className="container mx-auto px-4">
         <motion.div
-          className="max-w-7xl mx-auto glass-effect rounded-2xl shadow-xl p-6 md:p-8 -mt-20 relative z-20 border border-white/20 dark:border-gray-800/30"
+          className="max-w-7xl mx-auto glass-effect rounded-2xl shadow-xl p-6 md:p-8 -mt-20 relative z-20 border border-white/20 dark:border-neutral-800/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -389,7 +389,7 @@ export default function SoftwareToolsPage() {
               <input
                 type="text"
                 placeholder="Search for tools, features, or categories..."
-                className="w-full pl-12 pr-4 py-4 bg-white/50 dark:bg-gray-800/50 border border-white/30 dark:border-gray-700/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-all duration-200 backdrop-blur-sm shadow-sm"
+                className="w-full pl-12 pr-4 py-4 bg-white/50 dark:bg-neutral-800/50 border border-white/30 dark:border-neutral-700/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-all duration-200 backdrop-blur-sm shadow-sm"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -400,17 +400,17 @@ export default function SoftwareToolsPage() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <div className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    <X className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                  <div className="p-1 rounded-full hover:bg-muted dark:hover:bg-neutral-700 transition-colors">
+                    <X className="h-4 w-4 text-muted-foreground dark:text-neutral-400" />
                   </div>
                 </motion.div>
               )}
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/30 dark:bg-gray-800/30 rounded-full backdrop-blur-sm">
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/30 dark:bg-neutral-800/30 rounded-full backdrop-blur-sm">
                 <Filter size={16} className="text-primary" />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Categories</span>
+                <span className="text-sm font-medium text-foreground dark:text-neutral-300">Categories</span>
               </div>
 
               <Tabs
@@ -419,28 +419,28 @@ export default function SoftwareToolsPage() {
                 onValueChange={setActiveCategory}
                 className="w-full sm:w-auto"
               >
-                <TabsList className="grid grid-cols-4 w-full sm:w-auto bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm p-1.5 rounded-full border border-white/10 dark:border-gray-700/10">
+                <TabsList className="grid grid-cols-4 w-full sm:w-auto bg-white/20 dark:bg-neutral-800/20 backdrop-blur-sm p-1.5 rounded-full border border-white/10 dark:border-neutral-700/10">
                   <TabsTrigger
                     value="all"
-                    className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm px-4 py-2 text-sm transition-all duration-200"
+                    className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm px-4 py-2 text-sm transition-all duration-200"
                   >
                     All
                   </TabsTrigger>
                   <TabsTrigger
                     value="productivity"
-                    className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm px-4 py-2 text-sm transition-all duration-200"
+                    className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm px-4 py-2 text-sm transition-all duration-200"
                   >
                     Productivity
                   </TabsTrigger>
                   <TabsTrigger
                     value="marketing"
-                    className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm px-4 py-2 text-sm transition-all duration-200"
+                    className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm px-4 py-2 text-sm transition-all duration-200"
                   >
                     Marketing
                   </TabsTrigger>
                   <TabsTrigger
                     value="development"
-                    className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm px-4 py-2 text-sm transition-all duration-200"
+                    className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm px-4 py-2 text-sm transition-all duration-200"
                   >
                     Development
                   </TabsTrigger>
@@ -463,7 +463,7 @@ export default function SoftwareToolsPage() {
               <div className="h-1 w-12 bg-gradient-to-r from-primary to-primary rounded-full"></div>
               <h2 className="text-sm font-medium text-primary uppercase tracking-wider">Browse Our Collection</h2>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 dark:text-white animated-gradient-text">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-foreground dark:text-white animated-gradient-text">
               {activeCategory === 'all' ? 'All Tools' :
                activeCategory === 'productivity' ? 'Productivity Tools' :
                activeCategory === 'marketing' ? 'Marketing Tools' : 'Development Tools'}
@@ -475,7 +475,7 @@ export default function SoftwareToolsPage() {
               {filteredTools.map((tool, index) => (
                 <motion.div
                   key={tool.id}
-                  className="group relative glass-effect rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-white/20 dark:border-gray-800/30 hover:border-primary/30 dark:hover:border-primary/30 hover:-translate-y-2"
+                  className="group relative glass-effect rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-white/20 dark:border-neutral-800/30 hover:border-primary/30 dark:hover:border-primary/30 hover:-translate-y-2"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 * index }}
@@ -496,7 +496,7 @@ export default function SoftwareToolsPage() {
                         >
                           {getCategoryIcon(tool.category)}
                         </motion.div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-300">
+                        <h3 className="text-xl font-bold text-foreground dark:text-white group-hover:text-primary transition-colors duration-300">
                           {tool.name}
                         </h3>
                       </div>
@@ -505,7 +505,7 @@ export default function SoftwareToolsPage() {
                       </div>
                     </div>
 
-                    <p className="text-gray-600 dark:text-gray-300 mb-8 line-clamp-3">
+                    <p className="text-muted-foreground dark:text-neutral-300 mb-8 line-clamp-3">
                       {tool.description}
                     </p>
 
@@ -514,21 +514,21 @@ export default function SoftwareToolsPage() {
                         <Badge
                           key={index}
                           variant="outline"
-                          className="bg-white/50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 border-white/30 dark:border-gray-700/30 hover:border-primary/50 transition-colors duration-200 backdrop-blur-sm"
+                          className="bg-white/50 dark:bg-neutral-800/50 text-foreground dark:text-neutral-300 border-white/30 dark:border-neutral-700/30 hover:border-primary/50 transition-colors duration-200 backdrop-blur-sm"
                         >
                           {tag}
                         </Badge>
                       ))}
                     </div>
 
-                    <div className="flex justify-between items-center pt-4 border-t border-white/20 dark:border-gray-700/30">
+                    <div className="flex justify-between items-center pt-4 border-t border-white/20 dark:border-neutral-700/30">
                       <Link
                         href={`/software-tools/${tool.category}`}
                         className="text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1 transition-colors duration-200"
                       >
                         View details <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
                       </Link>
-                      <Button variant="outline" size="sm" className="rounded-full border-white/30 dark:border-gray-700/30 backdrop-blur-sm" asChild>
+                      <Button variant="outline" size="sm" className="rounded-full border-white/30 dark:border-neutral-700/30 backdrop-blur-sm" asChild>
                         <Link
                           href={tool.link}
                           target="_blank"
@@ -545,21 +545,21 @@ export default function SoftwareToolsPage() {
             </div>
           ) : (
             <motion.div
-              className="glass-effect rounded-2xl p-16 text-center border border-white/20 dark:border-gray-800/30 shadow-xl"
+              className="glass-effect rounded-2xl p-16 text-center border border-white/20 dark:border-neutral-800/30 shadow-xl"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm mb-6 shadow-inner">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/30 dark:bg-neutral-800/30 backdrop-blur-sm mb-6 shadow-inner">
                 <Search className="h-8 w-8 text-primary/70" />
               </div>
-              <h3 className="text-2xl font-medium text-gray-900 dark:text-white mb-4">No tools found</h3>
-              <p className="text-gray-600 dark:text-gray-300 max-w-md mx-auto mb-8">
+              <h3 className="text-2xl font-medium text-foreground dark:text-white mb-4">No tools found</h3>
+              <p className="text-muted-foreground dark:text-neutral-300 max-w-md mx-auto mb-8">
                 We couldn't find any tools matching your search criteria. Try adjusting your filters or search terms.
               </p>
               <Button
                 variant="outline"
-                className="rounded-full border-white/30 dark:border-gray-700/30 backdrop-blur-sm"
+                className="rounded-full border-white/30 dark:border-neutral-700/30 backdrop-blur-sm"
                 onClick={() => {
                   setSearchQuery('');
                   setActiveCategory('all');
@@ -648,7 +648,7 @@ export default function SoftwareToolsPage() {
                   viewport={{ once: true }}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6 border border-white/20"
                 >
-                  <Sparkles className="h-4 w-4 text-yellow-300" />
+                  <Sparkles className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium text-white">Custom Development</span>
                 </motion.div>
 
@@ -684,7 +684,7 @@ export default function SoftwareToolsPage() {
                   <Button
                     size="lg"
                     variant="secondary"
-                    className="rounded-full px-8 py-6 bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="rounded-full px-8 py-6 bg-card text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300"
                     asChild
                   >
                     <Link href="/contact" className="flex items-center gap-2">
@@ -710,7 +710,7 @@ export default function SoftwareToolsPage() {
                 >
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <Star key={star} className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                      <Star key={star} className="w-5 h-5 text-muted-foreground fill-current" />
                     ))}
                   </div>
                   <div className="text-white/90 text-sm">
@@ -736,7 +736,7 @@ export default function SoftwareToolsPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="p-2 rounded-lg bg-white/20">
-                        <Zap className="w-6 h-6 text-yellow-300" />
+                        <Zap className="w-6 h-6 text-muted-foreground" />
                       </div>
                       <h3 className="text-lg font-bold text-white">Custom Development</h3>
                     </div>
@@ -749,7 +749,7 @@ export default function SoftwareToolsPage() {
                     {['Personalized Approach', 'Expert Developers', 'Ongoing Support'].map((feature, i) => (
                       <div key={i} className="flex items-center gap-2">
                         <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
-                          <div className="w-2 h-2 rounded-full bg-white"></div>
+                          <div className="w-2 h-2 rounded-full bg-card"></div>
                         </div>
                         <span className="text-sm text-white/90">{feature}</span>
                       </div>

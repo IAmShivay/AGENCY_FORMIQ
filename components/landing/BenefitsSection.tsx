@@ -44,14 +44,14 @@ const BenefitsSection = () => {
       title: "Lightning Fast Development",
       description: "Get your solution delivered in 30 days or less with our proven development process",
       metric: "30 Days",
-      color: "text-yellow-500"
+      color: "text-foreground"
     },
     {
       icon: TrendingUp,
       title: "Guaranteed ROI",
       description: "See measurable results within 90 days or get your money back",
       metric: "90 Days",
-      color: "text-green-500"
+      color: "text-foreground"
     },
     {
       icon: Shield,
@@ -65,14 +65,14 @@ const BenefitsSection = () => {
       title: "24/7 Expert Support",
       description: "Round-the-clock support from our certified technical experts",
       metric: "24/7",
-      color: "text-purple-500"
+      color: "text-foreground"
     },
     {
       icon: Smartphone,
       title: "Mobile-First Design",
       description: "Responsive solutions that work perfectly on all devices",
       metric: "100%",
-      color: "text-pink-500"
+      color: "text-foreground"
     },
     {
       icon: Globe,

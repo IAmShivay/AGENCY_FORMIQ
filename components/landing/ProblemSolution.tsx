@@ -92,8 +92,8 @@ const ProblemSolution = () => {
             <motion.div variants={itemVariants}>
               <div className="mb-8">
                 <div className="flex items-center mb-4">
-                  <AlertTriangle className="w-6 h-6 text-red-500 mr-3" />
-                  <h3 className="text-2xl font-bold text-red-600">The Problems</h3>
+                  <AlertTriangle className="w-6 h-6 text-foreground mr-3" />
+                  <h3 className="text-2xl font-bold text-foreground">The Problems</h3>
                 </div>
                 <p className="text-muted-foreground mb-6">
                   These common business challenges are costing you time, money, and customers:
@@ -107,16 +107,16 @@ const ProblemSolution = () => {
                     <motion.div
                       key={index}
                       variants={itemVariants}
-                      className="flex items-start p-4 rounded-lg bg-red-50/50 dark:bg-red-950/20 border border-red-200/50 dark:border-red-800/30"
+                      className="flex items-start p-4 rounded-lg bg-muted/50 dark:bg-neutral-950/20 border border-border dark:border-neutral-800/30"
                     >
-                      <div className="flex-shrink-0 p-2 rounded-lg bg-red-100 dark:bg-red-900/30 mr-4">
-                        <Icon className="w-5 h-5 text-red-600 dark:text-red-400" />
+                      <div className="flex-shrink-0 p-2 rounded-lg bg-muted dark:bg-neutral-900/30 mr-4">
+                        <Icon className="w-5 h-5 text-foreground dark:text-neutral-400" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-red-800 dark:text-red-200 mb-2">
+                        <h4 className="font-semibold text-foreground dark:text-neutral-200 mb-2">
                           {problem.title}
                         </h4>
-                        <p className="text-red-700 dark:text-red-300 text-sm">
+                        <p className="text-foreground dark:text-neutral-300 text-sm">
                           {problem.description}
                         </p>
                       </div>
@@ -130,8 +130,8 @@ const ProblemSolution = () => {
             <motion.div variants={itemVariants}>
               <div className="mb-8">
                 <div className="flex items-center mb-4">
-                  <CheckCircle className="w-6 h-6 text-green-500 mr-3" />
-                  <h3 className="text-2xl font-bold text-green-600">Our Solutions</h3>
+                  <CheckCircle className="w-6 h-6 text-foreground mr-3" />
+                  <h3 className="text-2xl font-bold text-foreground">Our Solutions</h3>
                 </div>
                 <p className="text-muted-foreground mb-6">
                   We transform these challenges into competitive advantages:
@@ -145,21 +145,21 @@ const ProblemSolution = () => {
                     <motion.div
                       key={index}
                       variants={itemVariants}
-                      className="flex items-start p-4 rounded-lg bg-green-50/50 dark:bg-green-950/20 border border-green-200/50 dark:border-green-800/30"
+                      className="flex items-start p-4 rounded-lg bg-muted/50 dark:bg-neutral-950/20 border border-border dark:border-neutral-800/30"
                     >
-                      <div className="flex-shrink-0 p-2 rounded-lg bg-green-100 dark:bg-green-900/30 mr-4">
-                        <Icon className="w-5 h-5 text-green-600 dark:text-green-400" />
+                      <div className="flex-shrink-0 p-2 rounded-lg bg-muted dark:bg-neutral-900/30 mr-4">
+                        <Icon className="w-5 h-5 text-foreground dark:text-neutral-400" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold text-green-800 dark:text-green-200">
+                          <h4 className="font-semibold text-foreground dark:text-neutral-200">
                             {solution.title}
                           </h4>
-                          <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                          <span className="text-2xl font-bold text-foreground dark:text-neutral-400">
                             {solution.metric}
                           </span>
                         </div>
-                        <p className="text-green-700 dark:text-green-300 text-sm">
+                        <p className="text-foreground dark:text-neutral-300 text-sm">
                           {solution.description}
                         </p>
                       </div>

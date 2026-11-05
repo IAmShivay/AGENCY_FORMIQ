@@ -24,14 +24,14 @@ interface ServicePricingProps {
 
 const ServicePricing: React.FC<ServicePricingProps> = ({ title, description, tiers }) => {
   return (
-    <div id="pricing" className="py-16 bg-gray-50 dark:bg-gray-800">
+    <div id="pricing" className="py-16 bg-muted dark:bg-neutral-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-base text-primary dark:text-primary/70 font-semibold tracking-wide uppercase">Pricing</h2>
-          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-foreground dark:text-white sm:text-4xl">
             {title}
           </p>
-          <p className="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-300 mx-auto">
+          <p className="mt-4 max-w-2xl text-xl text-muted-foreground dark:text-neutral-300 mx-auto">
             {description}
           </p>
         </div>
@@ -40,7 +40,7 @@ const ServicePricing: React.FC<ServicePricingProps> = ({ title, description, tie
           {tiers.map((tier, index) => (
             <div 
               key={index} 
-              className={`relative p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-lg flex flex-col ${
+              className={`relative p-8 bg-card dark:bg-neutral-900 rounded-2xl shadow-lg flex flex-col ${
                 tier.popular ? 'border-2 border-primary dark:border-primary/70 lg:scale-105 z-10' : ''
               }`}
             >
@@ -50,22 +50,22 @@ const ServicePricing: React.FC<ServicePricingProps> = ({ title, description, tie
                 </div>
               )}
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{tier.name}</h3>
+                <h3 className="text-xl font-semibold text-foreground dark:text-white">{tier.name}</h3>
                 <p className="mt-4 flex items-baseline">
-                  <span className="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white">{tier.price}</span>
-                  {tier.price !== 'Custom' && <span className="ml-1 text-xl font-semibold text-gray-500 dark:text-gray-400">/mo</span>}
+                  <span className="text-5xl font-extrabold tracking-tight text-foreground dark:text-white">{tier.price}</span>
+                  {tier.price !== 'Custom' && <span className="ml-1 text-xl font-semibold text-muted-foreground dark:text-neutral-400">/mo</span>}
                 </p>
-                <p className="mt-6 text-gray-500 dark:text-gray-400">{tier.description}</p>
+                <p className="mt-6 text-muted-foreground dark:text-neutral-400">{tier.description}</p>
 
                 <ul className="mt-6 space-y-4">
                   {tier.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
                       {feature.included ? (
-                        <Check className="flex-shrink-0 h-5 w-5 text-green-500 dark:text-green-400" />
+                        <Check className="flex-shrink-0 h-5 w-5 text-foreground dark:text-neutral-400" />
                       ) : (
-                        <X className="flex-shrink-0 h-5 w-5 text-gray-400" />
+                        <X className="flex-shrink-0 h-5 w-5 text-muted-foreground" />
                       )}
-                      <span className={`ml-3 text-sm ${feature.included ? 'text-gray-700 dark:text-gray-300' : 'text-gray-500 dark:text-gray-500'}`}>
+                      <span className={`ml-3 text-sm ${feature.included ? 'text-foreground dark:text-neutral-300' : 'text-muted-foreground dark:text-neutral-500'}`}>
                         {feature.name}
                       </span>
                     </li>

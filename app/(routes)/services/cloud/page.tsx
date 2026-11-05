@@ -78,7 +78,7 @@ export default function CloudServicesPage() {
             </Link>
             <Link
               href="/services/hosting"
-              className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="inline-flex items-center px-6 py-3 border border-border dark:border-neutral-600 text-base font-medium rounded-md text-foreground dark:text-neutral-300 bg-card dark:bg-neutral-800 hover:bg-muted dark:hover:bg-neutral-700"
             >
               Explore Hosting Options
             </Link>

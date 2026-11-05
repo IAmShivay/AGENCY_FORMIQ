@@ -18,13 +18,13 @@ const data = {
       name: 'iOS',
       description: 'Native-quality apps for iPhone and iPad',
       features: ['App Store optimization', 'Apple Pay integration', 'Push notifications', 'Widgets & extensions'],
-      color: 'from-gray-800 to-gray-600',
+      color: 'from-neutral-800 to-primary/80',
     },
     {
       name: 'Android',
       description: 'Optimized for the full Android ecosystem',
       features: ['Material Design', 'Google Play publishing', 'Background services', 'Deep linking'],
-      color: 'from-green-600 to-green-400',
+      color: 'from-primary to-primary/80',
     },
     {
       name: 'Cross-Platform',
