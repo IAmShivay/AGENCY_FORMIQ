@@ -140,13 +140,7 @@ const Header = () => {
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
                   <Link
-                    href={item.dropdown ? '#' : item.href}
-                    onClick={(e) => {
-                      if (item.dropdown) {
-                        e.preventDefault();
-                        setActiveDropdown(activeDropdown === item.label ? null : item.label);
-                      }
-                    }}
+                    href={item.href}
                     className={`relative px-4 xl:px-6 py-3 rounded-full text-sm lg:text-base font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${(() => {
                         // For Services tab - only active for /services (exact match) or /web, /mobile, etc.
                         if (item.href === '/services' && (pathname === '/services' || pathname.startsWith('/web') || pathname.startsWith('/mobile') || pathname.startsWith('/marketing') || pathname.startsWith('/shopify') || pathname.startsWith('/agents'))) {

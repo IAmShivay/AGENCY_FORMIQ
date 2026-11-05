@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, Volume2, VolumeX, RotateCcw } from "lucide-react";
-import { trackContact } from "@/lib/meta-pixel";
 import LeadFormOverlay from "./LeadFormOverlay";
 import {
   getFounderPopupContent,
@@ -337,7 +336,7 @@ export default function FounderVideoPopup({
                     href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => trackContact("whatsapp_founder_popup")}
+                    data-track-source="founder_popup"
                     className="flex-1"
                   >
                     <button

@@ -15,7 +15,7 @@ const steps = [
     step: "02",
     title: "We Build Everything",
     description: "Website, ads, creatives, copy — crafted by our team. You just approve.",
-    time: "7-15 days",
+    time: "15 days",
   },
   {
     icon: TrendingUp,

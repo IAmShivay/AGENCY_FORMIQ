@@ -211,19 +211,8 @@ export default function LeadFormOverlay({
       }
 
       setSubmitted(true);
-      trackLead({ content_name: subject });
+      trackLead({ content_name: subject, budget: form.budget, timeline: form.timeline, email: payload.email, phone: payload.phone });
 
-      fetch("/api/meta-capi", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          eventName: "Lead",
-          phone: payload.phone,
-          email: payload.email,
-          sourceUrl: window.location.href,
-          customData: { content_name: subject, budget: form.budget, timeline: form.timeline },
-        }),
-      }).catch(() => {});
 
       fetch("/api/whatsapp/send", {
         method: "POST",

@@ -37,3 +37,8 @@ next-env.d.ts
 branch_structure.json
 temp_auto_push.bat
 temp_interactive_push.bat
+
+# lead data and outreach queue (contains phone numbers)
+scripts/leads-serp.*
+scripts/leads.*
+scripts/outreach/out/

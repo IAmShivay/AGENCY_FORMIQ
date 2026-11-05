@@ -1,4 +1,5 @@
 import './globals.css';
+import ConversionTracker from '@/components/ConversionTracker';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
@@ -229,6 +230,7 @@ export default function RootLayout({
 
         >
           <main>{children}</main>
+          <ConversionTracker />
         </ThemeProvider>
       </body>
     </html>

@@ -205,7 +205,7 @@ const PortfolioShowcase = () => {
               Our Success Stories
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              See how we've helped 500+ startups and businesses transform their ideas into successful digital products
+              See how we've helped 50+ local businesses in Kolkata, Durgapur and Asansol get more customers online
             </p>
           </motion.div>
 

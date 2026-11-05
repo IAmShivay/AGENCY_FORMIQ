@@ -36,22 +36,9 @@ const Contact = () => {
       }
 
       setIsSubmitted(true);
-      trackLead({ content_name: payload.subject as string });
+      trackLead({ content_name: payload.subject as string, email: payload.email as string, phone: payload.phone as string });
 
-      // Meta CAPI
-      fetch('/api/meta-capi', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          eventName: 'Lead',
-          phone: payload.phone,
-          email: payload.email,
-          sourceUrl: window.location.href,
-          customData: { content_name: payload.subject },
-        }),
-      }).catch(() => {});
 
-      // WhatsApp notification
       fetch('/api/whatsapp/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

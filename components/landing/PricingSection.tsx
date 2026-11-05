@@ -104,7 +104,7 @@ const PricingSection = () => {
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
               No hidden fees. No contracts. Same expert team that agencies charge{' '}
-              <span className="font-semibold text-foreground">Rs 50,000+</span> for.
+              <span className="font-semibold text-foreground">Rs 25,000+</span> for.
             </p>
             <div className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-medium text-emerald-700">
               <ShieldCheck className="w-3.5 h-3.5" /> 30-day money-back guarantee · No questions asked
