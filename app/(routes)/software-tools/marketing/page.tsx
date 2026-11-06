@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { BarChart4, ExternalLink, ArrowLeft, Search } from 'lucide-react';
 import Link from 'next/link';
+import { openLeadSheet } from '@/lib/lead-sheet';
 
 // Define the tool interface
 interface Tool {
@@ -223,7 +224,7 @@ export default function MarketingToolsPage() {
           Contact us to discuss how we can help grow your online presence.
         </p>
         <Button asChild>
-          <Link href="/contact">Contact Us</Link>
+          <button type="button" onClick={openLeadSheet}>Contact us</button>
         </Button>
       </div>
     </div>

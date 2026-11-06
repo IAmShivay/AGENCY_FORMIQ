@@ -3,9 +3,9 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import Magnetic from './studio/Magnetic';
 import { GOOGLE_REVIEW_URL } from '@/lib/studio-facts';
+import { openLeadSheet } from '@/lib/lead-sheet';
 
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
-const WHATSAPP_RESULTS_URL = 'https://wa.me/919832078313?text=Hi%2C%20I%20want%20similar%20results';
 
 const testimonials = [
   { quote: "We got 38 enquiries in the first month itself. Way better than the freelancer we had before.", name: "Rajesh Mondal", role: "Mondal Interior Solutions", location: "Durgapur", result: "38 leads/month", initials: "RM" },
@@ -31,29 +31,29 @@ export default function Testimonials() {
   const [featured, ...rest] = testimonials;
 
   return (
-    <section className="relative overflow-hidden bg-background text-foreground py-20 sm:py-28 lg:py-32">
+    <section className="relative overflow-hidden bg-background text-foreground py-14 md:py-28 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="grid gap-6 lg:grid-cols-12 lg:items-end mb-12 sm:mb-16">
+        <div className="grid gap-4 md:gap-6 lg:grid-cols-12 lg:items-end mb-8 md:mb-16">
           <div className="lg:col-span-7">
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-5">(04) Clients</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-4 md:mb-5">(04) Clients</p>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[0.98] tracking-[-0.04em]">
               Real results from real businesses
             </h2>
           </div>
-          <p className="lg:col-span-4 lg:col-start-9 text-base sm:text-lg text-muted-foreground leading-relaxed">
+          <p className="lg:col-span-4 lg:col-start-9 text-[15px] md:text-lg text-muted-foreground leading-relaxed">
             Local businesses in Kolkata, Durgapur &amp; Asansol trust us. Here&rsquo;s what they say.
           </p>
         </div>
 
         {/* Featured quote */}
-        <figure className="border-t border-border pt-10 sm:pt-14 pb-14 sm:pb-20 grid gap-8 lg:grid-cols-12">
-          <span aria-hidden="true" className="lg:col-span-1 font-display text-7xl sm:text-8xl leading-[0.7] text-primary select-none">&ldquo;</span>
+        <figure className="border-t border-border pt-7 md:pt-14 pb-9 md:pb-20 grid gap-1 md:gap-8 lg:grid-cols-12">
+          <span aria-hidden="true" className="lg:col-span-1 font-display text-5xl md:text-8xl leading-[0.7] max-md:h-6 text-primary select-none">&ldquo;</span>
           <div className="lg:col-span-11">
-            <blockquote className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium leading-[1.08] tracking-[-0.035em] max-w-5xl">
+            <blockquote className="font-display text-[1.65rem] md:text-4xl lg:text-5xl font-medium leading-[1.1] md:leading-[1.08] tracking-[-0.035em] max-w-5xl">
               {featured.quote}
             </blockquote>
-            <figcaption className="mt-8 sm:mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <figcaption className="mt-6 md:mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 md:gap-y-4">
               <span className="flex items-center gap-3">
                 <Avatar t={featured} size="lg" />
                 <span>
@@ -61,7 +61,7 @@ export default function Testimonials() {
                   <span className="block text-sm text-muted-foreground">{featured.role} · {featured.location}</span>
                 </span>
               </span>
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground border-l border-border pl-6">
+              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground md:border-l md:border-border md:pl-6">
                 {featured.result}
               </span>
             </figcaption>
@@ -76,10 +76,10 @@ export default function Testimonials() {
         >
           {rest.map((t) => (
             <li key={t.name} data-reveal className="w-[82%] flex-shrink-0 snap-start sm:w-auto sm:mb-4 sm:break-inside-avoid">
-              <figure className="h-full p-6 sm:p-7 rounded-2xl bg-card text-card-foreground border border-border">
+              <figure className="h-full p-5 md:p-7 rounded-2xl bg-card text-card-foreground border border-border">
                 <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">{t.result}</p>
-                <blockquote className="mt-4 text-[15px] sm:text-base leading-relaxed">&ldquo;{t.quote}&rdquo;</blockquote>
-                <figcaption className="mt-6 flex items-center gap-3">
+                <blockquote className="mt-3 md:mt-4 text-[15px] sm:text-base leading-relaxed">&ldquo;{t.quote}&rdquo;</blockquote>
+                <figcaption className="mt-5 md:mt-6 flex items-center gap-3">
                   <Avatar t={t} size="sm" />
                   <span className="min-w-0">
                     <cite className="block not-italic text-sm font-semibold">{t.name}</cite>
@@ -92,7 +92,7 @@ export default function Testimonials() {
         </ul>
 
         {/* Footer row */}
-        <div className="mt-12 sm:mt-16 pt-8 border-t border-border flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-5">
+        <div className="mt-8 md:mt-16 pt-6 md:pt-8 border-t border-border flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2 md:gap-5">
           <a
             href={GOOGLE_REVIEW_URL}
             target="_blank"
@@ -103,15 +103,14 @@ export default function Testimonials() {
             <ArrowUpRight className="w-4 h-4" />
           </a>
           <Magnetic>
-            <a
-              href={WHATSAPP_RESULTS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={openLeadSheet}
               className={`btn-ink btn-ink-invert h-14 px-7 bg-foreground text-background rounded-full font-semibold inline-flex items-center justify-center gap-2 text-[15px] whitespace-nowrap group/cta ${FOCUS_RING}`}
             >
               Get results like these
               <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" />
-            </a>
+            </button>
           </Magnetic>
         </div>
       </div>

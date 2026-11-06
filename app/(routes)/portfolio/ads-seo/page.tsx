@@ -224,7 +224,7 @@ const AdsSeoPortfolio = () => {
       <PageCTA
         title="Ready to scale your business with ads & SEO?"
         subtitle="Get a free audit of your current campaigns and discover growth opportunities."
-        primary={{"label":"Get free audit","href":"https://wa.me/919832078313?text=Hi%2C%20I%20need%20help%20with%20ads%20and%20SEO","external":true}}
+        primary={{ label: "Get free audit" }}
       />
     </div>
   );

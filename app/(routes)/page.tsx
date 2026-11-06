@@ -5,10 +5,9 @@ import ServicesBand from '@/components/studio/ServicesBand';
 import HowItWorks from '@/components/landing/HowItWorks';
 import Services from '@/components/Services';
 import PortfolioShowcase from '@/components/landing/PortfolioShowcase';
-import Testimonials from '@/components/Testimonials';
-import LatestBlogPosts from '@/components/landing/LatestBlogPosts';
+import ClientLogos from '@/components/ClientLogos';
+import VideoTestimonials from '@/components/VideoTestimonials';
 import PricingSection from '@/components/landing/PricingSection';
-import AIBookingAgents from '@/components/landing/AIBookingAgents';
 import FAQSection from '@/components/landing/FAQSection';
 import FinalCTA from '@/components/landing/FinalCTA';
 
@@ -18,8 +17,8 @@ export const metadata: Metadata = {
   keywords: ['FormiqStudio', ...SEO_CONSTANTS.KEYWORDS],
   alternates: { canonical: 'https://formiqstudio.in' },
   openGraph: {
-    title: 'FormiqStudio — Get More Customers Without the Confusion',
-    description: 'Brand identity, websites and Shopify stores for growing brands. Fixed quotes, clear timelines.',
+    title: 'Formiq — Brand, website & Shopify studio',
+    description: 'Independent design studio for brand identity, websites and Shopify stores. Fixed quotes, clear timelines.',
     url: 'https://formiqstudio.in',
     siteName: 'FormiqStudio',
     images: [{ url: '/images/og-image.jpg', width: 1200, height: 630, alt: 'FormiqStudio design and development studio' }],
@@ -34,13 +33,12 @@ export default function Home() {
       <Hero />
       <ServicesBand />
       <div className="tone-ink"><PortfolioShowcase /></div>
+      <ClientLogos />
       <Services />
       <div className="tone-sand"><HowItWorks /></div>
-      <Testimonials />
-      <AIBookingAgents />
+      <VideoTestimonials />
       <PricingSection />
       <FAQSection />
-      <LatestBlogPosts />
       <div className="tone-ember"><FinalCTA /></div>
     </div>
   );

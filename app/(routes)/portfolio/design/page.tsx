@@ -283,7 +283,7 @@ const DesignPortfolio = () => {
       <PageCTA
         title="Ready to transform your brand?"
         subtitle="Let's collaborate to create designs that elevate your business and connect with your audience."
-        primary={{"label":"Start a project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20need%20help%20with%20branding%20and%20design","external":true}}
+        primary={{ label: "Start a project" }}
       />
 
       {/* Project Details Popup */}

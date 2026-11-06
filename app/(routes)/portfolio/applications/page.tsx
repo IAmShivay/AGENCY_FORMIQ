@@ -442,7 +442,7 @@ const ApplicationsPortfolio = () => {
       <PageCTA
         title="Have an application idea?"
         subtitle="Let's turn your vision into a powerful digital solution that users will love."
-        primary={{"label":"Start your project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20have%20an%20app%20idea%20to%20discuss","external":true}}
+        primary={{ label: "Start your project" }}
         secondary={{"label":"View all work","href":"/portfolio"}}
       />
 

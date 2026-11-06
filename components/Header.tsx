@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Wordmark, { wordmarkIn, wordmarkHover } from './studio/Wordmark';
-import LeadFormOverlay from './LeadFormOverlay';
+import { openLeadSheet } from '@/lib/lead-sheet';
 import Magnetic from './studio/Magnetic';
 import ThemeToggle from './studio/ThemeToggle';
 import { gsap, useGSAP, prefersReducedMotion, isFinePointer, introReady } from '@/lib/studio-motion';
@@ -13,10 +13,10 @@ import {
   ChevronDown,
   ArrowRight,
   ArrowUpRight,
-  Terminal,
+  Bot,
   Globe,
-  Smartphone,
-  Cloud,
+  Palette,
+  RefreshCw,
   LayoutGrid,
   AppWindow,
   PaintBucket,
@@ -27,7 +27,7 @@ import {
   Phone,
 } from 'lucide-react';
 
-const SERVICE_PATHS = ['/web', '/mobile', '/marketing', '/shopify', '/agents'];
+const SERVICE_PATHS = ['/web', '/shopify', '/ecommerce-marketplace', '/agents'];
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -35,12 +35,12 @@ const navItems = [
     href: '/services',
     label: 'Services',
     dropdown: [
-      { href: '/web', label: 'Web Development', icon: <Globe className="w-4 h-4" /> },
-      { href: '/mobile', label: 'Mobile Apps', icon: <Smartphone className="w-4 h-4" /> },
+      { href: '/services', label: 'Brand identity', icon: <Palette className="w-4 h-4" /> },
+      { href: '/web', label: 'Websites', icon: <Globe className="w-4 h-4" /> },
+      { href: '/shopify', label: 'Shopify stores', icon: <ShoppingBag className="w-4 h-4" /> },
       { href: '/ecommerce-marketplace', label: 'E-commerce', icon: <ShoppingCart className="w-4 h-4" /> },
-      { href: '/marketing', label: 'Digital Marketing', icon: <Cloud className="w-4 h-4" /> },
-      { href: '/shopify', label: 'Shopify', icon: <ShoppingBag className="w-4 h-4" /> },
-      { href: '/agents', label: 'AI & ML', icon: <Terminal className="w-4 h-4" /> },
+      { href: '/#pricing', label: 'Partner plan', icon: <RefreshCw className="w-4 h-4" /> },
+      { href: '/agents', label: 'AI agents', icon: <Bot className="w-4 h-4" /> },
     ],
   },
   {
@@ -73,7 +73,6 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileGroup, setMobileGroup] = useState<string | null>(null);
-  const [showLeadForm, setShowLeadForm] = useState(false);
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -222,7 +221,7 @@ const Header = () => {
             <ThemeToggle />
             <Magnetic>
               <button
-                onClick={() => setShowLeadForm(true)}
+                onClick={openLeadSheet}
                 className="btn-ink btn-ink-invert focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background hidden sm:inline-flex h-11 px-5 lg:px-6 items-center gap-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold whitespace-nowrap"
               >
                 Get started <ArrowRight className="w-4 h-4" />
@@ -309,7 +308,7 @@ const Header = () => {
 
           <div data-menu-foot className="pt-5 space-y-3">
             <button
-              onClick={() => { setIsMobileMenuOpen(false); setShowLeadForm(true); }}
+              onClick={() => { setIsMobileMenuOpen(false); openLeadSheet(); }}
               tabIndex={isMobileMenuOpen ? 0 : -1}
               className="w-full h-14 rounded-full bg-primary text-primary-foreground font-semibold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
             >
@@ -327,7 +326,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <LeadFormOverlay open={showLeadForm} onClose={() => setShowLeadForm(false)} />
     </>
   );
 };

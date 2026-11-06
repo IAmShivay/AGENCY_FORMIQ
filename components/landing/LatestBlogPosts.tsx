@@ -2,8 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { getBlogPosts } from '@/lib/blog';
+import { RAIL_ITEM, RAIL_TO_MD } from '@/components/studio/ui';
 
 const POST_COUNT = 3;
+const RAIL_IMAGE_SIZES = '82vw';
 const dateFmt = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
 const formatDate = (value: string) => {
@@ -19,12 +21,12 @@ export default async function LatestBlogPosts() {
   const [featured, ...rest] = posts;
 
   return (
-    <section aria-labelledby="journal-title" className="relative py-20 sm:py-28">
+    <section aria-labelledby="journal-title" className="relative py-14 md:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 sm:mb-16">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 md:gap-6 mb-8 md:mb-16">
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-5">(08) Journal</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-4 md:mb-5">(08) Journal</p>
             <h2 id="journal-title" className="font-display text-[2.3rem] leading-[1] sm:text-6xl font-semibold tracking-[-0.04em] text-foreground max-w-3xl">
               Practical guides to grow your business online
             </h2>
@@ -35,7 +37,32 @@ export default async function LatestBlogPosts() {
           </Link>
         </div>
 
-        <div className="grid lg:grid-cols-[1.25fr,1fr] gap-10 lg:gap-16">
+        <ul aria-label="Latest articles" className={`md:hidden ${RAIL_TO_MD}`}>
+          {posts.map((post) => (
+            <li key={post.slug} data-reveal className={RAIL_ITEM}>
+              <Link href={`/blog/${post.slug}`} className={`group block rounded-2xl ${FOCUS_RING}`}>
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-border bg-muted">
+                  <Image
+                    src={post.coverImage}
+                    alt={post.title}
+                    fill
+                    sizes={RAIL_IMAGE_SIZES}
+                    className="object-cover"
+                  />
+                </div>
+                <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                  <span>{post.category}</span>
+                  {formatDate(post.date) && <time dateTime={post.date}>{formatDate(post.date)}</time>}
+                </div>
+                <h3 className="mt-2 font-display text-xl font-semibold leading-snug tracking-[-0.03em] text-foreground line-clamp-3">
+                  {post.title}
+                </h3>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="hidden md:grid lg:grid-cols-[1.25fr,1fr] gap-10 lg:gap-16">
           {/* Featured post */}
           <Link href={`/blog/${featured.slug}`} className={`group block rounded-[22px] ${FOCUS_RING}`}>
             <div className="relative aspect-[16/10] rounded-[22px] overflow-hidden border border-border bg-muted">
@@ -62,7 +89,7 @@ export default async function LatestBlogPosts() {
           {rest.length > 0 && (
             <ul className="border-t border-border self-start">
               {rest.map((post) => (
-                <li key={post.slug} className="border-b border-border">
+                <li key={post.slug} className="border-b border-border max-sm:[&:nth-child(n+3)]:hidden">
                   <Link href={`/blog/${post.slug}`} className={`group flex items-start justify-between gap-6 py-7 sm:py-8 ${FOCUS_RING}`}>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">

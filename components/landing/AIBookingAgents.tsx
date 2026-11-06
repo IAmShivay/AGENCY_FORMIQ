@@ -199,17 +199,17 @@ export default function AIBookingAgents() {
   const transcript = messages.slice(-6);
 
   return (
-    <section aria-labelledby="ai-agents-title" className="relative py-20 sm:py-28">
+    <section aria-labelledby="ai-agents-title" className="relative py-14 md:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="grid lg:grid-cols-[1.2fr,1fr] gap-6 lg:gap-16 items-end mb-12 sm:mb-16">
+        <div className="grid lg:grid-cols-[1.2fr,1fr] gap-6 lg:gap-16 items-end md:mb-16">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-5">(05) Add-on</p>
             <h2 id="ai-agents-title" className="font-display text-[2.3rem] leading-[1] sm:text-6xl lg:text-7xl font-semibold tracking-[-0.04em] text-foreground">
               AI booking agents. <span className="text-primary">Never miss a booking.</span>
             </h2>
           </div>
-          <div className="space-y-4 lg:pb-2">
+          <div className="hidden md:block space-y-4 lg:pb-2">
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md">
               Pick an industry and talk to a live demo agent, right here in your browser.
             </p>
@@ -218,10 +218,37 @@ export default function AIBookingAgents() {
               <ArrowUpRight className="w-4 h-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
           </div>
+          <div className="md:hidden rounded-[22px] bg-card border border-border p-5">
+            <div className="flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+              <span className="inline-flex items-center gap-2">
+                <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-primary" />
+                Live demo
+              </span>
+              <span>{pad(demos.length - 1)} agents</span>
+            </div>
+            <p className="mt-4 text-[15px] text-muted-foreground leading-relaxed">
+              Talk to a live booking agent, right in your browser.
+            </p>
+            <ul className="mt-4 border-t border-border">
+              {demos.map((d, i) => (
+                <li key={d.id} className="flex items-baseline gap-4 py-3 border-b border-border">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground w-6 flex-shrink-0">{pad(i)}</span>
+                  <span className="font-display text-xl font-semibold tracking-[-0.03em] text-foreground">{d.title}</span>
+                </li>
+              ))}
+            </ul>
+            <a
+              href={AGENTS_PAGE_HREF}
+              className="btn-ink btn-ink-invert group mt-5 h-14 px-7 w-full bg-primary text-primary-foreground rounded-full font-semibold inline-flex items-center justify-center gap-2 text-[15px] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+            >
+              <Phone className="w-4 h-4" /> Try a live demo
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          </div>
         </div>
 
         {/* Industries + demo panel */}
-        <div className="grid lg:grid-cols-[1fr,1.05fr] gap-8 lg:gap-16 items-start">
+        <div className="hidden md:grid lg:grid-cols-[1fr,1.05fr] gap-8 lg:gap-16 items-start">
           <div role="tablist" aria-label="Demo industries" aria-orientation="vertical" className="border-t border-border">
             {demos.map((d, i) => {
               const isSelected = i === selected;
@@ -291,7 +318,7 @@ export default function AIBookingAgents() {
           </div>
         </div>
 
-        <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.12em] leading-relaxed text-muted-foreground">
+        <p className="hidden md:block mt-8 font-mono text-[11px] uppercase tracking-[0.12em] leading-relaxed text-muted-foreground">
           Priced per agent after a short scoping call · Built &amp; hosted by FormiqStudio ·{' '}
           <a href={AGENTS_PAGE_HREF} className="link-draw text-foreground">See all</a>
         </p>

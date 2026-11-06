@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import Magnetic from './Magnetic';
+import OpenSheetButton from '@/components/OpenSheetButton';
 import { BTN_PRIMARY, CONTAINER, EYEBROW, FOCUS_RING } from './ui';
 
 interface CTALink {
@@ -13,15 +14,13 @@ interface PageCTAProps {
   eyebrow?: string;
   title: string;
   subtitle?: string;
-  primary: CTALink;
+  primary: { label: string };
   secondary?: CTALink;
 }
 
 const linkProps = (l: CTALink) => (l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {});
 
-/** Closing call to action band on ember, shared by the studio sub pages. */
 export default function PageCTA({ eyebrow = 'Next step', title, subtitle, primary, secondary }: PageCTAProps) {
-  const PrimaryTag = primary.external ? 'a' : Link;
   const SecondaryTag = secondary?.external ? 'a' : Link;
   return (
     <section className="tone-ember py-20 sm:py-28">
@@ -34,10 +33,10 @@ export default function PageCTA({ eyebrow = 'Next step', title, subtitle, primar
           {subtitle ? <p className="text-base sm:text-lg text-foreground/80 max-w-xl leading-relaxed">{subtitle}</p> : <span />}
           <div className="flex flex-col min-[420px]:flex-row gap-3 min-[420px]:items-center">
             <Magnetic>
-              <PrimaryTag href={primary.href} {...linkProps(primary)} className={BTN_PRIMARY}>
+              <OpenSheetButton className={BTN_PRIMARY}>
                 {primary.label}
                 <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" aria-hidden="true" />
-              </PrimaryTag>
+              </OpenSheetButton>
             </Magnetic>
             {secondary && (
               <SecondaryTag

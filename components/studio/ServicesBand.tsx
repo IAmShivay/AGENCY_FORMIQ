@@ -1,7 +1,7 @@
 import Marquee from './Marquee';
 
-const ROW_A = ['Websites', 'Facebook & Instagram ads', 'Google Ads & SEO', 'Social media'];
-const ROW_B = ['Shopify stores', 'Google Business', 'AI booking agents', 'E-commerce'];
+const ROW_A = ['Brand identity', 'Websites', 'Shopify stores', 'Packaging'];
+const ROW_B = ['Art direction', 'Product design', 'Partner plan', 'Launch campaigns'];
 
 const SEPARATOR = '/';
 

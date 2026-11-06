@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, useDragControls, type PanInfo } from "framer-motion";
 import { X, ArrowUpRight } from "lucide-react";
 import EnquiryForm from "./forms/EnquiryForm";
 import { BOOKING_URL } from "@/lib/pricing";
 import { ENQUIRY_EMAIL } from "@/lib/enquiry-options";
 import { getLenis } from "@/lib/studio-motion";
+import { LEAD_SHEET_OPEN_CLASS } from "@/lib/lead-sheet";
 
 const TITLE_ID = "lead-overlay-title";
 const FOCUS_RING =
@@ -16,11 +17,14 @@ const EYEBROW = "font-mono text-[11px] uppercase tracking-[0.16em] text-muted-fo
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 const OPEN_LISTBOX = '[role="listbox"][data-state="open"]';
 const EASE_OUT: [number, number, number, number] = [0.19, 1, 0.22, 1];
+const PHONE_QUERY = "(max-width: 639px)";
+const DISMISS_DRAG_PX = 120;
+const DISMISS_VELOCITY = 600;
 
 const NEXT_STEPS = [
-  "We reply within one working day",
-  "A 30-minute call to scope it",
-  "A fixed quote with timeline",
+  "Reply in one working day",
+  "30-minute scoping call",
+  "Fixed quote and timeline",
 ];
 
 /** Project enquiry sheet, opened from the header and hero. Portalled to <body> so tone wrappers never recolour it. */
@@ -33,12 +37,19 @@ export default function LeadFormOverlay({ open, onClose }: { open: boolean; onCl
   const reduceMotion = useReducedMotion();
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
+  const [phone, setPhone] = useState(false);
+  const drag = useDragControls();
 
   useEffect(() => {
     setMounted(true);
+    const mq = window.matchMedia(PHONE_QUERY);
+    const sync = () => setPhone(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
     // Carry the marketing font variables (set on the .studio wrapper) into the portal.
     const host = document.querySelector<HTMLElement>(".studio");
     if (host) setFontVars(host.className.split(" ").filter((c) => c && c !== "studio").join(" "));
+    return () => mq.removeEventListener("change", sync);
   }, []);
 
   // Scroll lock, Lenis pause, Escape, focus trap, initial focus and focus return.
@@ -47,10 +58,12 @@ export default function LeadFormOverlay({ open, onClose }: { open: boolean; onCl
     returnFocusRef.current = document.activeElement as HTMLElement | null;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.classList.add(LEAD_SHEET_OPEN_CLASS);
     getLenis()?.stop();
 
     const focusFirst = window.requestAnimationFrame(() => {
-      panelRef.current?.querySelector<HTMLElement>("input, textarea, button")?.focus();
+      if (window.matchMedia(PHONE_QUERY).matches) panelRef.current?.focus({ preventScroll: true });
+      else panelRef.current?.querySelector<HTMLElement>("input, textarea, button")?.focus();
     });
 
     const onKey = (e: KeyboardEvent) => {
@@ -73,6 +86,7 @@ export default function LeadFormOverlay({ open, onClose }: { open: boolean; onCl
       window.cancelAnimationFrame(focusFirst);
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      document.documentElement.classList.remove(LEAD_SHEET_OPEN_CLASS);
       getLenis()?.start();
       returnFocusRef.current?.focus?.();
     };
@@ -84,7 +98,11 @@ export default function LeadFormOverlay({ open, onClose }: { open: boolean; onCl
   if (!mounted) return null;
 
   const fade = reduceMotion ? { duration: 0 } : { duration: 0.3 };
-  const slide = reduceMotion ? { duration: 0 } : { duration: 0.6, ease: EASE_OUT };
+  const slide = reduceMotion ? { duration: 0 } : { duration: phone ? 0.45 : 0.6, ease: EASE_OUT };
+  const hidden = reduceMotion ? {} : phone ? { y: "100%" } : { x: "100%" };
+  const onDragEnd = (_: unknown, info: PanInfo) => {
+    if (info.offset.y > DISMISS_DRAG_PX || info.velocity.y > DISMISS_VELOCITY) onClose();
+  };
 
   return createPortal(
     <AnimatePresence>
@@ -103,72 +121,64 @@ export default function LeadFormOverlay({ open, onClose }: { open: boolean; onCl
             role="dialog"
             aria-modal="true"
             aria-labelledby={TITLE_ID}
-            className="studio absolute inset-y-0 right-0 w-full max-w-6xl bg-background text-foreground shadow-2xl flex flex-col"
-            initial={{ x: reduceMotion ? 0 : "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: reduceMotion ? 0 : "100%" }}
+            tabIndex={-1}
+            className="studio absolute inset-x-0 bottom-0 h-[92dvh] rounded-t-[24px] overflow-hidden sm:inset-x-auto sm:inset-y-0 sm:right-0 sm:h-auto sm:rounded-none sm:overflow-visible w-full sm:max-w-[640px] xl:max-w-[680px] bg-background text-foreground shadow-2xl flex flex-col outline-none will-change-transform [contain:layout_paint]"
+            initial={hidden}
+            animate={{ x: 0, y: 0 }}
+            exit={hidden}
             transition={slide}
+            drag={phone ? "y" : false}
+            dragListener={false}
+            dragControls={drag}
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={{ top: 0, bottom: 0.6 }}
+            onDragEnd={onDragEnd}
           >
+            <div
+              onPointerDown={(e) => drag.start(e)}
+              className="flex h-6 flex-shrink-0 cursor-grab touch-none items-center justify-center sm:hidden"
+              aria-hidden="true"
+            >
+              <span className="h-1 w-10 rounded-full bg-foreground/20" />
+            </div>
+
             <button
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className={`absolute top-3 right-3 sm:top-5 sm:right-5 lg:top-4 lg:right-4 z-10 w-11 h-11 inline-flex items-center justify-center rounded-full border border-border bg-background text-foreground hover:border-foreground transition-colors ${FOCUS_RING}`}
+              className={`absolute top-5 right-4 sm:top-5 sm:right-5 lg:top-4 lg:right-4 z-10 w-11 h-11 inline-flex items-center justify-center rounded-full border border-border bg-background text-foreground hover:border-foreground transition-colors ${FOCUS_RING}`}
             >
               <X className="w-4 h-4" aria-hidden="true" />
             </button>
 
-            {/* Mobile: the whole sheet scrolls. Desktop: both columns fill the height; only the form column scrolls if it must. */}
-            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain lg:overflow-hidden" data-lenis-prevent>
-              <div className="grid min-h-full lg:h-full lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)] xl:grid-cols-[minmax(0,400px)_minmax(0,1fr)]">
-                {/* Form (first on mobile) */}
-                <div
-                  className="order-1 lg:order-2 lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-gutter:stable]"
-                  data-lenis-prevent
-                >
-                  <div className="flex min-h-full flex-col px-4 sm:px-8 lg:px-12 xl:px-16 pt-16 sm:pt-20 lg:pt-8 pb-10 lg:pb-8">
-                    <header className="mb-8 lg:mb-5 pr-12">
-                      <p className={`${EYEBROW} mb-2`}>(Start a project)</p>
-                      <h2 id={TITLE_ID} className="font-display text-[2.2rem] sm:text-4xl lg:text-3xl font-bold leading-[0.98] tracking-[-0.045em]">
-                        Tell us about your project.
-                      </h2>
-                    </header>
-                    <EnquiryForm key={formKey} idPrefix="lead" source="Lead overlay" successHeadingId={`${TITLE_ID}-done`} variant="sheet" />
-                  </div>
-                </div>
-
-                {/* Context column */}
-                <aside className="order-2 lg:order-1 tone-ink px-4 sm:px-8 lg:px-10 py-12 lg:py-8 flex flex-col lg:h-full lg:overflow-hidden">
-                  <p className={`${EYEBROW} mb-3`}>(Process)</p>
-                  <p className="font-display text-3xl xl:text-4xl font-bold leading-[0.98] tracking-[-0.045em]">
-                    What happens next.
-                  </p>
-                  <ol className="mt-8 lg:mt-10 border-t border-border">
-                    {NEXT_STEPS.map((s, i) => (
-                      <li key={s} className="flex items-baseline gap-4 py-5 border-b border-border text-base">
-                        <span className="font-mono text-[11px] tracking-[0.16em] text-muted-foreground">0{i + 1}</span>
-                        {s}
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain [scrollbar-gutter:stable]" data-lenis-prevent>
+              <div className="flex min-h-full flex-col px-5 sm:px-10 pt-4 sm:pt-8 pb-0 sm:pb-7">
+                <header className="mb-6 pr-12">
+                  <p className={`${EYEBROW} mb-2`}>(Start a project)</p>
+                  <h2 id={TITLE_ID} className="font-display text-[2.2rem] sm:text-4xl font-bold leading-[0.98] tracking-[-0.045em]">
+                    Tell us about your project.
+                  </h2>
+                  <ol className="mt-5 flex flex-wrap gap-x-5 gap-y-1.5">
+                    {NEXT_STEPS.map((step, i) => (
+                      <li key={step} className="flex items-baseline gap-2 text-sm text-muted-foreground">
+                        <span className="font-mono text-[11px] tracking-[0.16em]">0{i + 1}</span>
+                        {step}
                       </li>
                     ))}
                   </ol>
-                  <div className="mt-10 lg:mt-auto lg:pt-10 space-y-1 text-base">
-                    <a href={`mailto:${ENQUIRY_EMAIL}`} className={`inline-flex min-h-11 items-center rounded-sm ${FOCUS_RING}`}>
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    Prefer email?{' '}
+                    <a href={`mailto:${ENQUIRY_EMAIL}`} className={`font-medium text-foreground rounded-sm ${FOCUS_RING}`}>
                       <span className="link-draw">{ENQUIRY_EMAIL}</span>
                     </a>
-                    <p className="text-muted-foreground">
-                      Prefer to talk?{" "}
-                      <a
-                        href={BOOKING_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`inline-flex min-h-11 items-center gap-1 text-foreground font-semibold rounded-sm ${FOCUS_RING}`}
-                      >
-                        <span className="link-draw">Book a call</span>
-                        <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-                      </a>
-                    </p>
-                  </div>
-                </aside>
+                    {' '}or{' '}
+                    <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1 font-medium text-foreground rounded-sm ${FOCUS_RING}`}>
+                      <span className="link-draw">book a call</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+                    </a>
+                  </p>
+                </header>
+                <EnquiryForm key={formKey} idPrefix="lead" source="Lead overlay" successHeadingId={`${TITLE_ID}-done`} variant="sheet" />
               </div>
             </div>
           </motion.div>

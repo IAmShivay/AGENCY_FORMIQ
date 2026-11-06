@@ -5,9 +5,9 @@ import PageHeader from "@/components/studio/PageHeader";
 import Magnetic from "@/components/studio/Magnetic";
 import EnquiryForm from "@/components/forms/EnquiryForm";
 import { BTN_PRIMARY, CONTAINER, EYEBROW, FOCUS_RING, pad2 } from "@/components/studio/ui";
-import { BOOKING_URL } from "@/lib/pricing";
 import { ENQUIRY_EMAIL } from "@/lib/enquiry-options";
 import { STUDIO_ADDRESS_LINE } from "@/lib/studio-facts";
+import { openLeadSheet } from '@/lib/lead-sheet';
 
 const CONTACT_PHONE_DISPLAY = "+91 8918349445";
 const CONTACT_PHONE_HREF = "tel:+918918349445";
@@ -73,10 +73,10 @@ const Contact = () => (
             </p>
             <div className="mt-6">
               <Magnetic>
-                <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className={BTN_PRIMARY}>
+                <button type="button" onClick={openLeadSheet} className={BTN_PRIMARY}>
                   Book a call
                   <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" aria-hidden="true" />
-                </a>
+                </button>
               </Magnetic>
             </div>
           </div>

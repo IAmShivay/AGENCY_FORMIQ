@@ -8,6 +8,7 @@ import { Wrench, ExternalLink, ArrowLeft, Search, Filter, ArrowRight, ChevronRig
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { openLeadSheet } from '@/lib/lead-sheet';
 import '../software-tools.css';
 
 // Define the tool interface
@@ -587,9 +588,9 @@ export default function ProductivityToolsPage() {
                     className="rounded-full px-8 py-6 bg-card text-primary hover:bg-primary-foreground/90 shadow-lg hover:shadow-xl transition-all duration-300"
                     asChild
                   >
-                    <Link href="/contact" className="flex items-center gap-2">
+                    <button type="button" onClick={openLeadSheet} className="flex items-center gap-2">
                       Get in Touch <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Link>
+                    </button>
                   </Button>
                   <Button
                     size="lg"

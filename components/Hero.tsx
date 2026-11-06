@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import Link from 'next/link';
 import { ArrowRight, ArrowDown } from "lucide-react";
-import LeadFormOverlay from './LeadFormOverlay';
+import { openLeadSheet } from '@/lib/lead-sheet';
 import Magnetic from './studio/Magnetic';
 import EmberField from './studio/EmberField';
 import StudioClock from './studio/StudioClock';
@@ -25,7 +25,6 @@ const ACCENT = 'font-serif italic font-normal tracking-[-0.02em] text-foreground
 const LINK = `inline-flex items-center gap-2 min-h-11 text-[15px] font-medium text-foreground rounded-sm ${FOCUS_RING}`;
 
 const Hero = () => {
-  const [showLeadForm, setShowLeadForm] = useState(false);
   const [currency] = useCurrency();
   const root = useRef<HTMLDivElement>(null);
 
@@ -46,22 +45,21 @@ const Hero = () => {
   }, { scope: root });
 
   return (
-    <>
     <div ref={root} data-hero className="tone-ink hero-ember relative isolate w-full overflow-hidden">
       <div data-hero-field aria-hidden="true" className="absolute inset-0 -z-10">
-        <EmberField />
+        <EmberField className="absolute inset-0" />
         <div className="grain absolute inset-0" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background via-background/70 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 md:h-1/2 bg-gradient-to-t from-background via-background/70 to-transparent" />
       </div>
 
-      <div className={`${CONTAINER} flex min-h-[100svh] flex-col justify-between pt-28 sm:pt-32 lg:pt-36 pb-6 sm:pb-8`}>
-        <h1 data-hero-title className={`max-w-[13ch] lg:max-w-[14ch] ${TITLE}`}>
+      <div className={`${CONTAINER} flex min-h-[100svh] flex-col justify-between pt-24 [@media(max-height:700px)]:pt-20 sm:pt-32 lg:pt-36 pb-5 sm:pb-8`}>
+        <h1 data-hero-title className={`max-w-[13ch] lg:max-w-[14ch] ${TITLE} max-md:text-[12.6vw] [@media(max-height:700px)]:!text-[2.5rem]`}>
           We design and build brands, websites and stores people <span className={ACCENT}>remember.</span>
         </h1>
 
-        <div className="mt-12 sm:mt-16">
-          <div className="grid grid-cols-1 gap-y-10 gap-x-8 border-t border-foreground/15 pt-6 sm:pt-8 md:grid-cols-12">
-            <nav data-hero-in aria-label="Services" className="md:col-span-4 lg:col-span-3">
+        <div className="mt-8 sm:mt-16">
+          <div className="grid grid-cols-1 gap-y-6 md:gap-y-10 gap-x-8 border-t border-foreground/15 pt-6 sm:pt-8 md:grid-cols-12">
+            <nav data-hero-in aria-label="Services" className="hidden md:block md:col-span-4 lg:col-span-3">
               <p className={EYEBROW}>What we do</p>
               <ul className="mt-3">
                 {HERO_SERVICES.map((s, i) => (
@@ -76,16 +74,16 @@ const Hero = () => {
             </nav>
 
             <div data-hero-in className="md:col-span-8 lg:col-span-5">
-              <p className={EYEBROW}>Studio</p>
-              <p className="mt-4 max-w-[38ch] text-lg sm:text-xl leading-relaxed text-foreground">
+              <p className={`hidden md:block ${EYEBROW}`}>Studio</p>
+              <p className="md:mt-4 max-w-[38ch] text-[17px] sm:text-xl leading-relaxed text-foreground">
                 An independent studio working with growing companies across Europe, the UK, the UAE and India.
               </p>
-              <p className="mt-4 text-[15px] text-muted-foreground">{startingFromLabel(currency)}, quoted at a fixed price.</p>
+              <p className="mt-3 md:mt-4 text-[15px] text-muted-foreground">{startingFromLabel(currency)}, quoted at a fixed price.</p>
             </div>
 
             <div data-hero-in className="md:col-span-12 lg:col-span-4 flex flex-col gap-3 sm:flex-row sm:items-center lg:flex-col lg:items-end lg:justify-end">
               <Magnetic>
-                <button type="button" onClick={() => setShowLeadForm(true)} className={`${BTN_EMBER} w-full sm:w-auto`}>
+                <button type="button" onClick={openLeadSheet} className={`${BTN_EMBER} w-full sm:w-auto`}>
                   Start a project
                   <ArrowRight className="w-4 h-4 flex-shrink-0 transition-transform duration-500 group-hover/cta:translate-x-1" />
                 </button>
@@ -93,7 +91,7 @@ const Hero = () => {
             </div>
           </div>
 
-          <div data-hero-in className={`mt-6 sm:mt-8 flex items-center justify-between gap-6 ${EYEBROW}`}>
+          <div data-hero-in className={`mt-4 sm:mt-8 flex items-center justify-between gap-6 ${EYEBROW}`}>
             <StudioClock />
             <a href={WORK_ANCHOR} className={`inline-flex items-center gap-2 min-h-11 text-foreground rounded-sm ${FOCUS_RING}`}>
               <span className="link-draw">Selected work</span>
@@ -104,8 +102,6 @@ const Hero = () => {
       </div>
 
     </div>
-    <LeadFormOverlay open={showLeadForm} onClose={() => setShowLeadForm(false)} />
-    </>
   );
 };
 

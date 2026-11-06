@@ -6,6 +6,7 @@ import { ArrowRight, Loader2, Plus } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import { trackLead } from '@/lib/meta-pixel';
 import { useCurrency } from '@/lib/use-currency';
+import { CURRENCY_CODES } from '@/lib/pricing';
 import {
   EMAIL_PATTERN,
   ENQUIRY_NOTIFY_ENDPOINT,
@@ -80,7 +81,7 @@ export default function EnquiryForm({ idPrefix, source, onSubmitted, successHead
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState<SentEnquiry | null>(null);
-  const [currency] = useCurrency();
+  const [currency, chooseCurrency] = useCurrency();
   const [showPhone, setShowPhone] = useState(false);
   const phoneRef = useRef<HTMLInputElement>(null);
 
@@ -190,8 +191,25 @@ export default function EnquiryForm({ idPrefix, source, onSubmitted, successHead
         options={SERVICE_CHOICES} value={form.services} onChange={(v) => set('services', v)} error={errors.services} />
 
       <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2">
-        <SelectField id={id('budget')} name="budget" label={`Budget (${currency})`} optional placeholder="Select a range"
-          options={budgets} value={form.budget} onChange={(v) => set('budget', v)} />
+        <div>
+          <SelectField id={id('budget')} name="budget" label={`Budget (${currency})`} optional placeholder="Select a range"
+            options={budgets} value={form.budget} onChange={(v) => set('budget', v)} />
+          <div role="radiogroup" aria-label="Budget currency" className="mt-1 flex flex-wrap gap-x-1">
+            {CURRENCY_CODES.map((code) => (
+              <button
+                key={code}
+                type="button"
+                role="radio"
+                aria-checked={code === currency}
+                onClick={() => { chooseCurrency(code); set('budget', ''); }}
+                className={cn('min-h-11 px-2 font-mono text-[11px] uppercase tracking-[0.14em] rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                  code === currency ? 'text-foreground underline underline-offset-4' : 'text-muted-foreground hover:text-foreground')}
+              >
+                {code}
+              </button>
+            ))}
+          </div>
+        </div>
         <SelectField id={id('timeline')} name="timeline" label="Timeline" optional placeholder="Select a timeline"
           options={TIMELINE_CHOICES} value={form.timeline} onChange={(v) => set('timeline', v)} />
       </div>
@@ -216,7 +234,7 @@ export default function EnquiryForm({ idPrefix, source, onSubmitted, successHead
 
       {errors.form && <p role="alert" className="text-sm text-destructive">{errors.form}</p>}
 
-      <div className={cn('flex flex-col-reverse gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between', fill && 'mt-auto')}>
+      <div className={cn('flex flex-col-reverse gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between', fill && 'mt-auto max-sm:sticky max-sm:bottom-0 max-sm:z-10 max-sm:-mx-5 max-sm:gap-2 max-sm:bg-background max-sm:px-5 max-sm:pt-4 max-sm:pb-5')}>
         <p className="text-sm text-muted-foreground">
           We&apos;ll only use this to reply to you.{' '}
           <Link href={PRIVACY_HREF} className={`text-foreground rounded-sm ${FOCUS_RING}`}>

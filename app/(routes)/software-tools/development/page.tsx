@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Terminal, ExternalLink, ArrowLeft, Search } from 'lucide-react';
 import Link from 'next/link';
+import { openLeadSheet } from '@/lib/lead-sheet';
 
 // Define the tool interface
 interface Tool {
@@ -237,9 +238,7 @@ export default function DevelopmentToolsPage() {
           We can develop custom development tools tailored to your specific workflow needs. 
           Contact us to discuss how we can help optimize your development process.
         </p>
-        <Button asChild>
-          <Link href="/contact">Contact Us</Link>
-        </Button>
+        <Button onClick={openLeadSheet}>Contact us</Button>
       </div>
     </div>
   );

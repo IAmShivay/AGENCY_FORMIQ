@@ -1,10 +1,10 @@
-import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import PageHeader from '@/components/studio/PageHeader';
 import Magnetic from '@/components/studio/Magnetic';
 import { BTN_PRIMARY, CONTAINER, EYEBROW, H2, SECTION_Y, pad2 } from '@/components/studio/ui';
 import { CLIENT_REGIONS, STUDIO_ADDRESS } from '@/lib/studio-facts';
 import { PRICING_PLANS } from '@/lib/pricing';
+import OpenSheetButton from '@/components/OpenSheetButton';
 
 const OFFICE_PHOTO_SRC = 'https://res.cloudinary.com/dyiso4ohk/image/upload/v1792491779/WhatsApp_Image_2026-10-20_yp1tak.jpg';
 const WHITEBOARD_PHOTO_SRC = 'https://res.cloudinary.com/dyiso4ohk/image/upload/v1792491788/Tech_Office_Services_Whiteboard_hwvgvb.png';
@@ -149,10 +149,10 @@ export default function AboutPage() {
             </p>
           </div>
           <Magnetic>
-            <Link href="/contact" className={BTN_PRIMARY}>
+            <OpenSheetButton className={BTN_PRIMARY}>
               Get started
               <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" aria-hidden="true" />
-            </Link>
+            </OpenSheetButton>
           </Magnetic>
         </div>
       </section>

@@ -196,7 +196,7 @@ const CreativesPortfolio = () => {
       <PageCTA
         title="Need stunning creatives for your brand?"
         subtitle="From brand identity to social media content, we design everything your business needs."
-        primary={{"label":"Start a project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20need%20creative%20design%20services","external":true}}
+        primary={{ label: "Start a project" }}
       />
     </div>
   );

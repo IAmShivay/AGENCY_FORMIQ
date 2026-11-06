@@ -9,6 +9,31 @@ import {
 import StudioCursor from './StudioCursor';
 
 const DARK_THEMES = new Set(['dark']);
+const TOUCH_LERP = 0.08;
+const TOUCH_INERTIA = 28;
+const REVEAL_MARGIN = '0px 0px -8% 0px';
+const IMAGE_REVEAL_MARGIN = '0px 0px -5% 0px';
+
+const SCROLLING_X = new Set(['auto', 'scroll']);
+const inScrollRail = (el: HTMLElement, stop: HTMLElement) => {
+  for (let n = el.parentElement; n && n !== stop; n = n.parentElement) {
+    if (SCROLLING_X.has(getComputedStyle(n).overflowX)) return true;
+  }
+  return false;
+};
+
+const byTop = (a: HTMLElement, b: HTMLElement) => a.getBoundingClientRect().top - b.getBoundingClientRect().top;
+
+const onReveal = (targets: HTMLElement[], rootMargin: string, show: (els: HTMLElement[]) => void) => {
+  const io = new IntersectionObserver((entries) => {
+    const els = entries.filter((e) => e.isIntersecting).map((e) => e.target as HTMLElement);
+    if (!els.length) return;
+    els.forEach((el) => io.unobserve(el));
+    show(els.sort(byTop));
+  }, { rootMargin });
+  targets.forEach((t) => io.observe(t));
+  return io;
+};
 
 /** An element (or an ancestor up to main) already animated by framer-motion or inline styles. */
 const ownedByOtherMotion = (el: HTMLElement, stop: HTMLElement) => {
@@ -43,10 +68,13 @@ export default function StudioShell() {
     if (prefersReducedMotion()) return;
     const lenis = new Lenis({
       lerp: 0.1,
+      syncTouch: true,
+      syncTouchLerp: TOUCH_LERP,
+      touchInertiaMultiplier: TOUCH_INERTIA,
       anchors: { offset: -88 },
       // Let modals, menus and any inner scroller keep native wheel/touch scrolling.
       prevent: (node: HTMLElement) =>
-        !!node.closest?.('[role="dialog"], [data-lenis-prevent], .overflow-y-auto, .overflow-auto, .overflow-y-scroll'),
+        !!node.closest?.('[role="dialog"], [data-lenis-prevent], .overflow-y-auto, .overflow-auto, .overflow-y-scroll, .snap-x'),
     });
     setLenis(lenis);
     lenis.on('scroll', ScrollTrigger.update);
@@ -70,6 +98,7 @@ export default function StudioShell() {
 
     let ctx: gsap.Context | undefined;
     let cancelled = false;
+    const observers: IntersectionObserver[] = [];
     const run = () => {
       if (cancelled) return;
       ctx = gsap.context(() => {
@@ -77,20 +106,18 @@ export default function StudioShell() {
         const entrance = shouldPlayEntrance();
         const onScreen = (el: HTMLElement) => el.getBoundingClientRect().top < window.innerHeight;
         const skip = (el: HTMLElement) =>
-          !!el.closest('[data-no-reveal], [data-hero], header, footer, [role="dialog"]') || ownedByOtherMotion(el, main)
+          !!el.closest('[data-no-reveal], [data-hero], header, footer, [role="dialog"]') || ownedByOtherMotion(el, main) || inScrollRail(el, main)
           || (!entrance && onScreen(el));
 
         // Headings rise out of a clip mask. Whole-element clip (no text splitting),
         // so dynamic React content underneath is never touched.
-        main.querySelectorAll<HTMLElement>('h1, h2').forEach((el) => {
-          if (skip(el)) return;
-          gsap.fromTo(el,
-            { clipPath: 'inset(0% 0% 100% 0%)', y: 36, transition: 'none' },
-            {
-              clipPath: 'inset(0% 0% -25% 0%)', y: 0, duration: 1.1, ease: 'expo.out', clearProps: 'clipPath,transform,transition',
-              scrollTrigger: { trigger: el, start: 'clamp(top 90%)', once: true },
-            });
-        });
+        const headings = Array.from(main.querySelectorAll<HTMLElement>('h1, h2')).filter((el) => !skip(el));
+        if (headings.length) {
+          gsap.set(headings, { clipPath: 'inset(0% 0% 100% 0%)', y: 36, transition: 'none' });
+          observers.push(onReveal(headings, REVEAL_MARGIN, (els) => gsap.to(els, {
+            clipPath: 'inset(0% 0% -25% 0%)', y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.06, clearProps: 'clipPath,transform,transition',
+          })));
+        }
 
         // Cards and grid items: staggered fade-up as they enter together.
         const items = Array.from(main.querySelectorAll<HTMLElement>('section .grid > *, [data-reveal]'))
@@ -99,10 +126,9 @@ export default function StudioShell() {
           // CSS transitions (hover lifts, transition-all) are suspended while GSAP drives the
           // transform, then handed back.
           gsap.set(items, { y: 44, autoAlpha: 0, transition: 'none' });
-          ScrollTrigger.batch(items, {
-            start: 'clamp(top 92%)', once: true,
-            onEnter: (batch) => gsap.to(batch, { y: 0, autoAlpha: 1, duration: 1, ease: 'expo.out', stagger: 0.07, clearProps: 'transform,transition' }),
-          });
+          observers.push(onReveal(items, REVEAL_MARGIN, (els) => gsap.to(els, {
+            y: 0, autoAlpha: 1, duration: 1, ease: 'expo.out', stagger: 0.07, clearProps: 'transform,transition',
+          })));
         }
 
         // Small uppercase labels decode like a terminal when they appear.
@@ -133,13 +159,13 @@ export default function StudioShell() {
         });
 
         // Images inside cropped frames settle from a slight zoom.
-        main.querySelectorAll<HTMLImageElement>('section .overflow-hidden img').forEach((img) => {
-          if (skip(img)) return;
-          gsap.fromTo(img, { scale: 1.1, transition: 'none' }, {
+        const images = Array.from(main.querySelectorAll<HTMLImageElement>('section .overflow-hidden img')).filter((img) => !skip(img));
+        if (images.length) {
+          gsap.set(images, { scale: 1.1, transition: 'none' });
+          observers.push(onReveal(images, IMAGE_REVEAL_MARGIN, (els) => gsap.to(els, {
             scale: 1, duration: 1.6, ease: 'expo.out', clearProps: 'scale,transform,transition',
-            scrollTrigger: { trigger: img, start: 'clamp(top 95%)', once: true },
-          });
-        });
+          })));
+        }
 
         gsap.to(progress.current, {
           scaleX: 1, ease: 'none',
@@ -152,7 +178,7 @@ export default function StudioShell() {
     const frame = requestAnimationFrame(() => { introReady.then(() => requestAnimationFrame(run)); });
     // Late content (fetched lists, ads) changes page height; re-measure once it lands.
     const late = window.setTimeout(() => ScrollTrigger.refresh(), 1800);
-    return () => { cancelled = true; cancelAnimationFrame(frame); clearTimeout(late); ctx?.revert(); };
+    return () => { cancelled = true; cancelAnimationFrame(frame); clearTimeout(late); observers.forEach((o) => o.disconnect()); ctx?.revert(); };
   }, [pathname]);
 
   return (

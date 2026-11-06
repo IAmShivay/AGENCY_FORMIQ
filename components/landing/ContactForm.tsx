@@ -2,8 +2,8 @@
 
 import { ArrowUpRight } from 'lucide-react';
 import EnquiryForm from '@/components/forms/EnquiryForm';
-import { BOOKING_URL } from '@/lib/pricing';
 import { ENQUIRY_EMAIL } from '@/lib/enquiry-options';
+import { openLeadSheet } from '@/lib/lead-sheet';
 
 const FOCUS_RING =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
@@ -27,10 +27,10 @@ const ContactForm = () => (
           </a>
           <p className="text-muted-foreground">
             Prefer to talk?{' '}
-            <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className={`inline-flex min-h-11 items-center gap-1 text-foreground font-semibold rounded-sm ${FOCUS_RING}`}>
+            <button type="button" onClick={openLeadSheet} className={`inline-flex min-h-11 items-center gap-1 text-foreground font-semibold rounded-sm ${FOCUS_RING}`}>
               <span className="link-draw">Book a call</span>
               <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-            </a>
+            </button>
           </p>
         </div>
       </div>

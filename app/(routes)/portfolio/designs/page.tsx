@@ -285,7 +285,7 @@ const DesignsPortfolio = () => {
       <PageCTA
         title="Need a design project?"
         subtitle="Let's create a visual identity that captures your brand's essence and connects with your audience."
-        primary={{"label":"Start your project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20need%20a%20design%20project","external":true}}
+        primary={{ label: "Start your project" }}
         secondary={{"label":"View more designs","href":"/portfolio"}}
       />
     </div>

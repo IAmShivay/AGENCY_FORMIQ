@@ -7,7 +7,7 @@ export const FOCUS_RING =
 export const CONTAINER = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
 
 /** Vertical rhythm for a full section. */
-export const SECTION_Y = 'py-20 sm:py-28 lg:py-32';
+export const SECTION_Y = 'py-14 sm:py-28 lg:py-32';
 
 /** Mono indexed eyebrow, e.g. "(01) Services". */
 export const EYEBROW = 'font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground';
@@ -29,4 +29,8 @@ export const BTN_EMBER = `btn-ink btn-ink-invert group/cta h-14 px-7 bg-primary 
 export const BTN_OUTLINE = `btn-ink group/cta h-14 px-7 border border-foreground/30 text-foreground rounded-full font-semibold inline-flex items-center justify-center gap-2 text-[15px] whitespace-nowrap ${FOCUS_RING}`;
 
 /** Two-digit index, e.g. 1 → "01". */
+export const RAIL_TO_SM = '-mx-4 px-4 scroll-px-4 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:px-0 sm:overflow-visible sm:pb-0';
+export const RAIL_TO_MD = '-mx-4 px-4 scroll-px-4 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:px-0 md:overflow-visible md:pb-0';
+export const RAIL_ITEM = 'w-[82%] flex-shrink-0 snap-start';
+
 export const pad2 = (n: number) => String(n).padStart(2, '0');

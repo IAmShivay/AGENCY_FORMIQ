@@ -815,6 +815,8 @@
   --foreground: var(--paper);
   --card: 0 0% 10%;
   --card-foreground: var(--paper);
+  --popover: 0 0% 10%;
+  --popover-foreground: var(--paper);
   --muted: 0 0% 12%;
   --secondary: 0 0% 12%;
   --muted-foreground: 38 10% 66%;

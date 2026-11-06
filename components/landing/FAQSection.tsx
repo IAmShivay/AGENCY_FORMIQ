@@ -3,24 +3,32 @@
 import { useState } from 'react';
 import { Plus, ArrowUpRight } from 'lucide-react';
 import Script from 'next/script';
-import { PAYMENT_TERMS } from '@/lib/pricing';
+import { ENQUIRY_EMAIL } from '@/lib/enquiry-options';
 
 const faqs = [
   {
-    q: "I don't know anything about ads or marketing. Can you still help?",
-    a: "Absolutely. That's exactly who we work with. You focus on running your business. We handle everything — from building your website to creating ads to managing your social media. No technical knowledge needed.",
+    q: "Do you work with clients outside India?",
+    a: "Yes. Most of our work is for companies in Europe, the UK and the UAE. We run projects remotely with live review calls and a shared project board.",
   },
   {
-    q: "How do you price projects?",
-    a: `Every type of project has a published starting price, shown in your currency in the pricing section. ${PAYMENT_TERMS}`,
+    q: "Which time zones do you cover?",
+    a: "We overlap with UK and European mornings and with Gulf business hours, so reviews happen in your day, not at midnight.",
   },
   {
-    q: "Am I locked into a contract?",
-    a: "No. Projects are fixed-price with a clear scope, so you know the total before we start. Our monthly partner plan can be cancelled with 30 days' notice.",
+    q: "Who owns the files and the code?",
+    a: "You do. On final payment you get every source file, font licence note, repository and account. Nothing is held back.",
   },
   {
-    q: "How long does a project take?",
-    a: "Brand identity takes 3 to 4 weeks, a website 4 to 6 weeks and a Shopify store 5 to 8 weeks. Your quote includes a timeline with milestones, and we work during your business hours.",
+    q: "How do payments work?",
+    a: "Fixed price, 50% to start and 50% at launch. We invoice in EUR, GBP, AED, USD or INR.",
+  },
+  {
+    q: "Can you work with our in-house team?",
+    a: "Yes. We often design and build alongside in-house marketers and developers, and hand over clean, documented work.",
+  },
+  {
+    q: "What happens after launch?",
+    a: "Every project includes 30 days of care for fixes. After that, the partner plan keeps a senior designer and developer on call each month.",
   },
 ];
 
@@ -37,41 +45,43 @@ const faqSchema = {
   })),
 };
 
-const WHATSAPP_QUESTION_HREF = 'https://wa.me/919832078313?text=Hi%2C%20I%20have%20a%20question';
+const EMAIL_QUESTION_HREF = `mailto:${ENQUIRY_EMAIL}`;
 
 const FAQSection = () => {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" aria-labelledby="faq-title" className="relative py-20 sm:py-28">
+    <section id="faq" aria-labelledby="faq-title" className="relative py-14 sm:py-28">
       <Script
         id="faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[0.85fr,1.15fr] gap-12 lg:gap-20 items-start">
+        <div className="grid lg:grid-cols-[0.85fr,1.15fr] gap-8 md:gap-12 lg:gap-20 items-start">
           {/* Left: sticky heading */}
-          <div className="lg:sticky lg:top-28">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-5">(07) Questions</p>
+          <div className="lg:sticky lg:top-28 max-md:contents">
+            <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-3 md:mb-5">(06) Questions</p>
             <h2 id="faq-title" className="font-display text-[2.3rem] leading-[1] sm:text-6xl font-semibold tracking-[-0.04em] text-foreground">
-              Common questions
+              Before you <span className="text-primary">ask</span>.
             </h2>
-            <p className="mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-sm">
-              Everything you need to know before getting started
+            <p className="mt-3 md:mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-sm">
+              The things international clients usually want to know first.
             </p>
+            </div>
 
-            <div className="mt-10 pt-6 border-t border-border max-w-sm">
-              <p className="font-display text-xl font-semibold tracking-[-0.03em] text-foreground">Still have questions?</p>
-              <p className="mt-1 text-sm text-muted-foreground">We reply in under 2 hours on WhatsApp</p>
+            <div className="mt-10 pt-6 border-t border-border max-w-sm max-md:order-last max-md:-mt-2 max-md:pt-0 max-md:border-t-0 max-md:flex max-md:flex-wrap max-md:items-center max-md:justify-between max-md:gap-x-4 max-md:max-w-none">
+              <div>
+              <p className="font-display text-lg md:text-xl font-semibold tracking-[-0.03em] text-foreground">Still have questions?</p>
+              <p className="mt-1 text-sm text-muted-foreground">We reply within one working day.</p>
+              </div>
               <a
-                href={WHATSAPP_QUESTION_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={EMAIL_QUESTION_HREF}
                 data-track-source="faq"
-                className="group mt-3 inline-flex items-center gap-2 min-h-[44px] text-[15px] font-semibold text-primary rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="group mt-3 max-md:mt-0 inline-flex items-center gap-2 min-h-[44px] text-[15px] font-semibold text-primary rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <span className="link-draw">Chat on WhatsApp</span>
+                <span className="link-draw">Email the studio</span>
                 <ArrowUpRight className="w-4 h-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
             </div>
@@ -92,19 +102,19 @@ const FAQSection = () => {
                       onClick={() => setOpen(isOpen ? null : i)}
                       aria-expanded={isOpen}
                       aria-controls={panelId}
-                      className="group w-full flex items-start justify-between gap-6 py-6 sm:py-7 text-left min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                      className="group w-full flex items-start justify-between gap-4 sm:gap-6 py-4 sm:py-7 text-left min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
                     >
-                      <span className="flex items-start gap-4 sm:gap-6 min-w-0">
-                        <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground pt-1.5 sm:pt-2 w-6 flex-shrink-0">
+                      <span className="flex items-start gap-3 sm:gap-6 min-w-0">
+                        <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground pt-1 sm:pt-2 w-6 flex-shrink-0">
                           {String(i + 1).padStart(2, '0')}
                         </span>
-                        <span className="font-display text-lg sm:text-xl lg:text-[1.4rem] font-semibold leading-snug tracking-[-0.025em] text-foreground">
+                        <span className="font-display text-base sm:text-xl lg:text-[1.4rem] font-semibold leading-snug tracking-[-0.025em] text-foreground">
                           {faq.q}
                         </span>
                       </span>
                       <span
                         aria-hidden="true"
-                        className={`mt-0.5 w-9 h-9 rounded-full border flex items-center justify-center flex-shrink-0 transition-[transform,background-color,color,border-color] duration-500 ${
+                        className={`md:mt-0.5 w-8 h-8 md:w-9 md:h-9 rounded-full border flex items-center justify-center flex-shrink-0 transition-[transform,background-color,color,border-color] duration-500 ${
                           isOpen ? 'rotate-45 bg-foreground text-background border-foreground' : 'border-border text-foreground group-hover:border-foreground/40'
                         }`}
                       >
@@ -117,9 +127,9 @@ const FAQSection = () => {
                     role="region"
                     aria-labelledby={buttonId}
                     hidden={!isOpen}
-                    className="pb-7 pl-10 sm:pl-12 pr-12"
+                    className="pb-5 md:pb-7 pl-9 sm:pl-12 pr-2 md:pr-12"
                   >
-                    <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-2xl">{faq.a}</p>
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">{faq.a}</p>
                   </dd>
                 </div>
               );

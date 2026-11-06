@@ -472,7 +472,7 @@ const WebsitesPortfolio = () => {
       <PageCTA
         title="Ready to elevate your web presence?"
         subtitle="Let's create a website that drives results and provides exceptional user experiences."
-        primary={{"label":"Start a project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20need%20a%20website%20for%20my%20business","external":true}}
+        primary={{ label: "Start a project" }}
         secondary={{"label":"View more work","href":"/portfolio"}}
       />
     </div>

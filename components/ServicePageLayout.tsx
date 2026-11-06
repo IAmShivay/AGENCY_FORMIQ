@@ -5,6 +5,7 @@ import { ArrowRight, ArrowUpRight, type LucideIcon } from 'lucide-react';
 import ContactForm from './landing/ContactForm';
 import Magnetic from './studio/Magnetic';
 import { BTN_OUTLINE, BTN_PRIMARY, CONTAINER, EYEBROW, FOCUS_RING, H1, H2, SECTION_Y, pad2 } from './studio/ui';
+import { openLeadSheet } from '@/lib/lead-sheet';
 
 interface ServiceFeature {
   title: string;
@@ -49,7 +50,6 @@ interface ServicePageLayoutProps {
 
 const CONTACT_HREF = '/contact';
 const PORTFOLIO_HREF = '/portfolio';
-const FORM_ANCHOR = '#contact-form';
 
 /** Shared template for the service pages (/web, /mobile, /shopify, /marketing, /ecommerce-marketplace, /agents). */
 export default function ServicePageLayout({
@@ -81,10 +81,10 @@ export default function ServicePageLayout({
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">{subtitle}</p>
               <div className="flex flex-col min-[420px]:flex-row gap-3">
                 <Magnetic>
-                  <Link href={CONTACT_HREF} className={BTN_PRIMARY}>
+                  <button type="button" onClick={openLeadSheet} className={BTN_PRIMARY}>
                     Get started
                     <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" aria-hidden="true" />
-                  </Link>
+                  </button>
                 </Magnetic>
                 <Magnetic>
                   <Link href={PORTFOLIO_HREF} className={BTN_OUTLINE}>
@@ -212,10 +212,10 @@ export default function ServicePageLayout({
             <p className="text-base sm:text-lg text-foreground/80 max-w-xl leading-relaxed">{ctaSubtitle}</p>
             <div className="flex flex-col min-[420px]:flex-row gap-3">
               <Magnetic>
-                <a href={FORM_ANCHOR} className={BTN_PRIMARY}>
+                <button type="button" onClick={openLeadSheet} className={BTN_PRIMARY}>
                   Send a brief
                   <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" aria-hidden="true" />
-                </a>
+                </button>
               </Magnetic>
               <Link href={CONTACT_HREF} className={`inline-flex min-h-14 items-center justify-center gap-2 px-2 text-[15px] font-semibold rounded-sm ${FOCUS_RING}`}>
                 <span className="link-draw">Contact page</span>

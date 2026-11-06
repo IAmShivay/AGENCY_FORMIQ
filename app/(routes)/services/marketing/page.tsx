@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ServiceHero from '@/components/services/ServiceHero';
 import ServiceFeatures from '@/components/services/ServiceFeatures';
 import ServiceCTA from '@/components/services/ServiceCTA';
+import { openLeadSheet } from '@/lib/lead-sheet';
 
 // Features data
 const features = [
@@ -69,13 +70,13 @@ export default function MarketingToolsPage() {
             We're working hard to bring you our marketing tools. Please check back soon or contact us for more information.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-            <Link
-              href="/contact"
+            <button
+              type="button" onClick={openLeadSheet}
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
             >
               Contact Us
               <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+            </button>
             <Link
               href="/services/domains"
               className="inline-flex items-center px-6 py-3 border border-border text-base font-medium rounded-md text-foreground bg-card hover:bg-muted"

@@ -4,6 +4,7 @@ import { useEffect, useId } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import { X, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { openLeadSheet } from '@/lib/lead-sheet';
 
 export interface PortfolioProject {
   id: number;
@@ -139,14 +140,6 @@ const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
                 <section className="mt-10">
                   <h3 className={LABEL}>Results &amp; impact</h3>
                   <p className="mt-3 text-foreground/85 leading-relaxed">{project.impact}</p>
-                  <div className="mt-6 grid grid-cols-3 gap-4">
-                    {project.metrics.map((metric) => (
-                      <div key={metric.label}>
-                        <div className="font-display text-3xl md:text-4xl font-bold tracking-[-0.04em]">{metric.value}</div>
-                        <div className="mt-1 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.12em] text-muted-foreground">{metric.label}</div>
-                      </div>
-                    ))}
-                  </div>
                 </section>
 
                 <section className="mt-10">
@@ -189,13 +182,7 @@ const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
                   )}
                   <button
                     type="button"
-                    onClick={() => {
-                      const contactSection = document.getElementById('contact-form');
-                      if (contactSection) {
-                        contactSection.scrollIntoView({ behavior: 'smooth' });
-                        onClose();
-                      }
-                    }}
+                    onClick={() => { onClose(); openLeadSheet(); }}
                     className={`btn-ink h-14 px-7 border border-foreground/20 rounded-full font-semibold inline-flex items-center justify-center gap-2 text-[15px] ${FOCUS_RING}`}
                   >
                     Start similar project <ArrowRight className="w-4 h-4" />
