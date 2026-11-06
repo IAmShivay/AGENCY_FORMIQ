@@ -28,8 +28,8 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
     setSending(true);
     try {
       // Log activity
-      const { error: activityError } = await supabase.from('activities').insert([{
-        type: 'email_sent',
+      const { error: activityError } = await supabase.from('user_activities').insert([{
+        activity_type: 'email_sent',
         description: `Email sent to ${leadName} (${leadEmail})`,
         metadata: {
           lead_id: leadId,

@@ -293,6 +293,7 @@ const AuthForms = () => {
                         {isLogin ? 'Sign in' : 'Create account'}
                     </h1>
 
+                    {/* Account creation is disabled for now.
                     <div role="tablist" aria-label="Account" className="mt-8 grid grid-cols-2 rounded-full border border-border p-1">
                         {AUTH_TABS.map((tab) => (
                             <button
@@ -307,6 +308,7 @@ const AuthForms = () => {
                             </button>
                         ))}
                     </div>
+                    */}
 
                     {message.text && (
                         <div role="status" className={`mt-6 flex items-start gap-2 rounded-xl border px-3.5 py-3 text-sm ${ADMIN_TONE[message.type === 'error' ? 'negative' : 'positive']}`}>
@@ -315,8 +317,8 @@ const AuthForms = () => {
                         </div>
                     )}
 
-                    {isLogin ? (
-                        <form className="mt-6 space-y-5" onSubmit={handleLogin}>
+                    {isLogin && (
+                        <form className="mt-8 space-y-5" onSubmit={handleLogin}>
                             <div className="space-y-2">
                                 <label htmlFor="login-email" className={ADMIN_LABEL}>Email</label>
                                 <input id="login-email" name="email" type="email" autoComplete="email" required value={formState.email} onChange={handleInputChange} className={`${ADMIN_INPUT} h-12`} placeholder="you@company.com" />
@@ -333,7 +335,9 @@ const AuthForms = () => {
                             </div>
                             {submit('Sign in')}
                         </form>
-                    ) : (
+                    )}
+                    {/* Account creation is disabled for now.
+                    {!isLogin && (
                         <form className="mt-6 space-y-5" onSubmit={handleSignup}>
                             <div className="space-y-2">
                                 <label htmlFor="signup-name" className={ADMIN_LABEL}>Full name</label>
@@ -362,6 +366,7 @@ const AuthForms = () => {
                             </p>
                         </form>
                     )}
+                    */}
                 </div>
             </main>
         </div>

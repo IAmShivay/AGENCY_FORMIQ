@@ -112,7 +112,6 @@ export default function EmailModal({ isOpen, onClose, leadEmail, leadName, leadI
       const { error: activityError } = await supabase
         .from('user_activities')
         .insert([{
-          user_id: null, // You might want to get current user ID
           activity_type: 'email_sent',
           description: `Email sent to ${leadName} (${leadEmail})`,
           metadata: {

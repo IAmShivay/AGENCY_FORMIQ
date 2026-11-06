@@ -44,7 +44,6 @@ interface UserActivity {
     id: string;
     full_name: string;
     email: string;
-    role: string;
   };
 }
 
@@ -81,7 +80,7 @@ export default function ActivitiesPage() {
         .from('user_activities')
         .select(`
           *,
-          user:user_id(id, full_name, email, role)
+          user:user_id(id, full_name, email)
         `)
         .order('created_at', { ascending: false });
 
@@ -246,11 +245,6 @@ export default function ActivitiesPage() {
                         <User className="h-4 w-4 flex-shrink-0" />
                         <span className="truncate">{activity.user?.full_name || activity.user?.email || 'Unknown user'}</span>
                       </div>
-                      {activity.user?.role && (
-                        <span className={`${ADMIN_BADGE} ${ADMIN_TONE.neutral}`}>
-                          {activity.user.role}
-                        </span>
-                      )}
                     </div>
 
                     {activity.metadata && Object.keys(activity.metadata).length > 0 && (
