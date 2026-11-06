@@ -51,7 +51,7 @@ const FAQSection = () => {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" aria-labelledby="faq-title" className="relative py-14 sm:py-28">
+    <section id="faq" aria-labelledby="faq-title" className="relative pt-10 pb-14 sm:py-28">
       <Script
         id="faq-schema"
         type="application/ld+json"

@@ -80,7 +80,7 @@ const PricingSection = () => {
   const [currency, chooseCurrency] = useCurrency();
 
   return (
-    <section id="pricing" aria-labelledby="pricing-title" className="relative py-14 sm:py-28">
+    <section id="pricing" aria-labelledby="pricing-title" className="relative pt-14 pb-6 sm:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="grid lg:grid-cols-[1.4fr,1fr] gap-5 md:gap-8 lg:gap-16 items-end mb-8 sm:mb-16">
@@ -97,7 +97,7 @@ const PricingSection = () => {
         </div>
 
         {/* Plans: columns divided by rules, not floating cards */}
-        <div className={`${RAIL_TO_MD} md:grid md:grid-cols-3 md:gap-0 md:border-t md:border-border`} aria-live="polite">
+        <div className={`${RAIL_TO_MD} max-md:items-start md:grid md:grid-cols-3 md:gap-0 md:border-t md:border-border`} aria-live="polite">
           {PRICING_PLANS.map((plan, i) => (
             <div
               key={plan.id}
@@ -121,7 +121,7 @@ const PricingSection = () => {
               <p className="mt-3 md:mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{plan.timeline}</p>
               <p className="mt-2 md:mt-4 text-sm md:text-[15px] text-muted-foreground leading-relaxed">{plan.description}</p>
 
-              <ul className="mt-5 md:mt-8 space-y-2 md:space-y-3 flex-1">
+              <ul className="mt-5 mb-6 md:mb-0 md:mt-8 space-y-2 md:space-y-3 md:flex-1">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-3 text-sm md:text-[15px] leading-snug text-foreground/90">
                     <span aria-hidden="true" className="text-muted-foreground flex-shrink-0">—</span>
