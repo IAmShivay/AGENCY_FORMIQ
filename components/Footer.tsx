@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { ArrowUpRight, Plus } from 'lucide-react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import Magnetic from './studio/Magnetic';
-import { getLenis } from '@/lib/studio-motion';
 import { GOOGLE_REVIEW_URL, STUDIO_ADDRESS, STUDIO_ADDRESS_LINES } from '@/lib/studio-facts';
 import { OPEN_COOKIE_SETTINGS_EVENT } from '@/lib/tracking-config';
 import { ENQUIRY_EMAIL } from '@/lib/enquiry-options';
@@ -186,7 +185,7 @@ const Footer = () => {
           <div className="flex items-center gap-4">
             <button
               type="button"
-              onClick={() => { const l = getLenis(); if (l) l.scrollTo(0, { duration: 1.6 }); else window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="hover:text-foreground transition-colors min-h-[44px] sm:min-h-0"
             >
               Top ↑

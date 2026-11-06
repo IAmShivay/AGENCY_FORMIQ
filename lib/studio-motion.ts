@@ -2,7 +2,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
-import type Lenis from 'lenis';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
@@ -25,9 +24,6 @@ export const isLowEnd = () => {
   return (nav.hardwareConcurrency ?? 8) <= 4 || (nav.deviceMemory ?? 8) <= 4;
 };
 
-let lenis: Lenis | null = null;
-export const setLenis = (instance: Lenis | null) => { lenis = instance; };
-export const getLenis = () => lenis;
 
 // Resolves once the preloader has cleared (immediately when it is skipped).
 let resolveIntro: () => void = () => {};

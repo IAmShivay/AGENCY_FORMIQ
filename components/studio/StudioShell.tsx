@@ -2,15 +2,17 @@
 
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import Lenis from 'lenis';
 import {
-  gsap, ScrollTrigger, prefersReducedMotion, setLenis, getLenis, introReady, scrambleText, shouldPlayEntrance,
+  gsap, ScrollTrigger, prefersReducedMotion, introReady, scrambleText, shouldPlayEntrance,
 } from '@/lib/studio-motion';
 import StudioCursor from './StudioCursor';
 
 const DARK_THEMES = new Set(['dark']);
-const TOUCH_LERP = 0.08;
-const TOUCH_INERTIA = 28;
+const PHONE_QUERY = '(max-width: 767px)';
+const REVEAL = {
+  phone: { heading: 10, item: 14, headingDuration: 0.7, itemDuration: 0.6, stagger: 0.04 },
+  desktop: { heading: 16, item: 20, headingDuration: 0.9, itemDuration: 0.8, stagger: 0.06 },
+} as const;
 const REVEAL_MARGIN = '0px 0px -8% 0px';
 const IMAGE_REVEAL_MARGIN = '0px 0px -5% 0px';
 
@@ -63,36 +65,9 @@ export default function StudioShell() {
     return () => { mo.disconnect(); html.classList.remove('studio-root', 'dark'); };
   }, []);
 
-  // Smooth scrolling on GSAP's ticker so ScrollTrigger stays in lockstep.
-  useEffect(() => {
-    if (prefersReducedMotion()) return;
-    const lenis = new Lenis({
-      lerp: 0.1,
-      syncTouch: true,
-      syncTouchLerp: TOUCH_LERP,
-      touchInertiaMultiplier: TOUCH_INERTIA,
-      anchors: { offset: -88 },
-      // Let modals, menus and any inner scroller keep native wheel/touch scrolling.
-      prevent: (node: HTMLElement) =>
-        !!node.closest?.('[role="dialog"], [data-lenis-prevent], .overflow-y-auto, .overflow-auto, .overflow-y-scroll, .snap-x'),
-    });
-    setLenis(lenis);
-    lenis.on('scroll', ScrollTrigger.update);
-    let locked = false;
-    const tick = (time: number) => {
-      // Pause while anything locks page scroll (lead form, video popup, mobile menu).
-      const lock = document.body.style.overflow === 'hidden' || document.documentElement.style.overflow === 'hidden';
-      if (lock !== locked) { locked = lock; if (lock) lenis.stop(); else lenis.start(); }
-      lenis.raf(time * 1000);
-    };
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
-    return () => { gsap.ticker.remove(tick); lenis.destroy(); setLenis(null); };
-  }, []);
-
   // New route: start at the top (unless jumping to an anchor), then wire reveals.
   useEffect(() => {
-    if (!window.location.hash) getLenis()?.scrollTo(0, { immediate: true, force: true });
+    if (!window.location.hash) window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     const main = document.getElementById('studio-main');
     if (!main || prefersReducedMotion()) return;
 
@@ -102,6 +77,7 @@ export default function StudioShell() {
     const run = () => {
       if (cancelled) return;
       ctx = gsap.context(() => {
+        const rv = window.matchMedia(PHONE_QUERY).matches ? REVEAL.phone : REVEAL.desktop;
         // Content already painted on screen for a returning visitor stays put (no blink).
         const entrance = shouldPlayEntrance();
         const onScreen = (el: HTMLElement) => el.getBoundingClientRect().top < window.innerHeight;
@@ -113,9 +89,9 @@ export default function StudioShell() {
         // so dynamic React content underneath is never touched.
         const headings = Array.from(main.querySelectorAll<HTMLElement>('h1, h2')).filter((el) => !skip(el));
         if (headings.length) {
-          gsap.set(headings, { clipPath: 'inset(0% 0% 100% 0%)', y: 36, transition: 'none' });
+          gsap.set(headings, { clipPath: 'inset(0% 0% 100% 0%)', y: rv.heading, transition: 'none' });
           observers.push(onReveal(headings, REVEAL_MARGIN, (els) => gsap.to(els, {
-            clipPath: 'inset(0% 0% -25% 0%)', y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.06, clearProps: 'clipPath,transform,transition',
+            clipPath: 'inset(0% 0% -25% 0%)', y: 0, duration: rv.headingDuration, ease: 'expo.out', stagger: 0.06, clearProps: 'clipPath,transform,transition',
           })));
         }
 
@@ -125,9 +101,9 @@ export default function StudioShell() {
         if (items.length) {
           // CSS transitions (hover lifts, transition-all) are suspended while GSAP drives the
           // transform, then handed back.
-          gsap.set(items, { y: 44, autoAlpha: 0, transition: 'none' });
+          gsap.set(items, { y: rv.item, autoAlpha: 0, transition: 'none' });
           observers.push(onReveal(items, REVEAL_MARGIN, (els) => gsap.to(els, {
-            y: 0, autoAlpha: 1, duration: 1, ease: 'expo.out', stagger: 0.07, clearProps: 'transform,transition',
+            y: 0, autoAlpha: 1, duration: rv.itemDuration, ease: 'expo.out', stagger: rv.stagger, clearProps: 'transform,transition',
           })));
         }
 

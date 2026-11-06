@@ -7,7 +7,6 @@ import { X, ArrowUpRight } from "lucide-react";
 import EnquiryForm from "./forms/EnquiryForm";
 import { BOOKING_URL } from "@/lib/pricing";
 import { ENQUIRY_EMAIL } from "@/lib/enquiry-options";
-import { getLenis } from "@/lib/studio-motion";
 import { LEAD_SHEET_OPEN_CLASS } from "@/lib/lead-sheet";
 
 const TITLE_ID = "lead-overlay-title";
@@ -52,14 +51,13 @@ export default function LeadFormOverlay({ open, onClose }: { open: boolean; onCl
     return () => mq.removeEventListener("change", sync);
   }, []);
 
-  // Scroll lock, Lenis pause, Escape, focus trap, initial focus and focus return.
+  // Scroll lock, Escape, focus trap, initial focus and focus return.
   useEffect(() => {
     if (!open) return;
     returnFocusRef.current = document.activeElement as HTMLElement | null;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     document.documentElement.classList.add(LEAD_SHEET_OPEN_CLASS);
-    getLenis()?.stop();
 
     const focusFirst = window.requestAnimationFrame(() => {
       if (window.matchMedia(PHONE_QUERY).matches) panelRef.current?.focus({ preventScroll: true });
@@ -87,7 +85,6 @@ export default function LeadFormOverlay({ open, onClose }: { open: boolean; onCl
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
       document.documentElement.classList.remove(LEAD_SHEET_OPEN_CLASS);
-      getLenis()?.start();
       returnFocusRef.current?.focus?.();
     };
   }, [open]);

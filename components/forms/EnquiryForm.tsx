@@ -194,7 +194,7 @@ export default function EnquiryForm({ idPrefix, source, onSubmitted, successHead
         <div>
           <SelectField id={id('budget')} name="budget" label={`Budget (${currency})`} optional placeholder="Select a range"
             options={budgets} value={form.budget} onChange={(v) => set('budget', v)} />
-          <div role="radiogroup" aria-label="Budget currency" className="mt-1 flex flex-wrap gap-x-1">
+          <div role="radiogroup" aria-label="Budget currency" className="mt-2 flex flex-wrap gap-1">
             {CURRENCY_CODES.map((code) => (
               <button
                 key={code}
@@ -202,8 +202,8 @@ export default function EnquiryForm({ idPrefix, source, onSubmitted, successHead
                 role="radio"
                 aria-checked={code === currency}
                 onClick={() => { chooseCurrency(code); set('budget', ''); }}
-                className={cn('min-h-11 px-2 font-mono text-[11px] uppercase tracking-[0.14em] rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                  code === currency ? 'text-foreground underline underline-offset-4' : 'text-muted-foreground hover:text-foreground')}
+                className={cn('min-h-11 px-3 font-mono text-[11px] uppercase tracking-[0.14em] rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                  code === currency ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground')}
               >
                 {code}
               </button>

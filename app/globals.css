@@ -888,13 +888,10 @@
 .grain { opacity: .14; mix-blend-mode: overlay; pointer-events: none; background-size: 180px 180px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 .studio-nav.tone-ink { background: transparent; }
+html.studio-root { scroll-padding-top: 88px; }
+@media (prefers-reduced-motion: no-preference) { html.studio-root { scroll-behavior: smooth; } }
 html.studio-root ::selection { background: hsl(var(--ember)); color: hsl(var(--ink)); }
 
-/* Lenis owns scrolling while active */
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: clip; }
 
 /* Custom cursor (fine pointers only) */
 html.has-cursor, html.has-cursor * { cursor: none !important; }
