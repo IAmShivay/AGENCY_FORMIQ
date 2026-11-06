@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background">
+    <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-b border-primary/20">
-        <div className="container mx-auto px-4 py-8">
+      <div className="pt-24 sm:pt-28 border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center text-primary hover:text-primary/80 transition-colors">
+            <Link href="/" className="flex items-center min-h-11 text-foreground rounded-sm link-draw focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back to Home
             </Link>
@@ -27,17 +27,17 @@ export default function TermsPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-4xl mx-auto">
           {/* Page Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6">
+          <div className="mb-12">
+            <div className="inline-flex items-center justify-center w-14 h-14 border border-border rounded-full mb-6">
               <Shield className="w-8 h-8 text-primary" />
             </div>
-            <h1 className="text-4xl font-bold mb-4 animated-gradient-text">
+            <h1 className="font-display text-[2.6rem] leading-[0.98] sm:text-6xl font-bold tracking-[-0.05em] mb-6">
               Terms and Conditions
             </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl">
               Please read these terms and conditions carefully before using our services.
             </p>
             <div className="flex items-center justify-center mt-4 text-sm text-muted-foreground">
@@ -47,12 +47,12 @@ export default function TermsPage() {
           </div>
 
           {/* Content */}
-          <div className="bg-card rounded-2xl border border-primary/20 shadow-lg overflow-hidden">
+          <div className="bg-card rounded-[22px] border border-border overflow-hidden">
             <div className="p-8 md:p-12 space-y-8">
               
               {/* Section 1 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">1. Acceptance of Terms</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">1. Acceptance of Terms</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     By accessing and using FormiqStudio's website and services, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
@@ -62,7 +62,7 @@ export default function TermsPage() {
 
               {/* Section 2 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">2. Services Description</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">2. Services Description</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed mb-4">
                     FormiqStudio provides custom software development services including but not limited to:
@@ -82,7 +82,7 @@ export default function TermsPage() {
 
               {/* Section 3 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">3. Client Responsibilities</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">3. Client Responsibilities</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed mb-4">
                     Clients are responsible for:
@@ -99,7 +99,7 @@ export default function TermsPage() {
 
               {/* Section 4 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">4. Payment Terms</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">4. Payment Terms</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed mb-4">
                     Payment terms are established in individual project agreements. Generally:
@@ -116,7 +116,7 @@ export default function TermsPage() {
 
               {/* Section 5 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">5. Intellectual Property</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">5. Intellectual Property</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     Upon full payment, clients receive ownership of the custom code developed specifically for their project. FormiqStudio retains rights to general methodologies, techniques, and any pre-existing intellectual property. Third-party components and libraries remain subject to their respective licenses.
@@ -126,7 +126,7 @@ export default function TermsPage() {
 
               {/* Section 6 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">6. Confidentiality</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">6. Confidentiality</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     FormiqStudio maintains strict confidentiality regarding all client information, business processes, and proprietary data. We implement appropriate security measures to protect sensitive information and will not disclose client information to third parties without explicit consent.
@@ -136,7 +136,7 @@ export default function TermsPage() {
 
               {/* Section 7 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">7. Limitation of Liability</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">7. Limitation of Liability</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     FormiqStudio's liability is limited to the amount paid for services. We are not liable for indirect, incidental, or consequential damages. Our services are provided "as is" and we make no warranties beyond those explicitly stated in individual project agreements.
@@ -146,7 +146,7 @@ export default function TermsPage() {
 
               {/* Section 8 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">8. Termination</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">8. Termination</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     Either party may terminate services with written notice. Upon termination, clients are responsible for payment of all work completed to date. FormiqStudio will provide deliverables for completed milestones upon receipt of payment.
@@ -156,7 +156,7 @@ export default function TermsPage() {
 
               {/* Section 9 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">9. Governing Law</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">9. Governing Law</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     These terms are governed by the laws of India. Any disputes will be resolved through arbitration or in the courts of competent jurisdiction in India.
@@ -166,7 +166,7 @@ export default function TermsPage() {
 
               {/* Section 10 */}
               <section>
-                <h2 className="text-2xl font-bold mb-4 text-primary">10. Changes to Terms</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">10. Changes to Terms</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     FormiqStudio reserves the right to modify these terms at any time. Changes will be posted on our website and take effect immediately. Continued use of our services constitutes acceptance of modified terms.
@@ -179,7 +179,7 @@ export default function TermsPage() {
 
           {/* Contact Section */}
           <div className="mt-12 text-center">
-            <div className="bg-primary/5 rounded-2xl p-8 border border-primary/20">
+            <div className="bg-primary/5 rounded-2xl p-8 border border-border">
               <h3 className="text-xl font-bold mb-4">Questions About Our Terms?</h3>
               <p className="text-muted-foreground mb-6">
                 If you have any questions about these terms and conditions, please contact us.

@@ -8,7 +8,7 @@ import Wordmark, { wordmarkIn, wordmarkHover } from './studio/Wordmark';
 import LeadFormOverlay from './LeadFormOverlay';
 import Magnetic from './studio/Magnetic';
 import ThemeToggle from './studio/ThemeToggle';
-import { gsap, useGSAP, prefersReducedMotion, isFinePointer, introReady, shouldPlayEntrance } from '@/lib/studio-motion';
+import { gsap, useGSAP, prefersReducedMotion, isFinePointer, introReady } from '@/lib/studio-motion';
 import {
   ChevronDown,
   ArrowRight,
@@ -40,7 +40,7 @@ const navItems = [
       { href: '/ecommerce-marketplace', label: 'E-commerce', icon: <ShoppingCart className="w-4 h-4" /> },
       { href: '/marketing', label: 'Digital Marketing', icon: <Cloud className="w-4 h-4" /> },
       { href: '/shopify', label: 'Shopify', icon: <ShoppingBag className="w-4 h-4" /> },
-      { href: '/agents', label: 'AI & Ml', icon: <Terminal className="w-4 h-4" /> },
+      { href: '/agents', label: 'AI & ML', icon: <Terminal className="w-4 h-4" /> },
     ],
   },
   {
@@ -58,6 +58,8 @@ const navItems = [
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
+
+const DARK_HERO_PATHS = ['/'];
 
 const isActive = (href: string, pathname: string) => {
   // Services is active for /services and the individual service pages.
@@ -77,12 +79,11 @@ const Header = () => {
   const burgerRef = useRef<HTMLButtonElement>(null);
   const logoRef = useRef<HTMLAnchorElement>(null);
 
-  // Wordmark: assembles after the preloader; hover makes the brackets breathe.
   useGSAP(() => {
     const link = logoRef.current;
     const mark = link?.querySelector('.wordmark');
     if (!link || !mark) return;
-    if (shouldPlayEntrance()) {
+    if (!prefersReducedMotion()) {
       gsap.set(mark, { autoAlpha: 0 });
       introReady.then(() => wordmarkIn(mark, 0.1));
     }
@@ -148,14 +149,15 @@ const Header = () => {
 
   // The bar keeps its shape while the menu is open, so nothing reflows under the burger.
   const compact = isScrolled;
+  const onDarkHero = !compact && DARK_HERO_PATHS.includes(pathname ?? '');
 
   return (
     <>
-      <header data-compact={compact} className="studio-nav fixed top-0 inset-x-0 z-50 pointer-events-none">
+      <header data-compact={compact} className={`studio-nav fixed top-0 inset-x-0 z-50 pointer-events-none ${onDarkHero ? 'tone-ink' : ''}`}>
         <div className="studio-nav-inner pointer-events-auto flex items-center justify-between gap-4">
           {/* Logo */}
           <Link ref={logoRef} href="/" className="flex-shrink-0 relative z-10 flex items-center min-h-[44px]" aria-label="FormiqStudio home">
-            <Wordmark className="text-[22px] lg:text-[24px]" />
+            <Wordmark className="text-[28px] lg:text-[32px]" />
           </Link>
 
           {/* Desktop nav */}
@@ -172,8 +174,8 @@ const Header = () => {
                   <Link
                     href={item.href}
                     aria-current={active ? 'page' : undefined}
-                    className={`relative h-10 px-4 xl:px-5 rounded-full text-[15px] font-medium transition-colors flex items-center gap-1.5 whitespace-nowrap ${
-                      active ? 'bg-foreground text-background' : 'text-foreground/70 hover:text-foreground'
+                    className={`relative h-10 px-4 xl:px-5 rounded-full text-[15px] font-medium transition-colors flex items-center gap-1.5 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                      active ? 'text-foreground after:absolute after:left-1/2 after:bottom-0.5 after:h-1 after:w-1 after:-translate-x-1/2 after:rounded-full after:bg-primary' : 'text-foreground/65 hover:text-foreground'
                     }`}
                   >
                     <span className="roll" data-text={item.label}><span>{item.label}</span></span>
@@ -197,7 +199,7 @@ const Header = () => {
                               <Link
                                 key={dropItem.href}
                                 href={dropItem.href}
-                                className="group flex items-center gap-3 px-3.5 py-3 text-sm text-foreground/80 hover:text-foreground hover:bg-muted rounded-xl transition-colors min-h-[48px]"
+                                className="group flex items-center gap-3 px-3.5 py-3 text-sm text-foreground/80 hover:text-foreground hover:bg-muted rounded-xl transition-colors min-h-[48px] focus-visible:outline-none focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
                               >
                                 <span className="font-mono text-[10px] text-muted-foreground w-4">0{i + 1}</span>
                                 {dropItem.icon}
@@ -221,14 +223,14 @@ const Header = () => {
             <Magnetic>
               <button
                 onClick={() => setShowLeadForm(true)}
-                className="btn-ink btn-ink-invert hidden sm:inline-flex h-11 px-5 lg:px-6 items-center gap-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold whitespace-nowrap"
+                className="btn-ink btn-ink-invert focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background hidden sm:inline-flex h-11 px-5 lg:px-6 items-center gap-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold whitespace-nowrap"
               >
                 Get started <ArrowRight className="w-4 h-4" />
               </button>
             </Magnetic>
             <button
               ref={burgerRef}
-              className="burger lg:hidden tap w-11 h-11 inline-flex flex-col items-center justify-center gap-[6px] rounded-full bg-foreground"
+              className="burger focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:hidden tap w-11 h-11 inline-flex flex-col items-center justify-center gap-[6px] rounded-full bg-foreground"
               onClick={() => setIsMobileMenuOpen((o) => !o)}
               data-open={isMobileMenuOpen}
               aria-expanded={isMobileMenuOpen}
@@ -321,7 +323,7 @@ const Header = () => {
                 WhatsApp <ArrowUpRight className="w-4 h-4" />
               </a>
             </div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground text-center">Kolkata · Durgapur · Asansol</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground text-center">Europe · UK · UAE · India</p>
           </div>
         </div>
       </div>

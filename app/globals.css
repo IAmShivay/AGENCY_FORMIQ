@@ -3,390 +3,72 @@
 @tailwind utilities;
 
 @layer base {
+  /* "Warm studio" palette, shared by the marketing site, admin and user dashboards. */
   :root {
-    /* Light Mode - Warm Off-White for eye comfort (2025 best practice: #F8F9FC not pure white) */
-    --background: 210 40% 98%; /* #F8F9FC - cool off-white, premium + eye-friendly */
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%; /* Pure white cards for subtle layering against off-white bg */
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 217 91% 60%; /* Professional Blue */
+    --paper: 41 35% 93%;
+    --ink: 0 0% 7%;
+    --ember: 13 100% 56%;
+    --ember-deep: 13 88% 46%;
+    --sage: 108 20% 81%;
+    --sand: 38 45% 85%;
+
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card: 41 45% 96%;
+    --card-foreground: var(--ink);
+    --popover: 41 45% 96%;
+    --popover-foreground: var(--ink);
+    --primary: var(--ember-deep);
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 97%; /* Slightly lighter muted to stay above page bg */
-    --muted-foreground: 215 16% 47%;
-    --accent: 262 83% 58%; /* Accent Purple */
+    --secondary: 40 26% 88%;
+    --secondary-foreground: var(--ink);
+    --muted: 40 26% 88%;
+    --muted-foreground: 30 8% 34%;
+    --accent: var(--ember-deep);
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 60%;
+    --border: 38 18% 80%;
+    --input: 38 18% 78%;
+    --ring: var(--ember-deep);
     --radius: 0.5rem;
 
-    /* Agency Specific Colors */
-    --neon-cyan: 180 100% 50%;
-    --neon-pink: 330 100% 70%;
-    --neon-green: 120 100% 50%;
-    --neon-orange: 30 100% 60%;
-    --neon-purple: 270 100% 70%;
-    --electric-blue: 210 100% 60%;
-    --success: 142 76% 36%;
-    --warning: 38 92% 50%;
-    --info: 199 89% 48%;
+    --neon-cyan: var(--ink); --neon-pink: var(--ink); --neon-green: var(--ink); --neon-orange: var(--ink);
+    --neon-purple: var(--ink); --electric-blue: var(--ink);
+    --success: 142 50% 30%;
+    --warning: 32 90% 40%;
+    --info: var(--ink);
   }
 
   [data-theme="dark"] {
-    /* Dark Mode - Professional Agency Dark Theme */
-    --background: 222 84% 5%; /* Deep Dark Blue */
-    --foreground: 210 40% 98%; /* Almost White */
-    --card: 224 71% 8%; /* Slightly Lighter Dark */
-    --card-foreground: 210 40% 98%;
-    --popover: 224 71% 8%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 180 100% 50%; /* Neon Cyan Primary */
-    --primary-foreground: 222 84% 5%;
-    --secondary: 240 21% 15%; /* Dark Gray */
-    --secondary-foreground: 210 40% 98%;
-    --muted: 240 21% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 330 100% 70%; /* Neon Pink Accent */
-    --accent-foreground: 222 84% 5%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 240 21% 15%;
-    --input: 240 21% 15%;
-    --ring: 180 100% 50%;
+    --sage: 108 12% 14%;
+    --sand: 34 14% 13%;
 
-    /* Enhanced Agency Dark Colors */
-    --neon-cyan: 180 100% 50%;
-    --neon-pink: 330 100% 70%;
-    --neon-green: 120 100% 50%;
-    --neon-orange: 30 100% 60%;
-    --neon-purple: 270 100% 70%;
-    --electric-blue: 210 100% 60%;
-    --success: 142 76% 36%;
-    --warning: 38 92% 50%;
-    --info: 199 89% 48%;
+    --background: 30 6% 6%;
+    --foreground: var(--paper);
+    --card: 30 6% 9%;
+    --card-foreground: var(--paper);
+    --popover: 30 6% 9%;
+    --popover-foreground: var(--paper);
+    --primary: var(--ember);
+    --primary-foreground: var(--ink);
+    --secondary: 30 6% 13%;
+    --secondary-foreground: var(--paper);
+    --muted: 30 6% 12%;
+    --muted-foreground: 38 10% 66%;
+    --accent: var(--ember);
+    --accent-foreground: var(--ink);
+    --destructive: 0 80% 62%;
+    --destructive-foreground: var(--ink);
+    --border: 30 6% 17%;
+    --input: 30 6% 20%;
+    --ring: var(--ember);
 
-    /* Dark Mode Specific Gradients */
-    --gradient-primary: linear-gradient(
-      135deg,
-      hsl(180 100% 50%) 0%,
-      hsl(210 100% 60%) 100%
-    );
-    --gradient-accent: linear-gradient(
-      135deg,
-      hsl(330 100% 70%) 0%,
-      hsl(270 100% 70%) 100%
-    );
-    --gradient-dark: linear-gradient(
-      135deg,
-      hsl(222 84% 5%) 0%,
-      hsl(224 71% 8%) 100%
-    );
-  }
-
-  [data-theme="neon-agency"] {
-    /* Neon Agency Theme - Dark with Neon Accents */
-    --background: 222 84% 5%;
-    --foreground: 210 40% 98%;
-    --card: 224 71% 8%;
-    --card-foreground: 210 40% 98%;
-    --popover: 224 71% 8%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 180 100% 50%; /* Neon Cyan */
-    --primary-foreground: 222 84% 5%;
-    --secondary: 240 21% 15%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 240 21% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 330 100% 70%; /* Neon Pink */
-    --accent-foreground: 222 84% 5%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 240 21% 15%;
-    --input: 240 21% 15%;
-    --ring: 180 100% 50%;
-  }
-
-  [data-theme="cyberpunk"] {
-    /* Cyberpunk Theme - Purple and Orange Neon */
-    --background: 222 84% 5%;
-    --foreground: 210 40% 98%;
-    --card: 224 71% 8%;
-    --card-foreground: 210 40% 98%;
-    --popover: 224 71% 8%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 270 100% 70%; /* Neon Purple */
-    --primary-foreground: 222 84% 5%;
-    --secondary: 240 21% 15%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 240 21% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 30 100% 60%; /* Neon Orange */
-    --accent-foreground: 222 84% 5%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 240 21% 15%;
-    --input: 240 21% 15%;
-    --ring: 270 100% 70%;
-  }
-
-  [data-theme="matrix"] {
-    /* Matrix Theme - Green Neon on Dark */
-    --background: 222 84% 5%;
-    --foreground: 210 40% 98%;
-    --card: 224 71% 8%;
-    --card-foreground: 210 40% 98%;
-    --popover: 224 71% 8%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 120 100% 50%; /* Neon Green */
-    --primary-foreground: 222 84% 5%;
-    --secondary: 240 21% 15%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 240 21% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 180 100% 50%; /* Neon Cyan */
-    --accent-foreground: 222 84% 5%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 240 21% 15%;
-    --input: 240 21% 15%;
-    --ring: 120 100% 50%;
-  }
-
-  [data-theme="electric"] {
-    /* Electric Theme - Blue and Pink Neon */
-    --background: 222 84% 5%;
-    --foreground: 210 40% 98%;
-    --card: 224 71% 8%;
-    --card-foreground: 210 40% 98%;
-    --popover: 224 71% 8%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 100% 60%; /* Electric Blue */
-    --primary-foreground: 222 84% 5%;
-    --secondary: 240 21% 15%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 240 21% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 330 100% 70%; /* Neon Pink */
-    --accent-foreground: 222 84% 5%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 240 21% 15%;
-    --input: 240 21% 15%;
-    --ring: 210 100% 60%;
-  }
-
-  /* Light Mode Professional Themes */
-  [data-theme="light-agency"] {
-    /* Light Agency Theme - Professional with Vibrant Accents */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 217 91% 50%; /* Professional Blue */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 262 83% 48%; /* Professional Purple */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 50%;
-  }
-
-  [data-theme="light-creative"] {
-    /* Light Creative Theme - Teal and Orange */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 180 84% 40%; /* Professional Teal */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 25 95% 53%; /* Vibrant Orange */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 180 84% 40%;
-  }
-
-  [data-theme="light-modern"] {
-    /* Light Modern Theme - Purple and Pink */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 270 91% 50%; /* Modern Purple */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 330 81% 60%; /* Professional Pink */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 270 91% 50%;
-  }
-
-  [data-theme="light-tech"] {
-    /* Light Tech Theme - Green and Blue */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 142 76% 36%; /* Professional Green */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 199 89% 48%; /* Tech Blue */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 142 76% 36%;
-  }
-
-  [data-theme="light-premium"] {
-    /* Light Premium Theme - Gold and Navy */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 220 91% 40%; /* Premium Navy */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 45 93% 47%; /* Premium Gold */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 220 91% 40%;
-  }
-
-  /* Light Neon Themes - Vibrant colors on light backgrounds */
-  [data-theme="light-neon-cyan"] {
-    /* Light Neon Cyan Theme */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 180 100% 35%; /* Vibrant Cyan */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 330 100% 45%; /* Vibrant Pink */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 180 100% 35%;
-  }
-
-  [data-theme="light-neon-purple"] {
-    /* Light Neon Purple Theme */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 270 100% 40%; /* Vibrant Purple */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 30 100% 50%; /* Vibrant Orange */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 270 100% 40%;
-  }
-
-  [data-theme="light-neon-green"] {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 184 45% 21%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 184 45% 30%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 184 45% 21%;
-  }
-
-  [data-theme="light-neon-pink"] {
-    /* Light Neon Pink Theme */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 330 100% 40%; /* Vibrant Pink */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 270 100% 40%; /* Vibrant Purple */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 330 100% 40%;
+    --neon-cyan: var(--paper); --neon-pink: var(--paper); --neon-green: var(--paper); --neon-orange: var(--paper);
+    --neon-purple: var(--paper); --electric-blue: var(--paper);
+    --success: 142 50% 55%;
+    --warning: 38 92% 60%;
+    --info: var(--paper);
   }
 }
 
@@ -1119,64 +801,77 @@
   }
 }
 
-.blog-ad:has(ins.adsbygoogle[data-ad-status="unfilled"]) {
-  display: none;
-}
 
 /* ==========================================================================
-   Studio layer — marketing pages only (app/(routes)). Strictly monochrome.
-   `.studio` paints on first render; `html.studio-root` (set by StudioShell)
-   also reaches portalled dialogs.
+   Studio layer — marketing pages only (app/(routes)). Palette tokens live in :root above.
    ========================================================================== */
-html.studio-root,
-.studio {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 5%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 5%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 5%;
-  --primary: 0 0% 7%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 95%;
-  --secondary-foreground: 0 0% 7%;
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 38%;
-  --accent: 0 0% 12%;
-  --accent-foreground: 0 0% 100%;
-  --destructive: 0 0% 18%;
-  --destructive-foreground: 0 0% 100%;
-  --border: 0 0% 89%;
-  --input: 0 0% 86%;
-  --ring: 0 0% 7%;
-  --neon-cyan: 0 0% 7%; --neon-pink: 0 0% 7%; --neon-green: 0 0% 7%; --neon-orange: 0 0% 7%;
-  --neon-purple: 0 0% 7%; --electric-blue: 0 0% 7%;
-  --success: 0 0% 7%; --warning: 0 0% 30%; --info: 0 0% 30%;
+/* Colour-blocked sections: wrap a section in .tone-* and its token-based
+   classes (bg-background, text-foreground, border-border…) follow. */
+:is(.tone-ink, .tone-sage, .tone-sand, .tone-ember) {
+  background: hsl(var(--background)); color: hsl(var(--foreground));
 }
-html.studio-root:is([data-theme="dark"], [data-theme="neon-agency"], [data-theme="cyberpunk"], [data-theme="matrix"], [data-theme="electric"]),
-html:is([data-theme="dark"], [data-theme="neon-agency"], [data-theme="cyberpunk"], [data-theme="matrix"], [data-theme="electric"]) .studio {
-  --background: 0 0% 4%;
-  --foreground: 0 0% 96%;
-  --card: 0 0% 7%;
-  --card-foreground: 0 0% 96%;
-  --popover: 0 0% 7%;
-  --popover-foreground: 0 0% 96%;
-  --primary: 0 0% 96%;
-  --primary-foreground: 0 0% 5%;
-  --secondary: 0 0% 11%;
-  --secondary-foreground: 0 0% 96%;
-  --muted: 0 0% 10%;
-  --muted-foreground: 0 0% 62%;
-  --accent: 0 0% 88%;
-  --accent-foreground: 0 0% 5%;
-  --destructive: 0 0% 85%;
-  --destructive-foreground: 0 0% 5%;
-  --border: 0 0% 15%;
-  --input: 0 0% 18%;
-  --ring: 0 0% 90%;
-  --neon-cyan: 0 0% 96%; --neon-pink: 0 0% 96%; --neon-green: 0 0% 96%; --neon-orange: 0 0% 96%;
-  --neon-purple: 0 0% 96%; --electric-blue: 0 0% 96%;
-  --success: 0 0% 96%; --warning: 0 0% 70%; --info: 0 0% 70%;
+.tone-ink {
+  --background: var(--ink);
+  --foreground: var(--paper);
+  --card: 0 0% 10%;
+  --card-foreground: var(--paper);
+  --muted: 0 0% 12%;
+  --secondary: 0 0% 12%;
+  --muted-foreground: 38 10% 66%;
+  --border: 0 0% 19%;
+  --input: 0 0% 22%;
+  --primary: var(--ember);
+  --primary-foreground: var(--ink);
+  --accent: var(--ember);
+  --accent-foreground: var(--ink);
+  --ring: var(--ember);
+}
+.tone-sage {
+  --background: var(--sage);
+  --card: 108 24% 87%;
+  --muted: 108 18% 76%;
+  --secondary: 108 18% 76%;
+  --muted-foreground: 108 10% 28%;
+  --border: 108 14% 68%;
+  --input: 108 14% 66%;
+}
+.tone-sand {
+  --background: var(--sand);
+  --card: 38 52% 91%;
+  --muted: 38 36% 79%;
+  --secondary: 38 36% 79%;
+  --muted-foreground: 30 14% 30%;
+  --border: 38 24% 72%;
+  --input: 38 24% 70%;
+}
+.tone-ember {
+  --background: var(--ember);
+  --foreground: var(--ink);
+  --card: 13 100% 61%;
+  --card-foreground: var(--ink);
+  --muted: 13 100% 51%;
+  --secondary: 13 100% 51%;
+  --muted-foreground: 13 50% 16%;
+  --border: 13 80% 44%;
+  --input: 13 80% 44%;
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --accent: var(--ink);
+  --accent-foreground: var(--paper);
+  --ring: var(--ink);
+}
+[data-theme="dark"] :is(.tone-sage, .tone-sand) {
+  --foreground: var(--paper);
+  --card-foreground: var(--paper);
+  --card: 30 6% 11%;
+  --muted: 30 6% 15%;
+  --secondary: 30 6% 15%;
+  --muted-foreground: 38 10% 66%;
+  --border: 30 6% 21%;
+  --input: 30 6% 24%;
+}
+[data-theme="dark"] .tone-ink {
+  --background: 0 0% 3%;
 }
 .studio { background: hsl(var(--background)); color: hsl(var(--foreground)); }
 .studio :is(h1, h2, h3, .font-display) {
@@ -1184,7 +879,14 @@ html:is([data-theme="dark"], [data-theme="neon-agency"], [data-theme="cyberpunk"
   letter-spacing: -0.035em;
 }
 .studio :is(.font-mono, code, kbd, pre) { font-family: var(--font-mono), ui-monospace, monospace; }
-html.studio-root ::selection { background: hsl(var(--foreground)); color: hsl(var(--background)); }
+.studio .font-serif { font-family: var(--font-serif), Georgia, serif; }
+.studio :is(h1, h2) .text-primary { font-family: var(--font-serif), Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -0.02em; }
+.studio [data-hero-title] { letter-spacing: -0.055em; }
+.hero-ember { background: radial-gradient(80% 70% at 88% 4%, hsl(var(--ember) / .55), hsl(var(--ember-deep) / .25) 35%, transparent 70%), hsl(var(--ink)); }
+.grain { opacity: .14; mix-blend-mode: overlay; pointer-events: none; background-size: 180px 180px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.studio-nav.tone-ink { background: transparent; }
+html.studio-root ::selection { background: hsl(var(--ember)); color: hsl(var(--ink)); }
 
 /* Lenis owns scrolling while active */
 html.lenis, html.lenis body { height: auto; }
@@ -1195,6 +897,11 @@ html.lenis, html.lenis body { height: auto; }
 /* Custom cursor (fine pointers only) */
 html.has-cursor, html.has-cursor * { cursor: none !important; }
 html.has-cursor :is(input, textarea, [contenteditable="true"]) { cursor: text !important; }
+/* Forms, dialogs and popup menus keep the system cursor (StudioCursor hides itself there). */
+html.has-cursor :is(form, [role="dialog"], [role="listbox"], [role="menu"], [data-radix-popper-content-wrapper], [data-native-cursor]), html.has-cursor :is(form, [role="dialog"], [role="listbox"], [role="menu"], [data-radix-popper-content-wrapper], [data-native-cursor]) * { cursor: auto !important; }
+html.has-cursor :is(form, [role="dialog"], [role="listbox"], [role="menu"], [data-radix-popper-content-wrapper], [data-native-cursor]) :is(a, button, label, select, summary, [role="button"], [role="option"], [role="menuitem"], [role="radio"], [role="checkbox"], [role="tab"]) { cursor: pointer !important; }
+html.has-cursor :is(form, [role="dialog"], [role="listbox"], [role="menu"], [data-radix-popper-content-wrapper], [data-native-cursor]) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]), textarea, [contenteditable="true"]) { cursor: text !important; }
+html.has-cursor :is(form, [role="dialog"], [role="listbox"], [role="menu"], [data-radix-popper-content-wrapper], [data-native-cursor]) :is(:disabled, [aria-disabled="true"]) { cursor: not-allowed !important; }
 
 /* Hollow display type */
 .text-outline { color: transparent; -webkit-text-stroke: 1.5px hsl(var(--foreground)); }
@@ -1269,7 +976,7 @@ html.has-cursor :is(input, textarea, [contenteditable="true"]) { cursor: text !i
 
 /* Preloader: hidden pre-paint on repeat visits; failsafe fade if JS stalls */
 html.intro-seen .studio-preloader { display: none; }
-.studio-preloader { animation: studio-preloader-failsafe 0.4s ease 3.2s forwards; }
+.studio-preloader { animation: studio-preloader-failsafe 0.4s ease 5s forwards; }
 @keyframes studio-preloader-failsafe { to { opacity: 0; visibility: hidden; } }
 @media (prefers-reduced-motion: reduce) { .studio-preloader { display: none; } }
 
@@ -1318,31 +1025,21 @@ html.intro-seen .studio-preloader { display: none; }
 .studio .prose th { font-family: var(--font-mono), monospace; font-size: .75em; text-transform: uppercase; letter-spacing: .12em; color: hsl(var(--muted-foreground)); font-weight: 500; }
 @media (max-width: 640px) { .studio .prose { font-size: 1rem; line-height: 1.75; } }
 
-/* Wordmark: bold "Formiq" + muted "Studio"; the i's dot is a small square */
 .wordmark {
   --wm-fg: hsl(var(--foreground));
-  --wm-muted: hsl(var(--muted-foreground));
-  display: inline-flex; align-items: baseline; gap: 0.22em; white-space: nowrap;
-  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: -0.05em; line-height: 1; color: var(--wm-fg);
+  display: inline-flex; align-items: flex-end; white-space: nowrap; line-height: 1; color: var(--wm-fg);
 }
-/* Each word is a mask the letters slide through; padding leaves room for the q's descender. */
-.wm-word { display: inline-flex; overflow: hidden; padding: 0.14em 0.03em 0.2em; margin: -0.14em -0.03em -0.2em; }
-.wm-first { font-weight: 700; }
-.wm-last { font-weight: 400; color: var(--wm-muted); transition: color .4s; }
-a:hover .wordmark .wm-last { color: var(--wm-fg); }
-.wm-tittle {
-  position: absolute; left: 50%; top: 0.03em;
-  width: 0.17em; height: 0.17em; margin-left: -0.085em;
-  background: var(--wm-fg);
-}
-.wm-tail { display: inline-flex; max-width: 6em; transition: max-width .6s cubic-bezier(.19,1,.22,1), opacity .35s; }
-/* Phones and the condensed pill: just "Formiq" */
-@media (max-width: 767px) { .wordmark:not(.wm-full) .wm-tail { max-width: 0; opacity: 0; overflow: hidden; } }
+.wm-svg { display: block; width: auto; overflow: visible; flex-shrink: 0; }
+.wm-grid path { fill: none; stroke: currentColor; stroke-opacity: .38; stroke-width: 1px; stroke-dasharray: 1 1; }
+html.logo-pending .studio-nav .wordmark { visibility: hidden; animation: wm-failsafe 0s linear 5.5s forwards; }
+@keyframes wm-failsafe { to { visibility: visible; } }
+.wm-stroke { stroke-dasharray: 1 1; }
+.wm-spark { fill: hsl(var(--ember)); }
+.wm-tail { display: inline-flex; max-width: 4em; transition: max-width .6s cubic-bezier(.19,1,.22,1), opacity .35s; }
 .studio-nav[data-compact="true"] .wordmark .wm-tail { max-width: 0; opacity: 0; overflow: hidden; }
 /* Preloader always sits on near-black, in either theme */
-.preloader-mark { --wm-fg: #fff; --wm-muted: rgba(255, 255, 255, .45); }
-@media (prefers-reduced-motion: reduce) { .wm-tail, .wm-last { transition: none; } }
+.preloader-mark { --wm-fg: #fff; }
+@media (prefers-reduced-motion: reduce) { .wm-tail { transition: none; } }
 
 /* The mobile menu carries its own Call/WhatsApp buttons; tuck the floating chat button away while it's open. */
 html:has(#studio-mobile-menu[aria-hidden="false"]) a[data-track-source="floating_button"] { opacity: 0; pointer-events: none; }

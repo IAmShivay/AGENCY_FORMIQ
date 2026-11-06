@@ -1,13 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+
 import { Metadata } from 'next';
-import { getBlogPostsByTag, getBlogPosts, BlogPost, getAllTags } from '@/lib/blog';
+import { getBlogPostsByTag, getAllTags } from '@/lib/blog';
+import PageHeader from '@/components/studio/PageHeader';
+import { BTN_PRIMARY, CONTAINER } from '@/components/studio/ui';
+import PostGrid from '../../components/PostGrid';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 import { notFound } from 'next/navigation';
-import { Tag } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export async function generateStaticParams(): Promise<{ tag: string }[]> {
   const tags = await getAllTags();
@@ -67,75 +70,21 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
   }
 
   return (
-    <div className="bg-muted dark:bg-neutral-900 min-h-screen pt-24 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto mb-16 text-center">
-          <div className="inline-flex items-center justify-center mb-6">
-            <Tag className="w-8 h-8 text-primary mr-3" />
-            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary">
-              #{formattedTag}
-            </h1>
-          </div>
-          <p className="text-xl text-muted-foreground dark:text-neutral-400 mb-8">
-            Explore our collection of articles tagged with {formattedTag.toLowerCase()}.
-          </p>
-        </div>
+    <div className="bg-background text-foreground">
+      <PageHeader
+        eyebrow="(01) Journal / Tag"
+        title={<>#{formattedTag}</>}
+        intro={<>Explore our collection of articles tagged with {formattedTag.toLowerCase()}.</>}
+      />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
-              <div className="bg-card dark:bg-neutral-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
-                <div className="relative h-56">
-                  <Image
-                    src={post.coverImage}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6 flex-grow flex flex-col">
-                  <div className="flex items-center mb-3">
-                    <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                      {post.category}
-                    </span>
-                    <span className="ml-auto text-muted-foreground dark:text-neutral-400 text-sm">
-                      {new Date(post.date).toLocaleDateString('en-US', {
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric'
-                      })}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                    {post.title}
-                  </h3>
-                  <p className="text-muted-foreground dark:text-neutral-400 mb-4 flex-grow">
-                    {post.excerpt}
-                  </p>
-                  <div className="flex items-center mt-auto pt-4 border-t border-border dark:border-neutral-700">
-                    <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
-                      <Image
-                        src={post.author.avatar || '/images/default-avatar.svg'}
-                        alt={post.author.name}
-                        width={32}
-                        height={32}
-                        className="object-cover"
-                      />
-                    </div>
-                    <p className="text-sm font-medium">{post.author.name}</p>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
+      <div className={`${CONTAINER} pb-20 sm:pb-28 lg:pb-32`}>
+        <div className="border-t border-border pt-12 sm:pt-16">
+          <PostGrid posts={posts} />
         </div>
-
-        <div className="text-center mt-16">
-          <Link
-            href="/blog"
-            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-          >
-            View All Articles
+        <div className="mt-16">
+          <Link href="/blog" className={BTN_PRIMARY}>
+            View all articles
+            <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" aria-hidden="true" />
           </Link>
         </div>
       </div>

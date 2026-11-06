@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import {
   Activity,
   Database,
@@ -11,6 +11,22 @@ import {
   Trash2
 } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_DANGER,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EYEBROW,
+  ADMIN_H2,
+  ADMIN_ROW,
+  ADMIN_STAT_VALUE,
+  ADMIN_TABLE,
+  ADMIN_TD,
+  ADMIN_TH,
+  ADMIN_TONE,
+  type AdminTone,
+} from '@/components/admin/admin-ui';
 
 interface HealthData {
   status: 'ok' | 'error' | 'degraded';
@@ -53,6 +69,42 @@ interface MetricsData {
   };
 }
 
+const HEALTH_STATUS: Record<HealthData['status'], { label: string; tone: AdminTone }> = {
+  ok: { label: 'Healthy', tone: 'positive' },
+  degraded: { label: 'Degraded', tone: 'warning' },
+  error: { label: 'Unhealthy', tone: 'negative' },
+};
+
+const CONNECTION_STATUS: Record<'connected' | 'disconnected', { label: string; tone: AdminTone }> = {
+  connected: { label: 'Connected', tone: 'positive' },
+  disconnected: { label: 'Disconnected', tone: 'negative' },
+};
+
+const SKELETON = (
+  <div className="animate-pulse space-y-3">
+    <div className="h-4 w-3/4 rounded-full bg-muted"></div>
+    <div className="h-4 w-1/2 rounded-full bg-muted"></div>
+    <div className="h-4 w-5/6 rounded-full bg-muted"></div>
+  </div>
+);
+
+function StatusBadge({ label, tone }: { label: string; tone: AdminTone }) {
+  return <span className={`${ADMIN_BADGE} ${ADMIN_TONE[tone]}`}>{label}</span>;
+}
+
+function connection(connected: boolean | undefined) {
+  return connected ? CONNECTION_STATUS.connected : CONNECTION_STATUS.disconnected;
+}
+
+function Row({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="min-w-0 text-right text-sm text-foreground">{children}</span>
+    </div>
+  );
+}
+
 export default function SystemHealth() {
   const [health, setHealth] = useState<HealthData | null>(null);
   const [metrics, setMetrics] = useState<MetricsData | null>(null);
@@ -91,7 +143,7 @@ export default function SystemHealth() {
         headers,
       });
       if (!response.ok) {
-        return; // Silently fail - metrics are optional
+        return;
       }
       const data = await response.json();
       setMetrics(data);
@@ -111,22 +163,19 @@ export default function SystemHealth() {
     setCleanupResult(null);
 
     try {
-      // Get the current session to include the auth token
       const { data: { session } } = await supabase.auth.getSession();
 
-      // Prepare headers with authentication
       const headers: HeadersInit = {
         'Content-Type': 'application/json',
       };
 
-      // Add the auth token if available
       if (session?.access_token) {
         headers['Authorization'] = `Bearer ${session.access_token}`;
       }
 
       const response = await fetch('/api/admin/cleanup', {
         method: 'POST',
-        credentials: 'include', // Include cookies for authentication
+        credentials: 'include',
         headers,
       });
 
@@ -146,7 +195,6 @@ export default function SystemHealth() {
         message: data.message || 'Cleanup completed successfully'
       });
 
-      // Refresh metrics after cleanup
       await refreshData();
     } catch (err) {
       console.error('Cleanup error:', err);
@@ -162,7 +210,6 @@ export default function SystemHealth() {
   useEffect(() => {
     refreshData();
 
-    // Set up auto-refresh every 30 seconds
     const interval = setInterval(() => {
       refreshData();
     }, 30000);
@@ -172,293 +219,200 @@ export default function SystemHealth() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-card rounded-2xl shadow-sm p-6 border border-border">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 mr-4">
-              <Activity className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">System Health</h1>
-              <p className="mt-1 text-muted-foreground">Monitor system performance and resource usage</p>
-            </div>
-          </div>
-          <div className="flex space-x-3">
-            <button
-              onClick={refreshData}
-              disabled={loading}
-              className="inline-flex items-center px-4 py-2 bg-secondary hover:bg-secondary/80 rounded-xl text-sm font-medium text-foreground transition-colors duration-200"
-            >
-              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-              Refresh
-            </button>
-            <button
-              onClick={triggerCleanup}
-              disabled={cleanupLoading}
-              className="inline-flex items-center px-4 py-2 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl transition-colors duration-200"
-            >
-              <Trash2 className={`w-4 h-4 mr-2 ${cleanupLoading ? 'animate-spin' : ''}`} />
-              Run Cleanup
-            </button>
-          </div>
-        </div>
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <button
+          type="button"
+          onClick={refreshData}
+          disabled={loading}
+          className={ADMIN_BTN_OUTLINE}
+        >
+          <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+          Refresh
+        </button>
+        <button
+          type="button"
+          onClick={triggerCleanup}
+          disabled={cleanupLoading}
+          className={ADMIN_BTN_DANGER}
+        >
+          <Trash2 className={`h-4 w-4 ${cleanupLoading ? 'animate-spin' : ''}`} />
+          Run cleanup
+        </button>
       </div>
 
-      {/* Cleanup Result */}
       {cleanupResult && (
-        <div className={`p-4 rounded-xl ${cleanupResult.success ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-100 dark:border-green-900/30' : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-100 dark:border-red-900/30'}`}>
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              {cleanupResult.success ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-              ) : (
-                <AlertTriangle className="h-5 w-5 text-red-500" />
-              )}
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium">{cleanupResult.message}</p>
-            </div>
-          </div>
+        <div className={`flex items-center gap-3 rounded-xl border px-4 py-3 ${cleanupResult.success ? ADMIN_TONE.positive : ADMIN_TONE.negative}`}>
+          {cleanupResult.success ? (
+            <CheckCircle className="h-4 w-4 shrink-0" />
+          ) : (
+            <AlertTriangle className="h-4 w-4 shrink-0" />
+          )}
+          <p className="text-sm font-medium">{cleanupResult.message}</p>
         </div>
       )}
 
-      {/* Error Message */}
       {error && (
-        <div className="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-100 dark:border-red-900/30">
-          <div className="flex items-center">
-            <AlertTriangle className="h-5 w-5 text-red-500 mr-2" />
-            <p className="text-sm font-medium">{error}</p>
-          </div>
+        <div className={`flex items-center gap-3 rounded-xl border px-4 py-3 ${ADMIN_TONE.negative}`}>
+          <AlertTriangle className="h-4 w-4 shrink-0" />
+          <p className="text-sm font-medium">{error}</p>
         </div>
       )}
 
-      {/* Health Status */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* System Status */}
-        <div className="bg-card rounded-2xl shadow-sm p-6 border border-border">
-          <div className="flex items-center mb-4">
-            <Activity className="w-5 h-5 text-primary mr-2" />
-            <h2 className="text-lg font-medium text-foreground">System Status</h2>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <section className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+          <div className="mb-5 flex items-center gap-2">
+            <Activity className="h-4 w-4 text-muted-foreground" />
+            <h2 className={ADMIN_H2}>System status</h2>
           </div>
 
-          {loading ? (
-            <div className="animate-pulse space-y-3">
-              <div className="h-4 bg-secondary rounded w-3/4"></div>
-              <div className="h-4 bg-secondary rounded w-1/2"></div>
-              <div className="h-4 bg-secondary rounded w-5/6"></div>
-            </div>
-          ) : health ? (
+          {loading ? SKELETON : health ? (
             <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Status</span>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${health.status === 'ok'
-                  ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300'
-                  : health.status === 'degraded'
-                    ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300'
-                    : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'}`}>
-                  {health.status === 'ok'
-                    ? 'Healthy'
-                    : health.status === 'degraded'
-                      ? 'Degraded'
-                      : 'Unhealthy'}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Last Check</span>
-                <span className="text-foreground">{formatDate(health.timestamp)}</span>
-              </div>
+              <Row label="Status">
+                <StatusBadge {...(HEALTH_STATUS[health.status] || HEALTH_STATUS.error)} />
+              </Row>
+              <Row label="Last check">{formatDate(health.timestamp)}</Row>
             </div>
           ) : (
-            <div className="text-center py-4 text-muted-foreground">
+            <p className="py-4 text-center text-sm text-muted-foreground">
               No health data available
-            </div>
+            </p>
           )}
-        </div>
+        </section>
 
-        {/* Database Status */}
-        <div className="bg-card rounded-2xl shadow-sm p-6 border border-border">
-          <div className="flex items-center mb-4">
-            <Database className="w-5 h-5 text-primary mr-2" />
-            <h2 className="text-lg font-medium text-foreground">Database</h2>
+        <section className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+          <div className="mb-5 flex items-center gap-2">
+            <Database className="h-4 w-4 text-muted-foreground" />
+            <h2 className={ADMIN_H2}>Database</h2>
           </div>
 
-          {loading ? (
-            <div className="animate-pulse space-y-3">
-              <div className="h-4 bg-secondary rounded w-3/4"></div>
-              <div className="h-4 bg-secondary rounded w-1/2"></div>
-              <div className="h-4 bg-secondary rounded w-5/6"></div>
-            </div>
-          ) : (
+          {loading ? SKELETON : (
             <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Connection</span>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${health?.database.connected ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'}`}>
-                  {health?.database.connected ? 'Connected' : 'Disconnected'}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Response Time</span>
-                <span className="text-foreground">{health?.database.responseTime || 'N/A'}</span>
-              </div>
+              <Row label="Connection">
+                <StatusBadge {...connection(health?.database.connected)} />
+              </Row>
+              <Row label="Response time">{health?.database.responseTime || 'N/A'}</Row>
 
               {metrics && (
-                <div className="pt-2 border-t border-border mt-2">
-                  <h3 className="text-sm font-medium text-foreground mb-2">Data Summary</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-muted-foreground">Users</span>
-                      <span className="text-xs text-foreground">{metrics.database.users}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-muted-foreground">Blog Posts</span>
-                      <span className="text-xs text-foreground">{metrics.database.blogPosts}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-muted-foreground">Websites</span>
-                      <span className="text-xs text-foreground">{metrics.database.websites}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-muted-foreground">Apps</span>
-                      <span className="text-xs text-foreground">{metrics.database.apps}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-muted-foreground">Designs</span>
-                      <span className="text-xs text-foreground">{metrics.database.designs}</span>
-                    </div>
-                  </div>
+                <div className="mt-4 space-y-2 border-t border-border pt-4">
+                  <p className={`${ADMIN_EYEBROW} mb-3`}>Data summary</p>
+                  <Row label="Users">{metrics.database.users}</Row>
+                  <Row label="Blog posts">{metrics.database.blogPosts}</Row>
+                  <Row label="Websites">{metrics.database.websites}</Row>
+                  <Row label="Apps">{metrics.database.apps}</Row>
+                  <Row label="Designs">{metrics.database.designs}</Row>
                 </div>
               )}
             </div>
           )}
-        </div>
+        </section>
 
-        {/* Storage Status */}
-        <div className="bg-card rounded-2xl shadow-sm p-6 border border-border">
-          <div className="flex items-center mb-4">
-            <HardDrive className="w-5 h-5 text-accent mr-2" />
-            <h2 className="text-lg font-medium text-foreground">Storage</h2>
+        <section className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+          <div className="mb-5 flex items-center gap-2">
+            <HardDrive className="h-4 w-4 text-muted-foreground" />
+            <h2 className={ADMIN_H2}>Storage</h2>
           </div>
 
-          {loading ? (
-            <div className="animate-pulse space-y-3">
-              <div className="h-4 bg-secondary rounded w-3/4"></div>
-              <div className="h-4 bg-secondary rounded w-1/2"></div>
-              <div className="h-4 bg-secondary rounded w-5/6"></div>
-            </div>
-          ) : (
+          {loading ? SKELETON : (
             <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Connection</span>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${health?.storage.connected ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'}`}>
-                  {health?.storage.connected ? 'Connected' : 'Disconnected'}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Response Time</span>
-                <span className="text-foreground">{health?.storage.responseTime || 'N/A'}</span>
-              </div>
+              <Row label="Connection">
+                <StatusBadge {...connection(health?.storage.connected)} />
+              </Row>
+              <Row label="Response time">{health?.storage.responseTime || 'N/A'}</Row>
 
               {metrics && (
-                <div className="pt-2 border-t border-border mt-2">
-                  <h3 className="text-sm font-medium text-foreground mb-2">Storage Summary</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-muted-foreground">Buckets</span>
-                      <span className="text-xs text-foreground">{metrics.storage.buckets}</span>
-                    </div>
-                    {metrics.storage.error && (
-                      <div className="text-xs text-red-500 dark:text-red-400 mt-1">
-                        Error: {metrics.storage.error}
-                      </div>
-                    )}
-                  </div>
+                <div className="mt-4 space-y-2 border-t border-border pt-4">
+                  <p className={`${ADMIN_EYEBROW} mb-3`}>Storage summary</p>
+                  <Row label="Buckets">{metrics.storage.buckets}</Row>
+                  {metrics.storage.error && (
+                    <p className="mt-1 text-xs text-destructive">
+                      Error: {metrics.storage.error}
+                    </p>
+                  )}
                 </div>
               )}
 
-              <div className="pt-2 border-t border-border mt-2">
-                <h3 className="text-sm font-medium text-foreground mb-2">Cleanup</h3>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Run cleanup to remove unused files and optimize storage usage.
+              <div className="mt-4 border-t border-border pt-4">
+                <p className={`${ADMIN_EYEBROW} mb-2`}>Cleanup</p>
+                <p className="mb-4 text-sm text-muted-foreground">
+                  Run cleanup to remove unused files and optimise storage usage.
                 </p>
                 <button
+                  type="button"
                   onClick={triggerCleanup}
                   disabled={cleanupLoading}
-                  className="w-full inline-flex justify-center items-center px-3 py-2 bg-accent/10 hover:bg-accent/20 text-accent rounded-lg text-xs transition-colors duration-200"
+                  className={`${ADMIN_BTN_OUTLINE} w-full`}
                 >
                   {cleanupLoading ? (
                     <>
-                      <RefreshCw className="w-3 h-3 mr-2 animate-spin" />
-                      Running Cleanup...
+                      <RefreshCw className="h-4 w-4 animate-spin" />
+                      Running cleanup...
                     </>
                   ) : (
                     <>
-                      <Trash2 className="w-3 h-3 mr-2" />
-                      Run Storage Cleanup
+                      <Trash2 className="h-4 w-4" />
+                      Run storage cleanup
                     </>
                   )}
                 </button>
               </div>
             </div>
           )}
-        </div>
+        </section>
       </div>
 
-      {/* Request Metrics */}
       {metrics && (
-        <div className="bg-card rounded-2xl shadow-sm p-6 border border-border">
-          <h2 className="text-lg font-medium text-foreground mb-4">Request Metrics</h2>
+        <section className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+          <h2 className={`${ADMIN_H2} mb-5`}>Request metrics</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-secondary/50 rounded-xl p-4">
-              <h3 className="text-sm font-medium text-foreground mb-1">Total Requests</h3>
-              <p className="text-2xl font-bold text-foreground">{metrics.system.requests.total}</p>
+          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="rounded-xl border border-border p-4">
+              <p className={ADMIN_EYEBROW}>Total requests</p>
+              <p className={`${ADMIN_STAT_VALUE} mt-3`}>{metrics.system.requests.total}</p>
             </div>
 
-            <div className="bg-secondary/50 rounded-xl p-4">
-              <h3 className="text-sm font-medium text-foreground mb-1">Error Rate</h3>
-              <p className="text-2xl font-bold text-foreground">
+            <div className="rounded-xl border border-border p-4">
+              <p className={ADMIN_EYEBROW}>Error rate</p>
+              <p className={`${ADMIN_STAT_VALUE} mt-3`}>
                 {metrics.system.requests.total > 0
                   ? `${((metrics.system.requests.errors / metrics.system.requests.total) * 100).toFixed(2)}%`
                   : '0%'}
               </p>
             </div>
 
-            <div className="bg-secondary/50 rounded-xl p-4">
-              <h3 className="text-sm font-medium text-foreground mb-1">Errors</h3>
-              <p className="text-2xl font-bold text-foreground">{metrics.system.requests.errors}</p>
+            <div className="rounded-xl border border-border p-4">
+              <p className={ADMIN_EYEBROW}>Errors</p>
+              <p className={`${ADMIN_STAT_VALUE} mt-3`}>{metrics.system.requests.errors}</p>
             </div>
           </div>
 
-          <h3 className="text-sm font-medium text-foreground mb-2">Top Paths</h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-border">
-              <thead className="bg-secondary/50">
+          <p className={`${ADMIN_EYEBROW} mb-3`}>Top paths</p>
+          <div className="overflow-x-auto rounded-xl border border-border">
+            <table className={ADMIN_TABLE}>
+              <thead>
                 <tr>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Path</th>
-                  <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Requests</th>
+                  <th scope="col" className={ADMIN_TH}>Path</th>
+                  <th scope="col" className={`${ADMIN_TH} text-right`}>Requests</th>
                 </tr>
               </thead>
-              <tbody className="bg-card divide-y divide-border">
+              <tbody>
                 {Object.entries(metrics.system.requests.byPath)
                   .sort((a, b) => b[1] - a[1])
                   .slice(0, 10)
                   .map(([path, count]) => (
-                    <tr key={path} className="hover:bg-secondary/30">
-                      <td className="px-4 py-2 text-sm text-foreground">{path}</td>
-                      <td className="px-4 py-2 text-sm text-right text-foreground">{count}</td>
+                    <tr key={path} className={ADMIN_ROW}>
+                      <td className={`${ADMIN_TD} break-all font-mono text-xs`}>{path}</td>
+                      <td className={`${ADMIN_TD} text-right tabular-nums`}>{count}</td>
                     </tr>
                   ))}
               </tbody>
             </table>
           </div>
-        </div>
+        </section>
       )}
     </div>
   );
 }
 
-// Helper functions
 function formatUptime(seconds: number): string {
   const days = Math.floor(seconds / 86400);
   const hours = Math.floor((seconds % 86400) / 3600);

@@ -1,26 +1,21 @@
 "use client";
 
-import { MessageSquare, Paintbrush, TrendingUp } from 'lucide-react';
-
 const steps = [
   {
-    icon: MessageSquare,
     step: "01",
-    title: "Tell Us About Your Business",
+    title: "Tell us about your business",
     description: "15-min WhatsApp chat. We understand your goals, customers & budget.",
     time: "15 min",
   },
   {
-    icon: Paintbrush,
     step: "02",
-    title: "We Build Everything",
+    title: "We build everything",
     description: "Website, ads, creatives, copy — crafted by our team. You just approve.",
-    time: "15 days",
+    time: "4–6 weeks",
   },
   {
-    icon: TrendingUp,
     step: "03",
-    title: "Customers Start Coming",
+    title: "Customers start coming",
     description: "Ads go live, we optimise daily and send you clear monthly reports.",
     time: "Ongoing",
   },
@@ -28,87 +23,44 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className="py-8 sm:py-12 md:py-16 bg-background relative overflow-hidden">
-      {/* Subtle background accent */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-primary/[0.02] rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/15 text-xs font-semibold tracking-widest text-primary uppercase mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> How it works
+    <section className="relative overflow-hidden bg-background text-foreground py-20 sm:py-28 lg:py-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-end mb-12 sm:mb-16">
+          <div className="lg:col-span-7">
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-5">(03) Process</p>
+            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[0.98] tracking-[-0.04em]">
+              Three <span className="text-primary">simple</span> steps
+            </h2>
           </div>
-          <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 text-foreground tracking-tight">
-            Three Simple Steps
-          </h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
+          <p className="lg:col-span-4 lg:col-start-9 text-base sm:text-lg text-muted-foreground leading-relaxed">
             No technical knowledge needed. No jargon. We handle everything.
           </p>
         </div>
 
-        {/* Mobile: vertical */}
-        <div className="flex sm:hidden flex-col gap-3">
-          {steps.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <div key={i} className="flex items-start gap-3.5 p-4 rounded-2xl bg-card border border-border shadow-sm">
-                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shadow-md shadow-primary/20">
-                  <Icon className="w-5 h-5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[11px] font-bold tracking-widest text-primary">{step.step}</span>
-                    <span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                      {step.time}
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-bold text-foreground mb-1">{step.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{step.description}</p>
-                </div>
+        {/* Steps: stacked on mobile, three columns split by hairlines on desktop */}
+        <ol className="grid border-t border-border lg:grid-cols-3">
+          {steps.map((step) => (
+            <li
+              key={step.step}
+              className="py-8 sm:py-10 border-b border-border lg:border-b-0 lg:px-8 lg:first:pl-0 lg:last:pr-0 lg:[&:not(:first-child)]:border-l"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <span aria-hidden="true" className="font-display text-7xl sm:text-8xl font-medium leading-none tracking-[-0.05em] text-foreground/15">
+                  {step.step}
+                </span>
+                <span className="mt-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground whitespace-nowrap">
+                  {step.time}
+                </span>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Desktop: grid with connector */}
-        <div className="hidden sm:block relative">
-          {/* Connector line */}
-          <div className="absolute top-[52px] left-[16%] right-[16%] h-px bg-gradient-to-r from-transparent via-border to-transparent hidden lg:block" />
-          <div className="absolute top-[52px] left-[16%] right-[16%] h-px bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20 hidden lg:block blur-[0.5px]" />
-
-          <div className="grid sm:grid-cols-3 gap-6 lg:gap-8">
-            {steps.map((step, i) => {
-              const Icon = step.icon;
-              const isLast = i === steps.length - 1;
-              return (
-                <div key={i} className="relative group">
-                  <div className="relative text-center p-7 lg:p-8 rounded-[20px] bg-card border border-border shadow-sm hover:shadow-lg hover:border-primary/15 hover:-translate-y-1 transition-all duration-300">
-                    {/* Step number */}
-                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-full bg-primary text-primary-foreground text-[11px] font-bold tracking-widest shadow-lg shadow-primary/25">
-                      {step.step}
-                    </div>
-                    {/* Icon */}
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/10 flex items-center justify-center mx-auto mb-5 mt-3 group-hover:scale-105 group-hover:shadow-md transition-all duration-300">
-                      <Icon className="w-6 h-6 text-primary" />
-                    </div>
-                    <h3 className="text-base font-bold mb-2 text-foreground">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">{step.description}</p>
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/10">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary" /> {step.time}
-                    </span>
-                  </div>
-                  {/* Arrow between cards */}
-                  {!isLast && (
-                    <div className="hidden lg:flex absolute top-1/2 -right-4 w-8 h-8 rounded-full bg-card border border-border shadow-sm items-center justify-center text-muted-foreground z-10 -translate-y-1/2">
-                      <span className="text-sm">→</span>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+              <h3 className="mt-8 sm:mt-10 font-display text-2xl sm:text-3xl font-semibold tracking-[-0.035em] leading-tight">
+                <span className="sr-only">Step {step.step}: </span>
+                {step.title}
+              </h3>
+              <p className="mt-3 text-base text-muted-foreground leading-relaxed max-w-sm">{step.description}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

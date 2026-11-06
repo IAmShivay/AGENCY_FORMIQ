@@ -1,8 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Metadata } from 'next';
-import { getBlogPostsByCategory, getBlogPosts, BlogPost, getAllCategories } from '@/lib/blog';
+import { getBlogPostsByCategory, getAllCategories } from '@/lib/blog';
+import PageHeader from '@/components/studio/PageHeader';
+import { CONTAINER, FOCUS_RING } from '@/components/studio/ui';
+import PostGrid from '../../components/PostGrid';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -74,98 +76,32 @@ export default async function CategoryPage(props: { params: Promise<{ category: 
   ];
 
   return (
-    <div className="bg-muted dark:bg-neutral-900 min-h-screen pt-24 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto mb-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary">
-            {formattedCategory} Articles
-          </h1>
-          <p className="text-xl text-muted-foreground dark:text-neutral-400 mb-8">
-            Explore our collection of articles about {formattedCategory.toLowerCase()}.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {categories.map((cat) => (
-              <Link
-                key={cat.slug}
-                href={cat.slug === 'all' ? '/blog' : `/blog/category/${cat.slug}`}
-                className={`px-5 py-2 rounded-full ${
-                  cat.slug === category
-                    ? 'bg-primary text-white'
-                    : 'bg-card dark:bg-neutral-800 hover:bg-primary hover:text-white'
-                } transition-colors shadow-sm`}
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
-              <div className="bg-card dark:bg-neutral-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
-                <div className="relative h-56">
-                  <Image
-                    src={post.coverImage}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6 flex-grow flex flex-col">
-                  <div className="flex items-center mb-3">
-                    <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                      {post.category}
-                    </span>
-                    <span className="ml-auto text-muted-foreground dark:text-neutral-400 text-sm">
-                      {new Date(post.date).toLocaleDateString('en-US', {
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric'
-                      })}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                    {post.title}
-                  </h3>
-                  <p className="text-muted-foreground dark:text-neutral-400 mb-4 flex-grow">
-                    {post.excerpt}
-                  </p>
-                  <div className="flex items-center mt-auto pt-4 border-t border-border dark:border-neutral-700">
-                    <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
-                      <Image
-                        src={post.author.avatar || '/images/default-avatar.svg'}
-                        alt={post.author.name}
-                        width={32}
-                        height={32}
-                        className="object-cover"
-                      />
-                    </div>
-                    <p className="text-sm font-medium">{post.author.name}</p>
-                  </div>
-                </div>
-              </div>
+    <div className="bg-background text-foreground">
+      <PageHeader
+        eyebrow="(01) Journal / Category"
+        title={<>{formattedCategory} <span className="text-primary">articles</span></>}
+        intro={<>Explore our collection of articles about {formattedCategory.toLowerCase()}.</>}
+      >
+        <nav aria-label="Blog categories" className="mt-10 flex flex-wrap gap-2">
+          {categories.map((cat) => (
+            <Link
+              key={cat.slug}
+              href={cat.slug === 'all' ? '/blog' : `/blog/category/${cat.slug}`}
+              aria-current={cat.slug === category ? 'page' : undefined}
+              className={`inline-flex min-h-11 items-center px-5 rounded-full border text-sm font-medium transition-colors duration-300 ${FOCUS_RING} ${
+                cat.slug === category ? 'bg-foreground text-background border-foreground' : 'border-border hover:border-foreground/40'
+              }`}
+            >
+              {cat.name}
             </Link>
           ))}
-        </div>
+        </nav>
+      </PageHeader>
 
-        {posts.length === 0 && (
-          <div className="text-center py-16">
-            <div className="bg-card dark:bg-neutral-800 max-w-md mx-auto rounded-xl shadow-md p-8">
-              <h3 className="text-xl font-bold mb-2">No articles found</h3>
-              <p className="text-muted-foreground dark:text-neutral-400 mb-4">
-                We couldn't find any articles in this category. Check back soon!
-              </p>
-              <Link
-                href="/blog"
-                className="inline-flex items-center justify-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-              >
-                View All Articles
-              </Link>
-            </div>
-          </div>
-        )}
+      <div className={`${CONTAINER} pb-20 sm:pb-28 lg:pb-32`}>
+        <div className="border-t border-border pt-12 sm:pt-16">
+          <PostGrid posts={posts} />
+        </div>
       </div>
     </div>
   );

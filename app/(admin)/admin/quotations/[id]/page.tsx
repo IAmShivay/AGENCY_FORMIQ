@@ -2,6 +2,7 @@
 
 import { use } from 'react';
 import QuotationView from '@/components/admin/QuotationView';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
 
 interface QuotationPageProps {
   params: Promise<{
@@ -11,5 +12,12 @@ interface QuotationPageProps {
 
 export default function QuotationPage(props: QuotationPageProps) {
   const params = use(props.params);
-  return <QuotationView quotationId={params.id} />;
+  return (
+    <div className="space-y-8">
+      <div className="print:hidden">
+        <AdminPageHeader eyebrow="Quotations" title="Quotation" description="Review, share and print this quotation." />
+      </div>
+      <QuotationView quotationId={params.id} />
+    </div>
+  );
 }

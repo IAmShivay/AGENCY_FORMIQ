@@ -7,18 +7,13 @@ import {
   Trash2, 
   Save, 
   X,
-  PenTool,
-  Image as ImageIcon,
   User,
-  Download,
   Eye
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import { 
   Dialog, 
   DialogContent, 
@@ -28,6 +23,19 @@ import {
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_DANGER,
+  ADMIN_BTN_GHOST,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EMPTY,
+  ADMIN_EYEBROW,
+  ADMIN_H2,
+  ADMIN_TONE,
+} from '@/components/admin/admin-ui';
 
 interface Signature {
   id: string;
@@ -38,6 +46,8 @@ interface Signature {
   created_at: string;
   updated_at: string;
 }
+
+const CHECKBOX_CLASS = 'h-4 w-4 shrink-0 cursor-pointer border-input accent-primary';
 
 interface SignatureManagerProps {
   selectedSignatureId?: string;
@@ -131,12 +141,10 @@ export default function SignatureManager({
 
       let imageUrl = editingSignature?.image_url || '';
 
-      // Upload new image if selected
       if (selectedFile) {
         imageUrl = await uploadSignature(selectedFile);
       }
 
-      // If this is set as default, first remove default from all other signatures
       if (formData.is_default) {
         const { error: updateError } = await supabase
           .from('signatures')
@@ -155,7 +163,6 @@ export default function SignatureManager({
       };
 
       if (editingSignature) {
-        // Update existing signature
         const { error } = await supabase
           .from('signatures')
           .update(signatureData)
@@ -164,7 +171,6 @@ export default function SignatureManager({
         if (error) throw error;
         toast.success('Signature updated successfully');
       } else {
-        // Create new signature
         const { error } = await supabase
           .from('signatures')
           .insert([{
@@ -190,7 +196,6 @@ export default function SignatureManager({
     if (!confirm('Are you sure you want to delete this signature?')) return;
 
     try {
-      // Delete from database
       const { error } = await supabase
         .from('signatures')
         .delete()
@@ -198,7 +203,6 @@ export default function SignatureManager({
 
       if (error) throw error;
 
-      // Delete image from storage
       const filePath = imageUrl.split('/').pop();
       if (filePath) {
         await supabase.storage
@@ -216,12 +220,10 @@ export default function SignatureManager({
 
   const setAsDefault = async (id: string) => {
     try {
-      // Remove default from all signatures
       await supabase
         .from('signatures')
         .update({ is_default: false });
 
-      // Set this signature as default
       const { error } = await supabase
         .from('signatures')
         .update({ is_default: true })
@@ -273,13 +275,11 @@ export default function SignatureManager({
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Validate file type
       if (!file.type.startsWith('image/')) {
         toast.error('Please select an image file');
         return;
       }
       
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error('File size must be less than 5MB');
         return;
@@ -292,16 +292,15 @@ export default function SignatureManager({
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-border border-t-foreground"></div>
       </div>
     );
   }
 
-  // If this is just a selector component
   if (showSelector) {
     return (
       <div className="space-y-4">
-        <Label>Digital Signature</Label>
+        <Label>Digital signature</Label>
         <Select
           value={selectedSignatureId || "none"}
           onValueChange={(value) => {
@@ -334,7 +333,7 @@ export default function SignatureManager({
             {(() => {
               const signature = signatures.find(s => s.id === selectedSignatureId);
               return signature ? (
-                <div className="flex items-center gap-2 p-2 border rounded">
+                <div className="flex items-center gap-3 rounded-xl border border-border p-2">
                   <Image
                     src={signature.image_url}
                     alt={signature.name}
@@ -357,74 +356,63 @@ export default function SignatureManager({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Digital Signatures</h2>
-          <p className="text-muted-foreground">Manage digital signatures for quotations</p>
-        </div>
-        <Button onClick={startCreating}>
-          <Upload className="w-4 h-4 mr-2" />
-          Add Signature
-        </Button>
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <button type="button" onClick={startCreating} className={ADMIN_BTN_PRIMARY}>
+          <Upload className="h-4 w-4" />
+          Add signature
+        </button>
       </div>
 
       {signatures.length === 0 && !loading && (
-        <Card>
-          <CardContent className="text-center py-12">
-            <PenTool className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No signatures found</h3>
-            <p className="text-muted-foreground mb-4">Add your first digital signature</p>
-            <Button onClick={startCreating}>
-              <Upload className="w-4 h-4 mr-2" />
-              Add Signature
-            </Button>
-          </CardContent>
-        </Card>
+        <div className={`${ADMIN_CARD} ${ADMIN_EMPTY}`}>
+          <p className="font-medium text-foreground">No signatures found</p>
+          <p className="mt-1">Add your first digital signature</p>
+          <button type="button" onClick={startCreating} className={`${ADMIN_BTN_OUTLINE} mt-6`}>
+            <Upload className="h-4 w-4" />
+            Add signature
+          </button>
+        </div>
       )}
 
-      {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <PenTool className="w-5 h-5" />
-              {editingSignature ? 'Edit Signature' : 'Add New Signature'}
+            <DialogTitle>
+              {editingSignature ? 'Edit signature' : 'Add new signature'}
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 mt-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+          <div className="mt-4 space-y-5">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
                 <Label>Name *</Label>
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="e.g., John Doe"
-                  className="mt-1"
                 />
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label>Role *</Label>
                 <Input
                   value={formData.role}
                   onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
                   placeholder="e.g., CEO, Project Manager"
-                  className="mt-1"
                 />
               </div>
             </div>
 
-            <div>
-              <Label>Signature Image *</Label>
-              <div className="mt-1 space-y-4">
-                <div className="flex items-center gap-4">
-                  <Button
+            <div className="space-y-2">
+              <Label>Signature image *</Label>
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
                     type="button"
-                    variant="outline"
+                    className={ADMIN_BTN_OUTLINE}
                     onClick={() => fileInputRef.current?.click()}
                   >
-                    <Upload className="w-4 h-4 mr-2" />
-                    {selectedFile ? 'Change Image' : 'Upload Image'}
-                  </Button>
+                    <Upload className="h-4 w-4" />
+                    {selectedFile ? 'Change image' : 'Upload image'}
+                  </button>
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -432,21 +420,20 @@ export default function SignatureManager({
                     onChange={handleFileSelect}
                     className="hidden"
                   />
-                  <span className="text-sm text-muted-foreground">
+                  <span className={ADMIN_EYEBROW}>
                     PNG, JPG up to 5MB
                   </span>
                 </div>
 
-                {/* Preview */}
                 {(previewUrl || editingSignature?.image_url) && (
-                  <div className="border rounded-lg p-4 bg-gray-50">
-                    <p className="text-sm font-medium mb-2">Preview:</p>
+                  <div className="rounded-xl border border-border bg-background p-4">
+                    <p className={`${ADMIN_EYEBROW} mb-3`}>Preview</p>
                     <Image
                       src={previewUrl || editingSignature?.image_url || ''}
                       alt="Signature preview"
                       width={200}
                       height={100}
-                      className="object-contain border rounded bg-white"
+                      className="rounded-xl border border-border bg-card object-contain"
                     />
                   </div>
                 )}
@@ -459,107 +446,100 @@ export default function SignatureManager({
                 id="is_default_signature"
                 checked={formData.is_default}
                 onChange={(e) => setFormData(prev => ({ ...prev, is_default: e.target.checked }))}
-                className="rounded"
+                className={CHECKBOX_CLASS}
               />
               <Label htmlFor="is_default_signature">Set as default signature</Label>
             </div>
 
-            <div className="flex gap-2 pt-4">
-              <Button onClick={saveSignature} disabled={uploading}>
-                <Save className="w-4 h-4 mr-2" />
-                {uploading ? 'Saving...' : editingSignature ? 'Update' : 'Add'} Signature
-              </Button>
-              <Button variant="outline" onClick={resetForm}>
-                <X className="w-4 h-4 mr-2" />
+            <div className="flex flex-wrap gap-2 border-t border-border pt-5">
+              <button type="button" className={ADMIN_BTN_PRIMARY} onClick={saveSignature} disabled={uploading}>
+                <Save className="h-4 w-4" />
+                {uploading ? 'Saving...' : editingSignature ? 'Update' : 'Add'} signature
+              </button>
+              <button type="button" className={ADMIN_BTN_GHOST} onClick={resetForm}>
+                <X className="h-4 w-4" />
                 Cancel
-              </Button>
+              </button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Signatures List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {signatures.map(signature => (
-          <Card key={signature.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <CardTitle className="text-lg">{signature.name}</CardTitle>
-                    {signature.is_default && (
-                      <Badge variant="default" className="text-xs">
-                        Default
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground">{signature.role}</p>
-                  <p className="text-xs text-muted-foreground">
-                    Added {new Date(signature.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-gray-50 p-4 rounded border flex items-center justify-center min-h-[80px]">
-                <Image
-                  src={signature.image_url}
-                  alt={signature.name}
-                  width={150}
-                  height={75}
-                  className="object-contain max-h-[75px]"
-                />
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <Eye className="w-4 h-4 mr-1" />
-                      View
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-2xl">
-                    <DialogHeader>
-                      <DialogTitle>{signature.name} - {signature.role}</DialogTitle>
-                    </DialogHeader>
-                    <div className="mt-4 text-center">
-                      <div className="bg-gray-50 p-8 rounded border inline-block">
-                        <Image
-                          src={signature.image_url}
-                          alt={signature.name}
-                          width={300}
-                          height={150}
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-
-                <Button variant="outline" size="sm" onClick={() => startEditing(signature)}>
-                  <User className="w-4 h-4 mr-1" />
-                  Edit
-                </Button>
-
-                {!signature.is_default && (
-                  <Button variant="outline" size="sm" onClick={() => setAsDefault(signature.id)}>
-                    Set Default
-                  </Button>
+          <div key={signature.id} className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} flex min-w-0 flex-col gap-5`}>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className={`${ADMIN_H2} min-w-0 truncate text-lg`}>{signature.name}</h3>
+                {signature.is_default && (
+                  <span className={`${ADMIN_BADGE} ${ADMIN_TONE.accent}`}>
+                    Default
+                  </span>
                 )}
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => deleteSignature(signature.id, signature.image_url)}
-                  className="text-destructive hover:text-destructive"
-                >
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  Delete
-                </Button>
               </div>
-            </CardContent>
-          </Card>
+              <p className="mt-1 text-sm text-muted-foreground">{signature.role}</p>
+              <p className={`${ADMIN_EYEBROW} mt-2`}>
+                Added {new Date(signature.created_at).toLocaleDateString()}
+              </p>
+            </div>
+
+            <div className="flex min-h-[80px] items-center justify-center rounded-xl border border-border bg-background p-4">
+              <Image
+                src={signature.image_url}
+                alt={signature.name}
+                width={150}
+                height={75}
+                className="max-h-[75px] object-contain"
+              />
+            </div>
+
+            <div className="mt-auto flex flex-wrap gap-2">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Eye className="h-4 w-4" />
+                    View
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>{signature.name} - {signature.role}</DialogTitle>
+                  </DialogHeader>
+                  <div className="mt-4 text-center">
+                    <div className="inline-block rounded-xl border border-border bg-background p-8">
+                      <Image
+                        src={signature.image_url}
+                        alt={signature.name}
+                        width={300}
+                        height={150}
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              <Button variant="outline" size="sm" onClick={() => startEditing(signature)}>
+                <User className="h-4 w-4" />
+                Edit
+              </Button>
+
+              {!signature.is_default && (
+                <Button variant="outline" size="sm" onClick={() => setAsDefault(signature.id)}>
+                  Set default
+                </Button>
+              )}
+
+              <button
+                type="button"
+                onClick={() => deleteSignature(signature.id, signature.image_url)}
+                className={`${ADMIN_BTN_DANGER} h-9 px-4 text-[13px]`}
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete
+              </button>
+            </div>
+          </div>
         ))}
       </div>
     </div>

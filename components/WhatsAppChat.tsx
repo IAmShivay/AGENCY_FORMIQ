@@ -8,7 +8,7 @@ const WhatsAppChat = () => {
       target="_blank"
       rel="noopener noreferrer"
       data-track-source="floating_button"
-      className="fixed bottom-5 right-5 z-50 w-14 h-14 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-black/10 hover:scale-110 transition-transform duration-200"
+      className="fixed bottom-5 right-5 z-50 w-14 h-14 bg-primary rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200"
       aria-label="Chat on WhatsApp"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">

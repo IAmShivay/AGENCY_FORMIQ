@@ -1,16 +1,15 @@
 'use client';
 
 import WebsiteForm from '@/components/admin/WebsiteForm';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { ADMIN_CARD, ADMIN_CARD_PAD } from '@/components/admin/admin-ui';
 
 export default function NewWebsitePage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Add New Website</h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">Fill in the details to add a new website to your portfolio</p>
-      </div>
-      
-      <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+    <div className="space-y-8">
+      <AdminPageHeader eyebrow="Websites" title="New website" description="Add a new website to the portfolio." />
+
+      <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
         <WebsiteForm />
       </div>
     </div>

@@ -4,6 +4,25 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { WebsiteProject, getWebsiteProjects } from '@/lib/portfolio';
 import { PlusCircle, Edit, Trash2, Globe, ExternalLink , Loader2 } from 'lucide-react';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EMPTY,
+  ADMIN_H2,
+  ADMIN_ICON_BTN,
+  ADMIN_INPUT,
+  ADMIN_LABEL,
+  ADMIN_ROW,
+  ADMIN_TABLE,
+  ADMIN_TABLE_WRAP,
+  ADMIN_TD,
+  ADMIN_TH,
+  ADMIN_TONE,
+} from '@/components/admin/admin-ui';
 import { toast } from 'sonner';
 
 export default function AdminWebsites() {
@@ -30,12 +49,10 @@ export default function AdminWebsites() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Fetch websites on component mount
   useEffect(() => {
     fetchWebsites();
   }, []);
 
-  // Fetch websites from the database
   const fetchWebsites = async () => {
     try {
       setLoading(true);
@@ -49,20 +66,17 @@ export default function AdminWebsites() {
     }
   };
 
-  // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle array input changes (tags, features, screens)
   const handleArrayChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
     const { value } = e.target;
     const array = value.split(',').map(item => item.trim()).filter(item => item.length > 0);
     setFormData({ ...formData, [field]: array });
   };
 
-  // Sanitize and prepare form data for submission
   const prepareFormData = (data: Partial<WebsiteProject>) => {
     const sanitizedData = {
       title: data.title?.trim() || '',
@@ -82,7 +96,6 @@ export default function AdminWebsites() {
       case_study_screens: Array.isArray(data.case_study_screens) ? data.case_study_screens.filter(screen => screen.trim()) : []
     };
 
-    // Remove empty string fields for optional fields
     Object.keys(sanitizedData).forEach(key => {
       const value = sanitizedData[key as keyof typeof sanitizedData];
       if (value === '' && !['title', 'description', 'category'].includes(key)) {
@@ -93,13 +106,11 @@ export default function AdminWebsites() {
     return sanitizedData;
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isSubmitting) return;
 
-    // Basic validation
     if (!formData.title?.trim()) {
       toast.error('Title is required');
       return;
@@ -113,18 +124,15 @@ export default function AdminWebsites() {
     try {
       setIsSubmitting(true);
 
-      // Check authentication status
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       if (authError || !user) {
         toast.error('Authentication required. Please log in again.');
         return;
       }
 
-      // Prepare sanitized data
       const sanitizedData = prepareFormData(formData);
 
       if (editingId) {
-        // Update existing website
         const { error } = await supabase
           .from('portfolio_websites')
           .update(sanitizedData)
@@ -133,7 +141,6 @@ export default function AdminWebsites() {
         if (error) throw error;
         toast.success('Website updated successfully!');
       } else {
-        // Add new website
         const { error } = await supabase
           .from('portfolio_websites')
           .insert([sanitizedData]);
@@ -142,7 +149,6 @@ export default function AdminWebsites() {
         toast.success('Website added successfully!');
       }
 
-      // Reset form and refresh websites
       resetForm();
       fetchWebsites();
     } catch (error: any) {
@@ -153,7 +159,6 @@ export default function AdminWebsites() {
     }
   };
 
-  // Edit a website
   const handleEdit = (website: WebsiteProject) => {
     setFormData({
       title: website.title,
@@ -177,9 +182,7 @@ export default function AdminWebsites() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Delete a website with confirmation
   const handleDelete = async (id: string) => {
-    // Use a custom confirmation toast
     toast('Are you sure you want to delete this website?', {
       action: {
         label: 'Delete',
@@ -201,13 +204,12 @@ export default function AdminWebsites() {
       },
       cancel: {
         label: 'Cancel',
-        onClick: () => {}, // Do nothing on cancel
+        onClick: () => {},
       },
       duration: 10000,
     });
   };
 
-  // Reset form
   const resetForm = () => {
     setFormData({
       title: '',
@@ -231,45 +233,45 @@ export default function AdminWebsites() {
   };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Manage Portfolio Websites</h1>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-colors"
-        >
-          {showForm ? 'Cancel' : <><PlusCircle size={20} /> Add Website</>}
-        </button>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Portfolio"
+        title="Websites"
+        description="Add and maintain the website case studies shown in the portfolio."
+        actions={
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className={showForm ? ADMIN_BTN_OUTLINE : ADMIN_BTN_PRIMARY}
+          >
+            {showForm ? 'Cancel' : <><PlusCircle className="h-4 w-4" /> Add website</>}
+          </button>
+        }
+      />
 
-
-
-      {/* Add/Edit Form */}
       {showForm && (
-        <div className="bg-card p-6 rounded-lg shadow-md mb-8">
-          <h2 className="text-xl font-semibold mb-4">{editingId ? 'Edit Website' : 'Add New Website'}</h2>
+        <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+          <h2 className={`${ADMIN_H2} mb-5`}>{editingId ? 'Edit website' : 'New website'}</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Basic Information */}
               <div>
-                <label className="block text-sm font-medium mb-1">Title</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Title</label>
                 <input
                   type="text"
                   name="title"
                   value={formData.title || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={ADMIN_INPUT}
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Category</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Category</label>
                 <select
                   name="category"
                   value={formData.category || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={ADMIN_INPUT}
                   required
                 >
                   <option value="E-Commerce">E-Commerce</option>
@@ -282,167 +284,166 @@ export default function AdminWebsites() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Image URL</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Image URL</label>
                 <input
                   type="text"
                   name="image"
                   value={formData.image || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={ADMIN_INPUT}
                   placeholder="https://example.com/image.jpg"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Completion Date</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Completion date</label>
                 <input
                   type="text"
                   name="completion_date"
                   value={formData.completion_date || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={ADMIN_INPUT}
                   placeholder="March 2024"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Description</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Description</label>
                 <textarea
                   name="description"
                   value={formData.description || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={`${ADMIN_INPUT} h-auto py-2.5`}
                   rows={3}
                   required
                 ></textarea>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Live Link</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Live link</label>
                 <input
                   type="text"
                   name="live_link"
                   value={formData.live_link || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={ADMIN_INPUT}
                   placeholder="https://example.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Repository Link</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Repository link</label>
                 <input
                   type="text"
                   name="repo_link"
                   value={formData.repo_link || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={ADMIN_INPUT}
                   placeholder="https://github.com/username/repo"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Tags (comma separated)</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Tags (comma separated)</label>
                 <input
                   type="text"
                   value={formData.tags?.join(', ') || ''}
                   onChange={(e) => handleArrayChange(e, 'tags')}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={ADMIN_INPUT}
                   placeholder="Next.js, React, Tailwind CSS"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Features (comma separated)</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Features (comma separated)</label>
                 <input
                   type="text"
                   value={formData.features?.join(', ') || ''}
                   onChange={(e) => handleArrayChange(e, 'features')}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={ADMIN_INPUT}
                   placeholder="User Authentication, Payment Processing, Admin Dashboard"
                 />
               </div>
 
-              {/* Case Study Information */}
               <div className="md:col-span-2">
-                <h3 className="text-lg font-medium mb-2 mt-4">Case Study Information</h3>
+                <h3 className={`${ADMIN_H2} mt-4 border-t border-border pt-6`}>Case study information</h3>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Challenge</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Challenge</label>
                 <textarea
                   name="case_study_challenge"
                   value={formData.case_study_challenge || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={`${ADMIN_INPUT} h-auto py-2.5`}
                   rows={3}
                 ></textarea>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Solution</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Solution</label>
                 <textarea
                   name="case_study_solution"
                   value={formData.case_study_solution || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={`${ADMIN_INPUT} h-auto py-2.5`}
                   rows={3}
                 ></textarea>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Results</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Results</label>
                 <textarea
                   name="case_study_results"
                   value={formData.case_study_results || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={`${ADMIN_INPUT} h-auto py-2.5`}
                   rows={3}
                 ></textarea>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Testimonial</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Testimonial</label>
                 <textarea
                   name="case_study_testimonial"
                   value={formData.case_study_testimonial || ''}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={`${ADMIN_INPUT} h-auto py-2.5`}
                   rows={3}
                 ></textarea>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Case Study Screens (comma separated URLs)</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Case study screens (comma separated URLs)</label>
                 <input
                   type="text"
                   value={formData.case_study_screens?.join(', ') || ''}
                   onChange={(e) => handleArrayChange(e, 'case_study_screens')}
-                  className="w-full p-2 border rounded-lg bg-card border-border"
+                  className={ADMIN_INPUT}
                   placeholder="https://example.com/screen1.jpg, https://example.com/screen2.jpg"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 mt-6">
+            <div className="mt-6 flex flex-wrap justify-end gap-3">
               <button
                 type="button"
                 onClick={resetForm}
-                className="px-4 py-2 bg-secondary hover:bg-secondary/80 rounded-lg transition-colors"
+                className={ADMIN_BTN_OUTLINE}
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-4 py-2 bg-primary hover:bg-primary/90 disabled:bg-primary/60 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center gap-2"
+                className={ADMIN_BTN_PRIMARY}
               >
                 {isSubmitting && (
-                  <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 )}
                 {isSubmitting
                   ? (editingId ? 'Updating...' : 'Adding...')
-                  : (editingId ? 'Update Website' : 'Add Website')
+                  : (editingId ? 'Update website' : 'Add website')
                 }
               </button>
             </div>
@@ -450,36 +451,35 @@ export default function AdminWebsites() {
         </div>
       )}
 
-      {/* Websites List */}
-      <div className="bg-card rounded-lg shadow-md">
+      <div className={ADMIN_TABLE_WRAP}>
         {loading ? (
-          <div className="flex justify-center items-center p-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          <div className="flex h-64 items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : websites.length === 0 ? (
-          <div className="p-8 text-center">
-            <p className="text-muted-foreground">No websites found. Add your first website!</p>
+          <div className={ADMIN_EMPTY}>
+            <p>No websites found. Add your first website!</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-secondary/50">
+          <div>
+            <table className={ADMIN_TABLE}>
+              <thead>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Website</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+                  <th className={ADMIN_TH}>Website</th>
+                  <th className={ADMIN_TH}>Category</th>
+                  <th className={ADMIN_TH}>Date</th>
+                  <th className={`${ADMIN_TH} text-right`}>Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody>
                 {websites.map((website) => (
-                  <tr key={website.id} className="hover:bg-secondary/50">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center">
-                        <div className="h-10 w-10 flex-shrink-0 mr-3">
+                  <tr key={website.id} className={ADMIN_ROW}>
+                    <td className={ADMIN_TD}>
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 shrink-0">
                           {website.image ? (
                             <div
-                              className="h-10 w-10 rounded bg-secondary"
+                              className="h-10 w-10 rounded-xl border border-border bg-muted"
                               style={{
                                 backgroundImage: `url(${website.image})`,
                                 backgroundSize: 'cover',
@@ -487,33 +487,33 @@ export default function AdminWebsites() {
                               }}
                             ></div>
                           ) : (
-                            <div className="h-10 w-10 rounded bg-secondary flex items-center justify-center">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted">
                               <Globe size={20} className="text-muted-foreground" />
                             </div>
                           )}
                         </div>
                         <div>
                           <div className="font-medium">{website.title}</div>
-                          <div className="text-sm text-muted-foreground truncate max-w-xs">{website.description}</div>
+                          <div className="max-w-xs truncate text-muted-foreground">{website.description}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
+                    <td className={ADMIN_TD}>
+                      <span className={`${ADMIN_BADGE} ${ADMIN_TONE.accent}`}>
                         {website.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-muted-foreground">
+                    <td className={`${ADMIN_TD} whitespace-nowrap text-muted-foreground`}>
                       {website.completion_date}
                     </td>
-                    <td className="px-6 py-4 text-right text-sm font-medium">
-                      <div className="flex justify-end gap-2">
+                    <td className={`${ADMIN_TD} text-right`}>
+                      <div className="flex justify-end gap-1">
                         {website.live_link && (
                           <a
                             href={website.live_link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-secondary/50 text-muted-foreground hover:bg-secondary transition-colors"
+                            className={ADMIN_ICON_BTN}
                             title="View live site"
                           >
                             <ExternalLink size={16} />
@@ -521,14 +521,14 @@ export default function AdminWebsites() {
                         )}
                         <button
                           onClick={() => handleEdit(website)}
-                          className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                          className={ADMIN_ICON_BTN}
                           title="Edit website"
                         >
                           <Edit size={16} />
                         </button>
                         <button
                           onClick={() => handleDelete(website.id)}
-                          className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+                          className={`${ADMIN_ICON_BTN} hover:bg-destructive/10 hover:text-destructive`}
                           title="Delete website"
                         >
                           <Trash2 size={16} />

@@ -1,5 +1,7 @@
 "use client";
 
+import PageHeader from '@/components/studio/PageHeader';
+import PageCTA from '@/components/studio/PageCTA';
 import React, { useState, useEffect } from 'react';
 import { PaintBucket, X, Sparkles, Loader2 } from 'lucide-react';
 import { CreativeProject, getCreativeProjects } from '@/lib/portfolio';
@@ -30,55 +32,25 @@ const CreativesPortfolio = () => {
     : projects.filter(p => p.category === activeFilter);
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent pt-28 md:pt-36 lg:pt-44">
-        <div className="container mx-auto px-4 py-20 md:py-32">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center mb-6">
-              <PaintBucket className="w-10 h-10 text-primary mr-3" />
-              <h1 className="text-5xl md:text-6xl font-bold premium-text-gradient">
-                Creative Design
-              </h1>
-            </div>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Branding, social media creatives, video editing, and marketing collateral that makes your brand unforgettable.
-            </p>
-          </div>
-        </div>
-        <div className="absolute top-20 left-12 w-24 h-24 bg-primary/10 rounded-full blur-xl" />
-        <div className="absolute bottom-12 right-16 w-32 h-32 bg-accent/10 rounded-full blur-xl" />
-        <div className="absolute -bottom-6 left-0 right-0 h-12 bg-background transform -skew-y-2" />
-      </div>
+    <div className="bg-background text-foreground">
+      <PageHeader
+        eyebrow="(01) Portfolio / Creatives"
+        title={<>Creative <span className="text-primary">design</span></>}
+        intro="Branding, social media creatives, video editing, and marketing collateral that makes your brand unforgettable."
+      />
 
-      {/* Stats */}
-      <div className="container mx-auto px-4 py-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-          {[
-            { value: '200+', label: 'Creatives Delivered' },
-            { value: '50+', label: 'Brands Served' },
-            { value: '500+', label: 'Social Posts' },
-            { value: '100%', label: 'On-Time Delivery' },
-          ].map((stat, i) => (
-            <div key={i} className="bg-card p-6 rounded-xl shadow-md text-center border border-border/20">
-              <p className="text-3xl font-bold text-primary mb-1">{stat.value}</p>
-              <p className="text-sm text-muted-foreground">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* Filter + Grid */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setActiveFilter(cat)}
-              className={`px-5 py-2 rounded-full transition-all duration-300 ${
+              className={`min-h-11 px-5 rounded-full border text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                 activeFilter === cat
-                  ? 'bg-primary text-primary-foreground shadow-md'
-                  : 'bg-card border border-border hover:bg-muted'
+                  ? 'bg-foreground text-background border-foreground'
+                  : 'border-border text-foreground hover:border-foreground/40'
               }`}
             >
               {cat}
@@ -98,12 +70,12 @@ const CreativesPortfolio = () => {
             {filtered.map(project => (
               <div
                 key={project.id}
-                className="group bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border/20 flex flex-row h-[180px] md:h-[200px]"
+                className="group bg-card rounded-[22px] overflow-hidden transition-all duration-300 border border-border flex flex-row h-[180px] md:h-[200px] hover:border-foreground/30"
               >
                 {/* Image */}
                 <div className="w-[140px] md:w-[200px] shrink-0 overflow-hidden relative">
                   <div
-                    className="w-full h-full bg-muted flex items-center justify-center transform group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full bg-muted flex items-center justify-center group-hover:scale-105 transition-transform duration-500"
                     style={{ backgroundImage: project.image ? `url(${project.image})` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
                   >
                     {!project.image && <PaintBucket className="w-8 h-8 text-muted-foreground/40" />}
@@ -151,7 +123,7 @@ const CreativesPortfolio = () => {
       {/* Detail Popup with Media Gallery */}
       {selectedProject && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setSelectedProject(null)}>
-          <div className="bg-card rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border border-border" onClick={e => e.stopPropagation()}>
+          <div className="bg-card rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border border-border" data-lenis-prevent onClick={e => e.stopPropagation()}>
             <div className="sticky top-0 bg-card p-5 border-b border-border flex justify-between items-center z-10">
               <h2 className="text-xl font-bold text-foreground">{selectedProject.title}</h2>
               <button onClick={() => setSelectedProject(null)} className="p-2 rounded-full bg-muted hover:bg-muted/80 transition-colors">
@@ -221,20 +193,11 @@ const CreativesPortfolio = () => {
         </div>
       )}
 
-      {/* CTA */}
-      <div className="bg-gradient-to-r from-primary to-accent py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6 text-primary-foreground">Need stunning creatives for your brand?</h2>
-          <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-            From brand identity to social media content — we design everything your business needs.
-          </p>
-          <a href="https://wa.me/919832078313?text=Hi%2C%20I%20need%20creative%20design%20services" target="_blank" rel="noopener noreferrer">
-            <button className="px-8 py-3 bg-background hover:bg-background/90 text-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-              Start a Project
-            </button>
-          </a>
-        </div>
-      </div>
+      <PageCTA
+        title="Need stunning creatives for your brand?"
+        subtitle="From brand identity to social media content, we design everything your business needs."
+        primary={{"label":"Start a project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20need%20creative%20design%20services","external":true}}
+      />
     </div>
   );
 };

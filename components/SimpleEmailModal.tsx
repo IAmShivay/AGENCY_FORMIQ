@@ -78,17 +78,17 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="bg-card rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border flex-shrink-0">
+          <h2 className="text-xl font-bold text-foreground">
             Send Email to {leadName}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="p-2 hover:bg-muted rounded-lg transition-colors"
           >
-            <X className="h-5 w-5 text-gray-500" />
+            <X className="h-5 w-5 text-muted-foreground" />
           </button>
         </div>
 
@@ -96,43 +96,43 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {/* To Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               To
             </label>
             <input
               type="email"
               value={leadEmail}
               readOnly
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+              className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground"
             />
           </div>
 
           {/* Subject Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Subject
             </label>
             <input
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
               placeholder="Enter email subject..."
             />
           </div>
 
           {/* Content Editor */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Message
             </label>
             
             {/* Toolbar */}
-            <div className="border border-gray-300 dark:border-gray-600 rounded-t-lg bg-gray-50 dark:bg-gray-700 p-2 flex items-center gap-1 flex-wrap">
+            <div className="border border-border rounded-t-lg bg-background p-2 flex items-center gap-1 flex-wrap">
               <button
                 type="button"
                 onClick={() => execCommand('bold')}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                className="p-2 hover:bg-muted rounded transition-colors"
                 title="Bold"
               >
                 <Bold className="h-4 w-4" />
@@ -140,7 +140,7 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
               <button
                 type="button"
                 onClick={() => execCommand('italic')}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                className="p-2 hover:bg-muted rounded transition-colors"
                 title="Italic"
               >
                 <Italic className="h-4 w-4" />
@@ -148,18 +148,18 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
               <button
                 type="button"
                 onClick={() => execCommand('underline')}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                className="p-2 hover:bg-muted rounded transition-colors"
                 title="Underline"
               >
                 <Underline className="h-4 w-4" />
               </button>
               
-              <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+              <div className="w-px h-6 bg-border mx-1"></div>
               
               <button
                 type="button"
                 onClick={() => execCommand('insertUnorderedList')}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                className="p-2 hover:bg-muted rounded transition-colors"
                 title="Bullet List"
               >
                 <List className="h-4 w-4" />
@@ -167,18 +167,18 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
               <button
                 type="button"
                 onClick={insertLink}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                className="p-2 hover:bg-muted rounded transition-colors"
                 title="Insert Link"
               >
                 <Link className="h-4 w-4" />
               </button>
               
-              <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+              <div className="w-px h-6 bg-border mx-1"></div>
               
               <button
                 type="button"
                 onClick={() => execCommand('justifyLeft')}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                className="p-2 hover:bg-muted rounded transition-colors"
                 title="Align Left"
               >
                 <AlignLeft className="h-4 w-4" />
@@ -186,7 +186,7 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
               <button
                 type="button"
                 onClick={() => execCommand('justifyCenter')}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                className="p-2 hover:bg-muted rounded transition-colors"
                 title="Align Center"
               >
                 <AlignCenter className="h-4 w-4" />
@@ -194,18 +194,18 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
               <button
                 type="button"
                 onClick={() => execCommand('justifyRight')}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                className="p-2 hover:bg-muted rounded transition-colors"
                 title="Align Right"
               >
                 <AlignRight className="h-4 w-4" />
               </button>
               
-              <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+              <div className="w-px h-6 bg-border mx-1"></div>
               
               <button
                 type="button"
                 onClick={changeTextColor}
-                className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                className="p-2 hover:bg-muted rounded transition-colors"
                 title="Text Color"
               >
                 <Palette className="h-4 w-4" />
@@ -216,7 +216,7 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
             <div
               ref={editorRef}
               contentEditable
-              className="w-full min-h-[300px] p-4 border border-t-0 border-gray-300 dark:border-gray-600 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-violet-500 dark:bg-gray-700 dark:text-white"
+              className="w-full min-h-[300px] p-4 border border-t-0 border-border rounded-b-lg focus:outline-none focus:ring-2 focus:ring-ring"
               style={{ maxHeight: '400px', overflowY: 'auto' }}
               onInput={(e) => setContent(e.currentTarget.innerHTML)}
               placeholder="Type your message here..."
@@ -225,17 +225,17 @@ export default function SimpleEmailModal({ isOpen, onClose, leadEmail, leadName,
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
+        <div className="flex justify-end gap-3 p-6 border-t border-border flex-shrink-0">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            className="px-4 py-2 text-muted-foreground bg-muted rounded-lg hover:bg-muted transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSendEmail}
             disabled={sending}
-            className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-lg hover:from-violet-700 hover:to-fuchsia-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Send className="h-4 w-4" />
             {sending ? 'Sending...' : 'Send Email'}

@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import tailwindcssAnimate from 'tailwindcss-animate';
 
 const config: Config = {
   darkMode: 'class',
@@ -9,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Tailwind 3.3 has no spacing-based min-h-*/min-w-*; tap-target classes like min-h-11 rely on these.
+      minHeight: ({ theme }) => theme('spacing'),
+      minWidth: ({ theme }) => theme('spacing'),
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -97,6 +101,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [tailwindcssAnimate],
 };
 export default config;

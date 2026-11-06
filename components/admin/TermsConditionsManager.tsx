@@ -8,8 +8,6 @@ import {
   Trash2,
   Save,
   X,
-  FileText,
-  Settings,
   Star,
   StarOff,
   Eye,
@@ -18,10 +16,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -30,6 +26,19 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_DANGER,
+  ADMIN_BTN_GHOST,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EMPTY,
+  ADMIN_EYEBROW,
+  ADMIN_H2,
+  ADMIN_TONE,
+} from '@/components/admin/admin-ui';
 
 interface TermsTemplate {
   id: string;
@@ -39,6 +48,8 @@ interface TermsTemplate {
   created_at: string;
   updated_at: string;
 }
+
+const CHECKBOX_CLASS = 'h-4 w-4 shrink-0 cursor-pointer border-input accent-primary';
 
 interface TermsConditionsManagerProps {
   selectedTermsId?: string;
@@ -95,7 +106,6 @@ export default function TermsConditionsManager({
 
       setSaving(true);
 
-      // If this is set as default, first remove default from all other templates
       if (formData.is_default) {
         const { error: updateError } = await supabase
           .from('terms_templates')
@@ -113,7 +123,6 @@ export default function TermsConditionsManager({
       };
 
       if (editingTemplate) {
-        // Update existing template
         const { error } = await supabase
           .from('terms_templates')
           .update(templateData)
@@ -122,7 +131,6 @@ export default function TermsConditionsManager({
         if (error) throw error;
         toast.success('Template updated successfully');
       } else {
-        // Create new template
         const { error } = await supabase
           .from('terms_templates')
           .insert([{
@@ -164,12 +172,10 @@ export default function TermsConditionsManager({
 
   const setAsDefault = async (id: string) => {
     try {
-      // Remove default from all templates
       await supabase
         .from('terms_templates')
         .update({ is_default: false });
 
-      // Set this template as default
       const { error } = await supabase
         .from('terms_templates')
         .update({ is_default: true })
@@ -224,21 +230,18 @@ export default function TermsConditionsManager({
     setIsDialogOpen(true);
   };
 
-
-
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-border border-t-foreground"></div>
       </div>
     );
   }
 
-  // If this is just a selector component
   if (showSelector) {
     return (
       <div className="space-y-4">
-        <Label>Terms & Conditions Template</Label>
+        <Label>Terms and conditions template</Label>
         <Select 
           value={selectedTermsId} 
           onValueChange={(value) => {
@@ -265,58 +268,48 @@ export default function TermsConditionsManager({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Terms & Conditions Templates</h2>
-          <p className="text-muted-foreground">Manage your quotation terms and conditions</p>
-        </div>
-        <Button onClick={startCreating}>
-          <Plus className="w-4 h-4 mr-2" />
-          New Template
-        </Button>
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <button type="button" onClick={startCreating} className={ADMIN_BTN_PRIMARY}>
+          <Plus className="h-4 w-4" />
+          New template
+        </button>
       </div>
 
       {templates.length === 0 && !loading && (
-        <Card>
-          <CardContent className="text-center py-12">
-            <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No templates found</h3>
-            <p className="text-muted-foreground mb-4">Create your first terms & conditions template</p>
-            <Button onClick={startCreating}>
-              <Plus className="w-4 h-4 mr-2" />
-              Create Template
-            </Button>
-          </CardContent>
-        </Card>
+        <div className={`${ADMIN_CARD} ${ADMIN_EMPTY}`}>
+          <p className="font-medium text-foreground">No templates found</p>
+          <p className="mt-1">Create your first terms and conditions template</p>
+          <button type="button" onClick={startCreating} className={`${ADMIN_BTN_OUTLINE} mt-6`}>
+            <Plus className="h-4 w-4" />
+            Create template
+          </button>
+        </div>
       )}
 
-      {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-h-[80vh] max-w-4xl overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Settings className="w-5 h-5" />
-              {editingTemplate ? 'Edit Template' : 'Create New Template'}
+            <DialogTitle>
+              {editingTemplate ? 'Edit template' : 'Create new template'}
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 mt-4">
-            <div>
-              <Label>Template Name *</Label>
+          <div className="mt-4 space-y-5">
+            <div className="space-y-2">
+              <Label>Template name *</Label>
               <Input
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                 placeholder="e.g., Standard Terms, Custom Project Terms"
-                className="mt-1"
               />
             </div>
-            <div>
-              <Label>Terms & Conditions Content *</Label>
+            <div className="space-y-2">
+              <Label>Terms and conditions content *</Label>
               <Textarea
                 value={formData.content}
                 onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
                 rows={15}
                 placeholder="Enter your terms and conditions..."
-                className="mt-1 font-mono text-sm"
+                className="font-mono text-sm"
               />
             </div>
             <div className="flex items-center gap-2">
@@ -325,112 +318,105 @@ export default function TermsConditionsManager({
                 id="is_default"
                 checked={formData.is_default}
                 onChange={(e) => setFormData(prev => ({ ...prev, is_default: e.target.checked }))}
-                className="rounded"
+                className={CHECKBOX_CLASS}
               />
               <Label htmlFor="is_default">Set as default template</Label>
             </div>
-            <div className="flex gap-2 pt-4">
-              <Button onClick={saveTemplate} disabled={saving}>
-                <Save className="w-4 h-4 mr-2" />
-                {saving ? 'Saving...' : editingTemplate ? 'Update' : 'Create'} Template
-              </Button>
-              <Button variant="outline" onClick={resetForm}>
-                <X className="w-4 h-4 mr-2" />
+            <div className="flex flex-wrap gap-2 border-t border-border pt-5">
+              <button type="button" className={ADMIN_BTN_PRIMARY} onClick={saveTemplate} disabled={saving}>
+                <Save className="h-4 w-4" />
+                {saving ? 'Saving...' : editingTemplate ? 'Update' : 'Create'} template
+              </button>
+              <button type="button" className={ADMIN_BTN_GHOST} onClick={resetForm}>
+                <X className="h-4 w-4" />
                 Cancel
-              </Button>
+              </button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Templates List */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
         {templates.map(template => (
-          <Card key={template.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <CardTitle className="text-lg">{template.name}</CardTitle>
-                    {template.is_default && (
-                      <Badge variant="default" className="text-xs">
-                        <Star className="w-3 h-3 mr-1" />
-                        Default
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Created {new Date(template.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-sm text-muted-foreground max-h-24 overflow-y-auto bg-gray-50 p-3 rounded border">
-                <pre className="whitespace-pre-wrap font-sans text-xs leading-relaxed">
-                  {template.content.length > 200
-                    ? `${template.content.substring(0, 200)}...`
-                    : template.content
-                  }
-                </pre>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <Eye className="w-4 h-4 mr-1" />
-                      View
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-                    <DialogHeader>
-                      <DialogTitle>{template.name}</DialogTitle>
-                    </DialogHeader>
-                    <div className="mt-4">
-                      <div className="bg-gray-50 p-4 rounded border max-h-96 overflow-y-auto">
-                        <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed">
-                          {template.content}
-                        </pre>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-
-                <Button variant="outline" size="sm" onClick={() => startEditing(template)}>
-                  <Edit className="w-4 h-4 mr-1" />
-                  Edit
-                </Button>
-
-                <Button variant="outline" size="sm" onClick={() => duplicateTemplate(template)}>
-                  <Copy className="w-4 h-4 mr-1" />
-                  Copy
-                </Button>
-
-                {!template.is_default ? (
-                  <Button variant="outline" size="sm" onClick={() => setAsDefault(template.id)}>
-                    <Star className="w-4 h-4 mr-1" />
-                    Set Default
-                  </Button>
-                ) : (
-                  <Button variant="outline" size="sm" disabled>
-                    <StarOff className="w-4 h-4 mr-1" />
-                    Is Default
-                  </Button>
+          <div key={template.id} className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} flex min-w-0 flex-col gap-5`}>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className={`${ADMIN_H2} min-w-0 truncate text-lg`}>{template.name}</h3>
+                {template.is_default && (
+                  <span className={`${ADMIN_BADGE} ${ADMIN_TONE.accent}`}>
+                    <Star className="h-3 w-3" />
+                    Default
+                  </span>
                 )}
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => deleteTemplate(template.id)}
-                  className="text-destructive hover:text-destructive"
-                >
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  Delete
-                </Button>
               </div>
-            </CardContent>
-          </Card>
+              <p className={`${ADMIN_EYEBROW} mt-2`}>
+                Created {new Date(template.created_at).toLocaleDateString()}
+              </p>
+            </div>
+
+            <div className="max-h-24 overflow-y-auto rounded-xl border border-border bg-background p-3 text-sm text-muted-foreground">
+              <pre className="whitespace-pre-wrap break-words font-sans text-xs leading-relaxed">
+                {template.content.length > 200
+                  ? `${template.content.substring(0, 200)}...`
+                  : template.content
+                }
+              </pre>
+            </div>
+
+            <div className="mt-auto flex flex-wrap gap-2">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Eye className="h-4 w-4" />
+                    View
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-h-[80vh] max-w-3xl overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>{template.name}</DialogTitle>
+                  </DialogHeader>
+                  <div className="mt-4">
+                    <div className="max-h-96 overflow-y-auto rounded-xl border border-border bg-background p-4">
+                      <pre className="whitespace-pre-wrap break-words font-sans text-sm leading-relaxed">
+                        {template.content}
+                      </pre>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              <Button variant="outline" size="sm" onClick={() => startEditing(template)}>
+                <Edit className="h-4 w-4" />
+                Edit
+              </Button>
+
+              <Button variant="outline" size="sm" onClick={() => duplicateTemplate(template)}>
+                <Copy className="h-4 w-4" />
+                Copy
+              </Button>
+
+              {!template.is_default ? (
+                <Button variant="outline" size="sm" onClick={() => setAsDefault(template.id)}>
+                  <Star className="h-4 w-4" />
+                  Set default
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" disabled>
+                  <StarOff className="h-4 w-4" />
+                  Is default
+                </Button>
+              )}
+
+              <button
+                type="button"
+                onClick={() => deleteTemplate(template.id)}
+                className={`${ADMIN_BTN_DANGER} h-9 px-4 text-[13px]`}
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete
+              </button>
+            </div>
+          </div>
         ))}
       </div>
     </div>

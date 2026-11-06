@@ -1,106 +1,118 @@
 "use client";
 
-import { Star, ArrowRight, Quote } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import Magnetic from './studio/Magnetic';
+import { GOOGLE_REVIEW_URL } from '@/lib/studio-facts';
+
+const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
+const WHATSAPP_RESULTS_URL = 'https://wa.me/919832078313?text=Hi%2C%20I%20want%20similar%20results';
 
 const testimonials = [
-  { quote: "We got 38 enquiries in the first month itself. Way better than the freelancer we had before.", name: "Rajesh Mondal", role: "Mondal Interior Solutions", location: "Durgapur", result: "38 leads/month", initials: "RM", color: "bg-primary" },
-  { quote: "No online presence to 3x more calls from Google. They set up everything — website, listing, social media.", name: "Ananya Ghosh", role: "Ananya's Kitchen Catering", location: "Kolkata", result: "3x more calls", initials: "AG", color: "bg-primary" },
-  { quote: "They came to my shop in Asansol to understand my business. Ads bring 2-3 new customers every week.", name: "Sunil Prasad", role: "SP Electronics", location: "Asansol", result: "2-3/week", initials: "SP", color: "bg-primary" },
-  { quote: "Cost per lead dropped from Rs 800 to Rs 120. Facebook ads + landing page changed everything.", name: "Priya Sharma", role: "StyleCraft Fashion", location: "Kolkata", result: "Rs 120/lead", initials: "PS", color: "bg-primary" },
-  { quote: "E-commerce website in 15 days. Clean design, payments work perfectly. Sales from day one.", name: "Amit Banerjee", role: "Bengal Handicrafts", location: "Durgapur", result: "Live in 15 days", initials: "AB", color: "bg-primary" },
-  { quote: "22 new gym memberships in month one from Google Ads + social media. Best investment I've made.", name: "Vikram Singh", role: "FitZone Gym", location: "Kolkata", result: "22 new members", initials: "VS", color: "bg-primary" },
+  { quote: "We got 38 enquiries in the first month itself. Way better than the freelancer we had before.", name: "Rajesh Mondal", role: "Mondal Interior Solutions", location: "Durgapur", result: "38 leads/month", initials: "RM" },
+  { quote: "No online presence to 3x more calls from Google. They set up everything — website, listing, social media.", name: "Ananya Ghosh", role: "Ananya's Kitchen Catering", location: "Kolkata", result: "3x more calls", initials: "AG" },
+  { quote: "They came to my shop in Asansol to understand my business. Ads bring 2-3 new customers every week.", name: "Sunil Prasad", role: "SP Electronics", location: "Asansol", result: "2-3/week", initials: "SP" },
+  { quote: "Cost per lead dropped from Rs 800 to Rs 120. Facebook ads + landing page changed everything.", name: "Priya Sharma", role: "StyleCraft Fashion", location: "Kolkata", result: "Rs 120/lead", initials: "PS" },
+  { quote: "E-commerce website in 15 days. Clean design, payments work perfectly. Sales from day one.", name: "Amit Banerjee", role: "Bengal Handicrafts", location: "Durgapur", result: "Live in 15 days", initials: "AB" },
+  { quote: "22 new gym memberships in month one from Google Ads + social media. Best investment I've made.", name: "Vikram Singh", role: "FitZone Gym", location: "Kolkata", result: "22 new members", initials: "VS" },
 ];
 
-export default function Testimonials() {
-  return (
-    <section className="py-8 sm:py-12 md:py-16 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 right-0 w-[600px] h-[400px] bg-primary/[0.02] rounded-full blur-3xl" />
-      </div>
+type Testimonial = (typeof testimonials)[number];
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted border border-border text-xs font-semibold tracking-widest text-foreground uppercase mb-3">
-            <Star className="w-3 h-3 fill-current text-foreground" /> Real results
+const Avatar = ({ t, size }: { t: Testimonial; size: 'sm' | 'lg' }) => (
+  <span
+    aria-hidden="true"
+    className={`flex flex-shrink-0 items-center justify-center rounded-full bg-foreground text-background font-semibold ${size === 'lg' ? 'w-12 h-12 text-sm' : 'w-9 h-9 text-xs'}`}
+  >
+    {t.initials}
+  </span>
+);
+
+export default function Testimonials() {
+  const [featured, ...rest] = testimonials;
+
+  return (
+    <section className="relative overflow-hidden bg-background text-foreground py-20 sm:py-28 lg:py-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-end mb-12 sm:mb-16">
+          <div className="lg:col-span-7">
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-5">(04) Clients</p>
+            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[0.98] tracking-[-0.04em]">
+              Real results from real businesses
+            </h2>
           </div>
-          <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2 sm:mb-3 tracking-tight">
-            Real Results from Real Businesses
-          </h2>
-          <p className="text-sm sm:text-base text-muted-foreground">
-            Local businesses in Kolkata, Durgapur & Asansol trust us — here’s what they say
+          <p className="lg:col-span-4 lg:col-start-9 text-base sm:text-lg text-muted-foreground leading-relaxed">
+            Local businesses in Kolkata, Durgapur &amp; Asansol trust us. Here&rsquo;s what they say.
           </p>
         </div>
 
-        {/* Mobile: horizontal scroll */}
-        <div className="flex sm:hidden gap-3 overflow-x-auto pb-3 -mx-4 px-4 snap-x snap-mandatory scrollbar-none">
-          {testimonials.map((t, i) => (
-            <figure key={i} className="flex-shrink-0 w-[84vw] snap-center p-4 rounded-2xl bg-card border border-border shadow-sm relative overflow-hidden">
-              <Quote className="absolute top-3 right-3 w-8 h-8 text-muted/40" />
-              <div className="flex items-center justify-between mb-3 relative z-10">
-                <div className="flex gap-0.5">
-                  {[...Array(5)].map((_, j) => <Star key={j} className="w-3.5 h-3.5 text-foreground fill-current" />)}
-                </div>
-                <span className="text-[10px] font-bold text-foreground bg-muted border border-border px-2 py-1 rounded-full">
-                  {t.result}
+        {/* Featured quote */}
+        <figure className="border-t border-border pt-10 sm:pt-14 pb-14 sm:pb-20 grid gap-8 lg:grid-cols-12">
+          <span aria-hidden="true" className="lg:col-span-1 font-display text-7xl sm:text-8xl leading-[0.7] text-primary select-none">&ldquo;</span>
+          <div className="lg:col-span-11">
+            <blockquote className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium leading-[1.08] tracking-[-0.035em] max-w-5xl">
+              {featured.quote}
+            </blockquote>
+            <figcaption className="mt-8 sm:mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+              <span className="flex items-center gap-3">
+                <Avatar t={featured} size="lg" />
+                <span>
+                  <cite className="block not-italic font-semibold">{featured.name}</cite>
+                  <span className="block text-sm text-muted-foreground">{featured.role} · {featured.location}</span>
                 </span>
-              </div>
-              <blockquote className="text-sm text-foreground leading-relaxed mb-4 relative z-10">&ldquo;{t.quote}&rdquo;</blockquote>
-              <figcaption className="flex items-center gap-2.5 pt-3 border-t border-border relative z-10">
-                <div className={`w-8 h-8 rounded-full ${t.color} flex items-center justify-center text-white font-bold text-xs shadow-sm`}>
-                  {t.initials}
-                </div>
-                <div>
-                  <cite className="text-xs font-semibold text-foreground not-italic">{t.name}</cite>
-                  <p className="text-[11px] text-muted-foreground">{t.role} · {t.location}</p>
-                </div>
-              </figcaption>
-            </figure>
+              </span>
+              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground border-l border-border pl-6">
+                {featured.result}
+              </span>
+            </figcaption>
+          </div>
+        </figure>
+
+        {/* The rest: swipe row on mobile, two-column masonry from sm up */}
+        <ul
+          tabIndex={0}
+          aria-label="More client testimonials"
+          className={`-mx-4 px-4 scroll-px-4 flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:px-0 sm:block sm:columns-2 sm:gap-4 sm:overflow-visible sm:pb-0 rounded-sm ${FOCUS_RING}`}
+        >
+          {rest.map((t) => (
+            <li key={t.name} data-reveal className="w-[82%] flex-shrink-0 snap-start sm:w-auto sm:mb-4 sm:break-inside-avoid">
+              <figure className="h-full p-6 sm:p-7 rounded-2xl bg-card text-card-foreground border border-border">
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">{t.result}</p>
+                <blockquote className="mt-4 text-[15px] sm:text-base leading-relaxed">&ldquo;{t.quote}&rdquo;</blockquote>
+                <figcaption className="mt-6 flex items-center gap-3">
+                  <Avatar t={t} size="sm" />
+                  <span className="min-w-0">
+                    <cite className="block not-italic text-sm font-semibold">{t.name}</cite>
+                    <span className="block text-xs text-muted-foreground">{t.role} · {t.location}</span>
+                  </span>
+                </figcaption>
+              </figure>
+            </li>
           ))}
-        </div>
+        </ul>
 
-        {/* Desktop: grid */}
-        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          {testimonials.map((t, i) => (
-            <figure key={i} className="group relative p-6 rounded-[20px] bg-card border border-border shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:border-primary/15 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-              <Quote className="absolute top-4 right-4 w-10 h-10 text-muted/30 group-hover:text-primary/10 transition-colors" />
-              <div className="flex items-center justify-between mb-4 relative z-10">
-                <div className="flex gap-0.5">
-                  {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 text-foreground fill-current" />)}
-                </div>
-                <span className="text-xs font-bold text-foreground bg-muted border border-border px-2.5 py-1 rounded-full">
-                  {t.result}
-                </span>
-              </div>
-              <blockquote className="text-[15px] text-foreground leading-relaxed mb-5 relative z-10">&ldquo;{t.quote}&rdquo;</blockquote>
-              <figcaption className="flex items-center gap-3 pt-4 border-t border-border relative z-10">
-                <div className={`w-10 h-10 rounded-full ${t.color} flex items-center justify-center text-white font-bold text-sm shadow-md`}>
-                  {t.initials}
-                </div>
-                <div>
-                  <cite className="text-sm font-semibold text-foreground not-italic">{t.name}</cite>
-                  <p className="text-xs text-muted-foreground">{t.role} · {t.location}</p>
-                </div>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-
-        {/* Trust strip below */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mt-8 sm:mt-10 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-primary" /> Verified Google Reviews</span>
-          <span className="hidden sm:block w-px h-4 bg-border" />
-          <span className="flex items-center gap-1.5"><Star className="w-3 h-3 text-foreground fill-current" /> 4.9/5 average rating</span>
-          <span className="hidden sm:block w-px h-4 bg-border" />
-          <span>50+ happy businesses</span>
-        </div>
-
-        <div className="text-center mt-8">
-          <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20similar%20results" target="_blank" rel="noopener noreferrer">
-            <button className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all text-sm sm:text-[15px] shadow-lg shadow-primary/20 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 group">
-              Get Results Like These
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </button>
+        {/* Footer row */}
+        <div className="mt-12 sm:mt-16 pt-8 border-t border-border flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-5">
+          <a
+            href={GOOGLE_REVIEW_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-muted-foreground hover:text-foreground transition-colors rounded-sm ${FOCUS_RING}`}
+          >
+            <span className="link-draw">Read our reviews on Google</span>
+            <ArrowUpRight className="w-4 h-4" />
           </a>
+          <Magnetic>
+            <a
+              href={WHATSAPP_RESULTS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`btn-ink btn-ink-invert h-14 px-7 bg-foreground text-background rounded-full font-semibold inline-flex items-center justify-center gap-2 text-[15px] whitespace-nowrap group/cta ${FOCUS_RING}`}
+            >
+              Get results like these
+              <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" />
+            </a>
+          </Magnetic>
         </div>
       </div>
     </section>

@@ -8,6 +8,7 @@ import PricingSection from '@/components/landing/PricingSection';
 import FAQSection from '@/components/landing/FAQSection';
 import FinalCTA from '@/components/landing/FinalCTA';
 import ContactForm from '@/components/landing/ContactForm';
+import { NOINDEX_ROBOTS } from '@/lib/route-config';
 
 export const metadata = {
   title: 'Transform Your Business with Custom Software Solutions | FormiqStudio',
@@ -17,7 +18,7 @@ export const metadata = {
     title: 'Transform Your Business with Custom Software Solutions',
     description: 'Get custom software development, web applications, and digital solutions that drive real results. Trusted by 500+ businesses.',
     type: 'website',
-  },
+  },  robots: NOINDEX_ROBOTS,
 };
 
 export default function LandingPage() {

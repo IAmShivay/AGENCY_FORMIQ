@@ -4,14 +4,27 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
+import {
+  Plus,
+  Edit,
+  Trash2,
   Search,
   ChevronLeft,
   ChevronRight
 , Loader2 } from 'lucide-react';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BTN_DANGER,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EMPTY,
+  ADMIN_EYEBROW,
+  ADMIN_H2,
+  ADMIN_ICON_BTN,
+  ADMIN_INPUT,
+} from '@/components/admin/admin-ui';
 
 export default function AuthorsPage() {
   const [authors, setAuthors] = useState<any[]>([]);
@@ -24,18 +37,16 @@ export default function AuthorsPage() {
   const fetchAuthors = async () => {
     setLoading(true);
     try {
-      // Get total count for pagination
       const { count } = await supabase
         .from('blog_authors')
         .select('*', { count: 'exact', head: true })
         .ilike('name', `%${searchTerm}%`);
-      
+
       setTotalAuthors(count || 0);
-      
-      // Get authors for current page
+
       const from = (currentPage - 1) * authorsPerPage;
       const to = from + authorsPerPage - 1;
-      
+
       const { data, error } = await supabase
         .from('blog_authors')
         .select('*')
@@ -68,8 +79,7 @@ export default function AuthorsPage() {
         .eq('id', id);
 
       if (error) throw error;
-      
-      // Refresh authors after deletion
+
       fetchAuthors();
     } catch (error) {
       console.error('Error deleting author:', error);
@@ -80,185 +90,147 @@ export default function AuthorsPage() {
   const totalPages = Math.ceil(totalAuthors / authorsPerPage);
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Authors</h1>
-          <p className="mt-2 text-muted-foreground">Manage blog authors</p>
-        </div>
-        <Link
-          href="/admin/authors/new"
-          className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          New Author
-        </Link>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Content"
+        title="Authors"
+        description="Manage the people credited on blog posts."
+        actions={
+          <Link href="/admin/authors/new" className={ADMIN_BTN_PRIMARY}>
+            <Plus className="h-4 w-4" />
+            New author
+          </Link>
+        }
+      />
 
-      {/* Search */}
       <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-muted-foreground" />
-        </div>
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <input
           type="text"
-          className="block w-full pl-10 pr-3 py-2 border border-border rounded-md leading-5 bg-card placeholder-muted-foreground focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+          className={`${ADMIN_INPUT} pl-10`}
           placeholder="Search authors..."
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            setCurrentPage(1); // Reset to first page on search
+            setCurrentPage(1);
           }}
         />
       </div>
 
-      {/* Authors Grid */}
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="w-10 h-10 text-primary animate-spin" />
+        <div className="flex h-64 items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : authors.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {authors.map((author) => (
-            <div key={author.id} className="bg-card rounded-lg shadow-md overflow-hidden">
-              <div className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="h-16 w-16 rounded-full overflow-hidden bg-secondary mr-4">
-                    {author.avatar ? (
-                      <img
-                        src={author.avatar}
-                        alt={author.name}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <div className="h-full w-full flex items-center justify-center text-muted-foreground">
-                        <span className="text-xl font-bold">
-                          {author.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-foreground">{author.name}</h3>
-                    <p className="text-sm text-muted-foreground">{author.role}</p>
-                  </div>
+            <div key={author.id} className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} flex flex-col`}>
+              <div className="mb-4 flex items-center gap-4">
+                <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-border bg-muted">
+                  {author.avatar ? (
+                    <img
+                      src={author.avatar}
+                      alt={author.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+                      <span className="font-display text-xl font-semibold">
+                        {author.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <p className="text-muted-foreground text-sm line-clamp-3 mb-4">
-                  {author.bio}
-                </p>
-                <div className="flex justify-end space-x-2">
-                  <Link
-                    href={`/admin/authors/${author.id}/edit`}
-                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-primary bg-primary/10 hover:bg-primary/20"
-                  >
-                    <Edit className="w-3.5 h-3.5 mr-1" />
-                    Edit
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(author.id)}
-                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-100 hover:bg-red-200 dark:hover:bg-red-800"
-                  >
-                    <Trash2 className="w-3.5 h-3.5 mr-1" />
-                    Delete
-                  </button>
+                <div className="min-w-0">
+                  <h3 className={`${ADMIN_H2} truncate`}>{author.name}</h3>
+                  {author.role && <p className={`${ADMIN_EYEBROW} mt-1 truncate`}>{author.role}</p>}
                 </div>
+              </div>
+              <p className="mb-5 line-clamp-3 text-sm text-muted-foreground">
+                {author.bio}
+              </p>
+              <div className="mt-auto flex flex-wrap justify-end gap-2">
+                <Link href={`/admin/authors/${author.id}/edit`} className={`${ADMIN_BTN_OUTLINE} h-9 px-3.5`}>
+                  <Edit className="h-3.5 w-3.5" />
+                  Edit
+                </Link>
+                <button onClick={() => handleDelete(author.id)} className={`${ADMIN_BTN_DANGER} h-9 px-3.5`}>
+                  <Trash2 className="h-3.5 w-3.5" />
+                  Delete
+                </button>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 bg-card rounded-lg shadow-md">
-          <p className="text-muted-foreground mb-4">
-            {searchTerm ? 'No authors found matching your search.' : 'No authors yet.'}
-          </p>
-          {!searchTerm && (
-            <Link
-              href="/admin/authors/new"
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Create your first author
-            </Link>
-          )}
+        <div className={ADMIN_CARD}>
+          <div className={ADMIN_EMPTY}>
+            <p className="mb-4">
+              {searchTerm ? 'No authors found matching your search.' : 'No authors yet.'}
+            </p>
+            {!searchTerm && (
+              <Link href="/admin/authors/new" className={ADMIN_BTN_PRIMARY}>
+                <Plus className="h-4 w-4" />
+                Create your first author
+              </Link>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <div className="flex-1 flex justify-between sm:hidden">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-1 justify-between gap-3 sm:hidden">
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className={`relative inline-flex items-center px-4 py-2 border border-border text-sm font-medium rounded-md ${
-                currentPage === 1
-                  ? 'text-muted-foreground bg-secondary'
-                  : 'text-foreground bg-card hover:bg-secondary/50'
-              }`}
+              className={ADMIN_BTN_OUTLINE}
             >
               Previous
             </button>
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
-              className={`ml-3 relative inline-flex items-center px-4 py-2 border border-border text-sm font-medium rounded-md ${
-                currentPage === totalPages
-                  ? 'text-muted-foreground bg-secondary'
-                  : 'text-foreground bg-card hover:bg-secondary/50'
-              }`}
+              className={ADMIN_BTN_OUTLINE}
             >
               Next
             </button>
           </div>
-          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-foreground">
-                Showing <span className="font-medium">{Math.min(1 + (currentPage - 1) * authorsPerPage, totalAuthors)}</span> to{' '}
-                <span className="font-medium">{Math.min(currentPage * authorsPerPage, totalAuthors)}</span> of{' '}
-                <span className="font-medium">{totalAuthors}</span> results
-              </p>
-            </div>
-            <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <p className="text-sm text-muted-foreground tabular-nums">
+              Showing <span className="font-medium text-foreground">{Math.min(1 + (currentPage - 1) * authorsPerPage, totalAuthors)}</span> to{' '}
+              <span className="font-medium text-foreground">{Math.min(currentPage * authorsPerPage, totalAuthors)}</span> of{' '}
+              <span className="font-medium text-foreground">{totalAuthors}</span> results
+            </p>
+            <nav className="inline-flex flex-wrap items-center gap-1" aria-label="Pagination">
+              <button
+                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+                className={`${ADMIN_ICON_BTN} disabled:opacity-50 disabled:pointer-events-none`}
+              >
+                <span className="sr-only">Previous</span>
+                <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-border bg-card text-sm font-medium ${
-                    currentPage === 1
-                      ? 'text-muted-foreground'
-                      : 'text-muted-foreground hover:bg-secondary/50'
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`${ADMIN_ICON_BTN} text-sm tabular-nums ${
+                    page === currentPage ? 'bg-foreground text-background hover:bg-foreground/85 hover:text-background' : ''
                   }`}
                 >
-                  <span className="sr-only">Previous</span>
-                  <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+                  {page}
                 </button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`relative inline-flex items-center px-4 py-2 border ${
-                      page === currentPage
-                        ? 'z-10 bg-primary border-primary text-white'
-                        : 'border-border bg-card text-muted-foreground hover:bg-secondary/50'
-                    } text-sm font-medium`}
-                  >
-                    {page}
-                  </button>
-                ))}
-                <button
-                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                  disabled={currentPage === totalPages}
-                  className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-border bg-card text-sm font-medium ${
-                    currentPage === totalPages
-                      ? 'text-muted-foreground'
-                      : 'text-muted-foreground hover:bg-secondary/50'
-                  }`}
-                >
-                  <span className="sr-only">Next</span>
-                  <ChevronRight className="h-5 w-5" aria-hidden="true" />
-                </button>
-              </nav>
-            </div>
+              ))}
+              <button
+                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+                className={`${ADMIN_ICON_BTN} disabled:opacity-50 disabled:pointer-events-none`}
+              >
+                <span className="sr-only">Next</span>
+                <ChevronRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </nav>
           </div>
         </div>
       )}

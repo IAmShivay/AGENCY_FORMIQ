@@ -138,13 +138,13 @@ export default function UserProfile() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">My Profile</h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">Manage your account information and settings</p>
+        <h1 className="text-3xl font-bold text-foreground">My Profile</h1>
+        <p className="mt-2 text-muted-foreground">Manage your account information and settings</p>
       </div>
 
       {/* Message display */}
       {message.text && (
-        <div className={`p-4 rounded-lg ${message.type === 'success' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'}`}>
+        <div className={`p-4 rounded-lg ${message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
           <div className="flex items-center">
             {message.type === 'success' ? (
               <Save className="w-5 h-5 mr-2" />
@@ -158,16 +158,16 @@ export default function UserProfile() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Profile Information */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">Profile Information</h2>
+        <div className="bg-card rounded-xl shadow-md p-6">
+          <h2 className="text-xl font-semibold text-foreground mb-6">Profile Information</h2>
           <form onSubmit={updateProfile} className="space-y-6">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="fullName" className="block text-sm font-medium text-muted-foreground mb-1">
                 Full Name
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
+                  <User className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <input
                   id="fullName"
@@ -175,17 +175,17 @@ export default function UserProfile() {
                   type="text"
                   value={formData.fullName}
                   onChange={handleInputChange}
-                  className="pl-10 block w-full border border-gray-300 dark:border-gray-700 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-800 dark:text-white"
+                  className="pl-10 block w-full border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-muted-foreground mb-1">
                 Email Address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <input
                   id="email"
@@ -193,10 +193,10 @@ export default function UserProfile() {
                   type="email"
                   value={formData.email}
                   disabled
-                  className="pl-10 block w-full border border-gray-300 dark:border-gray-700 rounded-md shadow-sm py-2 px-3 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                  className="pl-10 block w-full border border-border rounded-md shadow-sm py-2 px-3 bg-muted text-muted-foreground cursor-not-allowed"
                 />
               </div>
-              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Email address cannot be changed
               </p>
             </div>
@@ -204,7 +204,7 @@ export default function UserProfile() {
               <button
                 type="submit"
                 disabled={saving}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? (
                   <>
@@ -220,16 +220,16 @@ export default function UserProfile() {
         </div>
 
         {/* Change Password */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">Change Password</h2>
+        <div className="bg-card rounded-xl shadow-md p-6">
+          <h2 className="text-xl font-semibold text-foreground mb-6">Change Password</h2>
           <form onSubmit={updatePassword} className="space-y-6">
             <div>
-              <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="newPassword" className="block text-sm font-medium text-muted-foreground mb-1">
                 New Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Key className="h-5 w-5 text-gray-400" />
+                  <Key className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <input
                   id="newPassword"
@@ -237,18 +237,18 @@ export default function UserProfile() {
                   type="password"
                   value={formData.newPassword}
                   onChange={handleInputChange}
-                  className="pl-10 block w-full border border-gray-300 dark:border-gray-700 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-800 dark:text-white"
+                  className="pl-10 block w-full border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary"
                   placeholder="••••••••"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-muted-foreground mb-1">
                 Confirm New Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Key className="h-5 w-5 text-gray-400" />
+                  <Key className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <input
                   id="confirmPassword"
@@ -256,7 +256,7 @@ export default function UserProfile() {
                   type="password"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="pl-10 block w-full border border-gray-300 dark:border-gray-700 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-800 dark:text-white"
+                  className="pl-10 block w-full border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary"
                   placeholder="••••••••"
                 />
               </div>
@@ -265,7 +265,7 @@ export default function UserProfile() {
               <button
                 type="submit"
                 disabled={saving || !formData.newPassword || !formData.confirmPassword}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? (
                   <>
@@ -282,16 +282,16 @@ export default function UserProfile() {
       </div>
 
       {/* Account Information */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Account Information</h2>
+      <div className="bg-card rounded-xl shadow-md p-6">
+        <h2 className="text-xl font-semibold text-foreground mb-4">Account Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Account ID</p>
-            <p className="text-gray-800 dark:text-white truncate">{user?.id}</p>
+          <div className="p-4 border border-border rounded-lg">
+            <p className="text-sm font-medium text-muted-foreground">Account ID</p>
+            <p className="text-foreground truncate">{user?.id}</p>
           </div>
-          <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Account Created</p>
-            <p className="text-gray-800 dark:text-white">
+          <div className="p-4 border border-border rounded-lg">
+            <p className="text-sm font-medium text-muted-foreground">Account Created</p>
+            <p className="text-foreground">
               {new Date(user?.created_at || Date.now()).toLocaleDateString()}
             </p>
           </div>

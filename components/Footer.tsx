@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowUpRight, Star } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import Magnetic from './studio/Magnetic';
 import { getLenis } from '@/lib/studio-motion';
+import { GOOGLE_REVIEW_URL, STUDIO_ADDRESS, STUDIO_ADDRESS_LINES } from '@/lib/studio-facts';
+import { OPEN_COOKIE_SETTINGS_EVENT } from '@/lib/tracking-config';
 
 const socialLinks = [
   { href: 'https://www.facebook.com/formiqstudio', icon: <FaFacebookF className="w-3.5 h-3.5" />, label: 'Facebook' },
@@ -13,6 +15,8 @@ const socialLinks = [
   { href: 'https://www.linkedin.com/company/formiqstudio', icon: <FaLinkedinIn className="w-3.5 h-3.5" />, label: 'LinkedIn' },
   { href: 'https://www.youtube.com/@formiqstudio', icon: <FaYoutube className="w-3.5 h-3.5" />, label: 'YouTube' },
 ];
+
+const LEGAL_COLUMN_TITLE = 'Legal';
 
 const columns = [
   {
@@ -36,7 +40,7 @@ const columns = [
     ],
   },
   {
-    title: 'Legal',
+    title: LEGAL_COLUMN_TITLE,
     links: [
       { href: '/privacy', label: 'Privacy' },
       { href: '/terms', label: 'Terms' },
@@ -55,29 +59,29 @@ const StudioClock = () => {
     const id = setInterval(() => { if (!document.hidden) tick(); }, 15000);
     return () => clearInterval(id);
   }, []);
-  return <span className="tabular-nums">Durgapur {now || '--:--'} IST</span>;
+  return <span className="tabular-nums">{STUDIO_ADDRESS.city} {now || '--:--'} IST</span>;
 };
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-background border-t border-border overflow-hidden">
+    <footer className="tone-ink relative bg-background text-foreground overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20">
         {/* Statement + direct contact */}
         <div className="grid lg:grid-cols-[1.3fr,1fr] gap-10 lg:gap-16 pb-12 sm:pb-16 border-b border-border">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-4">(Next step)</p>
-            <p className="font-display text-[2rem] leading-[1.02] sm:text-5xl lg:text-6xl font-semibold tracking-[-0.045em] text-foreground">
-              Have a business? <span className="text-outline">Let&rsquo;s fill it</span> with customers.
-            </p>
+            <h2 className="font-display text-[2rem] leading-[1.02] sm:text-5xl lg:text-6xl font-semibold tracking-[-0.045em] text-foreground">
+              Have a business? <span className="text-primary">Let&rsquo;s fill it</span> with customers.
+            </h2>
           </div>
           <div className="flex flex-col justify-end gap-5">
-            <a href="mailto:hello@formiqstudio.in" data-track-source="footer" className="group inline-flex items-center gap-2 text-xl sm:text-2xl font-display font-medium tracking-[-0.03em] text-foreground w-fit">
+            <a href="mailto:hello@formiqstudio.in" data-track-source="footer" className="group inline-flex items-center min-h-11 gap-2 text-xl sm:text-2xl font-display font-medium tracking-[-0.03em] text-foreground w-fit">
               <span className="link-draw">hello@formiqstudio.in</span>
               <ArrowUpRight className="w-5 h-5 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
-            <a href="tel:+918918349445" data-track-source="footer" className="inline-flex items-center gap-2 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors w-fit">
+            <a href="tel:+918918349445" data-track-source="footer" className="inline-flex items-center min-h-11 gap-2 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors w-fit">
               <span className="link-draw">+91 8918349445</span>
             </a>
             <div className="flex items-center gap-2">
@@ -101,19 +105,32 @@ const Footer = () => {
               <ul className="space-y-1">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="inline-flex items-center min-h-[36px] text-[15px] text-foreground/80 hover:text-foreground transition-colors">
+                    <Link href={link.href} className="inline-flex items-center min-h-11 md:min-h-9 text-[15px] text-foreground/80 hover:text-foreground transition-colors">
                       <span className="roll" data-text={link.label}><span>{link.label}</span></span>
                     </Link>
                   </li>
                 ))}
+                {col.title === LEGAL_COLUMN_TITLE && (
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => window.dispatchEvent(new Event(OPEN_COOKIE_SETTINGS_EVENT))}
+                      className="inline-flex items-center min-h-11 md:min-h-9 text-[15px] text-foreground/80 hover:text-foreground transition-colors"
+                    >
+                      <span className="roll" data-text="Cookie settings"><span>Cookie settings</span></span>
+                    </button>
+                  </li>
+                )}
               </ul>
             </div>
           ))}
           <div className="col-span-2 md:col-span-1">
             <h3 className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground mb-4">Visit</h3>
-            <p className="text-[15px] text-foreground/80 leading-relaxed mb-4">Arrah Shree Pally, Durgapur,<br />West Bengal 713212</p>
+            <address className="not-italic text-[15px] text-foreground/80 leading-relaxed mb-4">
+              {STUDIO_ADDRESS_LINES.map((line) => <span key={line} className="block">{line}</span>)}
+            </address>
             <a
-              href="https://g.page/r/CdyKwEPD_8rDEBM/review"
+              href={GOOGLE_REVIEW_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-3 rounded-2xl border border-border hover:border-foreground/40 transition-colors group"
@@ -129,10 +146,6 @@ const Footer = () => {
               <div className="min-w-0">
                 <p className="text-xs font-bold text-foreground">Rate us on Google →</p>
                 <p className="text-[11px] text-muted-foreground">Scan · 30 sec</p>
-                <div className="flex items-center gap-0.5 mt-1">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 text-foreground fill-current" />)}
-                  <span className="text-[10px] font-semibold text-foreground ml-1">4.9/5</span>
-                </div>
               </div>
             </a>
           </div>
@@ -143,9 +156,6 @@ const Footer = () => {
           <p>&copy; {currentYear} FormiqStudio</p>
           <p className="hidden md:block"><StudioClock /></p>
           <div className="flex items-center gap-4">
-            <a href="/llms.txt" className="hover:text-foreground transition-colors" title="AI crawlers: llms.txt for ChatGPT, Perplexity, Claude">llms.txt</a>
-            <a href="/sitemap.xml" className="hover:text-foreground transition-colors">Sitemap</a>
-            <a href="/robots.txt" className="hover:text-foreground transition-colors">Robots</a>
             <button
               type="button"
               onClick={() => { const l = getLenis(); if (l) l.scrollTo(0, { duration: 1.6 }); else window.scrollTo({ top: 0, behavior: 'smooth' }); }}
@@ -155,15 +165,6 @@ const Footer = () => {
             </button>
           </div>
         </div>
-      </div>
-
-      {/* Oversized wordmark — letters lift on hover */}
-      <div aria-hidden="true" className="select-none px-2 -mb-[2.2vw] overflow-hidden">
-        <p className="flex justify-center font-display font-bold leading-[0.8] tracking-[-0.07em] text-[23.5vw] text-foreground/[0.07]">
-          {'FORMIQ'.split('').map((ch, i) => (
-            <span key={i} className="inline-block transition-[transform,color] duration-700 ease-[cubic-bezier(.19,1,.22,1)] hover:-translate-y-[6%] hover:text-foreground/90">{ch}</span>
-          ))}
-        </p>
       </div>
     </footer>
   );

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { isAllowlistedAdminEmail } from '@/lib/admin-allowlist';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,6 +14,13 @@ export async function POST(request: NextRequest) {
     
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    // If ADMIN_EMAILS is unset, promotion is refused for everyone.
+    if (!isAllowlistedAdminEmail(user.email)) {
+      return NextResponse.json(
+        { error: 'Forbidden - this account is not permitted to become an admin' },
+        { status: 403 }
+      );
     }
 
     // Check if user already exists in users table

@@ -8,7 +8,7 @@ import {
 } from '@/lib/studio-motion';
 import StudioCursor from './StudioCursor';
 
-const DARK_THEMES = new Set(['dark', 'neon-agency', 'cyberpunk', 'matrix', 'electric']);
+const DARK_THEMES = new Set(['dark']);
 
 /** An element (or an ancestor up to main) already animated by framer-motion or inline styles. */
 const ownedByOtherMotion = (el: HTMLElement, stop: HTMLElement) => {

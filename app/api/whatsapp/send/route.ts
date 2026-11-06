@@ -5,6 +5,21 @@ const WHATSAPP_ACCESS_TOKEN = process.env.WHATSAPP_ACCESS_TOKEN || '';
 const WHATSAPP_TEMPLATE_NAME = process.env.WHATSAPP_TEMPLATE_NAME || 'formiq_welcome';
 const WHATSAPP_TEMPLATE_LANG = process.env.WHATSAPP_TEMPLATE_LANG || 'en';
 
+// Bare national numbers (no + or 00 prefix) are assumed to be Indian.
+const DEFAULT_COUNTRY_CODE = '91';
+const DEFAULT_NATIONAL_LENGTH = 10;
+const MIN_E164_DIGITS = 8;
+const MAX_E164_DIGITS = 15;
+
+const toWhatsAppNumber = (raw: string): string | null => {
+  const trimmed = raw.trim();
+  const isInternational = trimmed.startsWith('+') || trimmed.startsWith('00');
+  let digits = trimmed.replace(/\D/g, '');
+  if (trimmed.startsWith('00')) digits = digits.slice(2);
+  if (!isInternational && digits.length === DEFAULT_NATIONAL_LENGTH) digits = DEFAULT_COUNTRY_CODE + digits;
+  return digits.length >= MIN_E164_DIGITS && digits.length <= MAX_E164_DIGITS ? digits : null;
+};
+
 export async function POST(req: NextRequest) {
   try {
     const { phone, name, service } = await req.json();
@@ -18,10 +33,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, skipped: true });
     }
 
-    // Clean phone — ensure it has country code 91
-    let cleanPhone = phone.replace(/\D/g, '');
-    if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
-    if (!cleanPhone.startsWith('91')) cleanPhone = '91' + cleanPhone;
+    const cleanPhone = toWhatsAppNumber(String(phone));
+    if (!cleanPhone) {
+      return NextResponse.json({ error: 'invalid phone number' }, { status: 400 });
+    }
 
     const response = await fetch(
       `https://graph.facebook.com/v21.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`,

@@ -1,16 +1,15 @@
 'use client';
 
 import AuthorForm from '@/components/admin/AuthorForm';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { ADMIN_CARD, ADMIN_CARD_PAD } from '@/components/admin/admin-ui';
 
 export default function NewAuthorPage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Create New Author</h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">Add a new author to your blog</p>
-      </div>
-      
-      <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+    <div className="space-y-8">
+      <AdminPageHeader eyebrow="Authors" title="New author" description="Add a new author to the blog." />
+
+      <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
         <AuthorForm />
       </div>
     </div>

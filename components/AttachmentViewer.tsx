@@ -31,7 +31,7 @@ export default function AttachmentViewer({
   const getFileIcon = (type: string) => {
     if (type.startsWith('image/')) return <Image className="h-5 w-5 text-primary" />;
     if (type.includes('pdf')) return <FileText className="h-5 w-5 text-red-500" />;
-    return <File className="h-5 w-5 text-gray-500" />;
+    return <File className="h-5 w-5 text-muted-foreground" />;
   };
 
   const formatFileSize = (bytes: number) => {
@@ -63,8 +63,8 @@ export default function AttachmentViewer({
   if (!attachments || attachments.length === 0) {
     return (
       <div className="text-center py-8">
-        <File className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-500 dark:text-gray-400">No attachments found</p>
+        <File className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+        <p className="text-muted-foreground">No attachments found</p>
       </div>
     );
   }
@@ -72,13 +72,13 @@ export default function AttachmentViewer({
   return (
     <>
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {attachments.map((attachment, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow"
+              className="bg-card border border-border rounded-lg p-4 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0">
@@ -86,10 +86,10 @@ export default function AttachmentViewer({
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <h4 className="text-sm font-medium text-foreground truncate">
                     {attachment.name}
                   </h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {formatFileSize(attachment.size)} • {formatDate(attachment.uploaded_at)}
                   </p>
                   
@@ -139,26 +139,26 @@ export default function AttachmentViewer({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white">
+                  <h4 className="text-lg font-medium text-foreground">
                     {selectedAttachment.name}
                   </h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     {formatFileSize(selectedAttachment.size)} • {selectedAttachment.type}
                   </p>
                 </div>
                 
                 <button
                   onClick={() => handleDownload(selectedAttachment)}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-lg hover:from-violet-700 hover:to-fuchsia-700 transition-all"
+                  className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all"
                 >
                   <Download className="h-4 w-4" />
                   Download
                 </button>
               </div>
               
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <div className="border border-border rounded-lg overflow-hidden">
                 {selectedAttachment.type.startsWith('image/') ? (
-                  <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <div className="flex items-center justify-center bg-background rounded-lg p-4">
                     <img
                       src={selectedAttachment.url}
                       alt={selectedAttachment.name}
@@ -170,13 +170,13 @@ export default function AttachmentViewer({
                       }}
                     />
                     <div className="hidden text-center">
-                      <File className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500 dark:text-gray-400">
+                      <File className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground">
                         Failed to load image
                       </p>
                       <button
                         onClick={() => handleDownload(selectedAttachment)}
-                        className="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                        className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
                       >
                         Download to view
                       </button>
@@ -190,15 +190,15 @@ export default function AttachmentViewer({
                     onError={() => console.error('PDF failed to load:', selectedAttachment.url)}
                   />
                 ) : (
-                  <div className="flex items-center justify-center h-64 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center justify-center h-64 bg-background rounded-lg">
                     <div className="text-center">
-                      <File className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500 dark:text-gray-400">
+                      <File className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground">
                         Preview not available for this file type
                       </p>
                       <button
                         onClick={() => handleDownload(selectedAttachment)}
-                        className="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                        className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
                       >
                         Download to view
                       </button>
@@ -224,7 +224,7 @@ export function FileUploadPreview({ files, onRemove }: FileUploadPreviewProps) {
   const getFileIcon = (type: string) => {
     if (type.startsWith('image/')) return <Image className="h-4 w-4 text-primary" />;
     if (type.includes('pdf')) return <FileText className="h-4 w-4 text-red-500" />;
-    return <File className="h-4 w-4 text-gray-500" />;
+    return <File className="h-4 w-4 text-muted-foreground" />;
   };
 
   const formatFileSize = (bytes: number) => {
@@ -239,14 +239,14 @@ export function FileUploadPreview({ files, onRemove }: FileUploadPreviewProps) {
 
   return (
     <div className="space-y-2">
-      <p className="text-sm text-gray-600 dark:text-gray-400">Selected files:</p>
+      <p className="text-sm text-muted-foreground">Selected files:</p>
       {files.map((file, index) => (
-        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+        <div key={index} className="flex items-center justify-between p-3 bg-background rounded-lg">
           <div className="flex items-center gap-3">
             {getFileIcon(file.type)}
             <div>
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{file.name}</p>
-              <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
+              <p className="text-sm font-medium text-muted-foreground">{file.name}</p>
+              <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
             </div>
             {file.type.startsWith('image/') && (
               <img

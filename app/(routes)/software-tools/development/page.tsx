@@ -129,15 +129,15 @@ export default function DevelopmentToolsPage() {
   const getPricingColor = (pricing: string) => {
     switch (pricing) {
       case 'Free':
-        return 'bg-muted text-foreground dark:bg-neutral-900/30 dark:text-neutral-300';
+        return 'bg-muted text-foreground';
       case 'Freemium':
-        return 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary/70';
+        return 'bg-primary/10 text-primary';
       case 'Paid':
-        return 'bg-muted text-foreground dark:bg-neutral-900/30 dark:text-neutral-300';
+        return 'bg-muted text-foreground';
       case 'Enterprise':
-        return 'bg-muted text-foreground dark:bg-neutral-700 dark:text-neutral-300';
+        return 'bg-muted text-foreground';
       default:
-        return 'bg-muted text-foreground dark:bg-neutral-700 dark:text-neutral-300';
+        return 'bg-muted text-foreground';
     }
   };
 
@@ -156,7 +156,7 @@ export default function DevelopmentToolsPage() {
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
           Development Tools
         </h1>
-        <p className="text-xl text-muted-foreground dark:text-neutral-300 max-w-3xl">
+        <p className="text-xl text-muted-foreground max-w-3xl">
           Accelerate your development workflow with our powerful suite of development tools.
           From code editors to CI/CD pipelines, we provide everything developers need to build better software faster.
         </p>
@@ -169,7 +169,7 @@ export default function DevelopmentToolsPage() {
           <input
             type="text"
             placeholder="Search development tools..."
-            className="w-full pl-10 pr-4 py-2 border border-border dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-neutral-800"
+            className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -200,7 +200,7 @@ export default function DevelopmentToolsPage() {
                 </CardDescription>
                 
                 <h4 className="font-medium text-sm mb-2">Key Features:</h4>
-                <ul className="list-disc pl-5 mb-4 space-y-1 text-sm text-muted-foreground dark:text-neutral-300">
+                <ul className="list-disc pl-5 mb-4 space-y-1 text-sm text-muted-foreground">
                   {tool.features.map((feature, index) => (
                     <li key={index}>{feature}</li>
                   ))}
@@ -208,7 +208,7 @@ export default function DevelopmentToolsPage() {
                 
                 <div className="flex flex-wrap gap-2 mt-4">
                   {tool.tags.map((tag, index) => (
-                    <Badge key={index} variant="outline" className="bg-muted dark:bg-neutral-800">
+                    <Badge key={index} variant="outline" className="bg-muted">
                       {tag}
                     </Badge>
                   ))}
@@ -225,15 +225,15 @@ export default function DevelopmentToolsPage() {
           ))
         ) : (
           <div className="col-span-full text-center py-12">
-            <p className="text-muted-foreground dark:text-neutral-400">No development tools found matching your criteria.</p>
+            <p className="text-muted-foreground">No development tools found matching your criteria.</p>
           </div>
         )}
       </div>
 
       {/* CTA Section */}
-      <div className="mt-20 bg-gradient-to-r from-primary/10 to-primary/10 rounded-2xl p-8 text-center">
+      <div className="mt-20 bg-muted/50 rounded-2xl p-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Need a Custom Development Solution?</h2>
-        <p className="text-muted-foreground dark:text-neutral-300 mb-6 max-w-2xl mx-auto">
+        <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
           We can develop custom development tools tailored to your specific workflow needs. 
           Contact us to discuss how we can help optimize your development process.
         </p>

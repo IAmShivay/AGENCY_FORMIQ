@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState('');
@@ -37,28 +39,27 @@ export default function NewsletterForm() {
   return (
     <div>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-        <input
-          type="email"
+        <Input
+          type="email" aria-label="Email address"
           placeholder="Your email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-grow px-4 py-3 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
+          className="flex-grow"
           required
           disabled={status === 'loading'}
         />
-        <button
-          type="submit"
+        <Button
+          type="submit" size="lg"
           disabled={status === 'loading'}
-          className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-colors disabled:opacity-60"
-        >
+          >
           {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
-        </button>
+        </Button>
       </form>
       {status === 'success' && (
         <p className="text-foreground text-sm mt-2">{message}</p>
       )}
       {status === 'error' && (
-        <p className="text-foreground text-sm mt-2">{message}</p>
+        <p role="alert" className="text-destructive text-sm mt-2">{message}</p>
       )}
     </div>
   );

@@ -87,7 +87,7 @@ export default function AuthGuard({
   // Show loading state
   if (loading) {
     return loadingComponent || (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="flex items-center justify-center min-h-screen bg-muted">
         <Loader2 className="w-10 h-10 text-primary animate-spin" />
       </div>
     );

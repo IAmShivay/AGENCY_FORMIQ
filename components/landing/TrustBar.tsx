@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, ShieldCheck, Clock, Users, MapPin } from "lucide-react";
+import { ShieldCheck, Clock, Users, MapPin } from "lucide-react";
 
 const TrustBar = () => {
   return (
@@ -10,14 +10,6 @@ const TrustBar = () => {
         {/* Mobile: compact 2 rows */}
         <div className="flex flex-col sm:hidden gap-2">
           <div className="flex items-center justify-center gap-2">
-            <div className="flex gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 text-foreground fill-current" />
-              ))}
-            </div>
-            <span className="text-xs font-bold text-foreground">4.9/5</span>
-            <span className="text-[11px] text-muted-foreground">· 50+ businesses</span>
-            <span className="w-px h-3 bg-border mx-1" />
             <span className="text-[11px] font-medium text-foreground flex items-center gap-1"><MapPin className="w-3 h-3 text-primary" /> Kolkata · Durgapur · Asansol</span>
           </div>
           <div className="flex items-center justify-center gap-3 text-[11px] text-muted-foreground">
@@ -32,16 +24,6 @@ const TrustBar = () => {
         {/* Desktop: single row premium */}
         <div className="hidden sm:flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2.5">
-              <div className="flex gap-0.5 p-1.5 rounded-full bg-muted border border-border">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 text-foreground fill-current" />
-                ))}
-              </div>
-              <span className="text-sm font-bold text-foreground">4.9/5</span>
-              <span className="text-sm text-muted-foreground">from 50+ local businesses</span>
-            </div>
-            <div className="h-5 w-px bg-border" />
             <span className="text-sm text-muted-foreground flex items-center gap-1.5">
               <MapPin className="w-4 h-4 text-primary" /> Serving <span className="font-semibold text-foreground">Kolkata · Durgapur · Asansol</span>
             </span>

@@ -3,9 +3,17 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Send, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BTN_GHOST,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_LABEL,
+  ADMIN_TONE,
+} from '@/components/admin/admin-ui';
 
 export default function ComposeEmailPage() {
   const router = useRouter();
@@ -19,13 +27,11 @@ export default function ComposeEmailPage() {
   const handleSendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate form
     if (!to || !subject || !message) {
       setError('Please fill in all fields');
       return;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(to)) {
       setError('Please enter a valid email address');
@@ -37,7 +43,6 @@ export default function ComposeEmailPage() {
     setSuccess(false);
 
     try {
-      // Call the API route to send the email
       const response = await fetch('/api/email/send', {
         method: 'POST',
         headers: {
@@ -55,7 +60,6 @@ export default function ComposeEmailPage() {
 
       if (response.ok && result.success) {
         setSuccess(true);
-        // Reset form after successful send
         setTo('');
         setSubject('');
         setMessage('');
@@ -71,48 +75,41 @@ export default function ComposeEmailPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header with Modern AI-Era Styling */}
-      <div className="bg-card rounded-2xl shadow-md p-6 border border-border">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.push('/admin/messages')}
-              className="mr-4"
-            >
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Compose Email</h1>
-              <p className="text-muted-foreground mt-1">
-                Send a personalized email to a customer
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="space-y-8">
+      <div>
+        <button
+          type="button"
+          onClick={() => router.push('/admin/messages')}
+          className={`${ADMIN_BTN_GHOST} -ml-3 mb-4 h-9 px-3`}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </button>
+        <AdminPageHeader
+          eyebrow="System"
+          title="Compose email"
+          description="Send a personalised email to a customer."
+        />
       </div>
 
-      {/* Email Composition Form */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
+      <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} max-w-3xl`}>
         {success && (
-          <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-300">
+          <div className={`mb-6 rounded-xl border px-4 py-3 text-sm ${ADMIN_TONE.positive}`}>
             Email sent successfully!
           </div>
         )}
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">
+          <div className={`mb-6 rounded-xl border px-4 py-3 text-sm ${ADMIN_TONE.negative}`}>
             {error}
           </div>
         )}
 
         <form onSubmit={handleSendEmail} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">To</label>
+          <div className="space-y-2">
+            <label htmlFor="compose-to" className={`${ADMIN_LABEL} block`}>To</label>
             <Input
+              id="compose-to"
               type="email"
               value={to}
               onChange={(e) => setTo(e.target.value)}
@@ -121,9 +118,10 @@ export default function ComposeEmailPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subject</label>
+          <div className="space-y-2">
+            <label htmlFor="compose-subject" className={`${ADMIN_LABEL} block`}>Subject</label>
             <Input
+              id="compose-subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="Email subject"
@@ -131,9 +129,10 @@ export default function ComposeEmailPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
+          <div className="space-y-2">
+            <label htmlFor="compose-message" className={`${ADMIN_LABEL} block`}>Message</label>
             <Textarea
+              id="compose-message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Your message..."
@@ -142,24 +141,24 @@ export default function ComposeEmailPage() {
             />
           </div>
 
-          <div className="flex justify-end">
-            <Button
+          <div className="flex justify-end border-t border-border pt-6">
+            <button
               type="submit"
               disabled={sending}
-              className="px-6"
+              className={`${ADMIN_BTN_PRIMARY} w-full sm:w-auto`}
             >
               {sending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   Sending...
                 </>
               ) : (
                 <>
-                  <Send className="mr-2 h-4 w-4" />
-                  Send Email
+                  <Send className="h-4 w-4" />
+                  Send email
                 </>
               )}
-            </Button>
+            </button>
           </div>
         </form>
       </div>

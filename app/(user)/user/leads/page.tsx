@@ -65,9 +65,9 @@ export default function LeadsPage() {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      new: 'bg-blue-100 text-blue-800 border-blue-200',
+      new: 'bg-primary/10 text-primary border-primary/30',
       contacted: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      proposal_sent: 'bg-purple-100 text-purple-800 border-purple-200',
+      proposal_sent: 'bg-primary/10 text-primary border-primary/30',
       negotiating: 'bg-orange-100 text-orange-800 border-orange-200',
       won: 'bg-green-100 text-green-800 border-green-200',
       lost: 'bg-red-100 text-red-800 border-red-200'
@@ -153,9 +153,9 @@ export default function LeadsPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { label: 'Total Leads', value: leads.length, color: 'text-blue-600' },
+          { label: 'Total Leads', value: leads.length, color: 'text-primary' },
           { label: 'New Leads', value: leads.filter(l => l.status === 'new').length, color: 'text-green-600' },
-          { label: 'Proposals Sent', value: leads.filter(l => l.status === 'proposal_sent').length, color: 'text-purple-600' },
+          { label: 'Proposals Sent', value: leads.filter(l => l.status === 'proposal_sent').length, color: 'text-primary' },
           { label: 'Won Deals', value: leads.filter(l => l.status === 'won').length, color: 'text-emerald-600' }
         ].map((stat, index) => (
           <div key={index} className="bg-card p-4 rounded-lg border border-border">

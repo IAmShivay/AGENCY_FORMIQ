@@ -5,22 +5,31 @@ import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import {
   ArrowLeft,
-  Mail,
-  Phone,
-  Calendar,
   CheckCircle,
   Archive,
   Trash2,
   Send,
-  Loader2,
-  User
+  Loader2
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_DANGER,
+  ADMIN_BTN_GHOST,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EMPTY,
+  ADMIN_EYEBROW,
+  ADMIN_H2,
+  ADMIN_LABEL,
+  ADMIN_TONE,
+  type AdminTone,
+} from '@/components/admin/admin-ui';
 
 interface ContactMessage {
   id: string;
@@ -34,6 +43,13 @@ interface ContactMessage {
   created_at: string;
   updated_at: string;
 }
+
+const MESSAGE_STATUS: Record<ContactMessage['status'], { label: string; tone: AdminTone }> = {
+  new: { label: 'New', tone: 'accent' },
+  read: { label: 'Read', tone: 'neutral' },
+  replied: { label: 'Replied', tone: 'positive' },
+  archived: { label: 'Archived', tone: 'warning' },
+};
 
 export default function MessageDetailPage() {
   const params = useParams();
@@ -70,10 +86,8 @@ export default function MessageDetailPage() {
       setNotes(data.notes || '');
       setReplySubject(`Re: ${data.subject || 'Your inquiry'}`);
 
-      // Set default reply template
       setReplyMessage(`Dear ${data.name},\n\nThank you for contacting formiqstudio. We appreciate your interest in our services.\n\n[Your response here]\n\nBest regards,\nThe formiqstudio Team`);
 
-      // If message is new, mark as read
       if (data.status === 'new') {
         updateMessageStatus('read');
       }
@@ -96,7 +110,6 @@ export default function MessageDetailPage() {
         return;
       }
 
-      // Update local state
       if (message) {
         setMessage({ ...message, status: status as any });
       }
@@ -120,7 +133,6 @@ export default function MessageDetailPage() {
         return;
       }
 
-      // Update local state
       setMessage({ ...message, notes });
     } catch (error) {
       console.error('Error saving notes:', error);
@@ -137,7 +149,6 @@ export default function MessageDetailPage() {
     setEmailSuccess(false);
 
     try {
-      // Call the API route to send the email
       const response = await fetch('/api/email/send', {
         method: 'POST',
         headers: {
@@ -155,7 +166,6 @@ export default function MessageDetailPage() {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        // Update local state
         setMessage({ ...message, status: 'replied' });
         setEmailSuccess(true);
       } else {
@@ -184,7 +194,6 @@ export default function MessageDetailPage() {
           return;
         }
 
-        // Navigate back to messages list
         router.push('/admin/messages');
       } catch (error) {
         console.error('Error deleting message:', error);
@@ -193,140 +202,130 @@ export default function MessageDetailPage() {
   };
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'new':
-        return <Badge className="bg-primary">New</Badge>;
-      case 'read':
-        return <Badge className="bg-muted-foreground">Read</Badge>;
-      case 'replied':
-        return <Badge className="bg-green-500">Replied</Badge>;
-      case 'archived':
-        return <Badge className="bg-yellow-500">Archived</Badge>;
-      default:
-        return null;
-    }
+    const config = MESSAGE_STATUS[status as ContactMessage['status']];
+    if (!config) return null;
+    return <span className={`${ADMIN_BADGE} ${ADMIN_TONE[config.tone]}`}>{config.label}</span>;
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex h-96 items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
   if (!message) {
     return (
-      <div className="text-center py-12">
-        <Mail className="h-12 w-12 mx-auto text-muted-foreground/50" />
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Message not found</h2>
-        <p className="mt-2 text-muted-foreground">The message you're looking for doesn't exist or has been deleted.</p>
-        <Button
-          variant="outline"
-          className="mt-6"
-          onClick={() => router.push('/admin/messages')}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Messages
-        </Button>
+      <div className="space-y-8">
+        <AdminPageHeader eyebrow="System" title="Message not found" />
+        <div className={`${ADMIN_CARD} ${ADMIN_EMPTY}`}>
+          <p>The message you're looking for doesn't exist or has been deleted.</p>
+          <button
+            type="button"
+            className={`${ADMIN_BTN_OUTLINE} mt-6`}
+            onClick={() => router.push('/admin/messages')}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to messages
+          </button>
+        </div>
       </div>
     );
   }
 
+  const contactRows = [
+    { label: 'Name', value: message.name },
+    { label: 'Email', value: message.email },
+    ...(message.phone ? [{ label: 'Phone', value: message.phone }] : []),
+    { label: 'Received', value: format(new Date(message.created_at), 'PPP p') },
+  ];
+
   return (
-    <div className="space-y-6">
-      {/* Header with Modern AI-Era Styling */}
-      <div className="bg-card rounded-2xl shadow-md p-6 border border-border">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.push('/admin/messages')}
-              className="mr-4"
-            >
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground flex items-center">
-                {message.subject || 'No Subject'}
-                <span className="ml-3">{getStatusBadge(message.status)}</span>
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                From: {message.name} ({message.email})
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => updateMessageStatus('read')}
-              disabled={message.status === 'read'}
-            >
-              <CheckCircle className="h-4 w-4 mr-1" />
-              Mark as Read
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => updateMessageStatus('archived')}
-              disabled={message.status === 'archived'}
-            >
-              <Archive className="h-4 w-4 mr-1" />
-              Archive
-            </Button>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={deleteMessage}
-            >
-              <Trash2 className="h-4 w-4 mr-1" />
-              Delete
-            </Button>
-          </div>
-        </div>
+    <div className="space-y-8">
+      <div>
+        <button
+          type="button"
+          onClick={() => router.push('/admin/messages')}
+          className={`${ADMIN_BTN_GHOST} -ml-3 mb-4 h-9 px-3`}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </button>
+        <AdminPageHeader
+          eyebrow="System"
+          title={<span className="break-words">{message.subject || 'No subject'}</span>}
+          description={
+            <span className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <span className="break-all">From {message.name} ({message.email})</span>
+              {getStatusBadge(message.status)}
+            </span>
+          }
+          actions={
+            <>
+              <button
+                type="button"
+                className={ADMIN_BTN_OUTLINE}
+                onClick={() => updateMessageStatus('read')}
+                disabled={message.status === 'read'}
+              >
+                <CheckCircle className="h-4 w-4" />
+                Mark as read
+              </button>
+              <button
+                type="button"
+                className={ADMIN_BTN_OUTLINE}
+                onClick={() => updateMessageStatus('archived')}
+                disabled={message.status === 'archived'}
+              >
+                <Archive className="h-4 w-4" />
+                Archive
+              </button>
+              <button type="button" className={ADMIN_BTN_DANGER} onClick={deleteMessage}>
+                <Trash2 className="h-4 w-4" />
+                Delete
+              </button>
+            </>
+          }
+        />
       </div>
 
-      {/* Message Content and Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Message Details */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Message Content */}
-          <div className="bg-card rounded-2xl shadow-md p-6 border border-border">
-            <div className="prose dark:prose-invert max-w-none">
-              <p className="whitespace-pre-wrap">{message.message}</p>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
+          <article className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+            <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border pb-4">
+              <p className="text-sm font-medium text-foreground">{message.name}</p>
+              <p className={ADMIN_EYEBROW}>{format(new Date(message.created_at), 'PPP p')}</p>
             </div>
-          </div>
+            <p className="mt-5 whitespace-pre-wrap break-words text-[15px] leading-relaxed text-foreground">{message.message}</p>
+          </article>
 
-          {/* Reply Section */}
-          <div className="bg-card rounded-2xl shadow-md p-6 border border-border">
-            <h2 className="text-xl font-semibold text-foreground mb-4">Reply to {message.name}</h2>
+          <section className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+            <h2 className={`${ADMIN_H2} mb-5`}>Reply to {message.name}</h2>
 
             {emailSuccess && (
-              <div className="mb-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-300">
+              <div className={`mb-5 rounded-xl border px-4 py-3 text-sm ${ADMIN_TONE.positive}`}>
                 Email sent successfully!
               </div>
             )}
 
             {emailError && (
-              <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">
+              <div className={`mb-5 rounded-xl border px-4 py-3 text-sm ${ADMIN_TONE.negative}`}>
                 {emailError}
               </div>
             )}
 
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Subject</label>
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <label className={`${ADMIN_LABEL} block`}>Subject</label>
                 <Input
                   value={replySubject}
                   onChange={(e) => setReplySubject(e.target.value)}
                   placeholder="Subject"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Message</label>
+              <div className="space-y-2">
+                <label className={`${ADMIN_LABEL} block`}>Message</label>
                 <Textarea
                   value={replyMessage}
                   onChange={(e) => setReplyMessage(e.target.value)}
@@ -334,90 +333,65 @@ export default function MessageDetailPage() {
                   className="min-h-[200px]"
                 />
               </div>
-              <Button
-                className="w-full"
-                onClick={handleSendReply}
-                disabled={sendingReply}
-              >
-                {sendingReply ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send className="mr-2 h-4 w-4" />
-                    Send Reply
-                  </>
-                )}
-              </Button>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className={`${ADMIN_BTN_PRIMARY} w-full sm:w-auto`}
+                  onClick={handleSendReply}
+                  disabled={sendingReply}
+                >
+                  {sendingReply ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" />
+                      Send reply
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
+          </section>
         </div>
 
-        {/* Sidebar */}
         <div className="space-y-6">
-          {/* Contact Information */}
-          <div className="bg-card rounded-2xl shadow-md p-6 border border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Contact Information</h3>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <User className="h-5 w-5 text-muted-foreground mt-0.5 mr-3" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">Name</p>
-                  <p className="text-sm text-foreground">{message.name}</p>
+          <section className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+            <h3 className={`${ADMIN_H2} mb-5`}>Contact information</h3>
+            <dl className="space-y-4">
+              {contactRows.map((row) => (
+                <div key={row.label}>
+                  <dt className={ADMIN_LABEL}>{row.label}</dt>
+                  <dd className="mt-1 break-words text-sm text-foreground">{row.value}</dd>
                 </div>
-              </div>
-              <div className="flex items-start">
-                <Mail className="h-5 w-5 text-muted-foreground mt-0.5 mr-3" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">Email</p>
-                  <p className="text-sm text-foreground">{message.email}</p>
-                </div>
-              </div>
-              {message.phone && (
-                <div className="flex items-start">
-                  <Phone className="h-5 w-5 text-muted-foreground mt-0.5 mr-3" />
-                  <div>
-                    <p className="text-sm font-medium text-foreground">Phone</p>
-                    <p className="text-sm text-foreground">{message.phone}</p>
-                  </div>
-                </div>
-              )}
-              <div className="flex items-start">
-                <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 mr-3" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">Received</p>
-                  <p className="text-sm text-foreground">
-                    {format(new Date(message.created_at), 'PPP p')}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+              ))}
+            </dl>
+          </section>
 
-          {/* Notes */}
-          <div className="bg-card rounded-2xl shadow-md p-6 border border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Notes</h3>
+          <section className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+            <h3 className={`${ADMIN_H2} mb-5`}>Notes</h3>
             <Textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Add private notes about this contact..."
-              className="min-h-[150px] mb-4"
+              className="mb-4 min-h-[150px]"
             />
-            <Button
+            <button
+              type="button"
               onClick={saveNotes}
               disabled={savingNotes}
-              className="w-full"
+              className={`${ADMIN_BTN_OUTLINE} w-full`}
             >
               {savingNotes ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   Saving...
                 </>
-              ) : 'Save Notes'}
-            </Button>
-          </div>
+              ) : 'Save notes'}
+            </button>
+          </section>
         </div>
       </div>
     </div>

@@ -1,11 +1,10 @@
 'use client';
 
-import { CheckCircle, ArrowRight, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from './ui/button';
-import { cn } from '@/lib/utils';
-import { type LucideIcon } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, type LucideIcon } from 'lucide-react';
 import ContactForm from './landing/ContactForm';
+import Magnetic from './studio/Magnetic';
+import { BTN_OUTLINE, BTN_PRIMARY, CONTAINER, EYEBROW, FOCUS_RING, H1, H2, SECTION_Y, pad2 } from './studio/ui';
 
 interface ServiceFeature {
   title: string;
@@ -26,7 +25,8 @@ interface Highlight {
   name: string;
   description: string;
   features: string[];
-  color: string;
+  /** Legacy gradient classes; ignored (the page follows the theme). */
+  color?: string;
 }
 
 interface ServicePageLayoutProps {
@@ -47,9 +47,13 @@ interface ServicePageLayoutProps {
   ctaIcon: LucideIcon;
 }
 
+const CONTACT_HREF = '/contact';
+const PORTFOLIO_HREF = '/portfolio';
+const FORM_ANCHOR = '#contact-form';
+
+/** Shared template for the service pages (/web, /mobile, /shopify, /marketing, /ecommerce-marketplace, /agents). */
 export default function ServicePageLayout({
   badge,
-  badgeIcon: BadgeIcon,
   title,
   titleAccent,
   subtitle,
@@ -62,185 +66,168 @@ export default function ServicePageLayout({
   processSubtitle,
   ctaTitle,
   ctaSubtitle,
-  ctaIcon: CtaIcon,
 }: ServicePageLayoutProps) {
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      <div className="relative z-10">
-        {/* Hero */}
-        <section className="pt-32 pb-20 px-4 md:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <BadgeIcon className="w-4 h-4" />
-              {badge}
-            </div>
-
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="text-primary">{titleAccent}</span>
-              <br />
-              <span className="text-foreground">{title}</span>
+    <div className="bg-background text-foreground">
+      {/* Hero */}
+      <section className="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-24">
+        <div className={CONTAINER}>
+          <p className={`${EYEBROW} mb-6`}>(01) {badge}</p>
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
+            <h1 className={`${H1} lg:col-span-8 break-words`}>
+              <span className="text-primary">{titleAccent}</span> {title}
             </h1>
-
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
-              {subtitle}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact">
-                <Button size="lg" className="text-lg px-8 py-4 h-auto">
-                  Get Started Today
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="/portfolio">
-                <Button variant="outline" size="lg" className="text-lg px-8 py-4 h-auto">
-                  View Portfolio
-                  <ArrowUpRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-            </div>
-
-            {/* Highlights */}
-            {highlights && highlights.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-14">
-                {highlights.map((item) => (
-                  <div
-                    key={item.name}
-                    className={`p-6 rounded-2xl bg-gradient-to-br ${item.color} text-white relative overflow-hidden group`}
-                  >
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-200" />
-                    <div className="relative z-10">
-                      <h3 className="text-xl font-bold mb-2">{item.name}</h3>
-                      <p className="text-white/90 mb-4 text-sm">{item.description}</p>
-                      <div className="space-y-1">
-                        {item.features.map((f, i) => (
-                          <div key={i} className="flex items-center gap-2 text-sm">
-                            <CheckCircle className="w-4 h-4" />
-                            {f}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            <div className="lg:col-span-4 space-y-8">
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">{subtitle}</p>
+              <div className="flex flex-col min-[420px]:flex-row gap-3">
+                <Magnetic>
+                  <Link href={CONTACT_HREF} className={BTN_PRIMARY}>
+                    Get started
+                    <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" aria-hidden="true" />
+                  </Link>
+                </Magnetic>
+                <Magnetic>
+                  <Link href={PORTFOLIO_HREF} className={BTN_OUTLINE}>
+                    View portfolio
+                    <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                  </Link>
+                </Magnetic>
               </div>
-            )}
-          </div>
-        </section>
-
-        {/* Services Grid */}
-        <section className="py-20 px-4 md:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <span className="text-primary">{servicesTitle}</span>
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                {servicesSubtitle}
-              </p>
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {services.map((service) => {
-                const Icon = service.icon;
-                return (
-                  <div
-                    key={service.title}
-                    className="p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-shadow duration-200 group hover:shadow-lg"
-                  >
-                    <div className="p-3 rounded-xl bg-primary/10 inline-flex mb-4 group-hover:bg-primary/15 transition-colors duration-200">
-                      <Icon className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="text-lg font-bold mb-2 text-foreground group-hover:text-primary transition-colors duration-200">
-                      {service.title}
-                    </h3>
-                    <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                      {service.description}
-                    </p>
-                    <div className="space-y-2">
-                      {service.features.map((f, i) => (
-                        <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                          {f}
-                        </div>
+          {/* Highlights: three ruled columns */}
+          {highlights && highlights.length > 0 && (
+            <ul className="mt-16 sm:mt-20 grid border-t border-border md:grid-cols-3">
+              {highlights.map((item, i) => (
+                <li
+                  key={item.name}
+                  className="py-8 border-b border-border md:border-b-0 md:px-8 md:first:pl-0 md:last:pr-0 md:[&:not(:first-child)]:border-l"
+                >
+                  <p className={`${EYEBROW} mb-4`}>{pad2(i + 1)}</p>
+                  <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.035em] leading-tight">{item.name}</h2>
+                  <p className="mt-3 text-base text-muted-foreground leading-relaxed">{item.description}</p>
+                  <ul className="mt-5 space-y-2">
+                    {item.features.map((f) => (
+                      <li key={f} className="flex items-baseline gap-3 text-sm text-foreground/80">
+                        <span aria-hidden="true" className="h-px w-3 shrink-0 translate-y-[-0.3em] bg-foreground/50" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+
+      {/* Services: numbered ruled rows */}
+      <section className={`border-t border-border ${SECTION_Y}`}>
+        <div className={CONTAINER}>
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end mb-12 sm:mb-16">
+            <div className="lg:col-span-7">
+              <p className={`${EYEBROW} mb-5`}>(02) Services</p>
+              <h2 className={H2}>{servicesTitle}</h2>
+            </div>
+            <p className="lg:col-span-4 lg:col-start-9 text-base sm:text-lg text-muted-foreground leading-relaxed">{servicesSubtitle}</p>
+          </div>
+
+          <ol className="border-t border-border">
+            {services.map((service, i) => (
+              <li
+                key={service.title}
+                className="grid grid-cols-[2.25rem_minmax(0,1fr)] sm:grid-cols-[4rem_minmax(0,1fr)] lg:grid-cols-[4rem_minmax(0,5fr)_minmax(0,4fr)_minmax(0,3fr)] gap-x-3 sm:gap-x-6 gap-y-4 py-8 sm:py-10 border-b border-border"
+              >
+                <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.16em] text-muted-foreground pt-2">{pad2(i + 1)}</span>
+                <h3 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.035em] leading-tight">{service.title}</h3>
+                <p className="col-start-2 lg:col-start-auto text-base text-muted-foreground leading-relaxed">{service.description}</p>
+                <ul className="col-start-2 lg:col-start-auto space-y-2">
+                  {service.features.map((f) => (
+                    <li key={f} className="flex items-baseline gap-3 text-sm text-foreground/80">
+                      <span aria-hidden="true" className="h-px w-3 shrink-0 translate-y-[-0.3em] bg-foreground/50" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Process: large numbers on a sand band */}
+      <section className={`tone-sand ${SECTION_Y}`}>
+        <div className={CONTAINER}>
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end mb-12 sm:mb-16">
+            <div className="lg:col-span-7">
+              <p className={`${EYEBROW} mb-5`}>(03) Process</p>
+              <h2 className={H2}>{processTitle}</h2>
+            </div>
+            <p className="lg:col-span-4 lg:col-start-9 text-base sm:text-lg text-muted-foreground leading-relaxed">{processSubtitle}</p>
+          </div>
+
+          <ol className="grid border-t border-border md:grid-cols-2">
+            {process.map((step, i) => (
+              <li
+                key={step.title}
+                className="py-8 sm:py-10 border-b border-border md:odd:pr-8 md:even:pl-8 md:even:border-l"
+              >
+                <span aria-hidden="true" className="block font-display text-7xl sm:text-8xl font-medium leading-none tracking-[-0.05em] text-foreground/15">
+                  {pad2(i + 1)}
+                </span>
+                <h3 className="mt-8 font-display text-2xl sm:text-3xl font-semibold tracking-[-0.035em] leading-tight">
+                  <span className="sr-only">Step {i + 1}: </span>
+                  {step.title}
+                </h3>
+                <p className="mt-3 text-base text-muted-foreground leading-relaxed max-w-lg">{step.description}</p>
+                <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                  <div>
+                    <h4 className={`${EYEBROW} mb-3`}>Tools &amp; methods</h4>
+                    <ul className="space-y-1.5">
+                      {step.tools.map((tool) => (
+                        <li key={tool} className="text-sm text-foreground/80">{tool}</li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
-                );
-              })}
+                  <div>
+                    <h4 className={`${EYEBROW} mb-3`}>Key benefit</h4>
+                    <p className="text-sm text-foreground/80 leading-relaxed">{step.benefits}</p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* CTA band */}
+      <section className="tone-ember py-20 sm:py-28">
+        <div className={CONTAINER}>
+          <p className={`${EYEBROW} mb-6`}>(04) Next step</p>
+          <h2 className="font-display text-[2.6rem] leading-[0.98] sm:text-7xl lg:text-8xl font-bold tracking-[-0.05em] max-w-5xl break-words">
+            {ctaTitle}
+          </h2>
+          <div className="mt-10 sm:mt-14 pt-8 border-t border-border grid gap-8 lg:grid-cols-[1fr,auto] lg:items-end">
+            <p className="text-base sm:text-lg text-foreground/80 max-w-xl leading-relaxed">{ctaSubtitle}</p>
+            <div className="flex flex-col min-[420px]:flex-row gap-3">
+              <Magnetic>
+                <a href={FORM_ANCHOR} className={BTN_PRIMARY}>
+                  Send a brief
+                  <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" aria-hidden="true" />
+                </a>
+              </Magnetic>
+              <Link href={CONTACT_HREF} className={`inline-flex min-h-14 items-center justify-center gap-2 px-2 text-[15px] font-semibold rounded-sm ${FOCUS_RING}`}>
+                <span className="link-draw">Contact page</span>
+                <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Process */}
-        <section className="py-20 px-4 md:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <span className="text-primary">{processTitle}</span>
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                {processSubtitle}
-              </p>
-            </div>
-
-            <div className="space-y-10">
-              {process.map((step, index) => {
-                const Icon = step.icon;
-                return (
-                  <div
-                    key={step.title}
-                    className={cn(
-                      'flex flex-col lg:flex-row items-center gap-8 lg:gap-12',
-                      index % 2 === 1 && 'lg:flex-row-reverse'
-                    )}
-                  >
-                    <div className="flex-shrink-0">
-                      <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center">
-                        <div className="flex flex-col items-center">
-                          <Icon className="w-6 h-6 text-white" />
-                          <span className="text-xs font-bold text-white mt-1">
-                            {String(index + 1).padStart(2, '0')}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex-1 text-center lg:text-left">
-                      <h3 className="text-xl md:text-2xl font-bold mb-3 text-foreground">
-                        {step.title}
-                      </h3>
-                      <p className="text-muted-foreground mb-5 leading-relaxed">
-                        {step.description}
-                      </p>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <h4 className="font-semibold text-foreground mb-2 text-sm">Tools & Methods</h4>
-                          <div className="space-y-1.5">
-                            {step.tools.map((tool, i) => (
-                              <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                {tool}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-foreground mb-2 text-sm">Key Benefits</h4>
-                          <p className="text-sm text-muted-foreground leading-relaxed">{step.benefits}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA + Contact Form */}
-        <ContactForm />
-      </div>
+      {/* Brief form */}
+      <ContactForm />
     </div>
   );
 }

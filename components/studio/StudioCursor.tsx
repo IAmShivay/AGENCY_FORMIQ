@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap, isFinePointer, prefersReducedMotion } from '@/lib/studio-motion';
 
+const NATIVE_CURSOR_ZONES = 'form, [role="dialog"], [role="listbox"], [role="menu"], [data-radix-popper-content-wrapper], [data-native-cursor]';
+
 /**
  * Desktop cursor: a precise dot and a lagging ring, each blending on its own.
  * Links get a larger ring; `data-cursor="Label"` (or a link wrapping an image)
@@ -30,11 +32,19 @@ export default function StudioCursor() {
     let shown = false;
     const move = (e: PointerEvent) => {
       if (e.pointerType !== 'mouse') return;
-      if (!shown) { gsap.to([d, r], { opacity: 1, duration: 0.3 }); shown = true; }
+      if (!shown && !native) { gsap.to([d, r], { autoAlpha: 1, duration: 0.3 }); shown = true; }
       dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY);
     };
     let current: Element | null = null;
+    let native = false;
     const over = (e: PointerEvent) => {
+      // Forms, dialogs and popup menus use the system cursor (see globals.css).
+      const inNativeZone = !!(e.target as Element).closest(NATIVE_CURSOR_ZONES);
+      if (inNativeZone !== native) {
+        native = inNativeZone;
+        gsap.to([d, r], { autoAlpha: native ? 0 : 1, duration: 0.2 });
+      }
+      if (native) return;
       const t = (e.target as Element).closest('[data-cursor], a, button, input, textarea, select, label, [role="button"]');
       if (t === current) return;
       current = t;
@@ -69,10 +79,10 @@ export default function StudioCursor() {
   if (!enabled) return null;
   return (
     <div aria-hidden="true" className="pointer-events-none">
-      <div ref={ring} className="fixed top-0 left-0 z-[95] w-8 h-8 rounded-full border border-white mix-blend-difference flex items-center justify-center will-change-transform">
+      <div ref={ring} className="fixed top-0 left-0 z-[9999] w-8 h-8 rounded-full border border-white mix-blend-difference flex items-center justify-center will-change-transform">
         <span className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-black">{label}</span>
       </div>
-      <div ref={dot} className="fixed top-0 left-0 z-[95] w-1.5 h-1.5 rounded-full bg-white mix-blend-difference will-change-transform" />
+      <div ref={dot} className="fixed top-0 left-0 z-[9999] w-1.5 h-1.5 rounded-full bg-white mix-blend-difference will-change-transform" />
     </div>
   );
 }

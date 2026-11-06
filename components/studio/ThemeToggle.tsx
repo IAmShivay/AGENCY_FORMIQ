@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes';
 import { Moon, Sun } from 'lucide-react';
 import { prefersReducedMotion } from '@/lib/studio-motion';
 
-const DARK = new Set(['dark', 'neon-agency', 'cyberpunk', 'matrix', 'electric']);
+const DARK = new Set(['dark']);
 
 /**
  * Light ⇄ dark. The new theme is revealed as a blind dropping from the top of

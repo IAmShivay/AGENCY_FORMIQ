@@ -7,39 +7,38 @@ import ServiceFeatures from '@/components/services/ServiceFeatures';
 import ServicePricing from '@/components/services/ServicePricing';
 import ServiceFAQ from '@/components/services/ServiceFAQ';
 import ServiceCTA from '@/components/services/ServiceCTA';
-import ServiceTestimonials from '@/components/services/ServiceTestimonials';
 
 // Features data
 const features = [
   {
     title: 'SSD Storage',
     description: 'All our hosting plans come with fast SSD storage for better performance and reliability.',
-    icon: <Zap className="h-6 w-6 text-white" />
+    icon: <Zap className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Free SSL Certificates',
     description: 'Secure your website with free SSL certificates included with all hosting plans.',
-    icon: <Shield className="h-6 w-6 text-white" />
+    icon: <Shield className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: '99.9% Uptime Guarantee',
     description: 'We guarantee 99.9% uptime for your website with our reliable hosting infrastructure.',
-    icon: <Clock className="h-6 w-6 text-white" />
+    icon: <Clock className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'One-Click Installations',
     description: 'Install popular applications like WordPress, Joomla, and more with just one click.',
-    icon: <ArrowRight className="h-6 w-6 text-white" />
+    icon: <ArrowRight className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Daily Backups',
     description: 'Your data is automatically backed up daily to ensure you never lose your website content.',
-    icon: <Server className="h-6 w-6 text-white" />
+    icon: <Server className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: '24/7 Support',
     description: 'Our dedicated support team is available around the clock to help you with any hosting issues.',
-    icon: <Check className="h-6 w-6 text-white" />
+    icon: <Check className="h-6 w-6 text-primary-foreground" />
   }
 ];
 
@@ -122,37 +121,6 @@ const faqs = [
   }
 ];
 
-// Testimonials data
-const testimonials = [
-  {
-    content: "I\'ve been using formiqstudio hosting for my e-commerce store for over a year now, and I\'m extremely impressed with their service. The website loads fast, and their customer support is exceptional.",
-    author: {
-      name: "David Wilson",
-      role: "E-commerce Owner",
-      company: "Fashion Trends",
-      image: "https://randomuser.me/api/portraits/men/4.jpg"
-    }
-  },
-  {
-    content: "After switching to formiqstudio hosting, my website\'s loading speed improved significantly. Their one-click WordPress installation made setting up my blog a breeze.",
-    author: {
-      name: "Jennifer Lee",
-      role: "Blogger",
-      company: "Travel Adventures",
-      image: "https://randomuser.me/api/portraits/women/5.jpg"
-    }
-  },
-  {
-    content: "The uptime and reliability of formiqstudio hosting have been outstanding. In the past six months, my website has experienced zero downtime, which is crucial for my online business.",
-    author: {
-      name: "Robert Brown",
-      role: "CEO",
-      company: "Digital Solutions",
-      image: "https://randomuser.me/api/portraits/men/6.jpg"
-    }
-  }
-];
-
 export default function HostingPage() {
   return (
     <div>
@@ -177,9 +145,6 @@ export default function HostingPage() {
         description="Choose the plan that's right for you."
         tiers={pricingTiers}
       />
-
-      {/* Testimonials Section */}
-      <ServiceTestimonials testimonials={testimonials} />
 
       {/* FAQ Section */}
       <ServiceFAQ faqs={faqs} />

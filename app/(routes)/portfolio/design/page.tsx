@@ -1,6 +1,8 @@
 'use client'
+import PageHeader from '@/components/studio/PageHeader';
+import PageCTA from '@/components/studio/PageCTA';
 import React, { useState, useEffect } from 'react';
-import { Moon, Loader2, Palette, X, Calendar, User, Briefcase, ExternalLink } from 'lucide-react';
+import { Palette, X, Calendar, User, Briefcase, ExternalLink } from 'lucide-react';
 import { DesignProject, getDesignProjects } from '@/lib/portfolio';
 
 
@@ -37,14 +39,11 @@ const DesignPortfolio = () => {
         setLoading(true);
         const data = await getDesignProjects();
 
-        console.log('Fetched design projects:', data);
-
         // If we have data from the database, use it
         if (data && data.length > 0) {
           setDesignProjects(data);
         } else {
           // Otherwise, set empty array (don't use fallback data)
-          console.log('No design projects found in database');
           setDesignProjects([]);
         }
       } catch (error) {
@@ -137,39 +136,25 @@ const DesignPortfolio = () => {
     : designProjects.filter(project => project.category === activeFilter);
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary/20 to-accent/10 pt-28 md:pt-36 lg:pt-44">
-        <div className="container mx-auto px-4 py-20 md:py-32">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center mb-6">
-              <Palette className="w-8 h-8 text-primary mr-2" />
-              <h1 className="text-5xl md:text-6xl font-bold premium-text-gradient">
-                Design Portfolio
-              </h1>
-            </div>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Transforming ideas into impactful visuals that elevate brands and enhance user experiences.
-            </p>
-          </div>
-        </div>
-
-        {/* Decorative Elements */}
-        <div className="absolute -bottom-6 left-0 right-0 h-12 bg-background transform -skew-y-2"></div>
-      </div>
+    <div className="bg-background text-foreground">
+      <PageHeader
+        eyebrow="(01) Portfolio / Design"
+        title={<>Design <span className="text-primary">portfolio</span></>}
+        intro="Transforming ideas into impactful visuals that elevate brands and enhance user experiences."
+      />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Filter Controls */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveFilter(category)}
-              className={`px-5 py-2 rounded-full transition-all duration-300 ${
+              className={`min-h-11 px-5 rounded-full border text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                 activeFilter === category
-                  ? 'bg-primary text-primary-foreground shadow-md'
-                  : 'bg-muted hover:bg-muted/80 text-foreground'
+                  ? 'bg-foreground text-background border-foreground'
+                  : 'border-border text-foreground hover:border-foreground/40'
               }`}
             >
               {category}
@@ -190,11 +175,11 @@ const DesignPortfolio = () => {
             {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="group bg-card dark:bg-neutral-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1"
+              className="group bg-card rounded-[22px] overflow-hidden transition-all duration-500 border border-border hover:border-foreground/30"
             >
               <div className="h-64 overflow-hidden relative">
                 <div
-                  className="w-full h-full bg-muted dark:bg-neutral-700 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full bg-muted flex items-center justify-center group-hover:scale-105 transition-transform duration-700"
                   style={{
                     backgroundImage: `url(${project.image})`,
                     backgroundSize: 'cover',
@@ -216,7 +201,7 @@ const DesignPortfolio = () => {
 
                 {/* Year Tag */}
                 <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 bg-primary/90 text-white text-sm font-bold rounded-md">
+                  <span className="px-3 py-1 bg-primary/90 text-primary-foreground text-sm font-bold rounded-md">
                     {project.year}
                   </span>
                 </div>
@@ -226,14 +211,14 @@ const DesignPortfolio = () => {
                 <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
+                <p className="text-muted-foreground mb-4">
                   {project.description}
                 </p>
 
                 {/* Client Info */}
                 <div className="flex items-center mb-4 text-sm">
                   <span className="font-medium mr-2">Client:</span>
-                  <span className="text-muted-foreground dark:text-neutral-400">{project.client}</span>
+                  <span className="text-muted-foreground">{project.client}</span>
                 </div>
 
                 {/* Services Tags */}
@@ -242,7 +227,7 @@ const DesignPortfolio = () => {
                     {project.services.map((service, index) => (
                       <span
                         key={index}
-                        className="px-2 py-1 bg-muted dark:bg-neutral-700 text-muted-foreground dark:text-neutral-300 text-xs rounded"
+                        className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded"
                       >
                         {service}
                       </span>
@@ -268,19 +253,19 @@ const DesignPortfolio = () => {
 
         {/* Empty State */}
         {!loading && filteredProjects.length === 0 && (
-          <div className="text-center py-16 bg-card dark:bg-neutral-800 rounded-xl shadow">
+          <div className="text-center py-16 bg-card rounded-xl shadow">
             <Palette className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
             {activeFilter === 'All' ? (
               <div>
                 <h3 className="text-2xl font-bold mb-3">No design projects available yet</h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-6 max-w-md mx-auto">
+                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                   We're currently working on adding our design portfolio. Please check back later or contact us to discuss your design project.
                 </p>
               </div>
             ) : (
               <div>
                 <h3 className="text-2xl font-bold mb-3">No projects found</h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-6">
+                <p className="text-muted-foreground mb-6">
                   No design projects found in the {activeFilter} category.
                 </p>
                 <button
@@ -295,33 +280,24 @@ const DesignPortfolio = () => {
         )}
       </div>
 
-      {/* Call To Action */}
-      <div className="bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 py-16 mt-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to transform your brand?</h2>
-          <p className="text-xl text-muted-foreground dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
-            Let's collaborate to create designs that elevate your business and connect with your audience.
-          </p>
-          <a href="https://wa.me/919832078313?text=Hi%2C%20I%20need%20help%20with%20branding%20and%20design" target="_blank" rel="noopener noreferrer">
-            <button className="px-8 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-              Start a Project
-            </button>
-          </a>
-        </div>
-      </div>
+      <PageCTA
+        title="Ready to transform your brand?"
+        subtitle="Let's collaborate to create designs that elevate your business and connect with your audience."
+        primary={{"label":"Start a project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20need%20help%20with%20branding%20and%20design","external":true}}
+      />
 
       {/* Project Details Popup */}
       {isPopupOpen && selectedProject && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-card dark:bg-neutral-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-card rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto" data-lenis-prevent>
             {/* Popup Header */}
-            <div className="sticky top-0 bg-card dark:bg-neutral-800 p-6 border-b border-border dark:border-neutral-700 flex justify-between items-center z-10">
-              <h2 className="text-2xl font-bold text-foreground dark:text-white">{selectedProject.title}</h2>
+            <div className="sticky top-0 bg-card p-6 border-b border-border flex justify-between items-center z-10">
+              <h2 className="text-2xl font-bold text-foreground">{selectedProject.title}</h2>
               <button
                 onClick={closeProjectDetails}
-                className="p-2 rounded-full bg-muted dark:bg-neutral-700 hover:bg-muted dark:hover:bg-neutral-600 transition-colors"
+                className="p-2 rounded-full bg-muted hover:bg-muted transition-colors"
               >
-                <X className="w-5 h-5 text-foreground dark:text-neutral-300" />
+                <X className="w-5 h-5 text-foreground" />
               </button>
             </div>
 
@@ -329,7 +305,7 @@ const DesignPortfolio = () => {
             <div className="p-6">
               {/* Project Image */}
               <div
-                className="w-full h-80 bg-muted dark:bg-neutral-700 rounded-xl mb-8"
+                className="w-full h-80 bg-muted rounded-xl mb-8"
                 style={{
                   backgroundImage: `url(${selectedProject.image})`,
                   backgroundSize: 'cover',
@@ -342,13 +318,13 @@ const DesignPortfolio = () => {
                 {/* Left Column - Project Details */}
                 <div className="md:col-span-2 space-y-6">
                   <div>
-                    <h3 className="text-xl font-bold mb-3 text-foreground dark:text-white">Project Overview</h3>
-                    <p className="text-foreground dark:text-neutral-300">{selectedProject.description}</p>
+                    <h3 className="text-xl font-bold mb-3 text-foreground">Project Overview</h3>
+                    <p className="text-foreground">{selectedProject.description}</p>
                   </div>
 
                   {/* Services */}
                   <div>
-                    <h3 className="text-lg font-bold mb-3 text-foreground dark:text-white">Services Provided</h3>
+                    <h3 className="text-lg font-bold mb-3 text-foreground">Services Provided</h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedProject.services.map((service, index) => (
                         <span
@@ -363,13 +339,13 @@ const DesignPortfolio = () => {
                 </div>
 
                 {/* Right Column - Project Metadata */}
-                <div className="bg-muted dark:bg-neutral-700/50 p-6 rounded-xl space-y-4">
+                <div className="bg-muted p-6 rounded-xl space-y-4">
                   {/* Client */}
                   <div className="flex items-start gap-3">
                     <User className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground dark:text-white">Client</h4>
-                      <p className="text-foreground dark:text-neutral-300">{selectedProject.client}</p>
+                      <h4 className="text-sm font-semibold text-foreground">Client</h4>
+                      <p className="text-foreground">{selectedProject.client}</p>
                     </div>
                   </div>
 
@@ -377,8 +353,8 @@ const DesignPortfolio = () => {
                   <div className="flex items-start gap-3">
                     <Briefcase className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground dark:text-white">Category</h4>
-                      <p className="text-foreground dark:text-neutral-300">{selectedProject.category}</p>
+                      <h4 className="text-sm font-semibold text-foreground">Category</h4>
+                      <p className="text-foreground">{selectedProject.category}</p>
                     </div>
                   </div>
 
@@ -386,8 +362,8 @@ const DesignPortfolio = () => {
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground dark:text-white">Year</h4>
-                      <p className="text-foreground dark:text-neutral-300">{selectedProject.year}</p>
+                      <h4 className="text-sm font-semibold text-foreground">Year</h4>
+                      <p className="text-foreground">{selectedProject.year}</p>
                     </div>
                   </div>
 
@@ -397,7 +373,7 @@ const DesignPortfolio = () => {
                       href={selectedProject.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 mt-4 w-full px-4 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
+                      className="flex items-center justify-center gap-2 mt-4 w-full px-4 py-2 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors"
                     >
                       <ExternalLink className="w-4 h-4" />
                       Visit Project
@@ -408,10 +384,10 @@ const DesignPortfolio = () => {
 
               {/* Additional Project Images - Placeholder for future enhancement */}
               <div className="mt-8">
-                <h3 className="text-xl font-bold mb-4 text-foreground dark:text-white">Project Gallery</h3>
-                <div className="bg-muted dark:bg-neutral-700 rounded-xl p-8 text-center">
+                <h3 className="text-xl font-bold mb-4 text-foreground">Project Gallery</h3>
+                <div className="bg-muted rounded-xl p-8 text-center">
                   <Palette className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
-                  <p className="text-muted-foreground dark:text-neutral-400">Additional project images will be available soon.</p>
+                  <p className="text-muted-foreground">Additional project images will be available soon.</p>
                 </div>
               </div>
             </div>

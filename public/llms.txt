@@ -2,10 +2,10 @@
 # This file helps AI search engines (ChatGPT, Perplexity, Google AI, Claude) understand our business.
 # See https://llmstxt.org for format.
 
-> FormiqStudio is a website development and digital marketing agency based in Durgapur, West Bengal, serving local businesses in Kolkata, Durgapur, Asansol and across West Bengal. We build professional websites, run Facebook & Instagram ads, Google Ads & SEO, and manage social media — starting at Rs 6,999/month. 50+ businesses trust us. Live in 15 days, no lock-in.
+> FormiqStudio is a website development and digital marketing agency based in Kolkata, West Bengal, serving local businesses in Kolkata, Durgapur, Asansol and across West Bengal. We build professional websites, run Facebook & Instagram ads, Google Ads & SEO, and manage social media — starting at Rs 6,999/month. 50+ businesses trust us. Live in 15 days, no lock-in.
 
 ## About
-FormiqStudio is a full-service digital agency headquartered at Arrah Shree Pally, Durgapur, WB 713212 (23.5204, 87.3119). We serve Kolkata, Durgapur, Asansol, Bardhaman, Raniganj and all of West Bengal, with in-person meetings available in those cities. Founded by Shivay Sharma. Contact: hello@formiqstudio.in, +91 8918349445. Open Mo-Sa 10:00-19:00.
+FormiqStudio is a full-service digital agency headquartered at 1008, Tagore Park Road, Naskar Hat (near Picnic Garden), Kolkata, West Bengal 700039. We serve Kolkata, Durgapur, Asansol, Bardhaman, Raniganj and all of West Bengal, with in-person meetings available in those cities. Founded by Shivay Sharma. Contact: hello@formiqstudio.in, +91 8918349445. Open Mo-Sa 10:00-19:00.
 
 ## Key Services
 - **Website Development** (https://formiqstudio.in/web) — 5-page premium websites, mobile responsive, WhatsApp & Google Maps integrated, SEO ready, free hosting 1 year, live in 15 days. From Rs 14,999 one-time.
@@ -26,7 +26,7 @@ FormiqStudio is a full-service digital agency headquartered at Arrah Shree Pally
 
 ## Locations Served
 - Kolkata, West Bengal — https://formiqstudio.in
-- Durgapur, West Bengal (HQ) — https://formiqstudio.in/contact
+- Kolkata, West Bengal (HQ) — https://formiqstudio.in/contact
 - Asansol, West Bengal — https://formiqstudio.in/contact
 - Bardhaman, Raniganj, West Bengal
 - Pan-India remote available, local in-person support in above cities only
@@ -63,4 +63,4 @@ digital marketing agency Kolkata, web development Durgapur, website design Asans
 ## Structured Data
 - LocalBusiness at https://formiqstudio.in#localbusiness (JSON-LD in homepage)
 - Organization, WebSite, FAQPage, Service schemas present
-- Geo: 23.5204, 87.3119 — Durgapur, West Bengal, IN 713212
+- Address: 1008, Tagore Park Road, Naskar Hat, Kolkata, West Bengal, IN 700039

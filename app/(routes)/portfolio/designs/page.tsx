@@ -1,5 +1,7 @@
 "use client";
 
+import PageHeader from '@/components/studio/PageHeader';
+import PageCTA from '@/components/studio/PageCTA';
 import React, { useState, useEffect } from 'react';
 import { Palette, ExternalLink, Search } from 'lucide-react';
 import { DesignProject, getDesignProjects } from '@/lib/portfolio';
@@ -104,27 +106,16 @@ const DesignsPortfolio = () => {
   };
 
   return (
-    <div className="bg-muted dark:bg-neutral-900 min-h-screen">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-primary via-primary/5 to-primary/80 dark:from-neutral-500/20 dark:via-primary/15 dark:to-neutral-500/20">
-        <div className="container mx-auto px-4 py-20 md:py-28">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center mb-6 bg-white/80 dark:bg-neutral-800/80 p-3 rounded-2xl shadow-lg">
-              <Palette className="w-8 h-8 text-primary mr-3" />
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground via-primary to-foreground/55">
-                Design Portfolio
-              </h1>
-            </div>
-            <p className="text-lg md:text-xl text-foreground dark:text-neutral-300 mt-6 max-w-3xl mx-auto">
-              Explore our creative design work spanning branding, UI/UX, packaging, and more. Each project represents our commitment to aesthetic excellence and functional design.
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="bg-background text-foreground">
+      <PageHeader
+        eyebrow="(01) Portfolio / Designs"
+        title={<>Design <span className="text-primary">portfolio</span></>}
+        intro="Explore our creative design work spanning branding, UI/UX, packaging, and more. Each project represents our commitment to aesthetic excellence and functional design."
+      />
 
       {/* Filter Controls */}
-      <div className="sticky top-0 z-10 bg-card dark:bg-neutral-800 shadow-md py-4">
-        <div className="container mx-auto px-4">
+      <div className="sticky top-0 z-10 bg-card py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row gap-4">
             {/* Search Input */}
             <div className="relative flex-grow">
@@ -133,7 +124,7 @@ const DesignsPortfolio = () => {
               </div>
               <input
                 type="text"
-                className="block w-full pl-10 pr-3 py-2 border border-border dark:border-neutral-600 rounded-lg bg-card dark:bg-neutral-700 text-foreground dark:text-neutral-100 focus:ring-2 focus:ring-primary focus:border-primary"
+                className="block w-full pl-10 pr-3 py-2 border border-border rounded-lg bg-card text-foreground focus:ring-2 focus:ring-ring focus:border-ring"
                 placeholder="Search designs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -146,10 +137,10 @@ const DesignsPortfolio = () => {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                  className={`min-h-11 px-5 rounded-full border text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                     selectedCategory === category
-                      ? 'bg-primary text-white shadow-md'
-                      : 'bg-muted dark:bg-neutral-700 hover:bg-muted dark:hover:bg-neutral-600 text-foreground dark:text-neutral-200'
+                      ? 'bg-foreground text-background border-foreground'
+                      : 'border-border text-foreground hover:border-foreground/40'
                   }`}
                 >
                   {category}
@@ -161,7 +152,7 @@ const DesignsPortfolio = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Loading State */}
         {loading && (
           <div className="flex justify-center items-center py-20">
@@ -171,7 +162,7 @@ const DesignsPortfolio = () => {
 
         {/* Results Count */}
         {!loading && (
-          <div className="mb-8 text-muted-foreground dark:text-neutral-400">
+          <div className="mb-8 text-muted-foreground">
             <span className="font-medium">Showing {filteredProjects.length} designs</span>
             {searchQuery && <span> matching "{searchQuery}"</span>}
             {selectedCategory !== 'All' && <span> in {selectedCategory} category</span>}
@@ -183,12 +174,12 @@ const DesignsPortfolio = () => {
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="group bg-card dark:bg-neutral-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              className="group bg-card rounded-[22px] overflow-hidden transition-all duration-300 border border-border hover:border-foreground/30"
             >
               {/* Project Image */}
               <div className="relative h-64 overflow-hidden">
                 <div
-                  className="w-full h-full bg-muted dark:bg-neutral-700 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full bg-muted flex items-center justify-center group-hover:scale-105 transition-transform duration-500"
                   style={{
                     backgroundImage: `url(${project.image})`,
                     backgroundSize: 'cover',
@@ -220,16 +211,16 @@ const DesignsPortfolio = () => {
                 <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
+                <p className="text-muted-foreground mb-4">
                   {project.description}
                 </p>
 
                 {/* Client & Year */}
                 <div className="flex justify-between mb-4 text-sm">
-                  <div className="text-muted-foreground dark:text-neutral-400">
+                  <div className="text-muted-foreground">
                     <span className="font-medium">Client:</span> {project.client}
                   </div>
-                  <div className="text-muted-foreground dark:text-neutral-400">
+                  <div className="text-muted-foreground">
                     <span className="font-medium">Year:</span> {project.year}
                   </div>
                 </div>
@@ -241,7 +232,7 @@ const DesignsPortfolio = () => {
                     {project.services.map((service, index) => (
                       <span
                         key={index}
-                        className="inline-flex items-center px-3 py-1 bg-muted dark:bg-neutral-700 text-foreground dark:text-neutral-200 rounded-full text-sm"
+                        className="inline-flex items-center px-3 py-1 bg-muted text-foreground rounded-full text-sm"
                       >
                         {getServiceIcon(service)}
                         {service}
@@ -264,12 +255,12 @@ const DesignsPortfolio = () => {
 
         {/* Empty State */}
         {!loading && filteredProjects.length === 0 && (
-          <div className="text-center py-16 bg-card dark:bg-neutral-800 rounded-xl shadow">
+          <div className="text-center py-16 bg-card rounded-xl shadow">
             <Palette className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
             {searchQuery || selectedCategory !== 'All' ? (
               <>
                 <h3 className="text-2xl font-bold mb-2">No designs found</h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-6">
+                <p className="text-muted-foreground mb-6">
                   Try adjusting your search or filter to find what you're looking for.
                 </p>
                 <button
@@ -282,7 +273,7 @@ const DesignsPortfolio = () => {
             ) : (
               <>
                 <h3 className="text-2xl font-bold mb-2">No design projects available yet</h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-6">
+                <p className="text-muted-foreground mb-6">
                   We're currently working on adding our design portfolio. Please check back later or contact us to discuss your design project.
                 </p>
               </>
@@ -291,27 +282,12 @@ const DesignsPortfolio = () => {
         )}
       </div>
 
-      {/* Call To Action */}
-      <div className="bg-gradient-to-r from-primary to-primary/80 dark:from-neutral-500/20 dark:to-neutral-500/20 py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Need a design project?</h2>
-          <p className="text-xl text-foreground dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
-            Let's create a visual identity that captures your brand's essence and connects with your audience.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://wa.me/919832078313?text=Hi%2C%20I%20need%20a%20design%20project" target="_blank" rel="noopener noreferrer">
-              <button className="px-8 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                Start Your Project
-              </button>
-            </a>
-            <a href="/portfolio">
-              <button className="px-8 py-3 bg-card hover:bg-muted text-primary border border-primary font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                View More Designs
-              </button>
-            </a>
-          </div>
-        </div>
-      </div>
+      <PageCTA
+        title="Need a design project?"
+        subtitle="Let's create a visual identity that captures your brand's essence and connects with your audience."
+        primary={{"label":"Start your project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20need%20a%20design%20project","external":true}}
+        secondary={{"label":"View more designs","href":"/portfolio"}}
+      />
     </div>
   );
 };

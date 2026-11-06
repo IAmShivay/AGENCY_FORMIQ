@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import { SEO_CONSTANTS } from '@/lib/seo';
 import Hero from '@/components/Hero';
 import ServicesBand from '@/components/studio/ServicesBand';
-import TrustBar from '@/components/landing/TrustBar';
 import HowItWorks from '@/components/landing/HowItWorks';
 import Services from '@/components/Services';
 import PortfolioShowcase from '@/components/landing/PortfolioShowcase';
@@ -13,23 +13,16 @@ import FAQSection from '@/components/landing/FAQSection';
 import FinalCTA from '@/components/landing/FinalCTA';
 
 export const metadata: Metadata = {
-  title: 'FormiqStudio — Website & Digital Marketing Agency in Kolkata, Durgapur & Asansol | Rs 6,999/mo',
-  description: 'Get more customers without confusion. Website + Facebook & Instagram ads + Google Ads & SEO + social media — all included for Rs 6,999/month. 50+ local businesses in Kolkata, Durgapur & Asansol trust us. Live in 15 days, no lock-in.',
-  keywords: [
-    'FormiqStudio',
-    'website development Kolkata',
-    'digital marketing Durgapur',
-    'web design Asansol',
-    'Facebook ads Kolkata',
-    'SEO services West Bengal',
-  ],
+  title: 'FormiqStudio — Brand, website & Shopify studio',
+  description: SEO_CONSTANTS.DEFAULT_DESCRIPTION,
+  keywords: ['FormiqStudio', ...SEO_CONSTANTS.KEYWORDS],
   alternates: { canonical: 'https://formiqstudio.in' },
   openGraph: {
     title: 'FormiqStudio — Get More Customers Without the Confusion',
-    description: 'Website + Ads + Social Media for Kolkata, Durgapur & Asansol. Rs 6,999/mo, live in 15 days, no lock-in.',
+    description: 'Brand identity, websites and Shopify stores for growing brands. Fixed quotes, clear timelines.',
     url: 'https://formiqstudio.in',
     siteName: 'FormiqStudio',
-    images: [{ url: '/images/og-image.jpg', width: 1200, height: 630, alt: 'FormiqStudio local agency' }],
+    images: [{ url: '/images/og-image.jpg', width: 1200, height: 630, alt: 'FormiqStudio design and development studio' }],
     locale: 'en_IN',
     type: 'website',
   },
@@ -40,16 +33,15 @@ export default function Home() {
     <div className="overflow-x-clip">
       <Hero />
       <ServicesBand />
-      <TrustBar />
-      <HowItWorks />
+      <div className="tone-ink"><PortfolioShowcase /></div>
       <Services />
-      <PortfolioShowcase />
+      <div className="tone-sand"><HowItWorks /></div>
       <Testimonials />
-      <LatestBlogPosts />
       <AIBookingAgents />
       <PricingSection />
       <FAQSection />
-      <FinalCTA />
+      <LatestBlogPosts />
+      <div className="tone-ember"><FinalCTA /></div>
     </div>
   );
 }

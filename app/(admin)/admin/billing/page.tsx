@@ -3,19 +3,31 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import {
-  CreditCard,
   Search,
-  Filter,
   ExternalLink,
   Loader2,
-  IndianRupee,
-  CheckCircle,
-  Clock,
-  XCircle,
   Copy,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BADGE,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EMPTY,
+  ADMIN_EYEBROW,
+  ADMIN_ICON_BTN,
+  ADMIN_INPUT,
+  ADMIN_ROW,
+  ADMIN_STAT_VALUE,
+  ADMIN_TABLE,
+  ADMIN_TABLE_WRAP,
+  ADMIN_TD,
+  ADMIN_TH,
+  ADMIN_TONE,
+  type AdminTone,
+} from '@/components/admin/admin-ui';
 
 interface Payment {
   id: string;
@@ -33,6 +45,13 @@ interface Payment {
   paid_at: string | null;
   created_at: string;
 }
+
+const PAYMENT_STATUS_TONE: Record<string, AdminTone> = {
+  paid: 'positive',
+  pending: 'warning',
+  failed: 'negative',
+  refunded: 'neutral',
+};
 
 export default function BillingPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -77,190 +96,161 @@ export default function BillingPage() {
       .reduce((sum, p) => sum + p.amount, 0),
   };
 
-  const statusIcon = (status: string) => {
-    switch (status) {
-      case 'paid':
-        return <CheckCircle className="w-4 h-4 text-green-600" />;
-      case 'pending':
-        return <Clock className="w-4 h-4 text-amber-500" />;
-      case 'failed':
-        return <XCircle className="w-4 h-4 text-red-500" />;
-      default:
-        return <Clock className="w-4 h-4 text-gray-400" />;
-    }
-  };
-
   const statusBadge = (status: string) => {
-    const styles: Record<string, string> = {
-      paid: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-      pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-      failed: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-      refunded: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400',
-    };
+    const tone = PAYMENT_STATUS_TONE[status] || PAYMENT_STATUS_TONE.pending;
     return (
-      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${styles[status] || styles.pending}`}>
-        {statusIcon(status)}
+      <span className={`${ADMIN_BADGE} ${ADMIN_TONE[tone]}`}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </span>
     );
   };
 
+  const statTiles = [
+    { label: 'Total revenue', value: `₹${stats.totalRevenue.toLocaleString('en-IN')}` },
+    { label: 'Total payments', value: stats.total },
+    { label: 'Paid', value: stats.paid },
+    { label: 'Pending', value: stats.pending },
+  ];
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Billing & Payments</h1>
-        <p className="text-sm text-muted-foreground mt-1">Track all payment links and transactions</p>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Clients"
+        title="Billing and payments"
+        description="Track all payment links and transactions."
+      />
+
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {statTiles.map((tile) => (
+          <div key={tile.label} className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} min-w-0`}>
+            <p className={ADMIN_EYEBROW}>{tile.label}</p>
+            <p className={`${ADMIN_STAT_VALUE} mt-3 break-all`}>{tile.value}</p>
+          </div>
+        ))}
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-card rounded-xl border border-border p-4">
-          <p className="text-sm text-muted-foreground">Total Revenue</p>
-          <p className="text-2xl font-bold text-foreground flex items-center gap-1">
-            <IndianRupee className="w-5 h-5" />
-            {stats.totalRevenue.toLocaleString('en-IN')}
-          </p>
-        </div>
-        <div className="bg-card rounded-xl border border-border p-4">
-          <p className="text-sm text-muted-foreground">Total Payments</p>
-          <p className="text-2xl font-bold text-foreground">{stats.total}</p>
-        </div>
-        <div className="bg-card rounded-xl border border-border p-4">
-          <p className="text-sm text-muted-foreground">Paid</p>
-          <p className="text-2xl font-bold text-green-600">{stats.paid}</p>
-        </div>
-        <div className="bg-card rounded-xl border border-border p-4">
-          <p className="text-sm text-muted-foreground">Pending</p>
-          <p className="text-2xl font-bold text-amber-500">{stats.pending}</p>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by client, quotation, email, or transaction ID..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+            className={`${ADMIN_INPUT} pl-10`}
           />
         </div>
-        <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-muted-foreground" />
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2.5 rounded-xl bg-background border border-border focus:border-primary text-foreground text-sm outline-none"
-          >
-            <option value="all">All Status</option>
-            <option value="paid">Paid</option>
-            <option value="pending">Pending</option>
-            <option value="failed">Failed</option>
-            <option value="refunded">Refunded</option>
-          </select>
-        </div>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          aria-label="Filter by status"
+          className={`${ADMIN_INPUT} sm:w-48`}
+        >
+          <option value="all">All statuses</option>
+          <option value="paid">Paid</option>
+          <option value="pending">Pending</option>
+          <option value="failed">Failed</option>
+          <option value="refunded">Refunded</option>
+        </select>
       </div>
 
-      {/* Table */}
       {filtered.length === 0 ? (
-        <div className="bg-card rounded-xl border border-border p-12 text-center">
-          <CreditCard className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-          <h3 className="text-lg font-semibold text-foreground mb-1">No payments found</h3>
-          <p className="text-sm text-muted-foreground">
+        <div className={`${ADMIN_CARD} ${ADMIN_EMPTY}`}>
+          <p className="font-medium text-foreground">No payments found</p>
+          <p className="mt-1">
             {payments.length === 0
               ? 'Generate payment links from your quotations to see them here.'
               : 'Try adjusting your search or filters.'}
           </p>
         </div>
       ) : (
-        <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border bg-muted/30">
-                  <th className="text-left p-3 font-medium text-muted-foreground">Client</th>
-                  <th className="text-left p-3 font-medium text-muted-foreground">Quotation</th>
-                  <th className="text-right p-3 font-medium text-muted-foreground">Amount</th>
-                  <th className="text-center p-3 font-medium text-muted-foreground">Status</th>
-                  <th className="text-left p-3 font-medium text-muted-foreground">Transaction</th>
-                  <th className="text-left p-3 font-medium text-muted-foreground">Date</th>
-                  <th className="text-right p-3 font-medium text-muted-foreground">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((payment) => (
-                  <tr key={payment.id} className="border-b border-border hover:bg-muted/20 transition-colors">
-                    <td className="p-3">
-                      <div>
-                        <p className="font-medium text-foreground">{payment.client_name}</p>
-                        <p className="text-xs text-muted-foreground">{payment.client_email}</p>
-                      </div>
-                    </td>
-                    <td className="p-3">
-                      {payment.quotation_id ? (
-                        <Link
-                          href={`/admin/quotations/${payment.quotation_id}`}
-                          className="text-primary hover:underline font-medium"
-                        >
-                          {payment.quotation_number}
-                        </Link>
-                      ) : (
-                        <span className="text-muted-foreground">{payment.quotation_number}</span>
-                      )}
-                    </td>
-                    <td className="p-3 text-right font-semibold text-foreground">
-                      ₹{payment.amount.toLocaleString('en-IN')}
-                    </td>
-                    <td className="p-3 text-center">{statusBadge(payment.status)}</td>
-                    <td className="p-3 text-xs text-muted-foreground font-mono">
-                      {payment.transaction_id || '—'}
-                    </td>
-                    <td className="p-3 text-xs text-muted-foreground">
+        <div className={ADMIN_TABLE_WRAP}>
+          <table className={ADMIN_TABLE}>
+            <thead>
+              <tr>
+                <th className={ADMIN_TH}>Client</th>
+                <th className={ADMIN_TH}>Quotation</th>
+                <th className={`${ADMIN_TH} text-right`}>Amount</th>
+                <th className={ADMIN_TH}>Status</th>
+                <th className={ADMIN_TH}>Transaction</th>
+                <th className={ADMIN_TH}>Date</th>
+                <th className={`${ADMIN_TH} text-right`}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((payment) => (
+                <tr key={payment.id} className={ADMIN_ROW}>
+                  <td className={ADMIN_TD}>
+                    <p className="font-medium text-foreground">{payment.client_name}</p>
+                    <p className="text-xs text-muted-foreground">{payment.client_email}</p>
+                  </td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap`}>
+                    {payment.quotation_id ? (
+                      <Link
+                        href={`/admin/quotations/${payment.quotation_id}`}
+                        className="font-medium text-foreground underline-offset-4 hover:underline"
+                      >
+                        {payment.quotation_number}
+                      </Link>
+                    ) : (
+                      <span className="text-muted-foreground">{payment.quotation_number}</span>
+                    )}
+                  </td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap text-right font-medium tabular-nums`}>
+                    ₹{payment.amount.toLocaleString('en-IN')}
+                  </td>
+                  <td className={ADMIN_TD}>{statusBadge(payment.status)}</td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap font-mono text-xs text-muted-foreground`}>
+                    {payment.transaction_id || '—'}
+                  </td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap`}>
+                    <span className={ADMIN_EYEBROW}>
                       {payment.paid_at
                         ? new Date(payment.paid_at).toLocaleDateString('en-IN')
                         : new Date(payment.created_at).toLocaleDateString('en-IN')}
-                    </td>
-                    <td className="p-3 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        {payment.payment_link && (
-                          <button
-                            onClick={() => {
-                              navigator.clipboard.writeText(payment.payment_link);
-                              toast.success('Payment link copied!');
-                            }}
-                            className="p-1.5 rounded-lg hover:bg-secondary transition-colors"
-                            title="Copy payment link"
-                          >
-                            <Copy className="w-3.5 h-3.5 text-muted-foreground" />
-                          </button>
-                        )}
-                        {payment.quotation_id && (
-                          <Link
-                            href={`/quote/${payment.quotation_id}`}
-                            target="_blank"
-                            className="p-1.5 rounded-lg hover:bg-secondary transition-colors"
-                            title="View quotation"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
-                          </Link>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </span>
+                  </td>
+                  <td className={`${ADMIN_TD} text-right`}>
+                    <div className="flex items-center justify-end gap-1">
+                      {payment.payment_link && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(payment.payment_link);
+                            toast.success('Payment link copied!');
+                          }}
+                          className={ADMIN_ICON_BTN}
+                          title="Copy payment link"
+                          aria-label="Copy payment link"
+                        >
+                          <Copy className="h-4 w-4" />
+                        </button>
+                      )}
+                      {payment.quotation_id && (
+                        <Link
+                          href={`/quote/${payment.quotation_id}`}
+                          target="_blank"
+                          className={ADMIN_ICON_BTN}
+                          title="View quotation"
+                          aria-label="View quotation"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </Link>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

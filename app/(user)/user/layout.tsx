@@ -51,12 +51,12 @@ export default function UserLayout({
   }
 
   return (
-    <div className="flex h-screen bg-[#F9FAFB] dark:bg-[#111827]">
+    <div className="flex h-screen bg-background">
       {/* Mobile sidebar toggle - only shown when sidebar is closed */}
       {!sidebarOpen && (
         <button
           onClick={() => setSidebarOpen(true)}
-          className="fixed z-50 bottom-6 right-6 p-3 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white lg:hidden shadow-xl hover:from-violet-700 hover:to-fuchsia-700 transition-colors duration-200"
+          className="fixed z-50 bottom-6 right-6 p-3 rounded-full bg-primary text-primary-foreground lg:hidden shadow-xl hover:bg-primary/90 transition-colors duration-200"
         >
           <Menu size={24} />
         </button>
@@ -74,49 +74,46 @@ export default function UserLayout({
           ></div>
         )}
 
-        <div className="relative flex flex-col w-80 h-full bg-white dark:bg-white/10 backdrop-blur-md text-gray-800 dark:text-white overflow-hidden z-40 shadow-xl border-r border-gray-100 dark:border-white/10">
+        <div className="relative flex flex-col w-80 h-full bg-card backdrop-blur-md text-foreground overflow-hidden z-40 shadow-xl border-r border-border">
           {/* Close button for mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="absolute top-4 right-4 p-1 rounded-full bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-white/20 lg:hidden"
+            className="absolute top-4 right-4 p-1 rounded-full bg-muted text-muted-foreground hover:bg-border lg:hidden"
           >
             <X size={18} />
           </button>
 
           {/* Sidebar Header with Modern Design */}
           <div className="relative px-8 py-8">
-            {/* Decorative elements - AI-inspired gradient orbs */}
-            <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-r from-violet-600/20 to-indigo-600/20 rounded-full filter blur-[80px]"></div>
-            <div className="absolute top-10 right-10 w-20 h-20 bg-gradient-to-r from-fuchsia-500/20 to-pink-500/20 rounded-full filter blur-[50px]"></div>
 
             <div className="relative flex items-center">
-              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                   <circle cx="9" cy="7" r="4"></circle>
                 </svg>
               </div>
               <div className="ml-3">
-                <h1 className="text-xl font-bold text-gray-800 dark:text-white">FormiqStudio</h1>
-                <p className="text-xs text-violet-600 dark:text-violet-300">Crafting infinite digital experiences</p>
+                <h1 className="text-xl font-bold text-foreground">FormiqStudio</h1>
+                <p className="text-xs text-primary">Crafting infinite digital experiences</p>
               </div>
             </div>
           </div>
 
           {/* User Profile with Modern Design */}
           <div className="relative mx-6 mb-8">
-            <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/10 shadow-md">
+            <div className="p-4 bg-background rounded-2xl border border-border shadow-md">
               <div className="flex items-center">
                 <div className="relative">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-pink-500 flex items-center justify-center shadow-md">
-                    <span className="text-white text-lg font-semibold">{user?.email?.charAt(0).toUpperCase()}</span>
+                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shadow-md">
+                    <span className="text-primary-foreground text-lg font-semibold">{user?.email?.charAt(0).toUpperCase()}</span>
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-400 border-2 border-gray-50 dark:border-gray-900"></div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-400 border-2 border-border"></div>
                 </div>
                 <div className="ml-3 overflow-hidden">
-                  <p className="text-sm font-medium text-gray-800 dark:text-white truncate">{user?.email}</p>
+                  <p className="text-sm font-medium text-foreground truncate">{user?.email}</p>
                   <div className="flex items-center mt-1">
-                    <p className="text-xs text-violet-600 dark:text-violet-300">User Account</p>
+                    <p className="text-xs text-primary">User Account</p>
                   </div>
                 </div>
               </div>
@@ -129,10 +126,10 @@ export default function UserLayout({
               {/* Dashboard */}
               <Link
                 href="/user"
-                className={`group flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-violet-700 dark:hover:text-white rounded-xl transition-all duration-200 ${pathname === '/user' ? 'bg-violet-50 dark:bg-violet-600/10 text-violet-700 dark:text-white border-l-4 border-violet-500' : 'hover:bg-violet-50/50 dark:hover:bg-white/5'}`}
+                className={`group flex items-center px-4 py-3 text-muted-foreground hover:text-primary/80 rounded-xl transition-all duration-200 ${pathname === '/user' ? 'bg-primary/10 text-primary border-l-4 border-primary' : 'hover:bg-primary/5'}`}
                 onClick={() => setSidebarOpen(false)}
               >
-                <div className={`p-1 mr-3 rounded-lg ${pathname === '/user' ? 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white' : 'bg-gray-100 dark:bg-white/10 text-violet-600 dark:text-violet-400 group-hover:bg-violet-100 dark:group-hover:bg-white/20'} transition-colors duration-200`}>
+                <div className={`p-1 mr-3 rounded-lg ${pathname === '/user' ? 'bg-primary text-primary-foreground' : 'bg-muted text-primary group-hover:bg-primary/10'} transition-colors duration-200`}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="3" width="7" height="9" rx="1" />
                     <rect x="14" y="3" width="7" height="5" rx="1" />
@@ -146,10 +143,10 @@ export default function UserLayout({
               {/* My Services */}
               <Link
                 href="/user/services"
-                className={`group flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-violet-700 dark:hover:text-white rounded-xl transition-all duration-200 ${pathname?.startsWith('/user/services') ? 'bg-violet-50 dark:bg-violet-600/10 text-violet-700 dark:text-white border-l-4 border-violet-500' : 'hover:bg-violet-50/50 dark:hover:bg-white/5'}`}
+                className={`group flex items-center px-4 py-3 text-muted-foreground hover:text-primary/80 rounded-xl transition-all duration-200 ${pathname?.startsWith('/user/services') ? 'bg-primary/10 text-primary border-l-4 border-primary' : 'hover:bg-primary/5'}`}
                 onClick={() => setSidebarOpen(false)}
               >
-                <div className={`p-1 mr-3 rounded-lg ${pathname?.startsWith('/user/services') ? 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white' : 'bg-gray-100 dark:bg-white/10 text-violet-600 dark:text-violet-400 group-hover:bg-violet-100 dark:group-hover:bg-white/20'} transition-colors duration-200`}>
+                <div className={`p-1 mr-3 rounded-lg ${pathname?.startsWith('/user/services') ? 'bg-primary text-primary-foreground' : 'bg-muted text-primary group-hover:bg-primary/10'} transition-colors duration-200`}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
@@ -162,10 +159,10 @@ export default function UserLayout({
               {/* Lead Management */}
               <Link
                 href="/user/leads"
-                className={`group flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-violet-700 dark:hover:text-white rounded-xl transition-all duration-200 ${pathname?.startsWith('/user/leads') ? 'bg-violet-50 dark:bg-violet-600/10 text-violet-700 dark:text-white border-l-4 border-violet-500' : 'hover:bg-violet-50/50 dark:hover:bg-white/5'}`}
+                className={`group flex items-center px-4 py-3 text-muted-foreground hover:text-primary/80 rounded-xl transition-all duration-200 ${pathname?.startsWith('/user/leads') ? 'bg-primary/10 text-primary border-l-4 border-primary' : 'hover:bg-primary/5'}`}
                 onClick={() => setSidebarOpen(false)}
               >
-                <div className={`p-1 mr-3 rounded-lg ${pathname?.startsWith('/user/leads') ? 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white' : 'bg-gray-100 dark:bg-white/10 text-violet-600 dark:text-violet-400 group-hover:bg-violet-100 dark:group-hover:bg-white/20'} transition-colors duration-200`}>
+                <div className={`p-1 mr-3 rounded-lg ${pathname?.startsWith('/user/leads') ? 'bg-primary text-primary-foreground' : 'bg-muted text-primary group-hover:bg-primary/10'} transition-colors duration-200`}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle>
@@ -179,10 +176,10 @@ export default function UserLayout({
               {/* Profile */}
               <Link
                 href="/user/profile"
-                className={`group flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-violet-700 dark:hover:text-white rounded-xl transition-all duration-200 ${pathname === '/user/profile' ? 'bg-violet-50 dark:bg-violet-600/10 text-violet-700 dark:text-white border-l-4 border-violet-500' : 'hover:bg-violet-50/50 dark:hover:bg-white/5'}`}
+                className={`group flex items-center px-4 py-3 text-muted-foreground hover:text-primary/80 rounded-xl transition-all duration-200 ${pathname === '/user/profile' ? 'bg-primary/10 text-primary border-l-4 border-primary' : 'hover:bg-primary/5'}`}
                 onClick={() => setSidebarOpen(false)}
               >
-                <div className={`p-1 mr-3 rounded-lg ${pathname === '/user/profile' ? 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white' : 'bg-gray-100 dark:bg-white/10 text-violet-600 dark:text-violet-400 group-hover:bg-violet-100 dark:group-hover:bg-white/20'} transition-colors duration-200`}>
+                <div className={`p-1 mr-3 rounded-lg ${pathname === '/user/profile' ? 'bg-primary text-primary-foreground' : 'bg-muted text-primary group-hover:bg-primary/10'} transition-colors duration-200`}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
@@ -194,10 +191,10 @@ export default function UserLayout({
               {/* Back to Website */}
               <Link
                 href="/"
-                className="group flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-violet-700 dark:hover:text-white rounded-xl transition-all duration-200 hover:bg-violet-50/50 dark:hover:bg-white/5"
+                className="group flex items-center px-4 py-3 text-muted-foreground hover:text-primary/80 rounded-xl transition-all duration-200 hover:bg-primary/5"
                 onClick={() => setSidebarOpen(false)}
               >
-                <div className="p-1 mr-3 rounded-lg bg-gray-100 dark:bg-white/10 text-violet-600 dark:text-violet-400 group-hover:bg-violet-100 dark:group-hover:bg-white/20 transition-colors duration-200">
+                <div className="p-1 mr-3 rounded-lg bg-muted text-primary group-hover:bg-primary/10 transition-colors duration-200">
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -209,12 +206,12 @@ export default function UserLayout({
           </div>
 
           {/* Sign Out Button with Modern AI-Era Styling */}
-          <div className="px-6 py-6 border-t border-gray-100 dark:border-white/10">
+          <div className="px-6 py-6 border-t border-border">
             <button
               onClick={handleSignOut}
-              className="flex items-center justify-center w-full px-4 py-3 bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 rounded-xl transition-all duration-200 group border border-red-100 dark:border-red-500/20"
+              className="flex items-center justify-center w-full px-4 py-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl transition-all duration-200 group border border-red-100"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-3 text-red-500 dark:text-red-400 group-hover:text-red-600 dark:group-hover:text-red-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-3 text-red-500 group-hover:text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                 <polyline points="16 17 21 12 16 7"></polyline>
                 <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -226,24 +223,24 @@ export default function UserLayout({
       </div>
 
       {/* Main content */}
-      <div className="flex-1 overflow-auto bg-[#F9FAFB] dark:bg-[#111827]">
+      <div className="flex-1 overflow-auto bg-background">
         {/* Top header with modern AI-era styling */}
-        <header className="sticky top-0 z-30 bg-white/90 dark:bg-[#1F2937]/90 backdrop-blur-md shadow-sm">
+        <header className="sticky top-0 z-30 bg-card/90 backdrop-blur-md border-b border-border">
           <div className="px-6 py-4 flex items-center justify-between">
             <div className="flex items-center">
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="p-2 rounded-lg text-gray-500 hover:bg-gray-100/80 dark:hover:bg-gray-700/80 lg:hidden mr-3 transition-colors duration-200"
+                className="p-2 rounded-lg text-muted-foreground hover:bg-muted/80 lg:hidden mr-3 transition-colors duration-200"
               >
                 <Menu className="w-6 h-6" />
               </button>
               <div>
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                <h2 className="text-xl font-semibold text-foreground">
                   {pathname === '/user' && 'Dashboard'}
                   {pathname === '/user/profile' && 'My Profile'}
                   {pathname?.startsWith('/user/services') && 'My Services'}
                 </h2>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 hidden sm:block">
+                <p className="text-xs text-muted-foreground mt-0.5 hidden sm:block">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               </div>
@@ -252,7 +249,7 @@ export default function UserLayout({
               <a
                 href="/"
                 target="_blank"
-                className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#374151] transition-colors duration-200"
+                className="p-2 rounded-lg text-muted-foreground hover:bg-muted transition-colors duration-200"
                 title="View Website"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -262,7 +259,7 @@ export default function UserLayout({
                 </svg>
               </a>
               <button
-                className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#374151] transition-colors duration-200"
+                className="p-2 rounded-lg text-muted-foreground hover:bg-muted transition-colors duration-200"
                 title="Toggle Theme"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -270,9 +267,9 @@ export default function UserLayout({
                 </svg>
               </button>
               <div className="relative">
-                <button className="p-1 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-pink-500 overflow-hidden shadow-md">
-                  <div className="w-8 h-8 rounded-full bg-white dark:bg-[#1F2937] flex items-center justify-center border-2 border-transparent">
-                    <span className="text-violet-600 dark:text-violet-400 text-sm font-semibold">{user?.email?.charAt(0).toUpperCase()}</span>
+                <button className="p-1 rounded-full bg-primary overflow-hidden shadow-md">
+                  <div className="w-8 h-8 rounded-full bg-card flex items-center justify-center border-2 border-transparent">
+                    <span className="text-primary text-sm font-semibold">{user?.email?.charAt(0).toUpperCase()}</span>
                   </div>
                 </button>
               </div>
@@ -283,9 +280,6 @@ export default function UserLayout({
         {/* Main content area with modern AI-era styling */}
         <main className="p-6 md:p-8">
           <div className="relative">
-            {/* Decorative elements - AI-inspired gradient orbs */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-r from-violet-600/5 to-fuchsia-600/5 rounded-full filter blur-[120px] -z-10 pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-r from-blue-600/5 to-cyan-600/5 rounded-full filter blur-[120px] -z-10 pointer-events-none"></div>
 
             {/* Actual content */}
             {children}

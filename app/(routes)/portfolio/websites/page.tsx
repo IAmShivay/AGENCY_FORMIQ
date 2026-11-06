@@ -1,5 +1,7 @@
 "use client";
 
+import PageHeader from '@/components/studio/PageHeader';
+import PageCTA from '@/components/studio/PageCTA';
 import React, { useState, useEffect } from 'react';
 import { Globe, Monitor, ExternalLink, X } from 'lucide-react';
 import { WebsiteProject as DBWebsiteProject, getWebsiteProjects } from '@/lib/portfolio';
@@ -70,8 +72,6 @@ const WebsitesPortfolio = () => {
         setLoading(true);
         const dbProjects = await getWebsiteProjects();
 
-        console.log('Fetched website projects:', dbProjects);
-
         // If we have data from the database, use it
         if (dbProjects && dbProjects.length > 0) {
           // Convert DB model to component model
@@ -79,7 +79,6 @@ const WebsitesPortfolio = () => {
           setWebsiteProjects(convertedProjects);
         } else {
           // Otherwise, set empty array (don't use fallback data)
-          console.log('No website projects found in database');
           setWebsiteProjects([]);
           // Commented out fallback data usage
           // setWebsiteProjects(fallbackWebsiteProjects);
@@ -237,75 +236,30 @@ const WebsitesPortfolio = () => {
     },
   ];
 
-  // Log when website projects change
-  useEffect(() => {
-    console.log('Website projects updated:', websiteProjects.length);
-  }, [websiteProjects.length]);
-
   // Filter projects based on active category
   const filteredProjects = activeFilter === 'All'
     ? websiteProjects
     : websiteProjects.filter(project => project.category === activeFilter);
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero Section with Parallax Effect */}
-      <div className="relative overflow-hidden bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent pt-28 md:pt-36 lg:pt-44">
-        <div className="container mx-auto px-4 py-20 md:py-32">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center mb-6">
-              <Globe className="w-10 h-10 text-primary mr-3" />
-              <h1 className="text-5xl md:text-6xl font-bold premium-text-gradient">
-                Website Development
-              </h1>
-            </div>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Crafting exceptional digital experiences that drive results and engage users.
-            </p>
-          </div>
-        </div>
-
-        {/* Geometric Shapes for Visual Interest */}
-        <div className="absolute top-20 left-12 w-24 h-24 bg-primary/10 rounded-full blur-xl"></div>
-        <div className="absolute bottom-12 right-16 w-32 h-32 bg-accent/10 rounded-full blur-xl"></div>
-
-        {/* Wave Divider */}
-        <div className="absolute -bottom-6 left-0 right-0 h-12 bg-background transform -skew-y-2"></div>
-      </div>
-
-      {/* Stats Section */}
-      <div className="container mx-auto px-4 py-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-          <div className="bg-card p-6 rounded-xl shadow-md text-center border border-border/20">
-            <p className="text-3xl font-bold text-primary mb-1">50+</p>
-            <p className="text-sm text-muted-foreground">Websites Launched</p>
-          </div>
-          <div className="bg-card p-6 rounded-xl shadow-md text-center border border-border/20">
-            <p className="text-3xl font-bold text-primary mb-1">12</p>
-            <p className="text-sm text-muted-foreground">Industries Served</p>
-          </div>
-          <div className="bg-card p-6 rounded-xl shadow-md text-center border border-border/20">
-            <p className="text-3xl font-bold text-primary mb-1">99%</p>
-            <p className="text-sm text-muted-foreground">Client Satisfaction</p>
-          </div>
-          <div className="bg-card p-6 rounded-xl shadow-md text-center border border-border/20">
-            <p className="text-3xl font-bold text-primary mb-1">5</p>
-            <p className="text-sm text-muted-foreground">Industry Awards</p>
-          </div>
-        </div>
-      </div>
+    <div className="bg-background text-foreground">
+      <PageHeader
+        eyebrow="(01) Portfolio / Websites"
+        title={<>Website <span className="text-primary">development</span></>}
+        intro="Crafting exceptional digital experiences that drive results and engage users."
+      />
 
       {/* Main Portfolio Content */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Filter Controls */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveFilter(category)}
-              className={`px-5 py-2 rounded-full transition-all duration-300 ${activeFilter === category
-                  ? 'bg-primary text-primary-foreground shadow-md neon-glow-primary'
-                  : 'bg-card border border-border hover:bg-muted'
+              className={`min-h-11 px-5 rounded-full border text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${activeFilter === category
+                  ? 'bg-foreground text-background border-foreground'
+                  : 'border-border text-foreground hover:border-foreground/40'
                 }`}
             >
               {category}
@@ -325,12 +279,12 @@ const WebsitesPortfolio = () => {
           {!loading && filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="group bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border/20 flex flex-row h-[180px] md:h-[200px]"
+              className="group bg-card rounded-[22px] overflow-hidden transition-all duration-300 border border-border flex flex-row h-[180px] md:h-[200px] hover:border-foreground/30"
             >
               {/* Project Image - Left side */}
               <div className="w-[140px] md:w-[200px] shrink-0 overflow-hidden relative">
                 <div
-                  className="w-full h-full bg-muted flex items-center justify-center transform group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full bg-muted flex items-center justify-center group-hover:scale-105 transition-transform duration-500"
                   style={{
                     backgroundImage: `url(${project.image})`,
                     backgroundSize: 'cover',
@@ -415,7 +369,7 @@ const WebsitesPortfolio = () => {
       {/* Case Study Popup */}
       {isPopupOpen && selectedProject && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-border">
+          <div className="bg-card rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-border" data-lenis-prevent>
             {/* Popup Header */}
             <div className="sticky top-0 bg-card p-6 border-b border-border flex justify-between items-center">
               <h2 className="text-2xl font-bold text-foreground">{selectedProject.title} Case Study</h2>
@@ -503,7 +457,7 @@ const WebsitesPortfolio = () => {
                     href={selectedProject.liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                    className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-all duration-300 "
                   >
                     Visit Live Site
                     <ExternalLink className="w-4 h-4 ml-2" />
@@ -515,58 +469,12 @@ const WebsitesPortfolio = () => {
         </div>
       )}
 
-      {/* Testimonial Section */}
-      <div className="bg-card py-16 mt-12 border-t border-border">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-10 text-foreground">What Our Clients Say</h2>
-
-            <div className="bg-accent/10 p-8 rounded-2xl shadow-lg relative border border-accent/20">
-              {/* Quote Icon */}
-              <div className="absolute -top-5 left-10 bg-accent text-accent-foreground p-2 rounded-full">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                </svg>
-              </div>
-
-              <p className="text-lg italic text-muted-foreground mb-6">
-                "formiqstudio transformed our outdated website into a modern, responsive platform that perfectly represents our brand.
-                The team's attention to detail and technical expertise exceeded our expectations, and the results have been incredible for our business."
-              </p>
-
-              <div className="flex items-center">
-                <div className="w-12 h-12 rounded-full bg-muted mr-4"></div>
-                <div>
-                  <p className="font-bold text-foreground">Sarah Johnson</p>
-                  <p className="text-sm text-muted-foreground">Marketing Director, TechVision Inc.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Call To Action */}
-      <div className="bg-gradient-to-r from-primary to-accent py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6 text-primary-foreground">Ready to elevate your web presence?</h2>
-          <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-            Let's create a website that drives results and provides exceptional user experiences.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a href="https://wa.me/919832078313?text=Hi%2C%20I%20need%20a%20website%20for%20my%20business" target="_blank" rel="noopener noreferrer">
-              <button className="px-8 py-3 bg-background hover:bg-background/90 text-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                Start a Project
-              </button>
-            </a>
-            <a href="/portfolio">
-              <button className="px-8 py-3 bg-transparent hover:bg-white/10 text-primary-foreground border-2 border-primary-foreground font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                View More Work
-              </button>
-            </a>
-          </div>
-        </div>
-      </div>
+      <PageCTA
+        title="Ready to elevate your web presence?"
+        subtitle="Let's create a website that drives results and provides exceptional user experiences."
+        primary={{"label":"Start a project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20need%20a%20website%20for%20my%20business","external":true}}
+        secondary={{"label":"View more work","href":"/portfolio"}}
+      />
     </div>
   );
 };

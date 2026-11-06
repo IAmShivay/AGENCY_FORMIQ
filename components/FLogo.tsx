@@ -1,65 +1,24 @@
-import React from 'react';
+import { LOGO_F_PATH, LOGO_SPARKS, LOGO_TILE } from '@/components/studio/logo-geometry';
 
 interface FLogoProps {
   size?: number;
   className?: string;
 }
 
-const FLogo: React.FC<FLogoProps> = ({ size = 48, className = "" }) => {
+const INK = 'hsl(var(--ink))';
+const PAPER = 'hsl(var(--paper))';
+const EMBER = 'hsl(var(--ember))';
+
+const FLogo = ({ size = 48, className = '' }: FLogoProps) => {
+  const s = LOGO_SPARKS.symbol;
   return (
-    <div className={`flex items-center justify-center ${className}`} style={{ width: size, height: size }}>
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 100 100"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full"
-      >
-        <defs>
-          <linearGradient id="fGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="hsl(var(--primary))" />
-            <stop offset="100%" stopColor="hsl(var(--accent))" />
-          </linearGradient>
-          
-          <filter id="softGlow">
-            <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-            <feMerge>
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-
-        {/* Clean rounded square frame */}
-        <rect 
-          x="15" y="15" 
-          width="70" height="70" 
-          rx="12" 
-          fill="none" 
-          stroke="url(#fGrad)" 
-          strokeWidth="2"
-          opacity="0.3"
-        />
-
-        {/* Modern F design */}
-        <g fill="url(#fGrad)" filter="url(#softGlow)">
-          {/* Main vertical stroke */}
-          <rect x="30" y="30" width="6" height="40" rx="3" />
-          
-          {/* Top horizontal stroke */}
-          <rect x="30" y="30" width="25" height="6" rx="3" />
-          
-          {/* Middle horizontal stroke */}
-          <rect x="30" y="47" width="20" height="6" rx="3" />
-          
-          {/* Modern accent dots */}
-          <circle cx="58" cy="33" r="2" opacity="0.8" />
-          <circle cx="53" cy="50" r="2" opacity="0.8" />
-          <circle cx="42" cy="65" r="1.5" opacity="0.6" />
-        </g>
-      </svg>
-    </div>
+    <svg width={size} height={size} viewBox="0 0 100 100" role="img" aria-label="Formiq" className={className}>
+      <rect width="100" height="100" rx={LOGO_TILE.radius} fill={INK} />
+      <g transform={LOGO_TILE.transform}>
+        <path d={LOGO_F_PATH} fill={PAPER} />
+        <rect x={s.x} y={s.y} width={s.size} height={s.size} fill={EMBER} />
+      </g>
+    </svg>
   );
 };
 

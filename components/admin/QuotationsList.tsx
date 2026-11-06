@@ -11,29 +11,37 @@ import {
   Share2,
   Eye,
   Search,
-  Filter,
   MoreHorizontal,
   FileText,
-  Calendar,
-  DollarSign,
-  User,
-  Building,
+  Loader2,
   Mail,
-  Send
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
 import EmailQuotationDialog from './EmailQuotationDialog';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_DANGER,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_EMPTY,
+  ADMIN_ICON_BTN,
+  ADMIN_ROW,
+  ADMIN_TABLE,
+  ADMIN_TABLE_WRAP,
+  ADMIN_TD,
+  ADMIN_TH,
+  ADMIN_TONE,
+  type AdminTone,
+} from './admin-ui';
 
 interface Quotation {
   id: string;
@@ -48,6 +56,15 @@ interface Quotation {
   created_at: string;
   updated_at: string;
 }
+
+const STATUS_CONFIG: Record<Quotation['status'], { label: string; tone: AdminTone }> = {
+  draft: { label: 'Draft', tone: 'neutral' },
+  sent: { label: 'Sent', tone: 'accent' },
+  approved: { label: 'Approved', tone: 'positive' },
+  rejected: { label: 'Rejected', tone: 'negative' },
+};
+
+const SMALL_BTN = 'h-8 px-3 text-xs';
 
 export default function QuotationsList() {
   const router = useRouter();
@@ -96,7 +113,7 @@ export default function QuotationsList() {
         .eq('id', id);
 
       if (error) throw error;
-      
+
       toast.success('Quotation deleted successfully');
       fetchQuotations();
     } catch (error) {
@@ -113,7 +130,7 @@ export default function QuotationsList() {
         .eq('id', id);
 
       if (error) throw error;
-      
+
       toast.success('Status updated successfully');
       fetchQuotations();
     } catch (error) {
@@ -123,19 +140,12 @@ export default function QuotationsList() {
   };
 
   const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      draft: { label: 'Draft', variant: 'secondary' as const },
-      sent: { label: 'Sent', variant: 'default' as const },
-      approved: { label: 'Approved', variant: 'default' as const },
-      rejected: { label: 'Rejected', variant: 'destructive' as const }
-    };
-
-    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.draft;
-    return <Badge variant={config.variant}>{config.label}</Badge>;
+    const config = STATUS_CONFIG[status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.draft;
+    return <span className={`${ADMIN_BADGE} ${ADMIN_TONE[config.tone]}`}>{config.label}</span>;
   };
 
   const filteredQuotations = quotations.filter(quotation => {
-    const matchesSearch = 
+    const matchesSearch =
       quotation.quotation_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
       quotation.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       quotation.client_company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -147,232 +157,208 @@ export default function QuotationsList() {
   });
 
   const downloadPDF = async (quotation: Quotation) => {
-    // This would integrate with a PDF generation service
     toast.info('PDF download feature will be implemented');
   };
 
   const shareQuotation = async (quotation: Quotation) => {
-    // This would generate a shareable link or send email
     toast.info('Share feature will be implemented');
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" aria-label="Loading" />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Quotations</h1>
-          <p className="text-muted-foreground">Manage your project quotations and proposals</p>
-        </div>
-        <Button onClick={() => router.push('/admin/quotations/new')}>
-          <Plus className="w-4 h-4 mr-2" />
-          New Quotation
-        </Button>
-      </div>
-
-      {/* Filters */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                <Input
-                  placeholder="Search quotations..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="sent">Sent</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={`${sortBy}-${sortOrder}`} onValueChange={(value) => {
-              const [field, order] = value.split('-');
-              setSortBy(field);
-              setSortOrder(order as 'asc' | 'desc');
-            }}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="created_at-desc">Newest First</SelectItem>
-                <SelectItem value="created_at-asc">Oldest First</SelectItem>
-                <SelectItem value="total_amount-desc">Highest Amount</SelectItem>
-                <SelectItem value="total_amount-asc">Lowest Amount</SelectItem>
-                <SelectItem value="client_name-asc">Client Name A-Z</SelectItem>
-                <SelectItem value="client_name-desc">Client Name Z-A</SelectItem>
-              </SelectContent>
-            </Select>
+      <div className={`${ADMIN_CARD} p-4`}>
+        <div className="flex flex-col gap-3 md:flex-row">
+          <div className="relative flex-1">
+            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Search quotations..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Quotations Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredQuotations.map((quotation) => (
-          <Card key={quotation.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-lg">{quotation.quotation_number}</CardTitle>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {quotation.project_title}
-                  </p>
-                </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => router.push(`/admin/quotations/${quotation.id}`)}>
-                      <Eye className="w-4 h-4 mr-2" />
-                      View
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/admin/quotations/${quotation.id}/edit`)}>
-                      <Edit className="w-4 h-4 mr-2" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => downloadPDF(quotation)}>
-                      <Download className="w-4 h-4 mr-2" />
-                      Download PDF
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <EmailQuotationDialog
-                        quotationId={quotation.id}
-                        quotationNumber={quotation.quotation_number}
-                        clientName={quotation.client_name}
-                        clientEmail={quotation.client_email}
-                        trigger={
-                          <div className="flex items-center w-full px-2 py-1.5 text-sm cursor-pointer hover:bg-accent rounded-sm">
-                            <Mail className="w-4 h-4 mr-2" />
-                            Send Email
-                          </div>
-                        }
-                      />
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => shareQuotation(quotation)}>
-                      <Share2 className="w-4 h-4 mr-2" />
-                      Share Link
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => deleteQuotation(quotation.id)}
-                      className="text-destructive"
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm">{quotation.client_name}</span>
-              </div>
-              
-              {quotation.client_company && (
-                <div className="flex items-center gap-2">
-                  <Building className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm">{quotation.client_company}</span>
-                </div>
-              )}
-
-              <div className="flex items-center gap-2">
-                <DollarSign className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-semibold">
-                  ₹{quotation.total_amount.toLocaleString('en-IN')}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm">
-                  Valid until: {new Date(quotation.valid_until).toLocaleDateString()}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between pt-2">
-                {getStatusBadge(quotation.status)}
-                <span className="text-xs text-muted-foreground">
-                  {new Date(quotation.created_at).toLocaleDateString()}
-                </span>
-              </div>
-
-              {/* Status Update Buttons */}
-              {quotation.status === 'draft' && (
-                <div className="flex gap-2 pt-2">
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    onClick={() => updateStatus(quotation.id, 'sent')}
-                  >
-                    Mark as Sent
-                  </Button>
-                </div>
-              )}
-
-              {quotation.status === 'sent' && (
-                <div className="flex gap-2 pt-2">
-                  <Button 
-                    size="sm" 
-                    variant="default"
-                    onClick={() => updateStatus(quotation.id, 'approved')}
-                  >
-                    Approve
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    variant="destructive"
-                    onClick={() => updateStatus(quotation.id, 'rejected')}
-                  >
-                    Reject
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-full md:w-[180px]">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="sent">Sent</SelectItem>
+              <SelectItem value="approved">Approved</SelectItem>
+              <SelectItem value="rejected">Rejected</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={`${sortBy}-${sortOrder}`} onValueChange={(value) => {
+            const [field, order] = value.split('-');
+            setSortBy(field);
+            setSortOrder(order as 'asc' | 'desc');
+          }}>
+            <SelectTrigger className="w-full md:w-[200px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="created_at-desc">Newest first</SelectItem>
+              <SelectItem value="created_at-asc">Oldest first</SelectItem>
+              <SelectItem value="total_amount-desc">Highest amount</SelectItem>
+              <SelectItem value="total_amount-asc">Lowest amount</SelectItem>
+              <SelectItem value="client_name-asc">Client name A-Z</SelectItem>
+              <SelectItem value="client_name-desc">Client name Z-A</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {filteredQuotations.length === 0 && (
-        <Card>
-          <CardContent className="text-center py-12">
-            <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No quotations found</h3>
-            <p className="text-muted-foreground mb-4">
-              {searchTerm || statusFilter !== 'all' 
-                ? 'Try adjusting your search or filters' 
-                : 'Create your first quotation to get started'
-              }
-            </p>
-            <Button onClick={() => router.push('/admin/quotations/new')}>
-              <Plus className="w-4 h-4 mr-2" />
-              Create Quotation
-            </Button>
-          </CardContent>
-        </Card>
+      {filteredQuotations.length > 0 ? (
+        <div className={ADMIN_TABLE_WRAP}>
+          <table className={ADMIN_TABLE}>
+            <thead>
+              <tr>
+                <th className={ADMIN_TH}>Quotation</th>
+                <th className={ADMIN_TH}>Client</th>
+                <th className={`${ADMIN_TH} text-right`}>Amount</th>
+                <th className={ADMIN_TH}>Valid until</th>
+                <th className={ADMIN_TH}>Status</th>
+                <th className={ADMIN_TH}>Created</th>
+                <th className={`${ADMIN_TH} text-right`}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredQuotations.map((quotation) => (
+                <tr key={quotation.id} className={ADMIN_ROW}>
+                  <td className={ADMIN_TD}>
+                    <button
+                      type="button"
+                      onClick={() => router.push(`/admin/quotations/${quotation.id}`)}
+                      className="text-left"
+                    >
+                      <span className="block font-mono text-xs text-foreground hover:text-primary">{quotation.quotation_number}</span>
+                      <span className="mt-0.5 block max-w-[240px] truncate text-muted-foreground">{quotation.project_title}</span>
+                    </button>
+                  </td>
+                  <td className={ADMIN_TD}>
+                    <span className="block whitespace-nowrap font-medium">{quotation.client_name}</span>
+                    {quotation.client_company && (
+                      <span className="block whitespace-nowrap text-xs text-muted-foreground">{quotation.client_company}</span>
+                    )}
+                  </td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap text-right font-medium tabular-nums`}>
+                    ₹{quotation.total_amount.toLocaleString('en-IN')}
+                  </td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap font-mono text-xs tabular-nums text-muted-foreground`}>
+                    {new Date(quotation.valid_until).toLocaleDateString()}
+                  </td>
+                  <td className={ADMIN_TD}>{getStatusBadge(quotation.status)}</td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap font-mono text-xs tabular-nums text-muted-foreground`}>
+                    {new Date(quotation.created_at).toLocaleDateString()}
+                  </td>
+                  <td className={ADMIN_TD}>
+                    <div className="flex items-center justify-end gap-2">
+                      {quotation.status === 'draft' && (
+                        <button
+                          type="button"
+                          className={`${ADMIN_BTN_OUTLINE} ${SMALL_BTN}`}
+                          onClick={() => updateStatus(quotation.id, 'sent')}
+                        >
+                          Mark as sent
+                        </button>
+                      )}
+
+                      {quotation.status === 'sent' && (
+                        <>
+                          <button
+                            type="button"
+                            className={`${ADMIN_BTN_PRIMARY} ${SMALL_BTN}`}
+                            onClick={() => updateStatus(quotation.id, 'approved')}
+                          >
+                            Approve
+                          </button>
+                          <button
+                            type="button"
+                            className={`${ADMIN_BTN_DANGER} ${SMALL_BTN}`}
+                            onClick={() => updateStatus(quotation.id, 'rejected')}
+                          >
+                            Reject
+                          </button>
+                        </>
+                      )}
+
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button type="button" className={ADMIN_ICON_BTN} aria-label="More actions">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => router.push(`/admin/quotations/${quotation.id}`)}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            View
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => router.push(`/admin/quotations/${quotation.id}/edit`)}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => downloadPDF(quotation)}>
+                            <Download className="mr-2 h-4 w-4" />
+                            Download PDF
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <EmailQuotationDialog
+                              quotationId={quotation.id}
+                              quotationNumber={quotation.quotation_number}
+                              clientName={quotation.client_name}
+                              clientEmail={quotation.client_email}
+                              trigger={
+                                <div className="flex w-full cursor-pointer items-center rounded-lg px-2 py-1.5 text-sm hover:bg-muted">
+                                  <Mail className="mr-2 h-4 w-4" />
+                                  Send email
+                                </div>
+                              }
+                            />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => shareQuotation(quotation)}>
+                            <Share2 className="mr-2 h-4 w-4" />
+                            Share link
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => deleteQuotation(quotation.id)}
+                            className="text-destructive"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className={`${ADMIN_CARD} ${ADMIN_EMPTY}`}>
+          <FileText className="mx-auto mb-4 h-8 w-8 text-muted-foreground" strokeWidth={1.5} />
+          <h3 className="text-lg font-semibold text-foreground">No quotations found</h3>
+          <p className="mx-auto mb-6 mt-1 max-w-sm">
+            {searchTerm || statusFilter !== 'all'
+              ? 'Try adjusting your search or filters'
+              : 'Create your first quotation to get started'
+            }
+          </p>
+          <button type="button" className={ADMIN_BTN_PRIMARY} onClick={() => router.push('/admin/quotations/new')}>
+            <Plus className="h-4 w-4" />
+            Create quotation
+          </button>
+        </div>
       )}
     </div>
   );

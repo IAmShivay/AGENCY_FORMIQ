@@ -5,13 +5,9 @@ import { motion, useInView } from 'framer-motion';
 import {
   Zap,
   Shield,
-  TrendingUp,
-  Clock,
   Users,
-  Award,
   Smartphone,
-  Globe,
-  BarChart
+  Globe
 } from 'lucide-react';
 
 const BenefitsSection = () => {
@@ -47,13 +43,6 @@ const BenefitsSection = () => {
       color: "text-foreground"
     },
     {
-      icon: TrendingUp,
-      title: "Guaranteed ROI",
-      description: "See measurable results within 90 days or get your money back",
-      metric: "90 Days",
-      color: "text-foreground"
-    },
-    {
       icon: Shield,
       title: "Enterprise Security",
       description: "Bank-level security with 99.9% uptime guarantee for peace of mind",
@@ -80,33 +69,6 @@ const BenefitsSection = () => {
       description: "Built to grow with your business from startup to enterprise",
       metric: "∞",
       color: "text-primary"
-    }
-  ];
-
-  const stats = [
-    {
-      icon: BarChart,
-      number: "500+",
-      label: "Projects Completed",
-      description: "Successfully delivered across industries"
-    },
-    {
-      icon: Award,
-      number: "98%",
-      label: "Client Satisfaction",
-      description: "Consistently exceeding expectations"
-    },
-    {
-      icon: Clock,
-      number: "30",
-      label: "Average Days",
-      description: "From concept to deployment"
-    },
-    {
-      icon: TrendingUp,
-      number: "40%",
-      label: "Efficiency Gain",
-      description: "Average improvement for clients"
     }
   ];
 
@@ -189,38 +151,6 @@ const BenefitsSection = () => {
             })}
           </motion.div>
 
-          {/* Stats Section */}
-          <motion.div variants={itemVariants}>
-            <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {stats.map((stat, index) => {
-                  const Icon = stat.icon;
-                  return (
-                    <motion.div
-                      key={index}
-                      variants={itemVariants}
-                      className="text-center"
-                    >
-                      <div className="flex justify-center mb-2">
-                        <div className="p-2 rounded-md bg-primary/10">
-                          <Icon className="w-4 h-4 text-primary" />
-                        </div>
-                      </div>
-                      <div className="text-xl font-bold text-primary mb-1">
-                        {stat.number}
-                      </div>
-                      <div className="text-xs font-medium mb-1">
-                        {stat.label}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {stat.description}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          </motion.div>
 
 
         </motion.div>

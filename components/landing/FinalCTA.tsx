@@ -1,71 +1,83 @@
 "use client";
 
-import { useState } from 'react';
-import { ArrowRight, ShieldCheck, Clock, Users, Star, Phone } from 'lucide-react';
-import LeadFormOverlay from '@/components/LeadFormOverlay';
+import { ArrowRight } from 'lucide-react';
 import Marquee from '@/components/studio/Marquee';
 import Magnetic from '@/components/studio/Magnetic';
+import { BOOKING_URL, startingFromLabel } from '@/lib/pricing';
+import { useCurrency } from '@/lib/use-currency';
 
+const KINETIC_WORDS = ['More calls', 'More walk-ins', 'More WhatsApp enquiries', 'More bookings'];
+const WHATSAPP_START_HREF = 'https://wa.me/919832078313?text=Hi%2C%20I%27d%20like%20to%20talk%20about%20a%20project';
+
+const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
+
+/** Closing call to action. Colours come from the wrapping tone (ember on the homepage). */
 const FinalCTA = () => {
-  const [showLeadForm, setShowLeadForm] = useState(false);
-
+  const [currency] = useCurrency();
   return (
-    <section className="relative bg-neutral-950 text-white overflow-hidden" data-no-reveal>
+    <section aria-labelledby="final-cta-title" className="relative overflow-hidden" data-no-reveal>
       {/* Kinetic band: speeds up and leans with your scroll */}
-      <div className="border-b border-white/10 py-5 sm:py-7">
+      <div className="border-b border-border py-5 sm:py-7">
         <Marquee speed={32}>
-          {['More calls', 'More walk-ins', 'More WhatsApp enquiries', 'More bookings'].map((t) => (
-            <span key={t} className="flex items-center font-display text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-[-0.045em] leading-[1.1] pb-[0.08em]">
+          {KINETIC_WORDS.map((t) => (
+            <span key={t} className="flex items-center font-display text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-[-0.045em] leading-[1.1] pb-[0.08em] text-foreground">
               {t}
-              <span className="mx-6 sm:mx-10 inline-block w-3 h-3 sm:w-4 sm:h-4 rounded-full border border-white/50" />
+              <span aria-hidden="true" className="mx-6 sm:mx-10 font-normal text-foreground/40">/</span>
             </span>
           ))}
         </Marquee>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-        <div className="grid lg:grid-cols-[1.3fr,1fr] gap-10 lg:gap-16 items-end">
-          <div>
-            <p className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-white/60 mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> 2 slots left this month
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-6">Taking new projects</p>
+        <h2 id="final-cta-title" className="font-display text-[3rem] leading-[0.95] min-[400px]:text-[3.4rem] sm:text-8xl lg:text-[8.5rem] font-bold tracking-[-0.055em] text-foreground max-w-6xl">
+          Ready to get more customers?
+        </h2>
+
+        <div className="mt-12 sm:mt-16 pt-8 border-t border-border grid lg:grid-cols-[1fr,auto] gap-8 lg:gap-16 items-end">
+          <div className="space-y-3">
+            <p className="text-base sm:text-lg text-foreground/80 max-w-xl">
+              <span className="text-foreground font-semibold underline decoration-1 underline-offset-4">{startingFromLabel(currency)}.</span> Fixed quote after a free call.
             </p>
-            <h2 className="font-display text-[2.4rem] leading-[1] sm:text-6xl lg:text-7xl font-semibold tracking-[-0.05em]">
-              Ready to get more <span className="[-webkit-text-stroke:1.5px_white] text-transparent">customers?</span>
-            </h2>
-            <p className="mt-5 text-base sm:text-lg text-white/65 max-w-xl">
-              Join 50+ local businesses already growing with FormiqStudio. Starting at just{' '}
-              <span className="text-white font-semibold underline decoration-1 underline-offset-4">Rs 6,999/month</span> · Cancel anytime.
+            <p className="font-mono text-[11px] uppercase tracking-[0.12em] leading-relaxed text-muted-foreground">
+              Fixed price · Clear timeline · You own everything
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Or{' '}
+              <a href="tel:+918918349445" data-track-source="final-cta" className={`text-foreground font-medium rounded-sm ${FOCUS_RING}`}>
+                <span className="link-draw">+91 8918349445</span>
+              </a>{' '}
+              · Reply within one working day
             </p>
           </div>
 
-          <div className="space-y-5">
-            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
-              <Magnetic>
-                <button onClick={() => setShowLeadForm(true)} className="btn-ink h-14 px-8 bg-white text-neutral-950 rounded-full font-semibold flex items-center justify-center gap-2 text-[15px] whitespace-nowrap [--background:0_0%_100%] [--foreground:0_0%_4%] group">
-                  Get free consultation
-                  <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" />
-                </button>
-              </Magnetic>
-              <Magnetic>
-                <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20to%20start%20the%20Growth%20Plan" target="_blank" rel="noopener noreferrer" data-track-source="final-cta" className="h-14 px-8 border border-white/25 text-white rounded-full font-semibold flex items-center justify-center gap-2 text-[15px] whitespace-nowrap hover:bg-white hover:text-neutral-950 transition-colors">
-                  Start on WhatsApp
-                </a>
-              </Magnetic>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3 font-mono text-[11px] uppercase tracking-[0.1em] text-white/60">
-              <span className="flex items-center gap-2"><ShieldCheck className="w-4 h-4" /> No lock-in</span>
-              <span className="flex items-center gap-2"><Clock className="w-4 h-4" /> Live in 15 days</span>
-              <span className="flex items-center gap-2"><Users className="w-4 h-4" /> 50+ businesses</span>
-              <span className="flex items-center gap-2"><Star className="w-4 h-4 fill-current" /> 4.9/5</span>
-            </div>
-            <p className="text-xs text-white/45">
-              Or <a href="tel:+918918349445" data-track-source="final-cta" className="text-white/85 hover:text-white font-medium inline-flex items-center gap-1"><Phone className="w-3 h-3" /> +91 8918349445</a> · In-person in Kolkata, Durgapur & Asansol · Reply in 2 hours
-            </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Magnetic>
+              <a
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track-source="final-cta"
+                className={`btn-ink btn-ink-invert group h-14 px-8 bg-primary text-primary-foreground rounded-full font-semibold flex items-center justify-center gap-2 text-[15px] whitespace-nowrap ${FOCUS_RING}`}
+              >
+                Book a call
+                <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" />
+              </a>
+            </Magnetic>
+            <Magnetic>
+              <a
+                href={WHATSAPP_START_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track-source="final-cta"
+                className={`btn-ink h-14 px-8 border border-foreground/30 text-foreground rounded-full font-semibold flex items-center justify-center gap-2 text-[15px] whitespace-nowrap ${FOCUS_RING}`}
+              >
+                WhatsApp us
+              </a>
+            </Magnetic>
           </div>
         </div>
       </div>
-
-      <LeadFormOverlay open={showLeadForm} onClose={() => setShowLeadForm(false)} />
     </section>
   );
 };

@@ -38,24 +38,6 @@ const SocialProof = () => {
       rating: 5,
       text: "From idea to market in 15 days. Their rapid development process helped us beat our competition to market and capture 40% market share.",
       result: "40% market share"
-    },
-    {
-      name: "Shivay",
-      position: "Owner",
-      company: "formiqstudio Sales CRM",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-      rating: 5,
-      text: "The MVP they built became our core product. We scaled from 0 to 10,000 users in the first month after launch. Incredible execution!",
-      result: "10K users in 30 days"
-    },
-    {
-      name: "Shivay",
-      position: "Owner",
-      company: "Gaming Platform GQ",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-      rating: 5,
-      text: "Their team delivered a complex gaming platform in record time. The platform's performance and user experience exceeded all expectations.",
-      result: "25K active gamers"
     }
   ];
 
@@ -133,7 +115,7 @@ const SocialProof = () => {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-8">
             <h2 className="text-xl md:text-2xl font-bold mb-2 animated-gradient-text">
-              Trusted by 500+ Startups Worldwide
+              What our clients say
             </h2>
             <p className="text-sm text-muted-foreground">
               Real results from real founders who chose our 15-day MVP process
@@ -234,32 +216,6 @@ const SocialProof = () => {
             ))}
           </motion.div>
 
-          {/* Success Stats */}
-          <motion.div variants={itemVariants}>
-            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-xl p-6 border border-primary/20 shadow-lg">
-              <div className="text-center mb-4">
-                <h3 className="text-lg font-bold animated-gradient-text mb-1">Proven Results</h3>
-                <p className="text-xs text-muted-foreground">Numbers that speak for themselves</p>
-              </div>
-              <div className="grid grid-cols-3 gap-6 text-center">
-                <div className="group">
-                  <div className="text-2xl font-bold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">500+</div>
-                  <div className="text-xs text-muted-foreground">MVPs Built</div>
-                  <div className="w-8 h-1 bg-primary/30 rounded-full mx-auto mt-2"></div>
-                </div>
-                <div className="group">
-                  <div className="text-2xl font-bold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">15</div>
-                  <div className="text-xs text-muted-foreground">Days Average</div>
-                  <div className="w-8 h-1 bg-primary/30 rounded-full mx-auto mt-2"></div>
-                </div>
-                <div className="group">
-                  <div className="text-2xl font-bold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">98%</div>
-                  <div className="text-xs text-muted-foreground">Success Rate</div>
-                  <div className="w-8 h-1 bg-primary/30 rounded-full mx-auto mt-2"></div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </section>

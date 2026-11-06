@@ -101,8 +101,6 @@ export default function SEOHead({
       <link rel="preconnect" href="https://res.cloudinary.com" />
       
       {/* DNS Prefetch */}
-      <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-      <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     </Head>
   );
 }

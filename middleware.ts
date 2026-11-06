@@ -3,6 +3,18 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { recordRequest } from './lib/metrics';
 import logger from './lib/logger';
+import {
+  ADMIN_PATH_PREFIX,
+  ADMIN_ROLE_EXEMPT_PATHS,
+  AUTH_PROTECTED_PATH_PREFIXES,
+  LOGIN_PATH,
+  LOGIN_REDIRECT_PARAM,
+  NON_ADMIN_FALLBACK_PATH,
+  NOINDEX_PATH_PREFIXES,
+  ROBOTS_HEADER_INDEX,
+  ROBOTS_HEADER_NOINDEX,
+  matchesPathPrefix,
+} from './lib/route-config';
 
 // Track response times
 const responseTimeHeader = 'x-response-time';
@@ -30,67 +42,38 @@ export async function middleware(req: NextRequest) {
 
     // Record the request for metrics (only for non-static paths)
     recordRequest(path);
-
-    // Skip auth checks for public pages to avoid redirect issues for crawlers
-    const publicPaths = [
-      '/',
-      '/about',
-      '/services',
-      '/portfolio',
-      '/blog',
-      '/contact',
-      '/web',
-      '/mobile',
-      '/marketing',
-      '/shopify',
-      '/ecommerce-marketplace',
-      '/software-tools',
-      '/agents',
-      '/team',
-      '/privacy',
-      '/terms',
-      '/quote'
-    ];
-
-    const isPublicPath = publicPaths.some(publicPath =>
-      path === publicPath || path.startsWith(`${publicPath}/`)
-    );
-
-    // Only apply auth middleware to protected routes
-    if (!isPublicPath && (path.startsWith('/admin') || path.startsWith('/user') || path.startsWith('/employee') || path.startsWith('/manager'))) {
+    if (matchesPathPrefix(path, AUTH_PROTECTED_PATH_PREFIXES)) {
       const supabase = createMiddlewareClient({ req, res });
 
-      // Check if we have a session
       const {
         data: { session },
       } = await supabase.auth.getSession();
-
-      // If no session and trying to access protected routes, redirect to login
-    if (!session && (req.nextUrl.pathname.startsWith('/admin') || req.nextUrl.pathname.startsWith('/user'))) {
-      // Uncomment to enable redirect to login
-      // const redirectUrl = new URL('/login', req.url);
-      // return NextResponse.redirect(redirectUrl);
+      if (!session) {
+        const redirectUrl = new URL(LOGIN_PATH, req.url);
+        redirectUrl.searchParams.set(LOGIN_REDIRECT_PARAM, `${path}${req.nextUrl.search}`);
+        return NextResponse.redirect(redirectUrl);
       }
-
-      // If we have a session but the user doesn't have admin/manager access and trying to access admin routes
-    if (session && req.nextUrl.pathname.startsWith('/admin')) {
-        // Get user profile to check roles
+      if (
+        matchesPathPrefix(path, [ADMIN_PATH_PREFIX]) &&
+        !matchesPathPrefix(path, ADMIN_ROLE_EXEMPT_PATHS)
+      ) {
         const { data: profile } = await supabase
           .from('users')
           .select('is_admin, is_manager, is_employee')
           .eq('id', session.user.id)
           .single();
 
-        // If not admin or manager, redirect to user dashboard
         if (!profile?.is_admin && !profile?.is_manager) {
-          const redirectUrl = new URL('/user', req.url);
-          return NextResponse.redirect(redirectUrl);
+          return NextResponse.redirect(new URL(NON_ADMIN_FALLBACK_PATH, req.url));
         }
       }
     }
 
     // Add SEO-friendly headers
-    res.headers.set('X-Robots-Tag', 'index, follow');
+    res.headers.set(
+      'X-Robots-Tag',
+      matchesPathPrefix(path, NOINDEX_PATH_PREFIXES) ? ROBOTS_HEADER_NOINDEX : ROBOTS_HEADER_INDEX
+    );
     res.headers.set('X-Content-Type-Options', 'nosniff');
     res.headers.set('X-Frame-Options', 'DENY');
     res.headers.set('X-XSS-Protection', '1; mode=block');

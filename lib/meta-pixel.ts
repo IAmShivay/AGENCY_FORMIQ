@@ -1,10 +1,12 @@
+import { hasTrackingConsent } from '@/lib/consent';
+import { META_PIXEL_ID } from '@/lib/tracking-config';
+
 declare global {
-  interface Window {
-    fbq: (...args: any[]) => void;
+  interface Window {    fbq?: (...args: any[]) => void;
   }
 }
 
-export const META_PIXEL_ID = '28091008350601343';
+export { META_PIXEL_ID };
 export const META_CAPI_ENDPOINT = '/api/meta-capi';
 export const META_CURRENCY = 'INR';
 
@@ -62,9 +64,9 @@ const sendServerEvent = (eventName: string, eventId: string, customData: Record<
 };
 
 export const trackEvent = (eventName: string, params: Record<string, any> = {}, user?: UserData) => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined') return;  if (!hasTrackingConsent()) return;
   const eventId = newEventId();
-  if (window.fbq) {
+  if (typeof window.fbq === 'function') {
     window.fbq('track', eventName, params, { eventID: eventId });
   }
   sendServerEvent(eventName, eventId, params, user);

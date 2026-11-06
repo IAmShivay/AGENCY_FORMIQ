@@ -1,26 +1,29 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-  Mail, 
-  Send, 
+import {
+  Mail,
+  Send,
   X,
-  FileText,
-  User,
-  MessageSquare
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import {
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_EYEBROW,
+  ADMIN_LABEL,
+} from './admin-ui';
 
 interface EmailQuotationDialogProps {
   quotationId: string;
@@ -82,7 +85,6 @@ FormiqStudio Team`,
       if (response.ok && result.success) {
         toast.success('Quotation sent successfully!');
         setIsOpen(false);
-        // Reset form
         setFormData(prev => ({
           ...prev,
           customMessage: `Dear ${clientName || 'Valued Client'},
@@ -106,10 +108,10 @@ FormiqStudio Team`
   };
 
   const defaultTrigger = (
-    <Button variant="default">
-      <Mail className="w-4 h-4 mr-2" />
-      Send Email
-    </Button>
+    <button type="button" className={ADMIN_BTN_PRIMARY}>
+      <Mail className="h-4 w-4" />
+      Send email
+    </button>
   );
 
   return (
@@ -117,119 +119,100 @@ FormiqStudio Team`
       <DialogTrigger asChild>
         {trigger || defaultTrigger}
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Mail className="w-5 h-5" />
-            Send Quotation via Email
+          <p className={ADMIN_EYEBROW}>Quotation {quotationNumber}</p>
+          <DialogTitle className="font-display text-2xl font-semibold tracking-[-0.03em]">
+            Send quotation via email
           </DialogTitle>
         </DialogHeader>
-        
-        <div className="space-y-6 mt-4">
-          {/* Quotation Info */}
-          <div className="bg-primary/10 p-4 rounded-lg border">
-            <div className="flex items-center gap-2 mb-2">
-              <FileText className="w-4 h-4 text-primary" />
-              <span className="font-semibold text-primary">Quotation Details</span>
+
+        <div className="mt-2 space-y-5">
+          <div className={`${ADMIN_CARD} grid grid-cols-2 gap-4 bg-muted/40 p-4`}>
+            <div className="min-w-0">
+              <p className={ADMIN_LABEL}>Number</p>
+              <p className="mt-1 truncate font-mono text-sm text-foreground">{quotationNumber}</p>
             </div>
-            <p className="text-sm text-primary">
-              <strong>Number:</strong> {quotationNumber}<br/>
-              <strong>Client:</strong> {clientName}
-            </p>
+            <div className="min-w-0">
+              <p className={ADMIN_LABEL}>Client</p>
+              <p className="mt-1 truncate text-sm text-foreground">{clientName}</p>
+            </div>
           </div>
 
-          {/* Recipient Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label className="flex items-center gap-2">
-                <User className="w-4 h-4" />
-                Recipient Name *
-              </Label>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label className={ADMIN_LABEL}>Recipient name *</Label>
               <Input
                 value={formData.recipientName}
                 onChange={(e) => setFormData(prev => ({ ...prev, recipientName: e.target.value }))}
                 placeholder="Client name"
-                className="mt-1"
               />
             </div>
-            <div>
-              <Label className="flex items-center gap-2">
-                <Mail className="w-4 h-4" />
-                Recipient Email *
-              </Label>
+            <div className="space-y-2">
+              <Label className={ADMIN_LABEL}>Recipient email *</Label>
               <Input
                 type="email"
                 value={formData.recipientEmail}
                 onChange={(e) => setFormData(prev => ({ ...prev, recipientEmail: e.target.value }))}
                 placeholder="client@example.com"
-                className="mt-1"
               />
             </div>
           </div>
 
-          {/* Subject */}
-          <div>
-            <Label>Email Subject</Label>
+          <div className="space-y-2">
+            <Label className={ADMIN_LABEL}>Email subject</Label>
             <Input
               value={formData.subject}
               onChange={(e) => setFormData(prev => ({ ...prev, subject: e.target.value }))}
-              className="mt-1"
             />
           </div>
 
-          {/* Custom Message */}
-          <div>
-            <Label className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4" />
-              Custom Message
-            </Label>
+          <div className="space-y-2">
+            <Label className={ADMIN_LABEL}>Custom message</Label>
             <Textarea
               value={formData.customMessage}
               onChange={(e) => setFormData(prev => ({ ...prev, customMessage: e.target.value }))}
               rows={8}
               placeholder="Add a personal message to the client..."
-              className="mt-1 font-mono text-sm"
+              className="font-mono text-sm"
             />
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground">
               This message will be included in the email along with the quotation PDF.
             </p>
           </div>
 
-          {/* Options */}
-          <div className="flex items-center gap-2">
+          <label htmlFor="includePDF" className="flex cursor-pointer items-center gap-3 text-sm text-foreground">
             <input
               type="checkbox"
               id="includePDF"
               checked={formData.includePDF}
               onChange={(e) => setFormData(prev => ({ ...prev, includePDF: e.target.checked }))}
-              className="rounded"
+              className="h-4 w-4 rounded border-input accent-primary"
             />
-            <Label htmlFor="includePDF" className="flex items-center gap-2">
-              <FileText className="w-4 h-4" />
-              Include PDF attachment
-            </Label>
+            Include PDF attachment
+          </label>
+
+          <div className="rounded-xl border border-border p-4">
+            <p className={`${ADMIN_LABEL} mb-3`}>Email preview</p>
+            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
+              <dt className="text-muted-foreground">To</dt>
+              <dd className="min-w-0 break-all text-foreground">{formData.recipientEmail}</dd>
+              <dt className="text-muted-foreground">Subject</dt>
+              <dd className="min-w-0 break-words text-foreground">{formData.subject}</dd>
+              <dt className="text-muted-foreground">Attachment</dt>
+              <dd className="min-w-0 break-all font-mono text-xs text-foreground">{formData.includePDF ? `${quotationNumber}_Quotation.pdf` : 'None'}</dd>
+            </dl>
           </div>
 
-          {/* Email Preview */}
-          <div className="bg-gray-50 p-4 rounded-lg border">
-            <h4 className="font-semibold mb-2">Email Preview:</h4>
-            <div className="text-sm space-y-1">
-              <p><strong>To:</strong> {formData.recipientEmail}</p>
-              <p><strong>Subject:</strong> {formData.subject}</p>
-              <p><strong>Attachment:</strong> {formData.includePDF ? `${quotationNumber}_Quotation.pdf` : 'None'}</p>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex gap-3 pt-4">
-            <Button onClick={sendEmail} disabled={sending} className="flex-1">
-              <Send className="w-4 h-4 mr-2" />
-              {sending ? 'Sending...' : 'Send Quotation'}
-            </Button>
-            <Button variant="outline" onClick={() => setIsOpen(false)}>
-              <X className="w-4 h-4 mr-2" />
+          <div className="flex flex-col-reverse gap-3 border-t border-border pt-5 sm:flex-row sm:justify-end">
+            <button type="button" className={ADMIN_BTN_OUTLINE} onClick={() => setIsOpen(false)}>
+              <X className="h-4 w-4" />
               Cancel
-            </Button>
+            </button>
+            <button type="button" className={ADMIN_BTN_PRIMARY} onClick={sendEmail} disabled={sending}>
+              <Send className="h-4 w-4" />
+              {sending ? 'Sending...' : 'Send quotation'}
+            </button>
           </div>
         </div>
       </DialogContent>

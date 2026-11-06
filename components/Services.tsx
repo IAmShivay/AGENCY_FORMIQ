@@ -1,75 +1,93 @@
 "use client";
 
-import { ArrowRight, Sparkles, Check } from "lucide-react";
-import { FaFacebookF, FaInstagram, FaGoogle, FaShopify } from "react-icons/fa";
-import { SiGooglemaps } from "react-icons/si";
-import { HiGlobeAlt } from "react-icons/hi";
-import { ReactNode } from "react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import Magnetic from "./studio/Magnetic";
 
 interface Service {
-  icon: ReactNode;
   title: string;
   desc: string;
+  href: string;
 }
 
+const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+const WHATSAPP_QUOTE_URL = "https://wa.me/919832078313?text=Hi%2C%20I%20want%20to%20know%20about%20your%20services";
+const SERVICES_URL = "/services";
+
 const services: Service[] = [
-  { icon: <HiGlobeAlt className="w-4 h-4 text-foreground" />, title: "Website", desc: "Premium site that converts" },
-  { icon: <FaFacebookF className="w-3.5 h-3.5 text-foreground" />, title: "Meta Ads", desc: "Creatives + targeting + optimisation" },
-  { icon: <FaInstagram className="w-4 h-4 text-foreground" />, title: "Social Media", desc: "12 posts/mo · Reels & stories" },
-  { icon: <FaGoogle className="w-3.5 h-3.5 text-foreground" />, title: "Google Ads & SEO", desc: "Top 3 on Google" },
-  { icon: <SiGooglemaps className="w-4 h-4 text-foreground" />, title: "Google Business", desc: "#1 in Maps" },
-  { icon: <FaShopify className="w-3.5 h-3.5 text-foreground" />, title: "E-commerce", desc: "Store ready to sell" },
+  { title: "Website", desc: "Premium site that converts", href: "/web" },
+  { title: "Meta Ads", desc: "Creatives + targeting + optimisation", href: "/marketing" },
+  { title: "Social Media", desc: "12 posts/mo · Reels & stories", href: "/marketing" },
+  { title: "Google Ads & SEO", desc: "Top 3 on Google", href: "/marketing" },
+  { title: "Google Business", desc: "#1 in Maps", href: "/marketing" },
+  { title: "E-commerce", desc: "Store ready to sell", href: "/shopify" },
 ];
 
 /** `headingLevel` lets the /services page own the h1; on the homepage this stays an h2. */
 const Services = ({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' }) => {
   const Heading = headingLevel;
   return (
-    <section className="py-6 sm:py-8 bg-background relative overflow-hidden border-y border-border/30">
+    <section className="relative overflow-hidden bg-background text-foreground py-20 sm:py-28 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Minimal header - single line */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 sm:mb-6">
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/15 text-[11px] font-semibold tracking-widest text-primary uppercase">
-              <Sparkles className="w-3 h-3" /> Services
-            </span>
-            <Heading className="text-base sm:text-xl font-bold text-foreground tracking-tight">
-              Everything you need to grow <span className="text-primary">— all included</span>
+        {/* Header */}
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-end mb-12 sm:mb-16">
+          <div className="lg:col-span-8">
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-5">(02) Services</p>
+            <Heading className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[0.98] tracking-[-0.04em]">
+              Everything you need to grow, <span className="text-primary">all included</span>
             </Heading>
           </div>
-          <a href="/services" className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
-            Explore all <ArrowRight className="w-3 h-3" />
-          </a>
+          <div className="lg:col-span-4 lg:text-right">
+            <Link href={SERVICES_URL} className={`inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold rounded-sm ${FOCUS_RING}`}>
+              <span className="link-draw">Explore all services</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
 
-        {/* Minimal compact grid - low height */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
+        {/* Numbered service list */}
+        <ul className="border-t border-border">
           {services.map((s, i) => (
-            <div
-              key={i}
-              className="group flex items-center gap-3 p-3 sm:p-3.5 rounded-xl bg-card border border-border hover:border-primary/20 hover:shadow-sm transition-all"
-            >
-              <div className="w-9 h-9 rounded-lg bg-muted border border-border flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 group-hover:border-primary/15 transition-colors">
-                {s.icon}
-              </div>
-              <div className="min-w-0">
-                <h3 className="text-xs sm:text-[13px] font-bold text-foreground leading-none truncate">{s.title}</h3>
-                <p className="text-[11px] text-muted-foreground leading-tight truncate mt-1">{s.desc}</p>
-              </div>
-            </div>
+            <li key={s.title} className="border-b border-border">
+              <Link
+                href={s.href}
+                className={`group grid grid-cols-[2.25rem_1fr_auto] sm:grid-cols-[4rem_minmax(0,1fr)_minmax(0,1fr)_auto] items-center gap-x-3 sm:gap-x-6 py-5 sm:py-7 ${FOCUS_RING}`}
+              >
+                <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-display text-2xl sm:text-3xl font-semibold tracking-[-0.035em] leading-tight motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:translate-x-1">
+                    {s.title}
+                  </span>
+                  <span className="sm:hidden block mt-1 text-sm text-muted-foreground">{s.desc}</span>
+                </span>
+                <span className="hidden sm:block text-base text-muted-foreground">{s.desc}</span>
+                <span className="relative flex w-11 h-11 items-center justify-center overflow-hidden rounded-full border border-border group-hover:border-foreground transition-colors">
+                  <ArrowUpRight className="w-4 h-4 motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:translate-x-6 motion-safe:group-hover:-translate-y-6" aria-hidden="true" />
+                  <ArrowUpRight className="absolute w-4 h-4 -translate-x-6 translate-y-6 motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:translate-x-0 motion-safe:group-hover:translate-y-0" aria-hidden="true" />
+                </span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
 
-        {/* Minimal bottom line - single row */}
-        <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-4 py-3 rounded-xl bg-muted/40 border border-border">
-          <p className="text-xs font-medium text-foreground text-center sm:text-left">
-            All 6 included in <span className="font-bold">Rs 6,999/mo</span> <span className="text-muted-foreground">· No extra hires</span>
+        {/* Bundle line + quote */}
+        <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+          <p className="text-base sm:text-lg text-foreground">
+            One team for design, build and growth<span className="text-muted-foreground"> · Fixed quote before we start</span>
           </p>
-          <a href="https://wa.me/919832078313?text=Hi%2C%20I%20want%20to%20know%20about%20your%20services" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-            <button className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-xs font-semibold hover:bg-primary/90 transition-colors">
-              Get Free Quote <ArrowRight className="w-3 h-3" />
-            </button>
-          </a>
+          <Magnetic>
+            <a
+              href={WHATSAPP_QUOTE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`btn-ink btn-ink-invert h-14 px-7 bg-foreground text-background rounded-full font-semibold inline-flex items-center justify-center gap-2 text-[15px] whitespace-nowrap group/cta ${FOCUS_RING}`}
+            >
+              Get a quote
+              <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover/cta:translate-x-1" />
+            </a>
+          </Magnetic>
         </div>
       </div>
     </section>

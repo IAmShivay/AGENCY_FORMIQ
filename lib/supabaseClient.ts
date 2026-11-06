@@ -1,8 +1,16 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import logger from './logger';
 
 const supabaseUrl: string = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey: string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+const APPLICATION_NAME_HEADER = 'x-application-name';
+const APPLICATION_NAME = 'formiqstudio-dashboard';
+
+function isBrowser(): boolean {
+  return typeof window !== 'undefined' && typeof window.document !== 'undefined';
+}
 
 // Create a singleton instance of the Supabase client
 let supabaseInstance: SupabaseClient | null = null;
@@ -17,18 +25,29 @@ let clientInitialized = false;
 export function getSupabaseClient(): SupabaseClient {
   if (!supabaseInstance) {
     logger.info('Creating new Supabase client instance');
-    supabaseInstance = createClient(supabaseUrl, supabaseKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
+    const globalOptions = {
+      // Add request headers to track client usage
+      headers: {
+        [APPLICATION_NAME_HEADER]: APPLICATION_NAME,
       },
-      global: {
-        // Add request headers to track client usage
-        headers: {
-          'x-application-name': 'formiqstudio-dashboard',
-        },
-      },
-    });
+    };
+
+    supabaseInstance = isBrowser()
+      ? // In the browser, persist the auth session in cookies (not localStorage)
+        // so middleware and route handlers (auth-helpers) can see it server-side.
+        createClientComponentClient({
+          supabaseUrl,
+          supabaseKey,
+          options: { global: globalOptions },
+          isSingleton: true,
+        })
+      : createClient(supabaseUrl, supabaseKey, {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+          },
+          global: globalOptions,
+        });
 
     // Only set up monitoring once
     if (!clientInitialized) {

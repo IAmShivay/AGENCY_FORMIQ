@@ -5,6 +5,22 @@ import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, ExternalLink, Search, Globe , Loader2 } from 'lucide-react';
 import { WebsiteProject } from '@/lib/portfolio';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_H2,
+  ADMIN_ICON_BTN,
+  ADMIN_INPUT,
+  ADMIN_ROW,
+  ADMIN_TABLE,
+  ADMIN_TABLE_WRAP,
+  ADMIN_TD,
+  ADMIN_TH,
+  ADMIN_TONE,
+} from '@/components/admin/admin-ui';
 
 export default function WebsitesPage() {
   const [websites, setWebsites] = useState<WebsiteProject[]>([]);
@@ -13,7 +29,6 @@ export default function WebsitesPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Website categories for filtering
   const categories = ['All', 'E-Commerce', 'Corporate', 'Educational', 'Landing Pages', 'Portfolio', 'Blog', 'Other'];
 
   useEffect(() => {
@@ -50,8 +65,7 @@ export default function WebsitesPage() {
         .eq('id', id);
 
       if (error) throw error;
-      
-      // Refresh the list
+
       fetchWebsites();
     } catch (error) {
       console.error('Error deleting website:', error);
@@ -61,55 +75,49 @@ export default function WebsitesPage() {
     }
   };
 
-  // Filter websites based on search term and category
   const filteredWebsites = websites.filter(website => {
-    const matchesSearch = 
+    const matchesSearch =
       website.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       website.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (website.tags && website.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())));
-    
-    const matchesCategory = 
-      selectedCategory === 'All' || 
+
+    const matchesCategory =
+      selectedCategory === 'All' ||
       website.category === selectedCategory;
-    
+
     return matchesSearch && matchesCategory;
   });
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Website Portfolio</h1>
-          <p className="mt-2 text-muted-foreground">Manage your website projects</p>
-        </div>
-        <Link
-          href="/admin/websites/new"
-          className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          New Website
-        </Link>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Portfolio"
+        title="Website portfolio"
+        description="Manage the website projects shown in the portfolio."
+        actions={
+          <Link href="/admin/websites/new" className={ADMIN_BTN_PRIMARY}>
+            <Plus className="h-4 w-4" />
+            New website
+          </Link>
+        }
+      />
 
-      {/* Search and Filter */}
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col gap-4 md:flex-row">
         <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-muted-foreground" />
-          </div>
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search websites..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 block w-full border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary text-foreground"
+            className={`${ADMIN_INPUT} pl-10`}
           />
         </div>
         <div className="w-full md:w-64">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="block w-full border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary text-foreground"
+            className={ADMIN_INPUT}
           >
             {categories.map((category) => (
               <option key={category} value={category}>
@@ -120,115 +128,96 @@ export default function WebsitesPage() {
         </div>
       </div>
 
-      {/* Websites List */}
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="w-10 h-10 text-primary animate-spin" />
+        <div className="flex h-64 items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : filteredWebsites.length > 0 ? (
-        <div className="bg-card shadow-md rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-border">
-              <thead className="bg-secondary/50">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Website
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Category
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Completion Date
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-card divide-y divide-border">
-                {filteredWebsites.map((website) => (
-                  <tr key={website.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10">
-                          {website.image ? (
-                            <img
-                              className="h-10 w-10 rounded-md object-cover"
-                              src={website.image}
-                              alt={website.title}
-                            />
-                          ) : (
-                            <div className="h-10 w-10 rounded-md bg-secondary flex items-center justify-center">
-                              <Globe className="h-6 w-6 text-muted-foreground" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-foreground">
-                            {website.title}
+        <div className={ADMIN_TABLE_WRAP}>
+          <table className={ADMIN_TABLE}>
+            <thead>
+              <tr>
+                <th scope="col" className={ADMIN_TH}>Website</th>
+                <th scope="col" className={ADMIN_TH}>Category</th>
+                <th scope="col" className={ADMIN_TH}>Completion date</th>
+                <th scope="col" className={`${ADMIN_TH} text-right`}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredWebsites.map((website) => (
+                <tr key={website.id} className={ADMIN_ROW}>
+                  <td className={`${ADMIN_TD} whitespace-nowrap`}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-10 w-10 shrink-0">
+                        {website.image ? (
+                          <img
+                            className="h-10 w-10 rounded-xl border border-border object-cover"
+                            src={website.image}
+                            alt={website.title}
+                          />
+                        ) : (
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted">
+                            <Globe className="h-5 w-5 text-muted-foreground" />
                           </div>
-                          <div className="text-sm text-muted-foreground line-clamp-1">
-                            {website.description}
-                          </div>
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-medium text-foreground">{website.title}</div>
+                        <div className="line-clamp-1 max-w-xs whitespace-normal text-muted-foreground">
+                          {website.description}
                         </div>
                       </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary/10 text-primary">
-                        {website.category}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-muted-foreground">
-                        {website.completion_date || 'N/A'}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link 
-                        href={`/admin/websites/${website.id}/edit`} 
-                        className="text-primary hover:text-primary/80 mr-3"
-                      >
-                        <Edit className="w-4 h-4 inline" />
+                    </div>
+                  </td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap`}>
+                    <span className={`${ADMIN_BADGE} ${ADMIN_TONE.accent}`}>{website.category}</span>
+                  </td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap text-muted-foreground tabular-nums`}>
+                    {website.completion_date || 'N/A'}
+                  </td>
+                  <td className={`${ADMIN_TD} whitespace-nowrap text-right`}>
+                    <div className="inline-flex items-center gap-1">
+                      <Link href={`/admin/websites/${website.id}/edit`} className={ADMIN_ICON_BTN} aria-label="Edit website">
+                        <Edit className="h-4 w-4" />
                       </Link>
                       {website.live_link && (
-                        <a 
-                          href={website.live_link} 
-                          target="_blank" 
+                        <a
+                          href={website.live_link}
+                          target="_blank"
                           rel="noopener noreferrer"
-                          className="text-muted-foreground hover:text-foreground mr-3"
+                          className={ADMIN_ICON_BTN}
+                          aria-label="Open live site"
                         >
-                          <ExternalLink className="w-4 h-4 inline" />
+                          <ExternalLink className="h-4 w-4" />
                         </a>
                       )}
                       <button
                         onClick={() => deleteWebsite(website.id)}
                         disabled={isDeleting}
-                        className="text-red-500 hover:text-red-700 disabled:opacity-50"
+                        className={`${ADMIN_ICON_BTN} hover:bg-destructive/10 hover:text-destructive disabled:opacity-50`}
+                        aria-label="Delete website"
                       >
-                        <Trash2 className="w-4 h-4 inline" />
+                        <Trash2 className="h-4 w-4" />
                       </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
-        <div className="bg-card shadow-md rounded-lg p-6 text-center">
-          <Globe className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium text-foreground mb-2">No websites found</h3>
-          <p className="text-muted-foreground mb-4">
-            {searchTerm || selectedCategory !== 'All' 
-              ? 'Try adjusting your search or filter criteria.' 
+        <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} py-14 text-center`}>
+          <Globe className="mx-auto mb-4 h-10 w-10 text-muted-foreground" />
+          <h3 className={`${ADMIN_H2} mb-2`}>No websites found</h3>
+          <p className="mb-5 text-sm text-muted-foreground">
+            {searchTerm || selectedCategory !== 'All'
+              ? 'Try adjusting your search or filter criteria.'
               : 'Get started by adding your first website project.'}
           </p>
-          <Link
-            href="/admin/websites/new"
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Website
+          <Link href="/admin/websites/new" className={ADMIN_BTN_PRIMARY}>
+            <Plus className="h-4 w-4" />
+            Add website
           </Link>
         </div>
       )}

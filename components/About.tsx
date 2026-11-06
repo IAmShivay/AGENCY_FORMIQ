@@ -1,13 +1,13 @@
 "use client";
 
-import { Users, Trophy, Clock, Rocket, CheckCircle, ArrowRight } from 'lucide-react';
+import { Clock, MapPin, Shield, CheckCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { LAUNCH_DAYS, SERVICE_CITIES } from '@/lib/studio-facts';
 
 const stats = [
-  { icon: Users, value: "25+", label: "Clients Served" },
-  { icon: Trophy, value: "98%", label: "Client Satisfaction" },
-  { icon: Clock, value: "15 Days", label: "Average MVP Delivery" },
-  { icon: Rocket, value: "50+", label: "Projects Delivered" },
+  { icon: MapPin, value: String(SERVICE_CITIES.length), label: "Cities with in-person support" },
+  { icon: Clock, value: `${LAUNCH_DAYS} days`, label: "Typical website launch" },
+  { icon: Shield, value: "No lock-in", label: "Cancel any month" },
 ];
 
 const strengths = [
@@ -56,7 +56,7 @@ const About = () => {
           </div>
 
           {/* Right - Stats Grid */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {stats.map((stat, i) => {
               const Icon = stat.icon;
               return (

@@ -5,13 +5,22 @@ import { supabase } from '@/lib/supabaseClient';
 import {
   Mail,
   Phone,
-  Target,
-  CheckCircle,
-  Settings,
-  FileText,
+  Check,
+  Loader2,
+  ArrowUpRight,
 } from 'lucide-react';
 import Image from 'next/image';
-import FLogo from '@/components/FLogo';
+import Wordmark from '@/components/studio/Wordmark';
+import { STUDIO_FONT_VARS } from '@/lib/studio-fonts';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_ACCENT,
+  ADMIN_CARD,
+  ADMIN_EYEBROW,
+  ADMIN_TH,
+  ADMIN_TONE,
+  type AdminTone,
+} from '@/components/admin/admin-ui';
 
 interface QuotationData {
   id: string;
@@ -41,6 +50,17 @@ interface QuotationData {
   status: 'draft' | 'sent' | 'approved' | 'rejected';
   created_at: string;
 }
+
+const STATUS_CONFIG: Record<QuotationData['status'], { label: string; tone: AdminTone }> = {
+  draft: { label: 'Draft', tone: 'neutral' },
+  sent: { label: 'Sent', tone: 'accent' },
+  approved: { label: 'Approved', tone: 'positive' },
+  rejected: { label: 'Rejected', tone: 'negative' },
+};
+
+const PAGE_ROOT = `studio ${STUDIO_FONT_VARS} min-h-screen bg-background`;
+const DOC_SECTION = 'border-t border-border pt-8';
+const DOC_LABEL = `${ADMIN_EYEBROW} mb-4`;
 
 export default function PublicQuotationPage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
@@ -72,268 +92,260 @@ export default function PublicQuotationPage(props: { params: Promise<{ id: strin
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className={`${PAGE_ROOT} flex flex-col items-center justify-center gap-6`}>
+        <Wordmark className="text-[40px]" />
+        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" aria-label="Loading" />
       </div>
     );
   }
 
   if (error || !quotation) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-center p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Quotation Not Found</h2>
-          <p className="text-gray-600">{error || 'This quotation does not exist or has been removed.'}</p>
+      <div className={`${PAGE_ROOT} flex items-center justify-center px-4`}>
+        <div className="max-w-md text-center">
+          <Wordmark className="text-[32px]" />
+          <h2 className="mt-10 text-3xl font-semibold tracking-[-0.04em] text-foreground">Quotation not found</h2>
+          <p className="mt-2 text-muted-foreground">{error || 'This quotation does not exist or has been removed.'}</p>
         </div>
       </div>
     );
   }
 
+  const config = STATUS_CONFIG[quotation.status] || STATUS_CONFIG.draft;
+  const statusBadge = <span className={`${ADMIN_BADGE} ${ADMIN_TONE[config.tone]}`}>{config.label}</span>;
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto bg-white border rounded-lg shadow-sm p-8 space-y-6">
-        {/* Company Header */}
-        <div className="flex items-center justify-between border-b pb-4">
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 flex items-center justify-center">
-              <FLogo size={48} />
-            </div>
-            <div className="flex flex-col justify-center">
-              <p className="text-sm font-medium text-gray-900">Digital Solutions & Marketing Agency</p>
-              <p className="text-xs text-gray-500">hello@formiqstudio.in | +91 8918349445</p>
+    <div className={`${PAGE_ROOT} px-4 py-8 sm:py-14 print:bg-transparent print:p-0`}>
+      <div className={`${ADMIN_CARD} mx-auto max-w-4xl space-y-10 px-5 py-8 sm:px-12 sm:py-14 print:max-w-none print:rounded-none print:border-0 print:p-0`}>
+        <header className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-3">
+            <Wordmark className="text-[32px]" />
+            <div>
+              <p className="text-sm font-medium text-foreground">Digital Solutions & Marketing Agency</p>
+              <p className="text-xs text-muted-foreground">hello@formiqstudio.in | +91 8918349445</p>
             </div>
           </div>
-          <div className="text-right text-sm">
-            <p className="font-semibold text-gray-900">{quotation.quotation_number}</p>
-            <p className="text-gray-500">Date: {new Date(quotation.created_at).toLocaleDateString()}</p>
-            <p className="text-gray-500">Valid: {new Date(quotation.valid_until).toLocaleDateString()}</p>
-          </div>
+          <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 font-mono text-xs sm:text-right">
+            <dt className={ADMIN_EYEBROW}>Quote no.</dt>
+            <dd className="text-foreground">{quotation.quotation_number}</dd>
+            <dt className={ADMIN_EYEBROW}>Date</dt>
+            <dd className="tabular-nums text-foreground">{new Date(quotation.created_at).toLocaleDateString()}</dd>
+            <dt className={ADMIN_EYEBROW}>Valid until</dt>
+            <dd className="tabular-nums text-foreground">{new Date(quotation.valid_until).toLocaleDateString()}</dd>
+            <dt className={ADMIN_EYEBROW}>Status</dt>
+            <dd>{statusBadge}</dd>
+          </dl>
+        </header>
+
+        <div>
+          <p className={ADMIN_EYEBROW}>Quotation</p>
+          <h1 className="mt-3 text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-foreground sm:text-5xl">{quotation.project_title}</h1>
         </div>
 
-        {/* Client Information */}
-        <div className="grid grid-cols-2 gap-8">
+        <div className={`grid grid-cols-1 gap-8 md:grid-cols-2 ${DOC_SECTION}`}>
           <div>
-            <h3 className="text-base font-semibold mb-3 text-gray-900">Bill To:</h3>
-            <div className="space-y-2 text-sm text-gray-700">
-              <p className="font-semibold">{quotation.client_name}</p>
-              {quotation.client_company && <p>{quotation.client_company}</p>}
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-gray-400" />
-                <p>{quotation.client_email}</p>
-              </div>
+            <h3 className={DOC_LABEL}>Prepared for</h3>
+            <div className="space-y-1.5 text-sm">
+              <p className="text-base font-semibold text-foreground">{quotation.client_name}</p>
+              {quotation.client_company && <p className="text-foreground">{quotation.client_company}</p>}
+              <p className="flex items-center gap-2 break-all text-muted-foreground">
+                <Mail className="h-3.5 w-3.5 flex-shrink-0" />
+                {quotation.client_email}
+              </p>
               {quotation.client_phone && (
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-gray-400" />
-                  <p>{quotation.client_phone}</p>
-                </div>
+                <p className="flex items-center gap-2 text-muted-foreground">
+                  <Phone className="h-3.5 w-3.5 flex-shrink-0" />
+                  {quotation.client_phone}
+                </p>
               )}
             </div>
           </div>
           <div>
-            <h3 className="text-base font-semibold mb-3 text-gray-900">Project Details:</h3>
-            <div className="space-y-2 text-sm text-gray-700">
-              <p><span className="text-gray-500">Timeline:</span> {quotation.delivery_timeline}</p>
-              <p><span className="text-gray-500">Revisions:</span> {quotation.revisions} included</p>
-              <p><span className="text-gray-500">Maintenance:</span> {quotation.maintenance_period}</p>
-            </div>
+            <h3 className={DOC_LABEL}>Project details</h3>
+            <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 text-sm">
+              <dt className="text-muted-foreground">Timeline</dt>
+              <dd className="text-foreground">{quotation.delivery_timeline}</dd>
+              <dt className="text-muted-foreground">Revisions</dt>
+              <dd className="text-foreground">{quotation.revisions} included</dd>
+              <dt className="text-muted-foreground">Maintenance</dt>
+              <dd className="text-foreground">{quotation.maintenance_period}</dd>
+            </dl>
           </div>
         </div>
 
-        {/* Project Description */}
         {quotation.project_description && (
-          <div>
-            <h3 className="text-base font-semibold mb-3 text-gray-900">Project Description</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">{quotation.project_description}</p>
+          <div className={DOC_SECTION}>
+            <h3 className={DOC_LABEL}>Project description</h3>
+            <p className="max-w-2xl text-[15px] leading-relaxed text-foreground">{quotation.project_description}</p>
           </div>
         )}
 
-        {/* Key Features */}
         {quotation.key_features && quotation.key_features.length > 0 && (
-          <div>
-            <h3 className="text-base font-semibold mb-3 flex items-center gap-2 text-gray-900">
-              <Target className="w-5 h-5" />
-              Key Features
-            </h3>
-            <ul className="grid grid-cols-2 gap-2">
+          <div className={DOC_SECTION}>
+            <h3 className={DOC_LABEL}>Key features</h3>
+            <ul className="grid grid-cols-1 gap-x-8 gap-y-2.5 sm:grid-cols-2">
               {quotation.key_features.filter(f => f.trim()).map((feature, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">{feature}</span>
+                <li key={i} className="flex items-start gap-2.5 text-sm text-foreground">
+                  <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+                  <span>{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
         )}
 
-        {/* Scope of Work */}
         {quotation.scope_of_work && (
-          <div>
-            <h3 className="text-base font-semibold mb-3 flex items-center gap-2 text-gray-900">
-              <Settings className="w-5 h-5" />
-              Scope of Work
-            </h3>
-            <div className="bg-gray-50 p-4 rounded text-sm">
-              <p className="whitespace-pre-wrap text-gray-700">{quotation.scope_of_work}</p>
-            </div>
+          <div className={DOC_SECTION}>
+            <h3 className={DOC_LABEL}>Scope of work</h3>
+            <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">{quotation.scope_of_work}</p>
           </div>
         )}
 
-        {/* Items Table */}
-        <div>
-          <h3 className="text-base font-semibold mb-3 text-gray-900">Services & Pricing</h3>
-          <div className="border rounded overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="text-left p-3 font-semibold text-gray-700">Description</th>
-                  <th className="text-center p-3 font-semibold text-gray-700">Qty</th>
-                  <th className="text-right p-3 font-semibold text-gray-700">Rate (&#8377;)</th>
-                  <th className="text-right p-3 font-semibold text-gray-700">Amount (&#8377;)</th>
+        <div className={DOC_SECTION}>
+          <h3 className={DOC_LABEL}>Services & pricing</h3>
+          <div className="-mx-1 overflow-x-auto">
+            <table className="w-full min-w-[480px] text-sm">
+              <thead>
+                <tr className="border-b border-foreground">
+                  <th className={`${ADMIN_TH} px-1`}>Description</th>
+                  <th className={`${ADMIN_TH} px-1 text-center`}>Qty</th>
+                  <th className={`${ADMIN_TH} px-1 text-right`}>Rate (&#8377;)</th>
+                  <th className={`${ADMIN_TH} px-1 text-right`}>Amount (&#8377;)</th>
                 </tr>
               </thead>
               <tbody>
                 {quotation.items.map((item, index) => (
-                  <tr key={index} className="border-t">
-                    <td className="p-3 text-gray-700">{item.description}</td>
-                    <td className="p-3 text-center text-gray-700">{item.quantity}</td>
-                    <td className="p-3 text-right text-gray-700">{item.rate.toLocaleString('en-IN')}</td>
-                    <td className="p-3 text-right font-semibold text-gray-900">{item.amount.toLocaleString('en-IN')}</td>
+                  <tr key={index} className="border-b border-border">
+                    <td className="px-1 py-3.5 text-foreground">{item.description}</td>
+                    <td className="px-1 py-3.5 text-center tabular-nums text-muted-foreground">{item.quantity}</td>
+                    <td className="px-1 py-3.5 text-right tabular-nums text-muted-foreground">{item.rate.toLocaleString('en-IN')}</td>
+                    <td className="px-1 py-3.5 text-right font-medium tabular-nums text-foreground">{item.amount.toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
-              <tfoot className="bg-gray-50 border-t">
-                <tr>
-                  <td colSpan={3} className="p-3 text-right font-semibold text-gray-700">Subtotal:</td>
-                  <td className="p-3 text-right font-semibold text-gray-900">&#8377;{quotation.subtotal.toLocaleString('en-IN')}</td>
-                </tr>
-                <tr>
-                  <td colSpan={3} className="p-3 text-right font-semibold text-gray-700">Tax ({quotation.tax_percentage}%):</td>
-                  <td className="p-3 text-right font-semibold text-gray-900">&#8377;{quotation.tax_amount.toLocaleString('en-IN')}</td>
-                </tr>
-                <tr className="border-t-2">
-                  <td colSpan={3} className="p-3 text-right text-base font-bold text-gray-900">Total Amount:</td>
-                  <td className="p-3 text-right text-base font-bold text-blue-600">&#8377;{quotation.total_amount.toLocaleString('en-IN')}</td>
-                </tr>
-              </tfoot>
             </table>
+          </div>
+
+          <div className="mt-6 flex justify-end">
+            <dl className="w-full space-y-2 text-sm sm:w-80">
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Subtotal</dt>
+                <dd className="tabular-nums text-foreground">&#8377;{quotation.subtotal.toLocaleString('en-IN')}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Tax ({quotation.tax_percentage}%)</dt>
+                <dd className="tabular-nums text-foreground">&#8377;{quotation.tax_amount.toLocaleString('en-IN')}</dd>
+              </div>
+              <div className="flex items-end justify-between gap-4 border-t border-border pt-4">
+                <dt className={ADMIN_EYEBROW}>Total amount</dt>
+                <dd className="font-display text-3xl font-semibold tracking-[-0.04em] tabular-nums text-foreground sm:text-4xl">&#8377;{quotation.total_amount.toLocaleString('en-IN')}</dd>
+              </div>
+            </dl>
           </div>
         </div>
 
-        {/* Payment Milestones */}
         {quotation.milestones && quotation.milestones.length > 0 && (
-          <div>
-            <h3 className="text-base font-semibold mb-4 flex items-center gap-2 text-gray-900">
-              <CheckCircle className="w-5 h-5" />
-              Payment Milestones
-            </h3>
-            <div className="space-y-4">
+          <div className={DOC_SECTION}>
+            <h3 className={DOC_LABEL}>Payment milestones</h3>
+            <ol className="divide-y divide-border border-y border-border">
               {quotation.milestones.map((milestone, index) => (
-                <div key={index} className="border rounded-lg p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-semibold text-sm text-gray-900">{milestone.title}</h4>
+                <li key={index} className="py-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex min-w-0 gap-3">
+                      <span className="font-mono text-xs tabular-nums text-muted-foreground">{String(index + 1).padStart(2, '0')}</span>
+                      <h4 className="text-sm font-semibold text-foreground">{milestone.title}</h4>
+                    </div>
                     <div className="text-right">
-                      <p className="font-semibold text-sm text-gray-900">{milestone.percentage}%</p>
-                      <p className="text-sm text-gray-500">&#8377;{milestone.amount.toLocaleString('en-IN')}</p>
+                      <p className="text-sm font-semibold tabular-nums text-foreground">{milestone.percentage}%</p>
+                      <p className="text-sm tabular-nums text-muted-foreground">&#8377;{milestone.amount.toLocaleString('en-IN')}</p>
                     </div>
                   </div>
                   {milestone.description && (
-                    <p className="text-sm text-gray-600 mb-2">{milestone.description}</p>
+                    <p className="mt-1 pl-7 text-sm text-muted-foreground">{milestone.description}</p>
                   )}
                   {milestone.deliverables && milestone.deliverables.length > 0 && (
-                    <div>
-                      <p className="text-sm font-semibold mb-2 text-gray-700">Deliverables:</p>
-                      <ul className="text-sm text-gray-600 space-y-1">
+                    <div className="mt-3 pl-7">
+                      <p className={`${ADMIN_EYEBROW} mb-2`}>Deliverables</p>
+                      <ul className="space-y-1 text-sm text-muted-foreground">
                         {milestone.deliverables.filter((d: string) => d.trim()).map((deliverable: string, idx: number) => (
                           <li key={idx} className="flex items-start gap-2">
-                            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+                            <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                             {deliverable}
                           </li>
                         ))}
                       </ul>
                     </div>
                   )}
-                </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         )}
 
-        {/* Terms & Conditions */}
-        <div>
-          <h3 className="text-base font-semibold mb-4 flex items-center gap-2 text-gray-900">
-            <FileText className="w-5 h-5" />
-            Terms & Conditions
-          </h3>
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-700">{quotation.terms_conditions}</p>
-          </div>
+        <div className={DOC_SECTION}>
+          <h3 className={DOC_LABEL}>Terms & conditions</h3>
+          <p className="whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground">{quotation.terms_conditions}</p>
         </div>
 
-        {/* Signature Section */}
         {quotation.signature_image_url && (
-          <div className="border-t pt-8">
-            <div className="flex justify-end">
-              <div className="text-center">
-                <div className="mb-4">
-                  <Image
-                    src={quotation.signature_image_url}
-                    alt={`${quotation.signature_name} signature`}
-                    width={200}
-                    height={100}
-                    className="object-contain"
-                  />
-                </div>
-                <div className="border-t border-gray-300 pt-2 min-w-[200px]">
-                  <p className="font-semibold text-sm text-gray-900">{quotation.signature_name}</p>
-                  <p className="text-xs text-gray-500">{quotation.signature_role}</p>
-                  <p className="text-xs text-gray-500">FormiqStudio</p>
-                </div>
+          <div className={`flex justify-end ${DOC_SECTION}`}>
+            <div className="min-w-[220px]">
+              <p className={`${ADMIN_EYEBROW} mb-3`}>Authorised signature</p>
+              <Image
+                src={quotation.signature_image_url}
+                alt={`${quotation.signature_name} signature`}
+                width={200}
+                height={100}
+                className="object-contain"
+              />
+              <div className="mt-3 border-t border-foreground pt-2">
+                <p className="text-sm font-semibold text-foreground">{quotation.signature_name}</p>
+                <p className="text-xs text-muted-foreground">{quotation.signature_role}</p>
+                <p className="text-xs text-muted-foreground">FormiqStudio</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Pay Now */}
         {(quotation as any).payment_link && (quotation as any).payment_status !== 'paid' && (
-          <div className="border-t pt-6">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 text-center">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Ready to proceed?</h3>
-              <p className="text-sm text-gray-600 mb-4">Make a secure payment to get started with your project.</p>
-              <a
-                href={(quotation as any).payment_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
-              >
-                Pay &#8377;{quotation.total_amount.toLocaleString('en-IN')}
-              </a>
-              <p className="text-xs text-gray-500 mt-3">Powered by Cashfree | Secure Payment</p>
-            </div>
+          <div className="rounded-2xl border border-border bg-muted/50 px-5 py-8 text-center print:hidden sm:px-8">
+            <p className={ADMIN_EYEBROW}>Next step</p>
+            <h3 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-foreground">Ready to proceed?</h3>
+            <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">Make a secure payment to get started with your project.</p>
+            <a
+              href={(quotation as any).payment_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${ADMIN_BTN_ACCENT} mt-6 h-12 px-7 tabular-nums`}
+            >
+              Pay &#8377;{quotation.total_amount.toLocaleString('en-IN')}
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+            <p className="mt-4 font-mono text-[11px] text-muted-foreground">Powered by Cashfree | Secure payment</p>
           </div>
         )}
 
         {(quotation as any).payment_status === 'paid' && (
-          <div className="border-t pt-6">
-            <div className="bg-green-50 rounded-xl p-6 text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-              </div>
-              <h3 className="text-lg font-bold text-green-800">Payment Received</h3>
-              <p className="text-sm text-green-600">Thank you! Your payment has been confirmed.</p>
+          <div className="rounded-2xl border border-success/30 bg-success/10 px-5 py-8 text-center sm:px-8">
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-success/30">
+              <Check className="h-6 w-6 text-success" />
             </div>
+            <h3 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">Payment received</h3>
+            <p className="mt-1 text-sm text-success">Thank you! Your payment has been confirmed.</p>
           </div>
         )}
 
-        {/* Footer */}
-        <div className="border-t pt-6 text-center text-sm text-gray-500">
-          <p>Thank you for considering FormiqStudio for your project.</p>
-          <p>We look forward to working with you!</p>
-          <div className="mt-4 space-y-1">
-            <p className="font-medium text-gray-700">Digital Solutions & Marketing Agency</p>
+        <footer className={`flex flex-col gap-4 text-sm text-muted-foreground sm:flex-row sm:items-end sm:justify-between ${DOC_SECTION}`}>
+          <div>
+            <p className="text-foreground">Thank you for considering FormiqStudio for your project.</p>
+            <p>We look forward to working with you!</p>
+          </div>
+          <div className="space-y-0.5 font-mono text-[11px] sm:text-right">
+            <p className="text-foreground">Digital Solutions & Marketing Agency</p>
             <p>Email: hello@formiqstudio.in</p>
             <p>Phone: +91 8918349445 | WhatsApp: +91 9832078313</p>
           </div>
-        </div>
+        </footer>
       </div>
     </div>
   );

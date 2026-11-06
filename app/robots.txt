@@ -1,45 +1,22 @@
-# General crawlers
+# All crawlers, including AI search & LLM crawlers (explicitly allowed for
+# GEO/AI visibility). They share ONE group so every bot gets the same
+# Allow/Disallow rules — a bot that matches a named group ignores the "*" group.
 User-agent: *
-Allow: /
-
-# AI Search & LLM crawlers - explicitly allowed for GEO/AI visibility
 User-agent: GPTBot
-Allow: /
-
 User-agent: ChatGPT-User
-Allow: /
-
 User-agent: OAI-SearchBot
-Allow: /
-
 User-agent: Google-Extended
-Allow: /
-
 User-agent: GoogleBot
-Allow: /
-
 User-agent: Applebot-Extended
-Allow: /
-
 User-agent: PerplexityBot
-Allow: /
-
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: Claude-Web
-Allow: /
-
 User-agent: Bytespider
-Allow: /
-
 User-agent: CCBot
-Allow: /
-
 User-agent: FacebookBot
 Allow: /
 
-# Allow all crawlers to access public pages
+# Public pages
 Allow: /about
 Allow: /services
 Allow: /portfolio
@@ -50,7 +27,6 @@ Allow: /mobile
 Allow: /marketing
 Allow: /shopify
 Allow: /ecommerce-marketplace
-Allow: /software-tools
 Allow: /agents
 Allow: /team
 Allow: /privacy
@@ -59,7 +35,7 @@ Allow: /portfolio/websites
 Allow: /portfolio/applications
 Allow: /portfolio/creatives
 Allow: /portfolio/ads-seo
-Allow: /portfolio/designs
+Allow: /portfolio/design
 
 # Disallow admin and user areas
 Disallow: /admin
@@ -72,10 +48,17 @@ Disallow: /signup
 # Disallow API routes
 Disallow: /api/
 
-# Disallow service checkout pages (private)
+# Disallow legacy / unused routes (kept in code, marked noindex)
 Disallow: /services/checkout
 Disallow: /services/domains
 Disallow: /services/hosting
+Disallow: /services/email
+Disallow: /services/cloud
+Disallow: /services/marketing
+Disallow: /landing
+Disallow: /theme-showcase
+Disallow: /software-tools
+Disallow: /portfolio/designs
 
 # Allow specific static assets
 Allow: /images/

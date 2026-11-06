@@ -11,32 +11,32 @@ const features = [
   {
     title: 'Scalable Infrastructure',
     description: 'Scale your resources up or down based on demand with our flexible cloud infrastructure.',
-    icon: <Cloud className="h-6 w-6 text-white" />
+    icon: <Cloud className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'High Availability',
     description: 'Our cloud services are designed for 99.99% uptime with redundant systems across multiple regions.',
-    icon: <Check className="h-6 w-6 text-white" />
+    icon: <Check className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Advanced Security',
     description: 'Enterprise-grade security with encryption, firewalls, and regular security audits.',
-    icon: <Shield className="h-6 w-6 text-white" />
+    icon: <Shield className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Managed Databases',
     description: 'Fully managed database services with automatic backups, scaling, and high availability.',
-    icon: <Database className="h-6 w-6 text-white" />
+    icon: <Database className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Virtual Machines',
     description: 'Deploy virtual machines in seconds with your choice of operating system and configuration.',
-    icon: <Server className="h-6 w-6 text-white" />
+    icon: <Server className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Pay-as-you-go Pricing',
     description: 'Only pay for the resources you use with transparent pricing and no hidden fees.',
-    icon: <Zap className="h-6 w-6 text-white" />
+    icon: <Zap className="h-6 w-6 text-primary-foreground" />
   }
 ];
 
@@ -61,7 +61,7 @@ export default function CloudServicesPage() {
       {/* Coming Soon */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <div className="bg-card rounded-xl shadow-xl p-12 border border-border/20">
-          <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-6 neon-glow-primary">
+          <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-6">
             <Cloud className="h-12 w-12 text-primary" />
           </div>
           <h2 className="text-3xl font-extrabold text-foreground">Coming Soon</h2>
@@ -71,14 +71,14 @@ export default function CloudServicesPage() {
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
             >
               Contact Us
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
               href="/services/hosting"
-              className="inline-flex items-center px-6 py-3 border border-border dark:border-neutral-600 text-base font-medium rounded-md text-foreground dark:text-neutral-300 bg-card dark:bg-neutral-800 hover:bg-muted dark:hover:bg-neutral-700"
+              className="inline-flex items-center px-6 py-3 border border-border text-base font-medium rounded-md text-foreground bg-card hover:bg-muted"
             >
               Explore Hosting Options
             </Link>

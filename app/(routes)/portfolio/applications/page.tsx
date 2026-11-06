@@ -1,7 +1,10 @@
 "use client";
+
+import PageHeader from '@/components/studio/PageHeader';
+import PageCTA from '@/components/studio/PageCTA';
 import React, { useState, useEffect } from 'react';
 import { AppProject, getAppProjects } from '@/lib/portfolio';
-import { AppWindow, Smartphone, Globe, Code, ExternalLink, Search, X, Calendar, User, Briefcase, Layers } from 'lucide-react';
+import { AppWindow, Smartphone, Globe, Code, ExternalLink, Search, X, Calendar, Layers } from 'lucide-react';
 // Helper function to get platform icon
 const getPlatformIcon = (platform: string) => {
   switch (platform.toLowerCase()) {
@@ -49,14 +52,11 @@ const ApplicationsPortfolio = () => {
         setLoading(true);
         const data = await getAppProjects();
 
-        console.log('Fetched app projects:', data);
-
         // If we have data from the database, use it
         if (data && data.length > 0) {
           setAppProjects(data);
         } else {
           // Otherwise, set empty array (don't use fallback data)
-          console.log('No app projects found in database');
           setAppProjects([]);
           // Commented out fallback data usage
           // setAppProjects(fallbackAppProjects);
@@ -180,62 +180,41 @@ const ApplicationsPortfolio = () => {
   };
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero Section with Interactive Elements */}
-      <div className="relative bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 pt-28 md:pt-36 lg:pt-44">
-        <div className="container mx-auto px-4 py-20 md:py-28">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center mb-6 bg-card/80 backdrop-blur-sm p-3 rounded-2xl shadow-lg border border-border/20">
-              <AppWindow className="w-8 h-8 text-primary mr-3" />
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold premium-text-gradient">
-                Application Portfolio
-              </h1>
-            </div>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12">
-              Innovative digital solutions built with cutting-edge technologies for web and mobile platforms.
-            </p>
-
-            {/* Search & Filter Bar */}
-            <div className="bg-card rounded-xl shadow-lg p-2 md:p-4 flex flex-col md:flex-row gap-4 max-w-3xl mx-auto border border-border/20">
-              <div className="relative flex-grow">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-                <input
-                  type="text"
-                  placeholder="Search applications..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-lg bg-muted border-0 focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
-                />
-              </div>
-              <div className="flex-shrink-0">
-                <select
-                  value={selectedPlatform}
-                  onChange={(e) => setSelectedPlatform(e.target.value)}
-                  className="w-full md:w-auto px-4 py-2 rounded-lg bg-muted border-0 focus:ring-2 focus:ring-primary text-foreground"
-                >
-                  {platforms.map(platform => (
-                    <option key={platform} value={platform}>{platform}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Decorative Wave */}
-        <div className="absolute -bottom-1 left-0 right-0">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" className="w-full">
-            <path
-              fill="currentColor"
-              className="text-background"
-              d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,80C672,64,768,64,864,69.3C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+    <div className="bg-background text-foreground">
+      <PageHeader
+        eyebrow="(01) Portfolio / Applications"
+        title={<>Application <span className="text-primary">portfolio</span></>}
+        intro="Innovative digital solutions built with cutting-edge technologies for web and mobile platforms."
+      >
+        <div className="mt-10 flex flex-col sm:flex-row gap-3 max-w-3xl">
+          <div className="relative flex-grow">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} aria-hidden="true" />
+            <label htmlFor="app-search" className="sr-only">Search applications</label>
+            <input
+              id="app-search"
+              type="search"
+              placeholder="Search applications..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full min-h-12 pl-11 pr-4 rounded-full bg-card border border-border text-base text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/30"
             />
-          </svg>
+          </div>
+          <label htmlFor="app-platform" className="sr-only">Platform</label>
+          <select
+            id="app-platform"
+            value={selectedPlatform}
+            onChange={(e) => setSelectedPlatform(e.target.value)}
+            className="min-h-12 px-4 rounded-full bg-card border border-border text-base text-foreground outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/30"
+          >
+            {platforms.map(platform => (
+              <option key={platform} value={platform}>{platform}</option>
+            ))}
+          </select>
         </div>
-      </div>
+      </PageHeader>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Loading State */}
         {loading && (
           <div className="flex justify-center items-center py-20">
@@ -256,11 +235,11 @@ const ApplicationsPortfolio = () => {
         <div className="grid grid-cols-1 gap-8">
           {/* Featured Project (first project in the list, full width) */}
           {filteredProjects.length > 0 && (
-            <div className="bg-card rounded-2xl overflow-hidden shadow-xl border border-border">
+            <div className="bg-card rounded-[22px] overflow-hidden border border-border hover:border-foreground/30">
               <div className="grid md:grid-cols-2">
                 <div className="h-72 md:h-full overflow-hidden">
                   <div
-                    className="w-full h-full bg-muted flex items-center justify-center transform hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full bg-muted flex items-center justify-center hover:scale-105 transition-transform duration-700"
                     style={{
                       backgroundImage: `url(${filteredProjects[0].image})`,
                       backgroundSize: 'cover',
@@ -274,7 +253,7 @@ const ApplicationsPortfolio = () => {
                 </div>
                 <div className="p-8 flex flex-col">
                   <div className="flex justify-between items-center mb-3">
-                    <span className="text-sm font-bold px-3 py-1 bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-full">
+                    <span className="text-sm font-bold px-3 py-1 bg-primary text-primary-foreground rounded-full">
                       Featured Project
                     </span>
                     <span className="text-sm font-medium bg-muted text-foreground px-3 py-1 rounded-full">
@@ -290,12 +269,12 @@ const ApplicationsPortfolio = () => {
 
                   {/* Tech Tags */}
                   <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-muted-foreground dark:text-neutral-400 mb-2">Technologies</h4>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">Technologies</h4>
                     <div className="flex flex-wrap gap-2">
                       {filteredProjects[0].tags.map((tag, index) => (
                         <span
                           key={index}
-                          className="px-3 py-1 bg-primary/10 dark:bg-primary/10 text-primary dark:text-primary/70 rounded-full text-sm font-medium"
+                          className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
                         >
                           {tag}
                         </span>
@@ -305,12 +284,12 @@ const ApplicationsPortfolio = () => {
 
                   {/* Key Features */}
                   <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-muted-foreground dark:text-neutral-400 mb-2">Key Features</h4>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">Key Features</h4>
                     <div className="grid grid-cols-2 gap-2">
                       {filteredProjects[0].features.map((feature, index) => (
                         <div key={index} className="flex items-center">
                           <div className="h-2 w-2 rounded-full bg-primary mr-2"></div>
-                          <span className="text-sm text-muted-foreground dark:text-neutral-300">{feature}</span>
+                          <span className="text-sm text-muted-foreground">{feature}</span>
                         </div>
                       ))}
                     </div>
@@ -318,7 +297,7 @@ const ApplicationsPortfolio = () => {
 
                   {/* Platforms */}
                   <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-muted-foreground dark:text-neutral-400 mb-2">Available On</h4>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">Available On</h4>
                     <div className="flex flex-wrap gap-2">
                       {filteredProjects[0].platforms.map((platform, index) => (
                         <span
@@ -335,7 +314,7 @@ const ApplicationsPortfolio = () => {
                   {/* CTA */}
                   <button
                     onClick={() => openProjectDetails(filteredProjects[0])}
-                    className="inline-flex items-center justify-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 mt-auto"
+                    className="inline-flex items-center justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-all duration-300 mt-auto"
                   >
                     View Case Study
                     <ExternalLink className="w-4 h-4 ml-2" />
@@ -350,12 +329,12 @@ const ApplicationsPortfolio = () => {
             {filteredProjects.slice(1).map((project) => (
               <div
                 key={project.id}
-                className="bg-card dark:bg-neutral-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col"
+                className="bg-card rounded-[22px] overflow-hidden transition-all duration-300 flex flex-col border border-border hover:border-foreground/30"
               >
                 <div className="relative">
                   <div className="h-56 overflow-hidden">
                     <div
-                      className="w-full h-full bg-muted dark:bg-neutral-700 flex items-center justify-center transform hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full bg-muted flex items-center justify-center hover:scale-105 transition-transform duration-500"
                       style={{
                         backgroundImage: `url(${project.image})`,
                         backgroundSize: 'cover',
@@ -377,10 +356,10 @@ const ApplicationsPortfolio = () => {
                 </div>
 
                 <div className="p-6 flex-grow flex flex-col">
-                  <h3 className="text-xl font-bold mb-3 text-foreground dark:text-white">
+                  <h3 className="text-xl font-bold mb-3 text-foreground">
                     {project.title}
                   </h3>
-                  <p className="text-muted-foreground dark:text-neutral-300 mb-4 line-clamp-3">
+                  <p className="text-muted-foreground mb-4 line-clamp-3">
                     {project.description}
                   </p>
 
@@ -403,13 +382,13 @@ const ApplicationsPortfolio = () => {
                       {project.tags.slice(0, 3).map((tag, index) => (
                         <span
                           key={index}
-                          className="px-2 py-1 bg-muted dark:bg-neutral-700 text-muted-foreground dark:text-neutral-300 rounded text-xs"
+                          className="px-2 py-1 bg-muted text-muted-foreground rounded text-xs"
                         >
                           {tag}
                         </span>
                       ))}
                       {project.tags.length > 3 && (
-                        <span className="px-2 py-1 bg-muted dark:bg-neutral-700 text-muted-foreground dark:text-neutral-300 rounded text-xs">
+                        <span className="px-2 py-1 bg-muted text-muted-foreground rounded text-xs">
                           +{project.tags.length - 3} more
                         </span>
                       )}
@@ -432,12 +411,12 @@ const ApplicationsPortfolio = () => {
 
           {/* Empty State */}
           {!loading && filteredProjects.length === 0 && (
-            <div className="text-center py-16 bg-card dark:bg-neutral-800 rounded-xl shadow">
+            <div className="text-center py-16 bg-card rounded-xl shadow">
               <AppWindow className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
               {searchQuery || selectedPlatform !== 'All' ? (
                 <>
                   <h3 className="text-2xl font-bold mb-2">No applications found</h3>
-                  <p className="text-muted-foreground dark:text-neutral-400 mb-6">
+                  <p className="text-muted-foreground mb-6">
                     Try adjusting your search or filter to find what you're looking for.
                   </p>
                   <button
@@ -450,7 +429,7 @@ const ApplicationsPortfolio = () => {
               ) : (
                 <>
                   <h3 className="text-2xl font-bold mb-2">No applications available yet</h3>
-                  <p className="text-muted-foreground dark:text-neutral-400 mb-6">
+                  <p className="text-muted-foreground mb-6">
                     We're currently working on adding our application projects. Please check back later.
                   </p>
                 </>
@@ -460,64 +439,25 @@ const ApplicationsPortfolio = () => {
         </div>
       </div>
 
-      {/* Statistics Section */}
-      <div className="bg-gradient-to-r from-muted to-muted/40 dark:from-neutral-800 dark:to-neutral-900 py-16 mt-20">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-primary mb-2">20+</div>
-              <div className="text-muted-foreground dark:text-neutral-300">Applications Delivered</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-primary mb-2">5M+</div>
-              <div className="text-muted-foreground dark:text-neutral-300">User Downloads</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-primary mb-2">12</div>
-              <div className="text-muted-foreground dark:text-neutral-300">Industry Awards</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-primary mb-2">98%</div>
-              <div className="text-muted-foreground dark:text-neutral-300">Client Satisfaction</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Call To Action */}
-      <div className="bg-primary/5 dark:bg-primary/10 py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Have an application idea?</h2>
-          <p className="text-xl text-muted-foreground dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
-            Let's turn your vision into a powerful digital solution that users will love.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://wa.me/919832078313?text=Hi%2C%20I%20have%20an%20app%20idea%20to%20discuss" target="_blank" rel="noopener noreferrer">
-              <button className="px-8 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                Start Your Project
-              </button>
-            </a>
-            <a href="/portfolio">
-              <button className="px-8 py-3 bg-card dark:bg-neutral-800 hover:bg-muted dark:hover:bg-neutral-700 text-primary font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                View All Applications
-              </button>
-            </a>
-          </div>
-        </div>
-      </div>
+      <PageCTA
+        title="Have an application idea?"
+        subtitle="Let's turn your vision into a powerful digital solution that users will love."
+        primary={{"label":"Start your project","href":"https://wa.me/919832078313?text=Hi%2C%20I%20have%20an%20app%20idea%20to%20discuss","external":true}}
+        secondary={{"label":"View all work","href":"/portfolio"}}
+      />
 
       {/* Project Details Popup */}
       {isPopupOpen && selectedProject && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-card dark:bg-neutral-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-card rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto" data-lenis-prevent>
             {/* Popup Header */}
-            <div className="sticky top-0 bg-card dark:bg-neutral-800 p-6 border-b border-border dark:border-neutral-700 flex justify-between items-center z-10">
-              <h2 className="text-2xl font-bold text-foreground dark:text-white">{selectedProject.title}</h2>
+            <div className="sticky top-0 bg-card p-6 border-b border-border flex justify-between items-center z-10">
+              <h2 className="text-2xl font-bold text-foreground">{selectedProject.title}</h2>
               <button
                 onClick={closeProjectDetails}
-                className="p-2 rounded-full bg-muted dark:bg-neutral-700 hover:bg-muted dark:hover:bg-neutral-600 transition-colors"
+                className="p-2 rounded-full bg-muted hover:bg-muted transition-colors"
               >
-                <X className="w-5 h-5 text-foreground dark:text-neutral-300" />
+                <X className="w-5 h-5 text-foreground" />
               </button>
             </div>
 
@@ -525,7 +465,7 @@ const ApplicationsPortfolio = () => {
             <div className="p-6">
               {/* Project Image */}
               <div
-                className="w-full h-80 bg-muted dark:bg-neutral-700 rounded-xl mb-8"
+                className="w-full h-80 bg-muted rounded-xl mb-8"
                 style={{
                   backgroundImage: `url(${selectedProject.image})`,
                   backgroundSize: 'cover',
@@ -538,14 +478,14 @@ const ApplicationsPortfolio = () => {
                 {/* Left Column - Project Details */}
                 <div className="md:col-span-2 space-y-6">
                   <div>
-                    <h3 className="text-xl font-bold mb-3 text-foreground dark:text-white">Project Overview</h3>
-                    <p className="text-foreground dark:text-neutral-300">{selectedProject.description}</p>
+                    <h3 className="text-xl font-bold mb-3 text-foreground">Project Overview</h3>
+                    <p className="text-foreground">{selectedProject.description}</p>
                   </div>
 
                   {/* Features */}
                   {selectedProject.features && selectedProject.features.length > 0 && (
                     <div>
-                      <h3 className="text-lg font-bold mb-3 text-foreground dark:text-white">Key Features</h3>
+                      <h3 className="text-lg font-bold mb-3 text-foreground">Key Features</h3>
                       <ul className="space-y-2">
                         {selectedProject.features.map((feature, index) => (
                           <li key={index} className="flex items-start gap-2">
@@ -554,7 +494,7 @@ const ApplicationsPortfolio = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
                             </div>
-                            <span className="text-foreground dark:text-neutral-300">{feature}</span>
+                            <span className="text-foreground">{feature}</span>
                           </li>
                         ))}
                       </ul>
@@ -564,7 +504,7 @@ const ApplicationsPortfolio = () => {
                   {/* Technologies */}
                   {selectedProject.tags && selectedProject.tags.length > 0 && (
                     <div>
-                      <h3 className="text-lg font-bold mb-3 text-foreground dark:text-white">Technologies Used</h3>
+                      <h3 className="text-lg font-bold mb-3 text-foreground">Technologies Used</h3>
                       <div className="flex flex-wrap gap-2">
                         {selectedProject.tags.map((tag, index) => (
                           <span
@@ -580,13 +520,13 @@ const ApplicationsPortfolio = () => {
                 </div>
 
                 {/* Right Column - Project Metadata */}
-                <div className="bg-muted dark:bg-neutral-700/50 p-6 rounded-xl space-y-4">
+                <div className="bg-muted p-6 rounded-xl space-y-4">
                   {/* Year */}
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground dark:text-white">Year</h4>
-                      <p className="text-foreground dark:text-neutral-300">{selectedProject.year}</p>
+                      <h4 className="text-sm font-semibold text-foreground">Year</h4>
+                      <p className="text-foreground">{selectedProject.year}</p>
                     </div>
                   </div>
 
@@ -594,10 +534,10 @@ const ApplicationsPortfolio = () => {
                   <div className="flex items-start gap-3">
                     <Layers className="w-5 h-5 text-primary mt-0.5" />
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground dark:text-white">Platforms</h4>
+                      <h4 className="text-sm font-semibold text-foreground">Platforms</h4>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {selectedProject.platforms.map((platform, index) => (
-                          <span key={index} className="inline-flex items-center gap-1 text-foreground dark:text-neutral-300">
+                          <span key={index} className="inline-flex items-center gap-1 text-foreground">
                             {getPlatformIcon(platform)}
                             {platform}{index < selectedProject.platforms.length - 1 ? ',' : ''}
                           </span>
@@ -612,7 +552,7 @@ const ApplicationsPortfolio = () => {
                       href={selectedProject.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 mt-6 w-full px-4 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
+                      className="flex items-center justify-center gap-2 mt-6 w-full px-4 py-2 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors"
                     >
                       <ExternalLink className="w-4 h-4" />
                       Visit App
@@ -623,10 +563,10 @@ const ApplicationsPortfolio = () => {
 
               {/* App Screenshots - Placeholder for future enhancement */}
               <div className="mt-8">
-                <h3 className="text-xl font-bold mb-4 text-foreground dark:text-white">App Screenshots</h3>
-                <div className="bg-muted dark:bg-neutral-700 rounded-xl p-8 text-center">
+                <h3 className="text-xl font-bold mb-4 text-foreground">App Screenshots</h3>
+                <div className="bg-muted rounded-xl p-8 text-center">
                   <Smartphone className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
-                  <p className="text-muted-foreground dark:text-neutral-400">App screenshots will be available soon.</p>
+                  <p className="text-muted-foreground">App screenshots will be available soon.</p>
                 </div>
               </div>
             </div>

@@ -3,9 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import {
-  Mail,
   Search,
-  Filter,
   MoreHorizontal,
   CheckCircle,
   Archive,
@@ -16,7 +14,6 @@ import {
   Loader2
 } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   DropdownMenu,
@@ -33,8 +30,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import { formatDistanceToNow } from 'date-fns';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_DANGER,
+  ADMIN_BTN_GHOST,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_EMPTY,
+  ADMIN_EYEBROW,
+  ADMIN_FOCUS,
+  ADMIN_ICON_BTN,
+  ADMIN_TONE,
+  type AdminTone,
+} from '@/components/admin/admin-ui';
 
 interface ContactMessage {
   id: string;
@@ -48,6 +59,15 @@ interface ContactMessage {
   created_at: string;
   updated_at: string;
 }
+
+const MESSAGE_STATUS: Record<ContactMessage['status'], { label: string; tone: AdminTone }> = {
+  new: { label: 'New', tone: 'accent' },
+  read: { label: 'Read', tone: 'neutral' },
+  replied: { label: 'Replied', tone: 'positive' },
+  archived: { label: 'Archived', tone: 'warning' },
+};
+
+const CHECKBOX_CLASS = 'h-4 w-4 shrink-0 cursor-pointer border-input accent-primary';
 
 export default function MessagesPage() {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -64,7 +84,6 @@ export default function MessagesPage() {
   const fetchMessages = async () => {
     setLoading(true);
     try {
-      // Use direct Supabase client API call like other working tabs
       let query = supabase
         .from('contact_messages')
         .select('*')
@@ -108,8 +127,7 @@ export default function MessagesPage() {
         return;
       }
 
-      // Update local state
-      setMessages(messages.map(message => 
+      setMessages(messages.map(message =>
         message.id === id ? { ...message, status: status as any } : message
       ));
     } catch (error) {
@@ -132,7 +150,6 @@ export default function MessagesPage() {
           return;
         }
 
-        // Update local state
         setMessages(messages.filter(message => !selectedMessages.includes(message.id)));
       } else {
         const { error } = await supabase
@@ -145,13 +162,11 @@ export default function MessagesPage() {
           return;
         }
 
-        // Update local state
-        setMessages(messages.map(message => 
+        setMessages(messages.map(message =>
           selectedMessages.includes(message.id) ? { ...message, status: action as any } : message
         ));
       }
 
-      // Clear selection
       setSelectedMessages([]);
     } catch (error) {
       console.error('Error performing bulk action:', error);
@@ -159,9 +174,9 @@ export default function MessagesPage() {
   };
 
   const toggleMessageSelection = (id: string) => {
-    setSelectedMessages(prev => 
-      prev.includes(id) 
-        ? prev.filter(messageId => messageId !== id) 
+    setSelectedMessages(prev =>
+      prev.includes(id)
+        ? prev.filter(messageId => messageId !== id)
         : [...prev, id]
     );
   };
@@ -187,14 +202,13 @@ export default function MessagesPage() {
   const convertToLead = async (message: ContactMessage) => {
     setConvertingToLead(message.id);
     try {
-      // Create lead from contact message
       const leadData = {
         name: message.name,
         email: message.email,
         phone: message.phone || '',
-        company: '', // Will be empty, can be filled later
+        company: '',
         project_type: message.subject || 'General Inquiry',
-        budget: '', // Will be empty, can be filled later
+        budget: '',
         description: message.message,
         status: 'new'
       };
@@ -211,7 +225,6 @@ export default function MessagesPage() {
         return;
       }
 
-      // Update message status to indicate it's been converted
       await updateMessageStatus(message.id, 'read');
 
       alert(`Successfully converted "${message.name}" to a lead! You can find it in the Leads section.`);
@@ -224,276 +237,219 @@ export default function MessagesPage() {
   };
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'new':
-        return <Badge className="bg-primary">New</Badge>;
-      case 'read':
-        return <Badge className="bg-muted-foreground">Read</Badge>;
-      case 'replied':
-        return <Badge className="bg-green-500">Replied</Badge>;
-      case 'archived':
-        return <Badge className="bg-yellow-500">Archived</Badge>;
-      default:
-        return null;
-    }
+    const config = MESSAGE_STATUS[status as ContactMessage['status']];
+    if (!config) return null;
+    return <span className={`${ADMIN_BADGE} ${ADMIN_TONE[config.tone]}`}>{config.label}</span>;
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header with Modern AI-Era Styling */}
-      <div className="bg-card rounded-2xl shadow-md p-6 border border-border">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Contact Messages</h1>
-            <p className="text-muted-foreground mt-1">
-              Manage and respond to customer inquiries
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={fetchMessages}
-              className="flex items-center gap-1"
-            >
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="System"
+        title="Contact messages"
+        description="Manage and respond to customer inquiries."
+        actions={
+          <>
+            <button type="button" onClick={fetchMessages} className={ADMIN_BTN_OUTLINE}>
               <RefreshCw className="h-4 w-4" />
-              <span className="hidden sm:inline">Refresh</span>
-            </Button>
-            <Link href="/admin/messages/compose">
-              <Button size="sm" className="flex items-center gap-1">
-                <Send className="h-4 w-4" />
-                <span>Compose Email</span>
-              </Button>
+              Refresh
+            </button>
+            <Link href="/admin/messages/compose" className={ADMIN_BTN_PRIMARY}>
+              <Send className="h-4 w-4" />
+              Compose email
             </Link>
-          </div>
+          </>
+        }
+      />
+
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search messages..."
+            className="pl-10"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="w-full sm:w-[200px]">
+            <SelectValue placeholder="Filter by status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All messages</SelectItem>
+            <SelectItem value="new">New</SelectItem>
+            <SelectItem value="read">Read</SelectItem>
+            <SelectItem value="replied">Replied</SelectItem>
+            <SelectItem value="archived">Archived</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      {/* Filters and Search */}
-      <div className="bg-card rounded-2xl shadow-md p-6 border border-border">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder="Search messages..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <Filter className="text-muted-foreground h-4 w-4" />
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Messages</SelectItem>
-                <SelectItem value="new">New</SelectItem>
-                <SelectItem value="read">Read</SelectItem>
-                <SelectItem value="replied">Replied</SelectItem>
-                <SelectItem value="archived">Archived</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </div>
-
-      {/* Bulk Actions */}
       {selectedMessages.length > 0 && (
-        <div className="bg-primary/10 rounded-2xl shadow-md p-4 border border-primary/20 flex items-center justify-between">
-          <div className="text-sm text-primary">
+        <div className={`${ADMIN_CARD} flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between`}>
+          <p className={ADMIN_EYEBROW}>
             {selectedMessages.length} {selectedMessages.length === 1 ? 'message' : 'messages'} selected
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => handleBulkAction('read')}
-            >
-              <CheckCircle className="h-4 w-4 mr-1" />
-              Mark as Read
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => handleBulkAction('archived')}
-            >
-              <Archive className="h-4 w-4 mr-1" />
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <button type="button" className={ADMIN_BTN_OUTLINE} onClick={() => handleBulkAction('read')}>
+              <CheckCircle className="h-4 w-4" />
+              Mark as read
+            </button>
+            <button type="button" className={ADMIN_BTN_OUTLINE} onClick={() => handleBulkAction('archived')}>
+              <Archive className="h-4 w-4" />
               Archive
-            </Button>
-            <Button
-              size="sm"
-              variant="destructive"
-              onClick={() => handleBulkAction('delete')}
-            >
-              <Trash2 className="h-4 w-4 mr-1" />
+            </button>
+            <button type="button" className={ADMIN_BTN_DANGER} onClick={() => handleBulkAction('delete')}>
+              <Trash2 className="h-4 w-4" />
               Delete
-            </Button>
+            </button>
           </div>
         </div>
       )}
 
-      {/* Messages Table */}
-      <div className="bg-card rounded-2xl shadow-md border border-border overflow-hidden">
+      <div className={`${ADMIN_CARD} overflow-hidden`}>
         {loading ? (
-          <div className="p-8 text-center">
-            <RefreshCw className="h-8 w-8 mx-auto animate-spin text-muted-foreground" />
-            <p className="mt-2 text-muted-foreground">Loading messages...</p>
+          <div className={ADMIN_EMPTY}>
+            <Loader2 className="mx-auto h-6 w-6 animate-spin text-muted-foreground" />
+            <p className="mt-3">Loading messages...</p>
           </div>
         ) : filteredMessages.length === 0 ? (
-          <div className="p-8 text-center">
-            <Mail className="h-12 w-12 mx-auto text-muted-foreground/50" />
-            <h3 className="mt-2 text-lg font-medium text-foreground">No messages found</h3>
-            <p className="mt-1 text-muted-foreground">
+          <div className={ADMIN_EMPTY}>
+            <p className="font-medium text-foreground">No messages found</p>
+            <p className="mt-1">
               {searchQuery ? 'Try adjusting your search terms' : 'You haven\'t received any contact messages yet'}
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-muted/50">
-                <tr>
-                  <th className="px-6 py-3 text-left">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        className="rounded border-border text-primary focus:ring-primary"
-                        checked={selectedMessages.length === filteredMessages.length && filteredMessages.length > 0}
-                        onChange={toggleSelectAll}
-                      />
-                    </div>
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">From</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Subject</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {filteredMessages.map((message) => (
-                  <tr
+          <>
+            <div className="flex items-center gap-3 border-b border-border px-4 py-3 sm:px-5">
+              <input
+                type="checkbox"
+                aria-label="Select all messages"
+                className={CHECKBOX_CLASS}
+                checked={selectedMessages.length === filteredMessages.length && filteredMessages.length > 0}
+                onChange={toggleSelectAll}
+              />
+              <span className={ADMIN_EYEBROW}>{filteredMessages.length} {filteredMessages.length === 1 ? 'message' : 'messages'}</span>
+            </div>
+            <ul className="divide-y divide-border">
+              {filteredMessages.map((message) => {
+                const unread = message.status === 'new';
+                return (
+                  <li
                     key={message.id}
-                    className={`hover:bg-muted/50 ${
-                      message.status === 'new' ? 'bg-primary/5' : ''
-                    }`}
+                    className="flex gap-3 px-4 py-4 transition-colors hover:bg-muted/40 sm:px-5"
                   >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <input
-                        type="checkbox"
-                        className="rounded border-border text-primary focus:ring-primary"
-                        checked={selectedMessages.includes(message.id)}
-                        onChange={() => toggleMessageSelection(message.id)}
-                      />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-medium">
-                          {message.name.charAt(0).toUpperCase()}
+                    <input
+                      type="checkbox"
+                      aria-label={`Select message from ${message.name}`}
+                      className={`${CHECKBOX_CLASS} mt-1`}
+                      checked={selectedMessages.includes(message.id)}
+                      onChange={() => toggleMessageSelection(message.id)}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline justify-between gap-3">
+                        <div className="flex min-w-0 items-center gap-2">
+                          {unread && <span className="h-2 w-2 shrink-0 rounded-full bg-primary" aria-label="Unread" />}
+                          <span className={`truncate text-sm text-foreground ${unread ? 'font-medium' : ''}`}>{message.name}</span>
+                          <span className="hidden truncate text-sm text-muted-foreground md:inline">{message.email}</span>
                         </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-foreground">{message.name}</div>
-                          <div className="text-sm text-muted-foreground">{message.email}</div>
-                        </div>
+                        <span className={`${ADMIN_EYEBROW} shrink-0 whitespace-nowrap`}>
+                          {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                        </span>
                       </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm text-foreground">{message.subject || 'No Subject'}</div>
-                      <div className="text-sm text-muted-foreground truncate max-w-xs">
-                        {message.message.substring(0, 60)}...
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {getStatusBadge(message.status)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                      {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex justify-end items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => convertToLead(message)}
-                          disabled={convertingToLead === message.id}
-                          className="text-primary border-primary hover:bg-primary/10"
-                          title="Convert to Lead"
-                        >
-                          {convertingToLead === message.id ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <UserPlus className="h-4 w-4" />
-                          )}
-                        </Button>
-                        <Link href={`/admin/messages/${message.id}`}>
-                          <Button variant="ghost" size="sm">View</Button>
-                        </Link>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => updateMessageStatus(message.id, 'read')}>
-                              <CheckCircle className="h-4 w-4 mr-2" />
-                              Mark as Read
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => updateMessageStatus(message.id, 'archived')}>
-                              <Archive className="h-4 w-4 mr-2" />
-                              Archive
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() => convertToLead(message)}
-                              disabled={convertingToLead === message.id}
-                              className="text-primary"
-                            >
-                              {convertingToLead === message.id ? (
-                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                              ) : (
-                                <UserPlus className="h-4 w-4 mr-2" />
-                              )}
-                              Convert to Lead
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              className="text-destructive"
-                              onClick={async () => {
-                                if (confirm('Are you sure you want to delete this message?')) {
-                                  try {
-                                    const { error } = await supabase
-                                      .from('contact_messages')
-                                      .delete()
-                                      .eq('id', message.id);
-                                    
-                                    if (error) {
+                      <Link href={`/admin/messages/${message.id}`} className={`mt-1 block min-w-0 rounded-xl ${ADMIN_FOCUS}`}>
+                        <p className={`truncate text-sm text-foreground ${unread ? 'font-medium' : ''}`}>{message.subject || 'No subject'}</p>
+                        <p className="truncate text-sm text-muted-foreground">
+                          {message.message.substring(0, 60)}...
+                        </p>
+                      </Link>
+                      <div className="mt-3 flex flex-wrap items-center gap-2">
+                        {getStatusBadge(message.status)}
+                        <div className="ml-auto flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => convertToLead(message)}
+                            disabled={convertingToLead === message.id}
+                            className={`${ADMIN_ICON_BTN} disabled:opacity-50`}
+                            title="Convert to lead"
+                            aria-label="Convert to lead"
+                          >
+                            {convertingToLead === message.id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <UserPlus className="h-4 w-4" />
+                            )}
+                          </button>
+                          <Link href={`/admin/messages/${message.id}`} className={`${ADMIN_BTN_GHOST} h-9 px-3`}>
+                            View
+                          </Link>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button type="button" className={ADMIN_ICON_BTN} aria-label="More actions">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem onClick={() => updateMessageStatus(message.id, 'read')}>
+                                <CheckCircle className="h-4 w-4 mr-2" />
+                                Mark as read
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => updateMessageStatus(message.id, 'archived')}>
+                                <Archive className="h-4 w-4 mr-2" />
+                                Archive
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => convertToLead(message)}
+                                disabled={convertingToLead === message.id}
+                              >
+                                {convertingToLead === message.id ? (
+                                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                ) : (
+                                  <UserPlus className="h-4 w-4 mr-2" />
+                                )}
+                                Convert to lead
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                className="text-destructive"
+                                onClick={async () => {
+                                  if (confirm('Are you sure you want to delete this message?')) {
+                                    try {
+                                      const { error } = await supabase
+                                        .from('contact_messages')
+                                        .delete()
+                                        .eq('id', message.id);
+
+                                      if (error) {
+                                        console.error('Error deleting message:', error);
+                                        return;
+                                      }
+
+                                      setMessages(messages.filter(m => m.id !== message.id));
+                                    } catch (error) {
                                       console.error('Error deleting message:', error);
-                                      return;
                                     }
-                                    
-                                    setMessages(messages.filter(m => m.id !== message.id));
-                                  } catch (error) {
-                                    console.error('Error deleting message:', error);
                                   }
-                                }
-                              }}
-                            >
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
         )}
       </div>
     </div>

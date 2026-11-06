@@ -1,34 +1,47 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Edit, 
-  Trash2, 
+import {
+  Plus,
+  Search,
+  Edit,
+  Trash2,
   User,
   Mail,
   Phone,
   Building,
-  Calendar,
-  DollarSign,
-  FileText,
-  Upload,
-  Download,
   Eye,
-  MapPin,
-  Briefcase,
   Users as UsersIcon,
   Award,
-  CreditCard,
   Paperclip,
-  X
-, Loader2 } from 'lucide-react';
+  Loader2
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/lib/supabaseClient';
 import Modal, { ConfirmModal } from '@/components/Modal';
 import AttachmentViewer, { FileUploadPreview } from '@/components/AttachmentViewer';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_GHOST,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EMPTY,
+  ADMIN_EYEBROW,
+  ADMIN_H2,
+  ADMIN_ICON_BTN,
+  ADMIN_INPUT,
+  ADMIN_LABEL,
+  ADMIN_ROW,
+  ADMIN_STAT_VALUE,
+  ADMIN_TABLE,
+  ADMIN_TABLE_WRAP,
+  ADMIN_TD,
+  ADMIN_TH,
+  ADMIN_TONE,
+  type AdminTone,
+} from '@/components/admin/admin-ui';
 
 interface Employee {
   id: string;
@@ -82,6 +95,25 @@ interface BankDetails {
   is_primary: boolean;
 }
 
+const ROLE_TONE: Record<string, AdminTone> = {
+  admin: 'accent',
+  manager: 'warning',
+  sales: 'positive',
+  developer: 'neutral',
+  designer: 'neutral',
+  marketing: 'neutral',
+  employee: 'neutral',
+};
+
+const ACTIVE_TONE: Record<'active' | 'inactive', AdminTone> = {
+  active: 'positive',
+  inactive: 'negative',
+};
+
+const FIELD_LABEL = `${ADMIN_LABEL} mb-2 block`;
+const FILE_INPUT = `${ADMIN_INPUT} h-auto py-2 file:mr-3 file:rounded-full file:border-0 file:bg-muted file:px-3 file:py-1 file:text-sm file:text-foreground`;
+const SECTION_TITLE = 'mb-4 text-lg font-semibold text-foreground';
+
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
@@ -123,7 +155,6 @@ export default function EmployeesPage() {
 
   const fetchEmployees = async () => {
     try {
-      // Use EXACT same pattern as working portfolio requests
       const { data, error } = await supabase
         .from('users')
         .select('*')
@@ -155,7 +186,6 @@ export default function EmployeesPage() {
 
         if (uploadError) throw uploadError;
 
-        // Get public URL
         const { data: { publicUrl } } = supabase.storage
           .from('formiqstudio')
           .getPublicUrl(fileName);
@@ -200,14 +230,11 @@ export default function EmployeesPage() {
       };
 
       if (selectedEmployee) {
-        // Upload new attachments if any
         const uploadedAttachments = await uploadAttachments(selectedEmployee.id);
 
-        // Merge with existing attachments
         const existingAttachments = selectedEmployee.attachments || [];
         const allAttachments = [...existingAttachments, ...uploadedAttachments];
 
-        // Update existing employee
         const { error } = await supabase
           .from('users')
           .update({ ...employeeData, attachments: allAttachments })
@@ -216,7 +243,6 @@ export default function EmployeesPage() {
         if (error) throw error;
         toast.success('Employee updated successfully!');
       } else {
-        // Create new employee first
         const { data: newEmployee, error: employeeError } = await supabase
           .from('users')
           .insert([employeeData])
@@ -225,11 +251,9 @@ export default function EmployeesPage() {
 
         if (employeeError) throw employeeError;
 
-        // Upload attachments for new employee
         const uploadedAttachments = await uploadAttachments(newEmployee.id);
 
         if (uploadedAttachments.length > 0) {
-          // Update employee with attachments
           const { error: updateError } = await supabase
             .from('users')
             .update({ attachments: uploadedAttachments })
@@ -341,18 +365,8 @@ export default function EmployeesPage() {
     }));
   };
 
-  const getRoleColor = (role: string) => {
-    const colors = {
-      admin: 'bg-red-100 text-red-800 border-red-200',
-      manager: 'bg-purple-100 text-purple-800 border-purple-200',
-      sales: 'bg-green-100 text-green-800 border-green-200',
-      developer: 'bg-primary/10 text-primary border-primary/20',
-      designer: 'bg-pink-100 text-pink-800 border-pink-200',
-      marketing: 'bg-orange-100 text-orange-800 border-orange-200',
-      employee: 'bg-secondary text-foreground border-border'
-    };
-    return colors[role as keyof typeof colors] || colors.employee;
-  };
+  const getRoleBadge = (role: string) =>
+    `${ADMIN_BADGE} ${ADMIN_TONE[ROLE_TONE[role] || ROLE_TONE.employee]}`;
 
   const filteredEmployees = employees.filter(employee => {
     const matchesSearch = employee.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -369,47 +383,43 @@ export default function EmployeesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+        <Loader2 className="h-8 w-8 text-muted-foreground animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="p-4 md:p-6 ">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground">Employee Management</h1>
-          <p className="text-muted-foreground">Manage employee details, documents, and bank information</p>
-        </div>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200 shadow-lg"
-        >
-          <Plus className="w-4 h-4" />
-          Add Employee
-        </button>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Team"
+        title="Employees"
+        description="Manage employee details, roles and documents."
+        actions={
+          <button onClick={() => setShowAddModal(true)} className={ADMIN_BTN_PRIMARY}>
+            <Plus className="h-4 w-4" />
+            Add employee
+          </button>
+        }
+      />
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search employees..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className={`${ADMIN_INPUT} pl-10`}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 gap-3 sm:flex">
           <select
             value={departmentFilter}
             onChange={(e) => setDepartmentFilter(e.target.value)}
-            className="px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className={`${ADMIN_INPUT} sm:w-48`}
           >
-            <option value="all">All Departments</option>
+            <option value="all">All departments</option>
             {departments.map(dept => (
               <option key={dept} value={dept}>{dept}</option>
             ))}
@@ -417,9 +427,9 @@ export default function EmployeesPage() {
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className={`${ADMIN_INPUT} sm:w-40`}
           >
-            <option value="all">All Roles</option>
+            <option value="all">All roles</option>
             {roles.map(role => (
               <option key={role} value={role}>{role}</option>
             ))}
@@ -427,260 +437,225 @@ export default function EmployeesPage() {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { 
-            label: 'Total Employees', 
-            value: employees.length, 
-            color: 'text-primary',
-            bgColor: 'bg-primary/10',
-            icon: <UsersIcon className="w-5 h-5" />
+          {
+            label: 'Total employees',
+            value: employees.length,
+            icon: <UsersIcon className="h-4 w-4 text-muted-foreground" />
           },
-          { 
-            label: 'Active Employees', 
-            value: employees.filter(e => e.is_active).length, 
-            color: 'text-green-600',
-            bgColor: 'bg-green-50 dark:bg-green-900/20',
-            icon: <User className="w-5 h-5" />
+          {
+            label: 'Active employees',
+            value: employees.filter(e => e.is_active).length,
+            icon: <User className="h-4 w-4 text-muted-foreground" />
           },
-          { 
-            label: 'Departments', 
-            value: departments.length, 
-            color: 'text-purple-600',
-            bgColor: 'bg-purple-50 dark:bg-purple-900/20',
-            icon: <Building className="w-5 h-5" />
+          {
+            label: 'Departments',
+            value: departments.length,
+            icon: <Building className="h-4 w-4 text-muted-foreground" />
           },
-          { 
-            label: 'Admins', 
-            value: employees.filter(e => e.is_admin).length, 
-            color: 'text-red-600',
-            bgColor: 'bg-red-50 dark:bg-red-900/20',
-            icon: <Award className="w-5 h-5" />
+          {
+            label: 'Admins',
+            value: employees.filter(e => e.is_admin).length,
+            icon: <Award className="h-4 w-4 text-muted-foreground" />
           }
         ].map((stat, index) => (
-          <div key={index} className={`${stat.bgColor} p-4 md:p-6 rounded-xl border border-border`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
-                <p className={`text-2xl md:text-3xl font-bold ${stat.color}`}>{stat.value}</p>
-              </div>
-              <div className={`p-3 rounded-lg ${stat.color} bg-card`}>
-                {stat.icon}
-              </div>
+          <div key={index} className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+            <div className="flex items-center justify-between gap-3">
+              <p className={ADMIN_EYEBROW}>{stat.label}</p>
+              {stat.icon}
             </div>
+            <p className={`mt-4 ${ADMIN_STAT_VALUE}`}>{stat.value}</p>
           </div>
         ))}
       </div>
 
-      {/* Employees Table */}
-      <div className="bg-card rounded-xl border border-border overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-secondary/50">
-              <tr>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Employee</th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Contact</th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Role</th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Department</th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Hire Date</th>
-                <th className="px-4 md:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                <th className="px-4 md:px-6 py-4 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {filteredEmployees.map((employee) => (
-                <tr key={employee.id} className="hover:bg-secondary/50 transition-colors">
-                  <td className="px-4 md:px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-semibold">
-                        {(employee.full_name || employee.email).charAt(0).toUpperCase()}
+      <div className={ADMIN_TABLE_WRAP}>
+        <table className={ADMIN_TABLE}>
+          <thead>
+            <tr>
+              <th className={ADMIN_TH}>Employee</th>
+              <th className={ADMIN_TH}>Contact</th>
+              <th className={ADMIN_TH}>Role</th>
+              <th className={ADMIN_TH}>Department</th>
+              <th className={ADMIN_TH}>Hire date</th>
+              <th className={ADMIN_TH}>Status</th>
+              <th className={`${ADMIN_TH} text-right`}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredEmployees.map((employee) => (
+              <tr key={employee.id} className={ADMIN_ROW}>
+                <td className={ADMIN_TD}>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-muted font-semibold text-foreground">
+                      {(employee.full_name || employee.email).charAt(0).toUpperCase()}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="whitespace-nowrap font-medium text-foreground">
+                        {employee.full_name || 'No name'}
                       </div>
-                      <div>
-                        <div className="text-sm font-medium text-foreground">
-                          {employee.full_name || 'No Name'}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          ID: {employee.employee_id || 'N/A'}
-                        </div>
+                      <div className="whitespace-nowrap font-mono text-xs text-muted-foreground">
+                        ID: {employee.employee_id || 'N/A'}
                       </div>
                     </div>
-                  </td>
-                  <td className="px-4 md:px-6 py-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-sm text-foreground">
-                        <Mail className="w-3 h-3" />
-                        <span className="truncate">{employee.email}</span>
-                      </div>
-                      {employee.phone && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Phone className="w-3 h-3" />
-                          {employee.phone}
-                        </div>
-                      )}
+                  </div>
+                </td>
+                <td className={ADMIN_TD}>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 whitespace-nowrap text-foreground">
+                      <Mail className="h-3 w-3 text-muted-foreground" />
+                      <span>{employee.email}</span>
                     </div>
-                  </td>
-                  <td className="px-4 md:px-6 py-4">
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${getRoleColor(employee.role)}`}>
-                      {employee.role?.toUpperCase() || 'EMPLOYEE'}
-                    </span>
-                  </td>
-                  <td className="px-4 md:px-6 py-4">
-                    <div className="text-sm text-foreground">
-                      {employee.department || 'Not Assigned'}
-                    </div>
-                    {employee.position && (
-                      <div className="text-sm text-muted-foreground">
-                        {employee.position}
+                    {employee.phone && (
+                      <div className="flex items-center gap-2 whitespace-nowrap text-muted-foreground">
+                        <Phone className="h-3 w-3" />
+                        {employee.phone}
                       </div>
                     )}
-                  </td>
-                  <td className="px-4 md:px-6 py-4">
-                    <div className="text-sm text-foreground">
-                      {employee.hire_date ? new Date(employee.hire_date).toLocaleDateString() : 'N/A'}
+                  </div>
+                </td>
+                <td className={ADMIN_TD}>
+                  <span className={getRoleBadge(employee.role)}>
+                    {employee.role || 'employee'}
+                  </span>
+                </td>
+                <td className={ADMIN_TD}>
+                  <div className="whitespace-nowrap text-foreground">
+                    {employee.department || 'Not assigned'}
+                  </div>
+                  {employee.position && (
+                    <div className="whitespace-nowrap text-muted-foreground">
+                      {employee.position}
                     </div>
-                  </td>
-                  <td className="px-4 md:px-6 py-4">
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                      employee.is_active
-                        ? 'bg-green-100 text-green-800 border border-green-200'
-                        : 'bg-red-100 text-red-800 border border-red-200'
-                    }`}>
-                      {employee.is_active ? 'Active' : 'Inactive'}
-                    </span>
-                  </td>
-                  <td className="px-4 md:px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => handleViewDetails(employee)}
-                        className="p-2 text-muted-foreground hover:text-primary transition-colors rounded-lg hover:bg-primary/10"
-                        title="View Details"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleEditEmployee(employee)}
-                        className="p-2 text-muted-foreground hover:text-primary transition-colors rounded-lg hover:bg-primary/10"
-                        title="Edit Employee"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => confirmDeleteEmployee(employee.id)}
-                        className="p-2 text-muted-foreground hover:text-red-600 transition-colors rounded-lg hover:bg-red-50"
-                        title="Delete Employee"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  )}
+                </td>
+                <td className={`${ADMIN_TD} whitespace-nowrap`}>
+                  {employee.hire_date ? new Date(employee.hire_date).toLocaleDateString() : 'N/A'}
+                </td>
+                <td className={ADMIN_TD}>
+                  <span className={`${ADMIN_BADGE} ${ADMIN_TONE[ACTIVE_TONE[employee.is_active ? 'active' : 'inactive']]}`}>
+                    {employee.is_active ? 'Active' : 'Inactive'}
+                  </span>
+                </td>
+                <td className={`${ADMIN_TD} text-right`}>
+                  <div className="flex items-center justify-end gap-1">
+                    <button
+                      onClick={() => handleViewDetails(employee)}
+                      className={ADMIN_ICON_BTN}
+                      title="View details"
+                      aria-label="View details"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleEditEmployee(employee)}
+                      className={ADMIN_ICON_BTN}
+                      title="Edit employee"
+                      aria-label="Edit employee"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => confirmDeleteEmployee(employee.id)}
+                      className={`${ADMIN_ICON_BTN} hover:bg-destructive/10 hover:text-destructive`}
+                      title="Delete employee"
+                      aria-label="Delete employee"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {filteredEmployees.length === 0 && (
+          <div className={`${ADMIN_EMPTY} border-t border-border`}>
+            <UsersIcon className="mx-auto mb-4 h-5 w-5 text-muted-foreground" />
+            <p className="font-medium text-foreground">No employees found</p>
+            <p className="mt-1">Get started by adding your first employee.</p>
+            <button onClick={() => setShowAddModal(true)} className={`mt-6 ${ADMIN_BTN_PRIMARY}`}>
+              <Plus className="h-4 w-4" />
+              Add employee
+            </button>
+          </div>
+        )}
       </div>
 
-      {filteredEmployees.length === 0 && (
-        <div className="text-center py-12">
-          <UsersIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-foreground mb-2">No employees found</h3>
-          <p className="text-muted-foreground mb-4">Get started by adding your first employee</p>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200"
-          >
-            <Plus className="w-4 h-4" />
-            Add Employee
-          </button>
-        </div>
-      )}
-
-      {/* Add Employee Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-card rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-border">
-              <h2 className="text-xl font-bold text-foreground">
-                {selectedEmployee ? 'Edit Employee' : 'Add New Employee'}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/30 p-4">
+          <div className={`${ADMIN_CARD} max-h-[90vh] w-full max-w-4xl overflow-y-auto`}>
+            <div className="border-b border-border px-5 py-4 sm:px-6">
+              <h2 className={ADMIN_H2}>
+                {selectedEmployee ? 'Edit employee' : 'Add new employee'}
               </h2>
             </div>
-            <form onSubmit={handleAddEmployee} className="p-6 space-y-6">
-              {/* Basic Information */}
+            <form onSubmit={handleAddEmployee} className={`${ADMIN_CARD_PAD} space-y-8`}>
               <div>
-                <h3 className="text-lg font-semibold text-foreground mb-4">Basic Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <h3 className={SECTION_TITLE}>Basic information</h3>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Full Name *
-                    </label>
+                    <label className={FIELD_LABEL}>Full name *</label>
                     <input
                       type="text"
                       name="full_name"
                       value={formData.full_name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className={ADMIN_INPUT}
                       placeholder="Enter full name"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Email *
-                    </label>
+                    <label className={FIELD_LABEL}>Email *</label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className={ADMIN_INPUT}
                       placeholder="Enter email address"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Phone
-                    </label>
+                    <label className={FIELD_LABEL}>Phone</label>
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className={ADMIN_INPUT}
                       placeholder="Enter phone number"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Employee ID
-                    </label>
+                    <label className={FIELD_LABEL}>Employee ID</label>
                     <input
                       type="text"
                       name="employee_id"
                       value={formData.employee_id}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className={ADMIN_INPUT}
                       placeholder="Enter employee ID"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Work Information */}
               <div>
-                <h3 className="text-lg font-semibold text-foreground mb-4">Work Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <h3 className={SECTION_TITLE}>Work information</h3>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Role *
-                    </label>
+                    <label className={FIELD_LABEL}>Role *</label>
                     <select
                       name="role"
                       value={formData.role}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className={ADMIN_INPUT}
                     >
                       <option value="employee">Employee</option>
                       <option value="sales">Sales</option>
@@ -692,102 +667,93 @@ export default function EmployeesPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Department
-                    </label>
+                    <label className={FIELD_LABEL}>Department</label>
                     <input
                       type="text"
                       name="department"
                       value={formData.department}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className={ADMIN_INPUT}
                       placeholder="Enter department"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Position
-                    </label>
+                    <label className={FIELD_LABEL}>Position</label>
                     <input
                       type="text"
                       name="position"
                       value={formData.position}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className={ADMIN_INPUT}
                       placeholder="Enter position"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Hire Date
-                    </label>
+                    <label className={FIELD_LABEL}>Hire date</label>
                     <input
                       type="date"
                       name="hire_date"
                       value={formData.hire_date}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className={ADMIN_INPUT}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Salary
-                    </label>
+                    <label className={FIELD_LABEL}>Salary</label>
                     <input
                       type="number"
                       name="salary"
                       value={formData.salary}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className={ADMIN_INPUT}
                       placeholder="Enter salary"
                     />
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-2.5 md:pt-6">
                     <input
                       type="checkbox"
                       name="is_admin"
                       checked={formData.is_admin}
                       onChange={handleInputChange}
-                      className="w-4 h-4 text-primary bg-secondary border-border rounded focus:ring-primary focus:ring-2"
+                      className="h-4 w-4 rounded border-input accent-foreground"
                     />
-                    <label className="ml-2 text-sm font-medium text-foreground">
-                      Admin Access
+                    <label className="text-sm font-medium text-foreground">
+                      Admin access
                     </label>
                   </div>
                 </div>
               </div>
 
-              {/* Attachments */}
               <div>
-                <h3 className="text-lg font-semibold text-foreground mb-4">Attachments</h3>
+                <h3 className={`${SECTION_TITLE} flex items-center gap-2`}>
+                  <Paperclip className="h-4 w-4 text-muted-foreground" />
+                  Attachments
+                </h3>
                 <div className="space-y-3">
                   <input
                     type="file"
                     multiple
                     onChange={handleFileChange}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className={FILE_INPUT}
                     accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif"
                   />
                   <FileUploadPreview files={attachments} onRemove={removeAttachment} />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 pt-4">
+              <div className="flex flex-wrap justify-end gap-2 border-t border-border pt-5">
                 <button
                   type="button"
                   onClick={() => {
                     setShowAddModal(false);
                     resetForm();
                   }}
-                  className="px-4 py-2 text-foreground bg-secondary rounded-lg hover:bg-secondary/80 transition-colors"
+                  className={ADMIN_BTN_GHOST}
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200"
-                >
-                  {selectedEmployee ? 'Update Employee' : 'Add Employee'}
+                <button type="submit" className={ADMIN_BTN_PRIMARY}>
+                  {selectedEmployee ? 'Update employee' : 'Add employee'}
                 </button>
               </div>
             </form>
@@ -795,97 +761,93 @@ export default function EmployeesPage() {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
         onConfirm={() => employeeToDelete && handleDeleteEmployee(employeeToDelete)}
-        title="Delete Employee"
+        title="Delete employee"
         message="Are you sure you want to delete this employee? This action cannot be undone."
         confirmText="Delete"
         type="danger"
       />
 
-      {/* Employee Details Modal */}
       <Modal
         isOpen={showDetailsModal}
         onClose={() => setShowDetailsModal(false)}
-        title={`Employee Details - ${selectedEmployeeDetails?.full_name || 'Unknown'}`}
+        title={`Employee details - ${selectedEmployeeDetails?.full_name || 'Unknown'}`}
         size="xl"
       >
-        <div className="p-6 space-y-6">
+        <div className={`${ADMIN_CARD_PAD} space-y-8`}>
           {selectedEmployeeDetails && (
             <>
-              {/* Employee Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Personal Information</h3>
-                  <div className="space-y-3">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+                  <h3 className={SECTION_TITLE}>Personal information</h3>
+                  <dl className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Full Name</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.full_name || 'Not provided'}</p>
+                      <dt className={ADMIN_LABEL}>Full name</dt>
+                      <dd className="mt-1 text-foreground">{selectedEmployeeDetails.full_name || 'Not provided'}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Email</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.email}</p>
+                      <dt className={ADMIN_LABEL}>Email</dt>
+                      <dd className="mt-1 break-all text-foreground">{selectedEmployeeDetails.email}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Phone</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.phone || 'Not provided'}</p>
+                      <dt className={ADMIN_LABEL}>Phone</dt>
+                      <dd className="mt-1 text-foreground">{selectedEmployeeDetails.phone || 'Not provided'}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Address</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.address || 'Not provided'}</p>
+                      <dt className={ADMIN_LABEL}>Address</dt>
+                      <dd className="mt-1 text-foreground">{selectedEmployeeDetails.address || 'Not provided'}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Date of Birth</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.date_of_birth || 'Not provided'}</p>
+                      <dt className={ADMIN_LABEL}>Date of birth</dt>
+                      <dd className="mt-1 text-foreground">{selectedEmployeeDetails.date_of_birth || 'Not provided'}</dd>
                     </div>
-                  </div>
+                  </dl>
                 </div>
 
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Work Information</h3>
-                  <div className="space-y-3">
+                <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+                  <h3 className={SECTION_TITLE}>Work information</h3>
+                  <dl className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Role</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.role}</p>
+                      <dt className={ADMIN_LABEL}>Role</dt>
+                      <dd className="mt-1 capitalize text-foreground">{selectedEmployeeDetails.role}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Department</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.department || 'Not specified'}</p>
+                      <dt className={ADMIN_LABEL}>Department</dt>
+                      <dd className="mt-1 text-foreground">{selectedEmployeeDetails.department || 'Not specified'}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Position</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.position || 'Not specified'}</p>
+                      <dt className={ADMIN_LABEL}>Position</dt>
+                      <dd className="mt-1 text-foreground">{selectedEmployeeDetails.position || 'Not specified'}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Employee ID</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.employee_id || 'Not assigned'}</p>
+                      <dt className={ADMIN_LABEL}>Employee ID</dt>
+                      <dd className="mt-1 text-foreground">{selectedEmployeeDetails.employee_id || 'Not assigned'}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Hire Date</label>
-                      <p className="text-foreground">{selectedEmployeeDetails.hire_date || 'Not specified'}</p>
+                      <dt className={ADMIN_LABEL}>Hire date</dt>
+                      <dd className="mt-1 text-foreground">{selectedEmployeeDetails.hire_date || 'Not specified'}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Salary</label>
-                      <p className="text-foreground">
+                      <dt className={ADMIN_LABEL}>Salary</dt>
+                      <dd className="mt-1 tabular-nums text-foreground">
                         {selectedEmployeeDetails.salary ? `$${selectedEmployeeDetails.salary.toLocaleString()}` : 'Not specified'}
-                      </p>
+                      </dd>
                     </div>
-                  </div>
+                  </dl>
                 </div>
               </div>
 
-              {/* Skills */}
               {selectedEmployeeDetails.skills && selectedEmployeeDetails.skills.length > 0 && (
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Skills</h3>
+                  <h3 className={SECTION_TITLE}>Skills</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedEmployeeDetails.skills.map((skill, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                        className={`${ADMIN_BADGE} ${ADMIN_TONE.neutral}`}
                       >
                         {skill}
                       </span>
@@ -894,42 +856,39 @@ export default function EmployeesPage() {
                 </div>
               )}
 
-              {/* Bio */}
               {selectedEmployeeDetails.bio && (
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Bio</h3>
-                  <div className="bg-secondary/50 p-4 rounded-lg">
-                    <p className="text-foreground whitespace-pre-wrap">{selectedEmployeeDetails.bio}</p>
+                  <h3 className={SECTION_TITLE}>Bio</h3>
+                  <div className="rounded-xl bg-muted/50 p-4">
+                    <p className="whitespace-pre-wrap text-foreground">{selectedEmployeeDetails.bio}</p>
                   </div>
                 </div>
               )}
 
-              {/* Emergency Contact */}
               {(selectedEmployeeDetails.emergency_contact_name || selectedEmployeeDetails.emergency_contact_phone) && (
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Emergency Contact</h3>
-                  <div className="space-y-2">
+                  <h3 className={SECTION_TITLE}>Emergency contact</h3>
+                  <dl className="space-y-4">
                     {selectedEmployeeDetails.emergency_contact_name && (
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Name</label>
-                        <p className="text-foreground">{selectedEmployeeDetails.emergency_contact_name}</p>
+                        <dt className={ADMIN_LABEL}>Name</dt>
+                        <dd className="mt-1 text-foreground">{selectedEmployeeDetails.emergency_contact_name}</dd>
                       </div>
                     )}
                     {selectedEmployeeDetails.emergency_contact_phone && (
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Phone</label>
-                        <p className="text-foreground">{selectedEmployeeDetails.emergency_contact_phone}</p>
+                        <dt className={ADMIN_LABEL}>Phone</dt>
+                        <dd className="mt-1 text-foreground">{selectedEmployeeDetails.emergency_contact_phone}</dd>
                       </div>
                     )}
-                  </div>
+                  </dl>
                 </div>
               )}
 
-              {/* Attachments */}
               {selectedEmployeeDetails.attachments && selectedEmployeeDetails.attachments.length > 0 && (
                 <AttachmentViewer
                   attachments={selectedEmployeeDetails.attachments}
-                  title="Employee Documents"
+                  title="Employee documents"
                 />
               )}
             </>

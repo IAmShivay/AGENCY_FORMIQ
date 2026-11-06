@@ -1,36 +1,49 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
-import { 
-  Plus, 
-  Trash2, 
-  Save, 
-  Download, 
-  Share2, 
-  User, 
-  Building, 
-  Mail, 
-  Phone,
-  Calendar,
-  DollarSign,
-  FileText,
-  Settings,
-  Target,
-  CheckCircle,
-  Clock,
-  Wrench
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Plus, Trash2, Save, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import TermsConditionsManager from './TermsConditionsManager';
 import SignatureManager from './SignatureManager';
+import {
+  ADMIN_BTN_DANGER,
+  ADMIN_BTN_GHOST,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EYEBROW,
+  ADMIN_H2,
+  ADMIN_ICON_BTN,
+  ADMIN_LABEL,
+} from './admin-ui';
+
+function FormSection({ step, title, children }: { step: string; title: string; children: ReactNode }) {
+  return (
+    <section className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+      <div className="mb-5 flex items-baseline gap-3 border-b border-border pb-4">
+        <span className={ADMIN_EYEBROW}>{step}</span>
+        <h2 className={ADMIN_H2}>{title}</h2>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function Field({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="space-y-2">
+      <Label className={ADMIN_LABEL}>{label}</Label>
+      {children}
+    </div>
+  );
+}
 
 interface Lead {
   id: string;
@@ -102,17 +115,17 @@ export default function QuotationForm({ quotationId, onClose }: QuotationFormPro
   const [selectedLead, setSelectedLead] = useState<string>('');
   const [selectedTermsId, setSelectedTermsId] = useState<string>('');
   const [selectedSignatureId, setSelectedSignatureId] = useState<string>('');
-  
+
   const generateQuotationNumber = () => {
     const now = new Date();
-    const year = now.getFullYear().toString().slice(-2); // Last 2 digits of year
-    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Month with leading zero
-    const random = Math.floor(Math.random() * 90) + 10; // Random 2-digit number (10-99)
+    const year = now.getFullYear().toString().slice(-2);
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const random = Math.floor(Math.random() * 90) + 10;
     return `QT-${year}${month}${random}`;
   };
 
   const [quotationData, setQuotationData] = useState<QuotationData>({
-    quotation_number: quotationId ? '' : generateQuotationNumber(), // Only generate for new quotations
+    quotation_number: quotationId ? '' : generateQuotationNumber(),
     client_name: '',
     client_email: '',
     client_phone: '',
@@ -120,13 +133,13 @@ export default function QuotationForm({ quotationId, onClose }: QuotationFormPro
     project_title: '',
     project_description: '',
     items: [{ id: '1', description: '', quantity: 1, rate: 0, amount: 0 }],
-    milestones: [{ 
-      id: '1', 
-      title: 'Project Initiation', 
-      description: '', 
-      percentage: 30, 
-      amount: 0, 
-      deliverables: [''] 
+    milestones: [{
+      id: '1',
+      title: 'Project Initiation',
+      description: '',
+      percentage: 30,
+      amount: 0,
+      deliverables: ['']
     }],
     key_features: [''],
     scope_of_work: '',
@@ -324,7 +337,7 @@ export default function QuotationForm({ quotationId, onClose }: QuotationFormPro
   const saveQuotation = async () => {
     try {
       setLoading(true);
-      
+
       const quotationPayload = {
         ...quotationData,
         updated_at: new Date().toISOString()
@@ -335,7 +348,7 @@ export default function QuotationForm({ quotationId, onClose }: QuotationFormPro
           .from('quotations')
           .update(quotationPayload)
           .eq('id', quotationId);
-        
+
         if (error) throw error;
         toast.success('Quotation updated successfully');
       } else {
@@ -351,7 +364,6 @@ export default function QuotationForm({ quotationId, onClose }: QuotationFormPro
         if (error) throw error;
         toast.success('Quotation created successfully');
 
-        // Redirect to view the newly created quotation
         if (onClose) onClose();
         router.push(`/admin/quotations/${data.id}`);
         return;
@@ -369,165 +381,112 @@ export default function QuotationForm({ quotationId, onClose }: QuotationFormPro
 
   if (loading && quotationId) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" aria-label="Loading" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">
-          {quotationId ? 'Edit Quotation' : 'Create New Quotation'}
-        </h1>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => router.push('/admin/quotations')}>
-            Cancel
-          </Button>
-          <Button onClick={saveQuotation} disabled={loading}>
-            <Save className="w-4 h-4 mr-2" />
-            {loading ? 'Saving...' : 'Save Quotation'}
-          </Button>
+    <div className="mx-auto max-w-6xl space-y-6">
+      <FormSection step="01" title="Client information">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Field label="Select from leads (optional)">
+            <Select value={selectedLead} onValueChange={handleLeadSelect}>
+              <SelectTrigger>
+                <SelectValue placeholder="Choose existing lead" />
+              </SelectTrigger>
+              <SelectContent>
+                {leads.map(lead => (
+                  <SelectItem key={lead.id} value={lead.id}>
+                    {lead.name} - {lead.company}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field label="Quotation number">
+            <Input
+              value={quotationData.quotation_number}
+              onChange={(e) => setQuotationData(prev => ({ ...prev, quotation_number: e.target.value }))}
+              className="font-mono"
+            />
+          </Field>
+          <Field label="Client name *">
+            <Input
+              value={quotationData.client_name}
+              onChange={(e) => setQuotationData(prev => ({ ...prev, client_name: e.target.value }))}
+              required
+            />
+          </Field>
+          <Field label="Company">
+            <Input
+              value={quotationData.client_company}
+              onChange={(e) => setQuotationData(prev => ({ ...prev, client_company: e.target.value }))}
+            />
+          </Field>
+          <Field label="Email *">
+            <Input
+              type="email"
+              value={quotationData.client_email}
+              onChange={(e) => setQuotationData(prev => ({ ...prev, client_email: e.target.value }))}
+              required
+            />
+          </Field>
+          <Field label="Phone">
+            <Input
+              value={quotationData.client_phone}
+              onChange={(e) => setQuotationData(prev => ({ ...prev, client_phone: e.target.value }))}
+            />
+          </Field>
         </div>
-      </div>
+      </FormSection>
 
-      {/* Client Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="w-5 h-5" />
-            Client Information
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label>Select from Leads (Optional)</Label>
-              <Select value={selectedLead} onValueChange={handleLeadSelect}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose existing lead" />
-                </SelectTrigger>
-                <SelectContent>
-                  {leads.map(lead => (
-                    <SelectItem key={lead.id} value={lead.id}>
-                      {lead.name} - {lead.company}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label>Quotation Number</Label>
-              <Input
-                value={quotationData.quotation_number}
-                onChange={(e) => setQuotationData(prev => ({ ...prev, quotation_number: e.target.value }))}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label>Client Name *</Label>
-              <Input
-                value={quotationData.client_name}
-                onChange={(e) => setQuotationData(prev => ({ ...prev, client_name: e.target.value }))}
-                required
-              />
-            </div>
-            <div>
-              <Label>Company</Label>
-              <Input
-                value={quotationData.client_company}
-                onChange={(e) => setQuotationData(prev => ({ ...prev, client_company: e.target.value }))}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label>Email *</Label>
-              <Input
-                type="email"
-                value={quotationData.client_email}
-                onChange={(e) => setQuotationData(prev => ({ ...prev, client_email: e.target.value }))}
-                required
-              />
-            </div>
-            <div>
-              <Label>Phone</Label>
-              <Input
-                value={quotationData.client_phone}
-                onChange={(e) => setQuotationData(prev => ({ ...prev, client_phone: e.target.value }))}
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Project Details */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="w-5 h-5" />
-            Project Details
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label>Project Title *</Label>
+      <FormSection step="02" title="Project details">
+        <div className="space-y-4">
+          <Field label="Project title *">
             <Input
               value={quotationData.project_title}
               onChange={(e) => setQuotationData(prev => ({ ...prev, project_title: e.target.value }))}
               required
             />
-          </div>
-          <div>
-            <Label>Project Description</Label>
+          </Field>
+          <Field label="Project description">
             <Textarea
               value={quotationData.project_description}
               onChange={(e) => setQuotationData(prev => ({ ...prev, project_description: e.target.value }))}
               rows={4}
             />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label>Delivery Timeline</Label>
+          </Field>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Field label="Delivery timeline">
               <Input
                 value={quotationData.delivery_timeline}
                 onChange={(e) => setQuotationData(prev => ({ ...prev, delivery_timeline: e.target.value }))}
                 placeholder="e.g., 8-12 weeks"
               />
-            </div>
-            <div>
-              <Label>Revisions Included</Label>
+            </Field>
+            <Field label="Revisions included">
               <Input
                 type="number"
                 value={quotationData.revisions}
                 onChange={(e) => setQuotationData(prev => ({ ...prev, revisions: parseInt(e.target.value) || 0 }))}
+                className="tabular-nums"
               />
-            </div>
-            <div>
-              <Label>Maintenance Period</Label>
+            </Field>
+            <Field label="Maintenance period">
               <Input
                 value={quotationData.maintenance_period}
                 onChange={(e) => setQuotationData(prev => ({ ...prev, maintenance_period: e.target.value }))}
                 placeholder="e.g., 6 months"
               />
-            </div>
+            </Field>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </FormSection>
 
-      {/* Key Features */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="w-5 h-5" />
-            Key Features
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <FormSection step="03" title="Key features">
           <div className="space-y-3">
             {quotationData.key_features.map((feature, index) => (
               <div key={index} className="flex gap-2">
@@ -537,335 +496,296 @@ export default function QuotationForm({ quotationId, onClose }: QuotationFormPro
                   placeholder="Enter key feature"
                   className="flex-1"
                 />
-                <Button
+                <button
                   type="button"
-                  variant="outline"
-                  size="sm"
+                  className={`${ADMIN_ICON_BTN} h-10 w-10 flex-shrink-0 disabled:opacity-40`}
                   onClick={() => removeKeyFeature(index)}
                   disabled={quotationData.key_features.length === 1}
+                  aria-label="Remove feature"
                 >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+                  <Trash2 className="h-4 w-4" />
+                </button>
               </div>
             ))}
-            <Button type="button" variant="outline" onClick={addKeyFeature}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Feature
-            </Button>
+            <button type="button" className={ADMIN_BTN_OUTLINE} onClick={addKeyFeature}>
+              <Plus className="h-4 w-4" />
+              Add feature
+            </button>
           </div>
-        </CardContent>
-      </Card>
+        </FormSection>
 
-      {/* Scope of Work */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="w-5 h-5" />
-            Scope of Work
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+        <FormSection step="04" title="Scope of work">
           <Textarea
             value={quotationData.scope_of_work}
             onChange={(e) => setQuotationData(prev => ({ ...prev, scope_of_work: e.target.value }))}
             rows={6}
             placeholder="Detailed description of work to be performed..."
           />
-        </CardContent>
-      </Card>
+        </FormSection>
+      </div>
 
-      {/* Items/Services */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <DollarSign className="w-5 h-5" />
-            Items & Services
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="grid grid-cols-12 gap-2 font-semibold text-sm">
-              <div className="col-span-5">Description</div>
-              <div className="col-span-2">Quantity</div>
-              <div className="col-span-2">Rate (₹)</div>
-              <div className="col-span-2">Amount (₹)</div>
-              <div className="col-span-1">Action</div>
+      <FormSection step="05" title="Items & services">
+        <div className="space-y-4">
+          <div className="hidden grid-cols-12 gap-2 border-b border-border pb-2 md:grid">
+            <div className={`${ADMIN_LABEL} col-span-5`}>Description</div>
+            <div className={`${ADMIN_LABEL} col-span-2`}>Quantity</div>
+            <div className={`${ADMIN_LABEL} col-span-2`}>Rate (₹)</div>
+            <div className={`${ADMIN_LABEL} col-span-2`}>Amount (₹)</div>
+            <div className={`${ADMIN_LABEL} col-span-1 text-right`}>Action</div>
+          </div>
+
+          {quotationData.items.map((item) => (
+            <div key={item.id} className="grid grid-cols-6 items-end gap-2 border-b border-border pb-4 md:grid-cols-12 md:items-center md:border-0 md:pb-0">
+              <div className="col-span-6 md:col-span-5">
+                <span className={`${ADMIN_LABEL} mb-1.5 block md:hidden`}>Description</span>
+                <Input
+                  value={item.description}
+                  onChange={(e) => updateItem(item.id, 'description', e.target.value)}
+                  placeholder="Service description"
+                />
+              </div>
+              <div className="col-span-3 md:col-span-2">
+                <span className={`${ADMIN_LABEL} mb-1.5 block md:hidden`}>Quantity</span>
+                <Input
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) => updateItem(item.id, 'quantity', parseInt(e.target.value) || 0)}
+                  min="1"
+                  className="tabular-nums"
+                />
+              </div>
+              <div className="col-span-3 md:col-span-2">
+                <span className={`${ADMIN_LABEL} mb-1.5 block md:hidden`}>Rate (₹)</span>
+                <Input
+                  type="number"
+                  value={item.rate}
+                  onChange={(e) => updateItem(item.id, 'rate', parseFloat(e.target.value) || 0)}
+                  min="0"
+                  step="0.01"
+                  className="tabular-nums"
+                />
+              </div>
+              <div className="col-span-5 md:col-span-2">
+                <span className={`${ADMIN_LABEL} mb-1.5 block md:hidden`}>Amount (₹)</span>
+                <Input
+                  value={item.amount.toLocaleString('en-IN')}
+                  readOnly
+                  className="bg-muted/50 tabular-nums"
+                />
+              </div>
+              <div className="col-span-1 flex justify-end">
+                <button
+                  type="button"
+                  className={`${ADMIN_ICON_BTN} h-10 w-10 disabled:opacity-40`}
+                  onClick={() => removeItem(item.id)}
+                  disabled={quotationData.items.length === 1}
+                  aria-label="Remove item"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
+          ))}
 
-            {quotationData.items.map((item) => (
-              <div key={item.id} className="grid grid-cols-12 gap-2 items-center">
-                <div className="col-span-5">
-                  <Input
-                    value={item.description}
-                    onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                    placeholder="Service description"
-                  />
-                </div>
-                <div className="col-span-2">
-                  <Input
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) => updateItem(item.id, 'quantity', parseInt(e.target.value) || 0)}
-                    min="1"
-                  />
-                </div>
-                <div className="col-span-2">
-                  <Input
-                    type="number"
-                    value={item.rate}
-                    onChange={(e) => updateItem(item.id, 'rate', parseFloat(e.target.value) || 0)}
-                    min="0"
-                    step="0.01"
-                  />
-                </div>
-                <div className="col-span-2">
-                  <Input
-                    value={item.amount.toLocaleString('en-IN')}
-                    readOnly
-                    className="bg-gray-50"
-                  />
-                </div>
-                <div className="col-span-1">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeItem(item.id)}
-                    disabled={quotationData.items.length === 1}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
+          <button type="button" className={ADMIN_BTN_OUTLINE} onClick={addItem}>
+            <Plus className="h-4 w-4" />
+            Add item
+          </button>
+
+          <div className="flex justify-end border-t border-border pt-5">
+            <dl className="w-full space-y-3 text-sm sm:w-96">
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Subtotal</dt>
+                <dd className="font-medium tabular-nums text-foreground">₹{quotationData.subtotal.toLocaleString('en-IN')}</dd>
               </div>
-            ))}
-
-            <Button type="button" variant="outline" onClick={addItem}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Item
-            </Button>
-
-            {/* Totals */}
-            <div className="border-t pt-4 space-y-2">
-              <div className="flex justify-between">
-                <span>Subtotal:</span>
-                <span className="font-semibold">₹{quotationData.subtotal.toLocaleString('en-IN')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Tax ({quotationData.tax_percentage}%):</span>
-                <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between gap-4">
+                <dt className="text-muted-foreground">Tax ({quotationData.tax_percentage}%)</dt>
+                <dd className="flex items-center gap-3">
                   <Input
                     type="number"
                     value={quotationData.tax_percentage}
                     onChange={(e) => setQuotationData(prev => ({ ...prev, tax_percentage: parseFloat(e.target.value) || 0 }))}
-                    className="w-20"
+                    className="h-9 w-20 tabular-nums"
                     min="0"
                     max="100"
                     step="0.1"
+                    aria-label="Tax percentage"
                   />
-                  <span className="font-semibold">₹{quotationData.tax_amount.toLocaleString('en-IN')}</span>
-                </div>
+                  <span className="font-medium tabular-nums text-foreground">₹{quotationData.tax_amount.toLocaleString('en-IN')}</span>
+                </dd>
               </div>
-              <div className="flex justify-between text-lg font-bold border-t pt-2">
-                <span>Total Amount:</span>
-                <span>₹{quotationData.total_amount.toLocaleString('en-IN')}</span>
+              <div className="flex items-end justify-between gap-4 border-t border-border pt-4">
+                <dt className={ADMIN_LABEL}>Total amount</dt>
+                <dd className="font-display text-3xl font-semibold tracking-[-0.04em] tabular-nums text-foreground">₹{quotationData.total_amount.toLocaleString('en-IN')}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </FormSection>
+
+      <FormSection step="06" title="Payment milestones">
+        <div className="space-y-4">
+          {quotationData.milestones.map((milestone) => (
+            <div key={milestone.id} className="space-y-4 rounded-xl border border-border p-4 sm:p-5">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <Field label="Milestone title">
+                  <Input
+                    value={milestone.title}
+                    onChange={(e) => updateMilestone(milestone.id, 'title', e.target.value)}
+                    placeholder="e.g., Project Initiation"
+                  />
+                </Field>
+                <Field label="Percentage (%)">
+                  <Input
+                    type="number"
+                    value={milestone.percentage}
+                    onChange={(e) => updateMilestone(milestone.id, 'percentage', parseFloat(e.target.value) || 0)}
+                    min="0"
+                    max="100"
+                    className="tabular-nums"
+                  />
+                </Field>
+                <Field label="Amount (₹)">
+                  <Input
+                    value={milestone.amount.toLocaleString('en-IN')}
+                    readOnly
+                    className="bg-muted/50 tabular-nums"
+                  />
+                </Field>
+              </div>
+              <Field label="Description">
+                <Textarea
+                  value={milestone.description}
+                  onChange={(e) => updateMilestone(milestone.id, 'description', e.target.value)}
+                  rows={2}
+                  placeholder="Milestone description and requirements"
+                />
+              </Field>
+              <Field label="Deliverables">
+                <div className="space-y-2">
+                  {milestone.deliverables.map((deliverable, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Input
+                        value={deliverable}
+                        onChange={(e) => {
+                          const newDeliverables = [...milestone.deliverables];
+                          newDeliverables[index] = e.target.value;
+                          updateMilestone(milestone.id, 'deliverables', newDeliverables);
+                        }}
+                        placeholder="Deliverable item"
+                        className="flex-1"
+                      />
+                      <button
+                        type="button"
+                        className={`${ADMIN_ICON_BTN} h-10 w-10 flex-shrink-0 disabled:opacity-40`}
+                        onClick={() => {
+                          const newDeliverables = milestone.deliverables.filter((_, i) => i !== index);
+                          updateMilestone(milestone.id, 'deliverables', newDeliverables);
+                        }}
+                        disabled={milestone.deliverables.length === 1}
+                        aria-label="Remove deliverable"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    className={`${ADMIN_BTN_GHOST} -ml-2 h-9`}
+                    onClick={() => {
+                      const newDeliverables = [...milestone.deliverables, ''];
+                      updateMilestone(milestone.id, 'deliverables', newDeliverables);
+                    }}
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add deliverable
+                  </button>
+                </div>
+              </Field>
+              <div className="flex justify-end border-t border-border pt-4">
+                <button
+                  type="button"
+                  className={`${ADMIN_BTN_DANGER} h-9`}
+                  onClick={() => removeMilestone(milestone.id)}
+                  disabled={quotationData.milestones.length === 1}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Remove milestone
+                </button>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          ))}
+          <button type="button" className={ADMIN_BTN_OUTLINE} onClick={addMilestone}>
+            <Plus className="h-4 w-4" />
+            Add milestone
+          </button>
+        </div>
+      </FormSection>
 
-      {/* Milestones */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CheckCircle className="w-5 h-5" />
-            Payment Milestones
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {quotationData.milestones.map((milestone) => (
-              <div key={milestone.id} className="border rounded-lg p-4 space-y-3">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <Label>Milestone Title</Label>
-                    <Input
-                      value={milestone.title}
-                      onChange={(e) => updateMilestone(milestone.id, 'title', e.target.value)}
-                      placeholder="e.g., Project Initiation"
-                    />
-                  </div>
-                  <div>
-                    <Label>Percentage (%)</Label>
-                    <Input
-                      type="number"
-                      value={milestone.percentage}
-                      onChange={(e) => updateMilestone(milestone.id, 'percentage', parseFloat(e.target.value) || 0)}
-                      min="0"
-                      max="100"
-                    />
-                  </div>
-                  <div>
-                    <Label>Amount (₹)</Label>
-                    <Input
-                      value={milestone.amount.toLocaleString('en-IN')}
-                      readOnly
-                      className="bg-gray-50"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label>Description</Label>
-                  <Textarea
-                    value={milestone.description}
-                    onChange={(e) => updateMilestone(milestone.id, 'description', e.target.value)}
-                    rows={2}
-                    placeholder="Milestone description and requirements"
-                  />
-                </div>
-                <div>
-                  <Label>Deliverables</Label>
-                  <div className="space-y-2">
-                    {milestone.deliverables.map((deliverable, index) => (
-                      <div key={index} className="flex gap-2">
-                        <Input
-                          value={deliverable}
-                          onChange={(e) => {
-                            const newDeliverables = [...milestone.deliverables];
-                            newDeliverables[index] = e.target.value;
-                            updateMilestone(milestone.id, 'deliverables', newDeliverables);
-                          }}
-                          placeholder="Deliverable item"
-                          className="flex-1"
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const newDeliverables = milestone.deliverables.filter((_, i) => i !== index);
-                            updateMilestone(milestone.id, 'deliverables', newDeliverables);
-                          }}
-                          disabled={milestone.deliverables.length === 1}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    ))}
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        const newDeliverables = [...milestone.deliverables, ''];
-                        updateMilestone(milestone.id, 'deliverables', newDeliverables);
-                      }}
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Deliverable
-                    </Button>
-                  </div>
-                </div>
-                <div className="flex justify-end">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeMilestone(milestone.id)}
-                    disabled={quotationData.milestones.length === 1}
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Remove Milestone
-                  </Button>
-                </div>
-              </div>
-            ))}
-            <Button type="button" variant="outline" onClick={addMilestone}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Milestone
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Terms & Conditions */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="w-5 h-5" />
-            Terms & Conditions
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div>
-              <Label>Valid Until</Label>
+      <FormSection step="07" title="Terms & conditions">
+        <div className="space-y-4">
+          <div className="max-w-xs">
+            <Field label="Valid until">
               <Input
                 type="date"
                 value={quotationData.valid_until}
                 onChange={(e) => setQuotationData(prev => ({ ...prev, valid_until: e.target.value }))}
               />
-            </div>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <TermsConditionsManager
-                  selectedTermsId={selectedTermsId}
-                  onTermsSelect={(termsId, content) => {
-                    setSelectedTermsId(termsId);
-                    setQuotationData(prev => ({ ...prev, terms_conditions: content }));
-                  }}
-                  showSelector={true}
-                />
-                <SignatureManager
-                  selectedSignatureId={selectedSignatureId}
-                  onSignatureSelect={(signatureId, signature) => {
-                    setSelectedSignatureId(signatureId);
-                    if (signatureId === "" || signatureId === "none") {
-                      // Clear signature
-                      setQuotationData(prev => ({
-                        ...prev,
-                        signature_id: undefined,
-                        signature_name: undefined,
-                        signature_role: undefined,
-                        signature_image_url: undefined
-                      }));
-                    } else {
-                      // Set signature
-                      setQuotationData(prev => ({
-                        ...prev,
-                        signature_id: signatureId,
-                        signature_name: signature.name,
-                        signature_role: signature.role,
-                        signature_image_url: signature.image_url
-                      }));
-                    }
-                  }}
-                  showSelector={true}
-                />
-              </div>
-              <div>
-                <Label>Terms & Conditions</Label>
-                <Textarea
-                  value={quotationData.terms_conditions}
-                  onChange={(e) => setQuotationData(prev => ({ ...prev, terms_conditions: e.target.value }))}
-                  rows={8}
-                  placeholder="Enter terms and conditions..."
-                />
-              </div>
-            </div>
+            </Field>
           </div>
-        </CardContent>
-      </Card>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <TermsConditionsManager
+              selectedTermsId={selectedTermsId}
+              onTermsSelect={(termsId, content) => {
+                setSelectedTermsId(termsId);
+                setQuotationData(prev => ({ ...prev, terms_conditions: content }));
+              }}
+              showSelector={true}
+            />
+            <SignatureManager
+              selectedSignatureId={selectedSignatureId}
+              onSignatureSelect={(signatureId, signature) => {
+                setSelectedSignatureId(signatureId);
+                if (signatureId === "" || signatureId === "none") {
+                  setQuotationData(prev => ({
+                    ...prev,
+                    signature_id: undefined,
+                    signature_name: undefined,
+                    signature_role: undefined,
+                    signature_image_url: undefined
+                  }));
+                } else {
+                  setQuotationData(prev => ({
+                    ...prev,
+                    signature_id: signatureId,
+                    signature_name: signature.name,
+                    signature_role: signature.role,
+                    signature_image_url: signature.image_url
+                  }));
+                }
+              }}
+              showSelector={true}
+            />
+          </div>
+          <Field label="Terms & conditions">
+            <Textarea
+              value={quotationData.terms_conditions}
+              onChange={(e) => setQuotationData(prev => ({ ...prev, terms_conditions: e.target.value }))}
+              rows={8}
+              placeholder="Enter terms and conditions..."
+            />
+          </Field>
+        </div>
+      </FormSection>
 
-      {/* Action Buttons */}
-      <div className="flex justify-end gap-4 pt-6">
-        <Button variant="outline" onClick={() => router.push('/admin/quotations')}>
+      <div className="sticky bottom-4 z-20 flex flex-col-reverse gap-2 rounded-2xl border border-border bg-card/90 p-3 backdrop-blur-md sm:flex-row sm:items-center sm:justify-end">
+        <button type="button" className={ADMIN_BTN_OUTLINE} onClick={() => router.push('/admin/quotations')}>
           Cancel
-        </Button>
-        <Button onClick={saveQuotation} disabled={loading}>
-          <Save className="w-4 h-4 mr-2" />
-          {loading ? 'Saving...' : 'Save Quotation'}
-        </Button>
+        </button>
+        <button type="button" className={ADMIN_BTN_PRIMARY} onClick={saveQuotation} disabled={loading}>
+          <Save className="h-4 w-4" />
+          {loading ? 'Saving...' : 'Save quotation'}
+        </button>
       </div>
     </div>
   );

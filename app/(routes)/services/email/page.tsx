@@ -11,32 +11,32 @@ const features = [
   {
     title: 'Professional Email Addresses',
     description: 'Create professional email addresses with your domain name (you@yourdomain.com).',
-    icon: <Mail className="h-6 w-6 text-white" />
+    icon: <Mail className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Advanced Spam Protection',
     description: 'Our advanced spam filtering keeps your inbox clean and protects you from phishing attempts.',
-    icon: <Shield className="h-6 w-6 text-white" />
+    icon: <Shield className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Large Mailbox Storage',
     description: 'Get generous mailbox storage with options to upgrade as your needs grow.',
-    icon: <Server className="h-6 w-6 text-white" />
+    icon: <Server className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Secure Encryption',
     description: 'All emails are encrypted in transit and at rest for maximum security and privacy.',
-    icon: <Lock className="h-6 w-6 text-white" />
+    icon: <Lock className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Mobile Access',
     description: 'Access your email from anywhere with our mobile apps for iOS and Android.',
-    icon: <Zap className="h-6 w-6 text-white" />
+    icon: <Zap className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: '24/7 Support',
     description: 'Our dedicated support team is available around the clock to help you with any email issues.',
-    icon: <Check className="h-6 w-6 text-white" />
+    icon: <Check className="h-6 w-6 text-primary-foreground" />
   }
 ];
 
@@ -60,25 +60,25 @@ export default function EmailServicesPage() {
 
       {/* Coming Soon */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-xl p-12">
-          <div className="inline-flex items-center justify-center p-4 bg-primary/10 dark:bg-primary/10 rounded-full mb-6">
-            <Mail className="h-12 w-12 text-primary dark:text-primary/70" />
+        <div className="bg-card rounded-xl shadow-xl p-12">
+          <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-6">
+            <Mail className="h-12 w-12 text-primary" />
           </div>
-          <h2 className="text-3xl font-extrabold text-foreground dark:text-white">Coming Soon</h2>
-          <p className="mt-4 text-xl text-muted-foreground dark:text-neutral-400 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-extrabold text-foreground">Coming Soon</h2>
+          <p className="mt-4 text-xl text-muted-foreground max-w-2xl mx-auto">
             We're working hard to bring you our email services. Please check back soon or contact us for more information.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
             >
               Contact Us
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
               href="/services/domains"
-              className="inline-flex items-center px-6 py-3 border border-border dark:border-neutral-600 text-base font-medium rounded-md text-foreground dark:text-neutral-300 bg-card dark:bg-neutral-800 hover:bg-muted dark:hover:bg-neutral-700"
+              className="inline-flex items-center px-6 py-3 border border-border text-base font-medium rounded-md text-foreground bg-card hover:bg-muted"
             >
               Register a Domain First
             </Link>

@@ -1,136 +1,137 @@
 import { MetadataRoute } from 'next';
 import { getBlogPosts, getAllTags, getAllCategories } from '@/lib/blog';
-import { getWebsiteProjects, getAppProjects, getCreativeProjects, getAdsSeoProjects } from '@/lib/portfolio';
+import { DEAD_PUBLIC_ROUTES, matchesPathPrefix } from '@/lib/route-config';
+
+const STATIC_PAGES_LAST_MODIFIED = new Date('2026-11-05');
+
+
+function isDeadRoute(url: string): boolean {
+  return matchesPathPrefix(new URL(url).pathname, DEAD_PUBLIC_ROUTES);
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://formiqstudio.in';
   
   // Static pages — priority tuned for local SEO & AI discovery
-  const staticPages = [
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'daily' as const,
       priority: 1,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/services`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/portfolio`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     // Portfolio sub-hubs — high value for AI/tech keyword discovery
     {
       url: `${baseUrl}/portfolio/websites`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/portfolio/applications`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/portfolio/creatives`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
     {
       url: `${baseUrl}/portfolio/ads-seo`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/portfolio/designs`,
-      lastModified: new Date(),
+      url: `${baseUrl}/portfolio/design`,
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'daily' as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/web`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/mobile`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/marketing`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/shopify`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/ecommerce-marketplace`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/software-tools`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/agents`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/team`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'yearly' as const,
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_LAST_MODIFIED,
       changeFrequency: 'yearly' as const,
       priority: 0.3,
     },
@@ -171,54 +172,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching blog data for sitemap:', error);
   }
 
-  // Portfolio pages — dynamic per project
-  let portfolioPages: MetadataRoute.Sitemap = [];
-  try {
-    const [websites, apps, creatives, adsSeo] = await Promise.all([
-      getWebsiteProjects(),
-      getAppProjects(),
-      getCreativeProjects().catch(() => []),
-      getAdsSeoProjects().catch(() => []),
-    ]);
-
-    const websitePages = websites.map((website) => ({
-      url: `${baseUrl}/portfolio/websites/${website.id}`,
-      lastModified: new Date((website as any).updated_at || (website as any).created_at || new Date()),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }));
-
-    const appPages = apps.map((app) => ({
-      url: `${baseUrl}/portfolio/apps/${app.id}`,
-      lastModified: new Date((app as any).updated_at || (app as any).created_at || new Date()),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }));
-
-    const creativePages = (creatives as any[]).map((c) => ({
-      url: `${baseUrl}/portfolio/creatives/${c.id}`,
-      lastModified: new Date(c.updated_at || c.created_at || new Date()),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    }));
-
-    const adsSeoPages = (adsSeo as any[]).map((a) => ({
-      url: `${baseUrl}/portfolio/ads-seo/${a.id}`,
-      lastModified: new Date(a.updated_at || a.created_at || new Date()),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    }));
-
-    portfolioPages = [...websitePages, ...appPages, ...creativePages, ...adsSeoPages];
-  } catch (error) {
-    console.error('Error fetching portfolio data for sitemap:', error);
-  }
-
   return [
     ...staticPages,
     ...blogPages,
     ...tagPages,
     ...categoryPages,
-    ...portfolioPages,
-  ];
+  ].filter((entry) => !isDeadRoute(entry.url));
 }

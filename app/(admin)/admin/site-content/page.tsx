@@ -27,6 +27,18 @@ import {
   Play,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BTN_GHOST,
+  ADMIN_BTN_OUTLINE,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_H2,
+  ADMIN_ICON_BTN,
+  ADMIN_INPUT,
+  ADMIN_LABEL,
+} from '@/components/admin/admin-ui';
 
 export default function SiteContentPage() {
   const [activeTab, setActiveTab] = useState<'hero' | 'founder_popup'>('hero');
@@ -138,112 +150,108 @@ export default function SiteContentPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="space-y-8">
+        <AdminPageHeader
+          eyebrow="Content"
+          title="Site content & popups"
+          description="Manage the homepage hero media and the founder welcome video popup."
+        />
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Site Content & Popups</h1>
-          <p className="mt-1 text-muted-foreground">
-            Manage your homepage hero media and the founder welcome video popup
-          </p>
-        </div>
-
-        {activeTab === 'hero' ? (
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 disabled:opacity-50 transition-all"
-          >
-            {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-            Save Hero Media
-          </button>
-        ) : (
-          <div className="flex items-center gap-2">
-            <a
-              href="/?preview_founder=true"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-3.5 py-2 border border-border rounded-lg text-sm font-medium text-foreground bg-muted hover:bg-muted/80 transition-all gap-1.5"
-            >
-              <ExternalLink className="w-4 h-4 text-primary" />
-              Preview Live Popup
-            </a>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Content"
+        title="Site content & popups"
+        description="Manage the homepage hero media and the founder welcome video popup."
+        actions={
+          activeTab === 'hero' ? (
             <button
-              onClick={handleSaveFounderPopup}
-              disabled={savingPopup}
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 disabled:opacity-50 transition-all"
+              onClick={handleSave}
+              disabled={saving}
+              className={ADMIN_BTN_PRIMARY}
             >
-              {savingPopup ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-              Save Founder Popup
+              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              Save hero media
             </button>
-          </div>
-        )}
-      </div>
+          ) : (
+            <>
+              <a
+                href="/?preview_founder=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={ADMIN_BTN_OUTLINE}
+              >
+                <ExternalLink className="h-4 w-4" />
+                Preview live popup
+              </a>
+              <button
+                onClick={handleSaveFounderPopup}
+                disabled={savingPopup}
+                className={ADMIN_BTN_PRIMARY}
+              >
+                {savingPopup ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                Save founder popup
+              </button>
+            </>
+          )
+        }
+      />
 
-      <div className="flex items-center gap-2 border-b border-border pb-2">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border pb-3">
         <button
           onClick={() => setActiveTab('hero')}
-          className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 ${
-            activeTab === 'hero'
-              ? 'bg-primary text-primary-foreground shadow-sm'
-              : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-          }`}
+          className={`${activeTab === 'hero' ? ADMIN_BTN_PRIMARY : ADMIN_BTN_GHOST} h-auto min-h-[2.5rem] whitespace-normal py-2 text-left`}
         >
-          <Video className="w-4 h-4" />
-          Homepage Hero Media
+          <Video className="h-4 w-4 shrink-0" />
+          Homepage hero media
         </button>
         <button
           onClick={() => setActiveTab('founder_popup')}
-          className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 ${
-            activeTab === 'founder_popup'
-              ? 'bg-primary text-primary-foreground shadow-sm'
-              : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-          }`}
+          className={`${activeTab === 'founder_popup' ? ADMIN_BTN_PRIMARY : ADMIN_BTN_GHOST} h-auto min-h-[2.5rem] whitespace-normal py-2 text-left`}
         >
-          <Sparkles className="w-4 h-4" />
-          Founder Video Popup (First-Time Visitors)
+          <Sparkles className="h-4 w-4 shrink-0" />
+          Founder video popup (first-time visitors)
         </button>
       </div>
 
       {activeTab === 'hero' ? (
         <>
-          {/* Hero Video */}
-          <div className="bg-card rounded-lg border border-border shadow-sm p-6 space-y-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Video className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">Hero Video</h2>
+          <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} space-y-5`}>
+            <div className="flex items-center gap-2">
+              <Video className="h-5 w-5 text-muted-foreground" />
+              <h2 className={ADMIN_H2}>Hero video</h2>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-foreground">Video URL</label>
+              <label className={`${ADMIN_LABEL} mb-2 block`}>Video URL</label>
               <input
                 type="url"
                 value={media.video_url}
                 onChange={(e) => setMedia((prev) => ({ ...prev, video_url: e.target.value }))}
                 placeholder="https://videos.pexels.com/..."
-                className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                className={ADMIN_INPUT}
               />
-              <p className="text-xs text-muted-foreground mt-1">Direct MP4 link or YouTube embed URL</p>
+              <p className="mt-1.5 text-xs text-muted-foreground">Direct MP4 link or YouTube embed URL</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-foreground">Video Thumbnail</label>
-              <div className="flex gap-3 items-start">
+              <label className={`${ADMIN_LABEL} mb-2 block`}>Video thumbnail</label>
+              <div className="flex items-start gap-3">
                 <input
                   type="url"
                   value={media.video_thumbnail}
                   onChange={(e) => setMedia((prev) => ({ ...prev, video_thumbnail: e.target.value }))}
                   placeholder="https://images.pexels.com/..."
-                  className="flex-1 px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={`${ADMIN_INPUT} min-w-0 flex-1`}
                 />
-                <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-secondary text-foreground rounded-md cursor-pointer hover:bg-secondary/80 transition-all text-sm">
-                  {uploading === 'video_thumbnail' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                <label className={`${ADMIN_BTN_OUTLINE} shrink-0 cursor-pointer`}>
+                  {uploading === 'video_thumbnail' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                   Upload
                   <input
                     type="file"
@@ -257,32 +265,31 @@ export default function SiteContentPage() {
                 </label>
               </div>
               {media.video_thumbnail && (
-                <div className="mt-3 rounded-md overflow-hidden border border-border w-48 aspect-video">
-                  <img src={media.video_thumbnail} alt="Thumbnail preview" className="w-full h-full object-cover" />
+                <div className="mt-3 aspect-video w-48 max-w-full overflow-hidden rounded-xl border border-border">
+                  <img src={media.video_thumbnail} alt="Thumbnail preview" className="h-full w-full object-cover" />
                 </div>
               )}
             </div>
           </div>
 
-          {/* Gallery Images */}
-          <div className="bg-card rounded-lg border border-border shadow-sm p-6 space-y-4">
-            <div className="flex items-center justify-between mb-2">
+          <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} space-y-5`}>
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <Image className="w-5 h-5 text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">Gallery Images</h2>
+                <Image className="h-5 w-5 text-muted-foreground" />
+                <h2 className={ADMIN_H2}>Gallery images</h2>
               </div>
               <button
                 onClick={addGalleryItem}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-sm font-medium hover:bg-primary/20 transition-all"
+                className={`${ADMIN_BTN_OUTLINE} h-9 px-3.5`}
               >
-                <Plus className="w-4 h-4" /> Add Image
+                <Plus className="h-4 w-4" /> Add image
               </button>
             </div>
 
             <div className="space-y-4">
               {media.gallery.map((item, index) => (
-                <div key={index} className="flex gap-3 items-start p-4 bg-muted/30 rounded-md border border-border">
-                  <div className="flex-1 space-y-3">
+                <div key={index} className="flex items-start gap-3 rounded-xl border border-border bg-muted/30 p-4">
+                  <div className="min-w-0 flex-1 space-y-3">
                     <div className="flex gap-3">
                       <input
                         type="url"
@@ -293,10 +300,10 @@ export default function SiteContentPage() {
                           setMedia((prev) => ({ ...prev, gallery }));
                         }}
                         placeholder="Image URL"
-                        className="flex-1 px-3 py-2 rounded-lg bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                        className={`${ADMIN_INPUT} min-w-0 flex-1`}
                       />
-                      <label className="inline-flex items-center gap-1.5 px-3 py-2 bg-secondary text-foreground rounded-lg cursor-pointer hover:bg-secondary/80 transition-all text-sm">
-                        {uploading === `gallery-${index}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                      <label className={`${ADMIN_ICON_BTN} h-10 w-10 shrink-0 cursor-pointer border border-border`}>
+                        {uploading === `gallery-${index}` ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
                         <input
                           type="file"
                           accept="image/*"
@@ -317,43 +324,42 @@ export default function SiteContentPage() {
                         setMedia((prev) => ({ ...prev, gallery }));
                       }}
                       placeholder="Label (e.g. Client Meetings)"
-                      className="w-full px-3 py-2 rounded-lg bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                      className={ADMIN_INPUT}
                     />
                   </div>
 
                   {item.url && (
-                    <div className="w-20 h-16 rounded-lg overflow-hidden border border-border flex-shrink-0">
-                      <img src={item.url} alt={item.label} className="w-full h-full object-cover" />
+                    <div className="hidden h-16 w-20 shrink-0 overflow-hidden rounded-xl border border-border sm:block">
+                      <img src={item.url} alt={item.label} className="h-full w-full object-cover" />
                     </div>
                   )}
 
                   <button
                     onClick={() => removeGalleryItem(index)}
-                    className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all flex-shrink-0"
+                    className={`${ADMIN_ICON_BTN} shrink-0 hover:bg-destructive/10 hover:text-destructive`}
+                    aria-label="Remove image"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Preview */}
-          <div className="bg-card rounded-lg border border-border shadow-sm p-6">
+          <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
             <div className="flex items-center gap-2 mb-4">
-              <Eye className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">Preview</h2>
+              <Eye className="h-5 w-5 text-muted-foreground" />
+              <h2 className={ADMIN_H2}>Preview</h2>
             </div>
             <div className="space-y-3">
-              <div className="rounded-md overflow-hidden aspect-video bg-black border border-border">
-                <img src={media.video_thumbnail} alt="Hero preview" className="w-full h-full object-cover" />
+              <div className="aspect-video overflow-hidden rounded-xl border border-border bg-muted">
+                <img src={media.video_thumbnail} alt="Hero preview" className="h-full w-full object-cover" />
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {media.gallery.map((img, i) => (
-                  <div key={i} className="relative rounded-lg overflow-hidden aspect-[4/3] border border-border">
-                    <img src={img.url} alt={img.label} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <span className="absolute bottom-1.5 left-2 text-white text-[10px] font-medium">{img.label}</span>
+                  <div key={i} className="relative aspect-[4/3] overflow-hidden rounded-xl border border-border bg-muted">
+                    <img src={img.url} alt={img.label} className="h-full w-full object-cover" />
+                    <span className="absolute bottom-1.5 left-1.5 max-w-[calc(100%-0.75rem)] truncate rounded-full bg-background/90 px-2 py-0.5 text-[10px] font-medium text-foreground">{img.label}</span>
                   </div>
                 ))}
               </div>
@@ -362,14 +368,14 @@ export default function SiteContentPage() {
         </>
       ) : (
         <div className="space-y-6">
-          <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className={`${ADMIN_CARD} flex flex-col items-start justify-between gap-4 p-4 sm:flex-row sm:items-center sm:p-5`}>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-primary">
-                <Sparkles className="w-5 h-5" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary">
+                <Sparkles className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-semibold text-foreground text-sm">First-Time Visitor Founder Video</h4>
-                <p className="text-xs text-muted-foreground">
+                <h4 className="text-sm font-semibold text-foreground">First-time visitor founder video</h4>
+                <p className="mt-0.5 text-xs text-muted-foreground">
                   Shows automatically to new visitors with your intro video, direct Consultation Form link, and WhatsApp button.
                 </p>
               </div>
@@ -378,46 +384,46 @@ export default function SiteContentPage() {
               href="/?preview_founder=true"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-background border border-border rounded-lg text-xs font-semibold text-foreground hover:bg-muted transition-all"
+              className={`${ADMIN_BTN_OUTLINE} h-9 shrink-0 px-3.5`}
             >
-              <ExternalLink className="w-3.5 h-3.5 text-primary" /> Test on Live Site
+              <ExternalLink className="h-3.5 w-3.5" /> Test on live site
             </a>
           </div>
 
-          <div className="bg-card rounded-lg border border-border shadow-sm p-6 space-y-4">
-            <div className="flex items-center gap-2 mb-1">
-              <Video className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">Founder Video & Media</h2>
+          <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} space-y-5`}>
+            <div className="flex items-center gap-2">
+              <Video className="h-5 w-5 text-muted-foreground" />
+              <h2 className={ADMIN_H2}>Founder video & media</h2>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-foreground">
-                Founder Video URL (MP4, YouTube, Vimeo, or Loom)
+              <label className={`${ADMIN_LABEL} mb-2 block`}>
+                Founder video URL (MP4, YouTube, Vimeo or Loom)
               </label>
               <input
                 type="url"
                 value={founderPopup.video_url}
                 onChange={(e) => setFounderPopup((prev) => ({ ...prev, video_url: e.target.value }))}
                 placeholder="https://www.youtube.com/watch?v=... or https://...mp4"
-                className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                className={ADMIN_INPUT}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="mt-1.5 text-xs text-muted-foreground">
                 Supports direct video links (.mp4), YouTube URLs, Vimeo, or Loom links.
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-foreground">Video Poster / Thumbnail</label>
-              <div className="flex gap-3 items-start">
+              <label className={`${ADMIN_LABEL} mb-2 block`}>Video poster / thumbnail</label>
+              <div className="flex items-start gap-3">
                 <input
                   type="url"
                   value={founderPopup.video_thumbnail || ''}
                   onChange={(e) => setFounderPopup((prev) => ({ ...prev, video_thumbnail: e.target.value }))}
                   placeholder="https://..."
-                  className="flex-1 px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={`${ADMIN_INPUT} min-w-0 flex-1`}
                 />
-                <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-secondary text-foreground rounded-md cursor-pointer hover:bg-secondary/80 transition-all text-sm">
-                  {uploading === 'video_thumbnail' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                <label className={`${ADMIN_BTN_OUTLINE} shrink-0 cursor-pointer`}>
+                  {uploading === 'video_thumbnail' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                   Upload
                   <input
                     type="file"
@@ -431,54 +437,54 @@ export default function SiteContentPage() {
                 </label>
               </div>
               {founderPopup.video_thumbnail && (
-                <div className="mt-3 rounded-md overflow-hidden border border-border w-48 aspect-video">
-                  <img src={founderPopup.video_thumbnail} alt="Thumbnail preview" className="w-full h-full object-cover" />
+                <div className="mt-3 aspect-video w-48 max-w-full overflow-hidden rounded-xl border border-border">
+                  <img src={founderPopup.video_thumbnail} alt="Thumbnail preview" className="h-full w-full object-cover" />
                 </div>
               )}
             </div>
           </div>
 
-          <div className="bg-card rounded-lg border border-border shadow-sm p-6 space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">Founder Details & Titles</h2>
+          <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} space-y-5`}>
+            <h2 className={ADMIN_H2}>Founder details & titles</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-foreground">Founder Name</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Founder name</label>
                 <input
                   type="text"
                   value={founderPopup.founder_name}
                   onChange={(e) => setFounderPopup((prev) => ({ ...prev, founder_name: e.target.value }))}
                   placeholder="Shivay Sharma"
-                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={ADMIN_INPUT}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-foreground">Founder Role / Title</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Founder role / title</label>
                 <input
                   type="text"
                   value={founderPopup.founder_role}
                   onChange={(e) => setFounderPopup((prev) => ({ ...prev, founder_role: e.target.value }))}
                   placeholder="Founder & CEO"
-                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={ADMIN_INPUT}
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-foreground">Badge Text</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Badge text</label>
                 <input
                   type="text"
                   value={founderPopup.badge_text || "Founder's Message"}
                   onChange={(e) => setFounderPopup((prev) => ({ ...prev, badge_text: e.target.value }))}
                   placeholder="Founder's Message"
-                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={ADMIN_INPUT}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-foreground">Popup Auto-Open Delay (Seconds)</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Popup auto-open delay (seconds)</label>
                 <input
                   type="number"
                   step="0.5"
@@ -486,61 +492,61 @@ export default function SiteContentPage() {
                   max="10"
                   value={founderPopup.delay_seconds || 1.2}
                   onChange={(e) => setFounderPopup((prev) => ({ ...prev, delay_seconds: parseFloat(e.target.value) || 1.2 }))}
-                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={ADMIN_INPUT}
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-foreground">Headline</label>
+              <label className={`${ADMIN_LABEL} mb-2 block`}>Headline</label>
               <input
                 type="text"
                 value={founderPopup.heading}
                 onChange={(e) => setFounderPopup((prev) => ({ ...prev, heading: e.target.value }))}
                 placeholder="Transforming Ideas Into Reality"
-                className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                className={ADMIN_INPUT}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-foreground">Subheading / Description</label>
+              <label className={`${ADMIN_LABEL} mb-2 block`}>Subheading / description</label>
               <textarea
                 rows={2}
                 value={founderPopup.subheading}
                 onChange={(e) => setFounderPopup((prev) => ({ ...prev, subheading: e.target.value }))}
                 placeholder="Watch this quick video to see how we help businesses scale..."
-                className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none resize-none"
+                className={`${ADMIN_INPUT} h-auto resize-none py-2.5`}
               />
             </div>
           </div>
 
-          <div className="bg-card rounded-lg border border-border shadow-sm p-6 space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">Call to Actions (Form Link & WhatsApp)</h2>
+          <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD} space-y-5`}>
+            <h2 className={ADMIN_H2}>Calls to action (form link & WhatsApp)</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-foreground">Form Button Text</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>Form button text</label>
                 <input
                   type="text"
                   value={founderPopup.form_button_text || 'Get Free Consultation'}
                   onChange={(e) => setFounderPopup((prev) => ({ ...prev, form_button_text: e.target.value }))}
                   placeholder="Get Free Consultation"
-                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={ADMIN_INPUT}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-foreground">
-                  Custom Form URL (Optional)
+                <label className={`${ADMIN_LABEL} mb-2 block`}>
+                  Custom form URL (optional)
                 </label>
                 <input
                   type="url"
                   value={founderPopup.form_url || ''}
                   onChange={(e) => setFounderPopup((prev) => ({ ...prev, form_url: e.target.value }))}
                   placeholder="Leave empty to use built-in 4-step Lead Consultation Form"
-                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={ADMIN_INPUT}
                 />
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="mt-1.5 text-xs text-muted-foreground">
                   Leave empty to automatically open the interactive 4-step Lead Consultation Overlay.
                 </p>
               </div>
@@ -548,49 +554,49 @@ export default function SiteContentPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-foreground">WhatsApp Number</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>WhatsApp number</label>
                 <input
                   type="tel"
                   value={founderPopup.whatsapp_number}
                   onChange={(e) => setFounderPopup((prev) => ({ ...prev, whatsapp_number: e.target.value }))}
                   placeholder="919832078313"
-                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={ADMIN_INPUT}
                 />
-                <p className="text-xs text-muted-foreground mt-1">Country code without + or spaces (e.g. 919832078313)</p>
+                <p className="mt-1.5 text-xs text-muted-foreground">Country code without + or spaces (e.g. 919832078313)</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-foreground">WhatsApp Button Text</label>
+                <label className={`${ADMIN_LABEL} mb-2 block`}>WhatsApp button text</label>
                 <input
                   type="text"
                   value={founderPopup.whatsapp_button_text || 'Chat on WhatsApp'}
                   onChange={(e) => setFounderPopup((prev) => ({ ...prev, whatsapp_button_text: e.target.value }))}
                   placeholder="Chat on WhatsApp"
-                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                  className={ADMIN_INPUT}
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-foreground">WhatsApp Pre-filled Message</label>
+              <label className={`${ADMIN_LABEL} mb-2 block`}>WhatsApp pre-filled message</label>
               <input
                 type="text"
                 value={founderPopup.whatsapp_message}
                 onChange={(e) => setFounderPopup((prev) => ({ ...prev, whatsapp_message: e.target.value }))}
                 placeholder="Hi Shivay! I saw your founder video on FormiqStudio and want to discuss my project."
-                className="w-full px-4 py-2.5 rounded-md bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground text-sm outline-none"
+                className={ADMIN_INPUT}
               />
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-3">
             <button
               onClick={handleSaveFounderPopup}
               disabled={savingPopup}
-              className="inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-all gap-2"
+              className={`${ADMIN_BTN_PRIMARY} h-11 px-6`}
             >
-              {savingPopup ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              Save Founder Popup Settings
+              {savingPopup ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              Save founder popup settings
             </button>
           </div>
         </div>

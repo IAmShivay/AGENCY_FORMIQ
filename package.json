@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "google:auth": "node scripts/google-auth.mjs"
   },
   "dependencies": {
     "@elevenlabs/client": "^1.29.0",

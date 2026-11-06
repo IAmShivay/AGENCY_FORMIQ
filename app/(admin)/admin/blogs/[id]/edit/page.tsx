@@ -2,17 +2,16 @@
 
 import { use } from 'react';
 import BlogForm from '@/components/admin/BlogForm';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { ADMIN_CARD, ADMIN_CARD_PAD } from '@/components/admin/admin-ui';
 
 export default function EditBlogPage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Edit Blog Post</h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">Update the details of your blog post</p>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader eyebrow="Blog posts" title="Edit post" description="Update the details of this blog post." />
 
-      <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+      <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
         <BlogForm postId={params.id} />
       </div>
     </div>

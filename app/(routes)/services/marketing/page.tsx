@@ -11,32 +11,32 @@ const features = [
   {
     title: 'SEO Tools',
     description: 'Optimize your website for search engines with our comprehensive SEO tools and analytics.',
-    icon: <Search className="h-6 w-6 text-white" />
+    icon: <Search className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Social Media Management',
     description: 'Manage all your social media accounts from one dashboard with scheduling and analytics.',
-    icon: <Share2 className="h-6 w-6 text-white" />
+    icon: <Share2 className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Email Marketing',
     description: 'Create and send professional email campaigns with templates, automation, and analytics.',
-    icon: <Mail className="h-6 w-6 text-white" />
+    icon: <Mail className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Analytics Dashboard',
     description: 'Track your marketing performance with real-time analytics and customizable reports.',
-    icon: <BarChart4 className="h-6 w-6 text-white" />
+    icon: <BarChart4 className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Audience Insights',
     description: 'Understand your audience with demographic data, behavior analysis, and segmentation.',
-    icon: <Users className="h-6 w-6 text-white" />
+    icon: <Users className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Conversion Tracking',
     description: 'Track and optimize your conversion rates with our advanced tracking tools.',
-    icon: <LineChart className="h-6 w-6 text-white" />
+    icon: <LineChart className="h-6 w-6 text-primary-foreground" />
   }
 ];
 
@@ -60,25 +60,25 @@ export default function MarketingToolsPage() {
 
       {/* Coming Soon */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-xl p-12">
-          <div className="inline-flex items-center justify-center p-4 bg-primary/10 dark:bg-primary/10 rounded-full mb-6">
-            <BarChart4 className="h-12 w-12 text-primary dark:text-primary/70" />
+        <div className="bg-card rounded-xl shadow-xl p-12">
+          <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-6">
+            <BarChart4 className="h-12 w-12 text-primary" />
           </div>
-          <h2 className="text-3xl font-extrabold text-foreground dark:text-white">Coming Soon</h2>
-          <p className="mt-4 text-xl text-muted-foreground dark:text-neutral-400 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-extrabold text-foreground">Coming Soon</h2>
+          <p className="mt-4 text-xl text-muted-foreground max-w-2xl mx-auto">
             We're working hard to bring you our marketing tools. Please check back soon or contact us for more information.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
             >
               Contact Us
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
               href="/services/domains"
-              className="inline-flex items-center px-6 py-3 border border-border dark:border-neutral-600 text-base font-medium rounded-md text-foreground dark:text-neutral-300 bg-card dark:bg-neutral-800 hover:bg-muted dark:hover:bg-neutral-700"
+              className="inline-flex items-center px-6 py-3 border border-border text-base font-medium rounded-md text-foreground bg-card hover:bg-muted"
             >
               Explore Other Services
             </Link>

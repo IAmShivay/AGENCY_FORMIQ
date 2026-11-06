@@ -2,43 +2,26 @@ import './globals.css';
 import ConversionTracker from '@/components/ConversionTracker';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import Script from 'next/script';
 import { ThemeProvider } from '@/components/theme-provider';
 import StructuredData from '@/components/seo/StructuredData';
+import CookieConsent from '@/components/CookieConsent';
+import { STUDIO_ADDRESS } from '@/lib/studio-facts';
+import { SEO_CONSTANTS } from '@/lib/seo';
 
 const inter = Inter({ subsets: ['latin'] });
 
+const GOOGLE_SITE_VERIFICATION = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+
 export const metadata: Metadata = {
   title: {
-    default: 'FormiqStudio - Website Development & Digital Marketing Agency in Kolkata, Durgapur & Asansol | Get More Customers',
+    default: 'FormiqStudio — Brand, website & Shopify studio',
     template: '%s | FormiqStudio',
   },
-  description: 'FormiqStudio helps local businesses in Kolkata, Durgapur & Asansol get more customers with professional websites, Facebook & Instagram ads, Google Ads & SEO, and social media management. 50+ businesses trust us. Starting at Rs 6,999/month. Free consultation, no lock-in, live in 15 days.',
+  description: SEO_CONSTANTS.DEFAULT_DESCRIPTION,
   keywords: [
-    // Core + Local intent (high-volume)
-    'digital marketing agency Kolkata',
-    'digital marketing agency Durgapur',
-    'digital marketing agency Asansol',
-    'web development Kolkata',
-    'web development Durgapur',
-    'website design Asansol',
-    'best website development company Kolkata',
-    'best digital marketing company Durgapur',
-    // Service + Location long-tail
-    'Facebook ads agency Kolkata',
-    'Instagram ads management Durgapur',
-    'Google ads agency Asansol',
-    'SEO services Kolkata',
-    'SEO company Durgapur',
-    'social media marketing Asansol',
-    'Google My Business optimisation Kolkata',
-    'ecommerce website development Kolkata',
-    'Shopify development Durgapur',
-    // Branded & AI discovery
+    ...SEO_CONSTANTS.KEYWORDS,
     'FormiqStudio',
     'FormiqStudio reviews',
-    'tech agency West Bengal',
-    'AI automation agency Kolkata',
   ],
   authors: [{ name: 'FormiqStudio Team', url: 'https://formiqstudio.in/about' }],
   creator: 'FormiqStudio',
@@ -56,21 +39,21 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://formiqstudio.in',
     siteName: 'FormiqStudio',
-    title: 'FormiqStudio — Get More Customers Without the Confusion | Kolkata, Durgapur & Asansol',
-    description: 'Website + Ads + Social Media — all included. 50+ local businesses trust us. Starting Rs 6,999/month. No lock-in, live in 15 days, in-person support in Kolkata, Durgapur & Asansol.',
+    title: 'FormiqStudio — Brand, website & Shopify studio',
+    description: SEO_CONSTANTS.DEFAULT_DESCRIPTION,
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'FormiqStudio - Website, Ads & Social Media for Local Businesses in Kolkata, Durgapur & Asansol',
+        alt: 'FormiqStudio, brand, website and Shopify studio',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FormiqStudio — Get More Customers Without the Confusion',
-    description: 'Website + Ads + Social Media for local businesses in Kolkata, Durgapur & Asansol. Starting Rs 6,999/month. 50+ businesses trust us.',
+    description: 'Brand identity, websites and Shopify stores for growing brands. Fixed quotes, clear timelines.',
     images: ['/images/og-image.jpg'],
     creator: '@formiqstudio',
     site: '@formiqstudio',
@@ -88,16 +71,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.png', sizes: '48x48', type: 'image/png' },
     ],
-    apple: [{ url: '/favicon.png', sizes: '180x180', type: 'image/png' }],
-    shortcut: '/favicon.png',
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: '/favicon.ico',
   },
   manifest: '/manifest.json',
-  verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'your-google-verification-code',
-  },
+  ...(GOOGLE_SITE_VERIFICATION ? { verification: { google: GOOGLE_SITE_VERIFICATION } } : {}),
   category: 'Business',
 };
 
@@ -108,50 +89,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Meta Pixel */}
-        <Script id="meta-pixel" strategy="afterInteractive">
-          {`
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '28091008350601343');
-            fbq('track', 'PageView');
-          `}
-        </Script>
-        <noscript>
-          <img height="1" width="1" style={{display:'none'}}
-            src="https://www.facebook.com/tr?id=28091008350601343&ev=PageView&noscript=1"
-          />
-        </noscript>
-
-        {/* Google Tag (gtag.js) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17545962148"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-17545962148');
-          `}
-        </Script>
-
-        {/* Organization Structured Data */}
+      <head>        {/* Organization Structured Data */}
         <StructuredData
           type="organization"
           data={{
             name: "FormiqStudio",
             url: "https://formiqstudio.in",
             logo: "https://formiqstudio.in/images/logo.png",
-            description: "FormiqStudio helps local businesses in Kolkata, Durgapur & Asansol get more customers with professional websites, Facebook & Instagram ads, Google Ads & SEO, and social media management. 50+ businesses trust us.",
+            description: SEO_CONSTANTS.DEFAULT_DESCRIPTION,
             contactPoint: {
               telephone: "+91 8918349445",
               contactType: "customer service",
@@ -173,20 +118,19 @@ export default function RootLayout({
             name: "FormiqStudio",
             url: "https://formiqstudio.in",
             logo: "https://formiqstudio.in/images/logo.png",
-            description: "Website development, Facebook & Instagram ads, Google Ads & SEO, and social media management for local businesses in Kolkata, Durgapur & Asansol. Starting Rs 6,999/month. 50+ businesses trust us. Live in 15 days.",
+            description: SEO_CONSTANTS.DEFAULT_DESCRIPTION,
             telephone: "+91 8918349445",
             email: "hello@formiqstudio.in",
             address: {
-              streetAddress: "Arrah Shree Pally",
-              addressLocality: "Durgapur",
+              streetAddress: `${STUDIO_ADDRESS.street}, ${STUDIO_ADDRESS.locality}`,
+              addressLocality: STUDIO_ADDRESS.city,
               addressRegion: "West Bengal",
-              postalCode: "713212",
+              postalCode: STUDIO_ADDRESS.postalCode,
               addressCountry: "IN",
             },
-            geo: { latitude: "23.5204", longitude: "87.3119" },
-            areaServed: ["Kolkata", "Durgapur", "Asansol", "West Bengal", "Bardhaman", "Raniganj"],
+            areaServed: SEO_CONSTANTS.AREA_SERVED,
             openingHours: "Mo-Sa 10:00-19:00",
-            priceRange: "Rs 6,999 - Rs 14,999",
+            priceRange: SEO_CONSTANTS.PRICE_RANGE,
             sameAs: [
               "https://www.linkedin.com/company/formiqstudio",
               "https://twitter.com/formiqstudio",
@@ -202,14 +146,10 @@ export default function RootLayout({
           data={{
             name: "FormiqStudio",
             url: "https://formiqstudio.in",
-            description: "Website, Ads & Social Media for local businesses in Kolkata, Durgapur & Asansol. 50+ businesses trust us. Starting Rs 6,999/month.",
+            description: "Brand identity, websites and Shopify stores for growing brands. Fixed quotes, clear timelines.",
             publisher: {
               name: "FormiqStudio",
               url: "https://formiqstudio.in"
-            },
-            potentialAction: {
-              target: "https://formiqstudio.in/search?q={search_term_string}",
-              queryInput: "required name=search_term_string"
             }
           }}
         />
@@ -218,19 +158,15 @@ export default function RootLayout({
       <body className={inter.className}>
          <ThemeProvider
           attribute="data-theme"
-          defaultTheme="light-neon-green"
-          enableSystem={true}
-          themes={[
-            'system', 'light', 'dark',
-            'light-agency', 'light-creative', 'light-modern', 'light-tech', 'light-premium',
-            'light-neon-cyan', 'light-neon-purple', 'light-neon-green', 'light-neon-pink',
-            'neon-agency', 'cyberpunk', 'matrix', 'electric'
-          ]}
+          defaultTheme="light"
+          enableSystem={false}
+          themes={['light', 'dark']}
           disableTransitionOnChange
 
         >
           <main>{children}</main>
           <ConversionTracker />
+          <CookieConsent />
         </ThemeProvider>
       </body>
     </html>

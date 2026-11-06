@@ -1,9 +1,11 @@
 console.log(
   '[build-env] NEXT_PUBLIC_* present:',
-  Object.keys(process.env).filter((k) => k.startsWith('NEXT_PUBLIC_')).join(', ') || '(none)',
-  '| ADSENSE_ID set:',
-  Boolean(process.env.NEXT_PUBLIC_ADSENSE_ID)
+  Object.keys(process.env).filter((k) => k.startsWith('NEXT_PUBLIC_')).join(', ') || '(none)'
 );
+
+const PERMANENT_REDIRECTS = [
+  { source: '/portfolio/designs', destination: '/portfolio/design' },
+];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -72,15 +74,11 @@ const nextConfig = {
   },
   // Redirects for SEO (if needed)
   async redirects() {
-    return [
-      // Add any necessary redirects here
-      // Example:
-      // {
-      //   source: '/old-page',
-      //   destination: '/new-page',
-      //   permanent: true,
-      // },
-    ];
+    return PERMANENT_REDIRECTS.map(({ source, destination }) => ({
+      source,
+      destination,
+      permanent: true,
+    }));
   },
   images: {
     remotePatterns: [

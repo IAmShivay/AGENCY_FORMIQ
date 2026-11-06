@@ -5,30 +5,46 @@ import {
   Plus,
   Search,
   Filter,
-  MoreVertical,
   Edit,
   Trash2,
-  Send,
   FileText,
   User,
   Mail,
   Phone,
-  Building,
-  Calendar,
   DollarSign,
   Eye,
-  Download,
   TrendingUp,
   Users as UsersIcon,
   Paperclip,
-  Upload,
-  X
-, Loader2 } from 'lucide-react';
+  Loader2
+} from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import { toast } from 'sonner';
 import SimpleEmailModal from '@/components/SimpleEmailModal';
 import Modal, { ConfirmModal } from '@/components/Modal';
 import AttachmentViewer, { FileUploadPreview } from '@/components/AttachmentViewer';
+import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import {
+  ADMIN_BADGE,
+  ADMIN_BTN_GHOST,
+  ADMIN_BTN_PRIMARY,
+  ADMIN_CARD,
+  ADMIN_CARD_PAD,
+  ADMIN_EMPTY,
+  ADMIN_EYEBROW,
+  ADMIN_H2,
+  ADMIN_ICON_BTN,
+  ADMIN_INPUT,
+  ADMIN_LABEL,
+  ADMIN_ROW,
+  ADMIN_STAT_VALUE,
+  ADMIN_TABLE,
+  ADMIN_TABLE_WRAP,
+  ADMIN_TD,
+  ADMIN_TH,
+  ADMIN_TONE,
+  type AdminTone,
+} from '@/components/admin/admin-ui';
 
 interface Lead {
   id: string;
@@ -56,6 +72,51 @@ interface Lead {
     email: string;
   };
 }
+
+const LEAD_STATUS_TONE: Record<Lead['status'], AdminTone> = {
+  new: 'accent',
+  contacted: 'neutral',
+  proposal_sent: 'neutral',
+  negotiating: 'warning',
+  won: 'positive',
+  lost: 'negative',
+};
+
+const HIGH_CONVERSION_RATE = 50;
+const MID_CONVERSION_RATE = 25;
+
+type PerformanceTier = 'high' | 'mid' | 'low';
+
+const PERFORMANCE_TONE: Record<PerformanceTier, AdminTone> = {
+  high: 'positive',
+  mid: 'warning',
+  low: 'negative',
+};
+
+const PERFORMANCE_LABEL: Record<PerformanceTier, string> = {
+  high: 'Strong',
+  mid: 'Steady',
+  low: 'Low',
+};
+
+const PERFORMANCE_BAR: Record<PerformanceTier, string> = {
+  high: 'bg-success',
+  mid: 'bg-warning',
+  low: 'bg-destructive',
+};
+
+const PERFORMANCE_TEXT: Record<PerformanceTier, string> = {
+  high: 'text-success',
+  mid: 'text-warning',
+  low: 'text-destructive',
+};
+
+const getPerformanceTier = (rate: number): PerformanceTier =>
+  rate >= HIGH_CONVERSION_RATE ? 'high' : rate >= MID_CONVERSION_RATE ? 'mid' : 'low';
+
+const FIELD_LABEL = `${ADMIN_LABEL} mb-2 block`;
+const TEXTAREA = `${ADMIN_INPUT} h-auto py-2.5`;
+const FILE_INPUT = `${ADMIN_INPUT} h-auto py-2 file:mr-3 file:rounded-full file:border-0 file:bg-muted file:px-3 file:py-1 file:text-sm file:text-foreground`;
 
 export default function AdminLeadsPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -93,7 +154,6 @@ export default function AdminLeadsPage() {
 
   const fetchEmployees = async () => {
     try {
-      // Use EXACT same pattern as working portfolio requests
       const { data, error } = await supabase
         .from('users')
         .select('*')
@@ -109,7 +169,6 @@ export default function AdminLeadsPage() {
 
   const fetchLeads = async () => {
     try {
-      // Fetch leads with assigned user information
       const { data, error } = await supabase
         .from('leads')
         .select(`
@@ -127,27 +186,18 @@ export default function AdminLeadsPage() {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    const colors = {
-      new: 'bg-primary/10 text-primary border-primary/20',
-      contacted: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      proposal_sent: 'bg-purple-100 text-purple-800 border-purple-200',
-      negotiating: 'bg-orange-100 text-orange-800 border-orange-200',
-      won: 'bg-green-100 text-green-800 border-green-200',
-      lost: 'bg-red-100 text-red-800 border-red-200'
-    };
-    return colors[status as keyof typeof colors] || colors.new;
-  };
+  const getStatusBadge = (status: string) =>
+    `${ADMIN_BADGE} ${ADMIN_TONE[LEAD_STATUS_TONE[status as Lead['status']] || LEAD_STATUS_TONE.new]}`;
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'new': return <User className="w-4 h-4" />;
-      case 'contacted': return <Phone className="w-4 h-4" />;
-      case 'proposal_sent': return <FileText className="w-4 h-4" />;
-      case 'negotiating': return <DollarSign className="w-4 h-4" />;
-      case 'won': return <TrendingUp className="w-4 h-4" />;
-      case 'lost': return <Eye className="w-4 h-4" />;
-      default: return <User className="w-4 h-4" />;
+      case 'new': return <User className="h-3 w-3" />;
+      case 'contacted': return <Phone className="h-3 w-3" />;
+      case 'proposal_sent': return <FileText className="h-3 w-3" />;
+      case 'negotiating': return <DollarSign className="h-3 w-3" />;
+      case 'won': return <TrendingUp className="h-3 w-3" />;
+      case 'lost': return <Eye className="h-3 w-3" />;
+      default: return <User className="h-3 w-3" />;
     }
   };
 
@@ -159,11 +209,8 @@ export default function AdminLeadsPage() {
     return matchesSearch && matchesStatus;
   });
 
-
-
   const updateLeadStatus = async (leadId: string, status: string) => {
     try {
-      // Use EXACT same pattern as working portfolio requests
       const { error } = await supabase
         .from('leads')
         .update({ status })
@@ -171,7 +218,6 @@ export default function AdminLeadsPage() {
 
       if (error) throw error;
 
-      // Refresh leads
       fetchLeads();
     } catch (error) {
       console.error('Error updating lead status:', error);
@@ -225,8 +271,6 @@ export default function AdminLeadsPage() {
     setShowAddModal(true);
   };
 
-
-
   const handleSendEmail = (lead: Lead) => {
     setEmailLead(lead);
     setShowEmailModal(true);
@@ -277,7 +321,6 @@ export default function AdminLeadsPage() {
     e.preventDefault();
     try {
       if (selectedLead) {
-        // Update existing lead
         const { error } = await supabase
           .from('leads')
           .update(formData)
@@ -286,7 +329,6 @@ export default function AdminLeadsPage() {
         if (error) throw error;
         toast.success('Lead updated successfully!');
       } else {
-        // Create new lead
         const { data: leadData, error: leadError } = await supabase
           .from('leads')
           .insert([formData])
@@ -295,10 +337,8 @@ export default function AdminLeadsPage() {
 
         if (leadError) throw leadError;
 
-        // Upload attachments if any
         const uploadedAttachments = await uploadAttachments(leadData.id);
 
-        // Update lead with attachments
         if (uploadedAttachments.length > 0) {
           const { error: updateError } = await supabase
             .from('leads')
@@ -338,51 +378,47 @@ export default function AdminLeadsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+        <Loader2 className="h-8 w-8 text-muted-foreground animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Lead Management</h1>
-          <p className="text-muted-foreground">Manage leads and generate AI-powered proposals</p>
-        </div>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200 shadow-lg"
-        >
-          <Plus className="w-4 h-4" />
-          Add Lead
-        </button>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Clients"
+        title="Leads"
+        description="Track leads, assign owners and send proposals."
+        actions={
+          <button onClick={() => setShowAddModal(true)} className={ADMIN_BTN_PRIMARY}>
+            <Plus className="h-4 w-4" />
+            Add lead
+          </button>
+        }
+      />
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search leads..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className={`${ADMIN_INPUT} pl-10`}
           />
         </div>
-        <div className="relative">
-          <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+        <div className="relative sm:w-56">
+          <Filter className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="pl-10 pr-8 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className={`${ADMIN_INPUT} pl-10 pr-8`}
           >
-            <option value="all">All Status</option>
+            <option value="all">All statuses</option>
             <option value="new">New</option>
             <option value="contacted">Contacted</option>
-            <option value="proposal_sent">Proposal Sent</option>
+            <option value="proposal_sent">Proposal sent</option>
             <option value="negotiating">Negotiating</option>
             <option value="won">Won</option>
             <option value="lost">Lost</option>
@@ -390,70 +426,56 @@ export default function AdminLeadsPage() {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
           {
-            label: 'Total Leads',
+            label: 'Total leads',
             value: leads.length,
-            color: 'text-primary',
-            bgColor: 'bg-primary/10',
-            icon: <User className="w-5 h-5" />
+            icon: <User className="h-4 w-4 text-muted-foreground" />
           },
           {
-            label: 'New Leads',
+            label: 'New leads',
             value: leads.filter(l => l.status === 'new').length,
-            color: 'text-green-600',
-            bgColor: 'bg-green-50 dark:bg-green-900/20',
-            icon: <Plus className="w-5 h-5" />
+            icon: <Plus className="h-4 w-4 text-muted-foreground" />
           },
           {
-            label: 'Proposals Sent',
+            label: 'Proposals sent',
             value: leads.filter(l => l.status === 'proposal_sent').length,
-            color: 'text-purple-600',
-            bgColor: 'bg-purple-50 dark:bg-purple-900/20',
-            icon: <FileText className="w-5 h-5" />
+            icon: <FileText className="h-4 w-4 text-muted-foreground" />
           },
           {
-            label: 'Won Deals',
+            label: 'Won deals',
             value: leads.filter(l => l.status === 'won').length,
-            color: 'text-emerald-600',
-            bgColor: 'bg-emerald-50 dark:bg-emerald-900/20',
-            icon: <TrendingUp className="w-5 h-5" />
+            icon: <TrendingUp className="h-4 w-4 text-muted-foreground" />
           }
         ].map((stat, index) => (
-          <div key={index} className={`${stat.bgColor} p-6 rounded-xl border border-border`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
-                <p className={`text-3xl font-bold ${stat.color}`}>{stat.value}</p>
-              </div>
-              <div className={`p-3 rounded-lg ${stat.color} bg-card`}>
-                {stat.icon}
-              </div>
+          <div key={index} className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+            <div className="flex items-center justify-between gap-3">
+              <p className={ADMIN_EYEBROW}>{stat.label}</p>
+              {stat.icon}
             </div>
+            <p className={`mt-4 ${ADMIN_STAT_VALUE}`}>{stat.value}</p>
           </div>
         ))}
       </div>
 
-      {/* Performance Analytics */}
-      <div className="bg-card rounded-xl border border-border p-4 md:p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <h2 className="text-xl font-bold text-foreground">Employee Performance</h2>
-          <div className="flex flex-col sm:flex-row gap-2">
+      <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className={ADMIN_H2}>Employee performance</h2>
+          <div className="flex flex-col gap-2 sm:flex-row">
             <select
               value={performanceFilter}
               onChange={(e) => setPerformanceFilter(e.target.value)}
-              className="px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
+              className={`${ADMIN_INPUT} sm:w-48`}
             >
-              <option value="all">All Employees</option>
-              <option value="top_performers">Top Performers</option>
-              <option value="needs_attention">Needs Attention</option>
+              <option value="all">All employees</option>
+              <option value="top_performers">Top performers</option>
+              <option value="needs_attention">Needs attention</option>
             </select>
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              className="px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
+              className={`${ADMIN_INPUT} sm:w-44`}
             >
               <option value="7">Last 7 days</option>
               <option value="30">Last 30 days</option>
@@ -462,7 +484,7 @@ export default function AdminLeadsPage() {
             </select>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {employees
             .filter(employee => {
               if (performanceFilter === 'all') return true;
@@ -483,66 +505,50 @@ export default function AdminLeadsPage() {
             const contactedLeads = employeeLeads.filter(l => l.status === 'contacted').length;
             const conversionRate = employeeLeads.length > 0 ? ((wonDeals / employeeLeads.length) * 100).toFixed(1) : '0';
             const responseRate = employeeLeads.length > 0 ? (((contactedLeads + proposalsSent + wonDeals) / employeeLeads.length) * 100).toFixed(1) : '0';
+            const tier = getPerformanceTier(parseFloat(conversionRate));
 
             return (
-              <div key={employee.id} className="bg-secondary/50 p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-semibold text-lg">
+              <div key={employee.id} className="rounded-xl border border-border p-4">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-muted font-semibold text-foreground">
                     {(employee.full_name || employee.email).charAt(0).toUpperCase()}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-foreground truncate">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="truncate text-base font-medium text-foreground">
                       {employee.full_name || employee.email}
                     </h3>
-                    <p className="text-sm text-muted-foreground capitalize">{employee.role}</p>
+                    <p className="text-sm capitalize text-muted-foreground">{employee.role}</p>
                     {employee.department && (
                       <p className="text-xs text-muted-foreground">{employee.department}</p>
                     )}
                   </div>
-                  <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    parseFloat(conversionRate) >= 50 ? 'bg-green-100 text-green-800' :
-                    parseFloat(conversionRate) >= 25 ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {parseFloat(conversionRate) >= 50 ? '🏆' : parseFloat(conversionRate) >= 25 ? '📈' : '⚠️'}
-                  </div>
+                  <span className={`${ADMIN_BADGE} ${ADMIN_TONE[PERFORMANCE_TONE[tier]]}`}>
+                    {PERFORMANCE_LABEL[tier]}
+                  </span>
                 </div>
-                <div className="grid grid-cols-2 gap-3 mb-3">
-                  <div className="text-center p-2 bg-card rounded-lg">
-                    <div className="text-lg font-bold text-foreground">{employeeLeads.length}</div>
-                    <div className="text-xs text-muted-foreground">Assigned</div>
-                  </div>
-                  <div className="text-center p-2 bg-card rounded-lg">
-                    <div className="text-lg font-bold text-primary">{proposalsSent}</div>
-                    <div className="text-xs text-muted-foreground">Proposals</div>
-                  </div>
-                  <div className="text-center p-2 bg-card rounded-lg">
-                    <div className="text-lg font-bold text-green-600">{wonDeals}</div>
-                    <div className="text-xs text-muted-foreground">Won</div>
-                  </div>
-                  <div className="text-center p-2 bg-card rounded-lg">
-                    <div className="text-lg font-bold text-primary">{responseRate}%</div>
-                    <div className="text-xs text-muted-foreground">Response</div>
-                  </div>
+                <div className="mb-4 grid grid-cols-2 gap-2">
+                  {[
+                    { label: 'Assigned', value: employeeLeads.length },
+                    { label: 'Proposals', value: proposalsSent },
+                    { label: 'Won', value: wonDeals },
+                    { label: 'Response', value: `${responseRate}%` },
+                  ].map((metric) => (
+                    <div key={metric.label} className="rounded-xl bg-muted/50 p-2.5 text-center">
+                      <div className="text-lg font-semibold tabular-nums text-foreground">{metric.value}</div>
+                      <div className={ADMIN_EYEBROW}>{metric.label}</div>
+                    </div>
+                  ))}
                 </div>
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Conversion Rate</span>
-                    <span className={`text-sm font-medium ${
-                      parseFloat(conversionRate) >= 50 ? 'text-green-600' :
-                      parseFloat(conversionRate) >= 25 ? 'text-yellow-600' :
-                      'text-red-600'
-                    }`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Conversion rate</span>
+                    <span className={`text-sm font-medium tabular-nums ${PERFORMANCE_TEXT[tier]}`}>
                       {conversionRate}%
                     </span>
                   </div>
-                  <div className="w-full bg-secondary rounded-full h-2">
+                  <div className="h-1.5 w-full rounded-full bg-muted">
                     <div
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        parseFloat(conversionRate) >= 50 ? 'bg-green-500' :
-                        parseFloat(conversionRate) >= 25 ? 'bg-yellow-500' :
-                        'bg-red-500'
-                      }`}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${PERFORMANCE_BAR[tier]}`}
                       style={{ width: `${Math.min(parseFloat(conversionRate), 100)}%` }}
                     ></div>
                   </div>
@@ -552,233 +558,208 @@ export default function AdminLeadsPage() {
           })}
 
           {employees.length === 0 && (
-            <div className="col-span-full text-center py-8">
-              <UsersIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-foreground mb-2">No employees found</h3>
-              <p className="text-muted-foreground">Add employees to see performance analytics</p>
+            <div className={`col-span-full ${ADMIN_EMPTY}`}>
+              <UsersIcon className="mx-auto mb-4 h-5 w-5 text-muted-foreground" />
+              <p className="font-medium text-foreground">No employees found</p>
+              <p className="mt-1">Add employees to see performance analytics.</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Leads Table */}
-      <div className="bg-card rounded-xl border border-border overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-secondary/50">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Lead</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Contact</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Project</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Assigned To</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Budget</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
-                <th className="px-6 py-4 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+      <div className={ADMIN_TABLE_WRAP}>
+        <table className={ADMIN_TABLE}>
+          <thead>
+            <tr>
+              <th className={ADMIN_TH}>Lead</th>
+              <th className={ADMIN_TH}>Contact</th>
+              <th className={ADMIN_TH}>Project</th>
+              <th className={ADMIN_TH}>Assigned to</th>
+              <th className={ADMIN_TH}>Status</th>
+              <th className={ADMIN_TH}>Budget</th>
+              <th className={ADMIN_TH}>Date</th>
+              <th className={`${ADMIN_TH} text-right`}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredLeads.map((lead) => (
+              <tr key={lead.id} className={ADMIN_ROW}>
+                <td className={ADMIN_TD}>
+                  <div className="font-medium text-foreground">{lead.name}</div>
+                  <div className="text-muted-foreground">{lead.company}</div>
+                </td>
+                <td className={ADMIN_TD}>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 whitespace-nowrap text-foreground">
+                      <Mail className="h-3 w-3 text-muted-foreground" />
+                      {lead.email}
+                    </div>
+                    <div className="flex items-center gap-2 whitespace-nowrap text-muted-foreground">
+                      <Phone className="h-3 w-3" />
+                      {lead.phone}
+                    </div>
+                  </div>
+                </td>
+                <td className={ADMIN_TD}>{lead.project_type}</td>
+                <td className={ADMIN_TD}>
+                  {lead.assigned_user ? (
+                    <div className="flex items-center gap-2 whitespace-nowrap">
+                      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
+                        {(lead.assigned_user.full_name || lead.assigned_user.email).charAt(0).toUpperCase()}
+                      </div>
+                      <span>{lead.assigned_user.full_name || lead.assigned_user.email}</span>
+                    </div>
+                  ) : (
+                    <span className="text-muted-foreground">Unassigned</span>
+                  )}
+                </td>
+                <td className={ADMIN_TD}>
+                  <span className={getStatusBadge(lead.status)}>
+                    {getStatusIcon(lead.status)}
+                    {lead.status.replace('_', ' ')}
+                  </span>
+                </td>
+                <td className={`${ADMIN_TD} whitespace-nowrap font-medium`}>{lead.budget}</td>
+                <td className={`${ADMIN_TD} whitespace-nowrap text-muted-foreground`}>
+                  {new Date(lead.created_at).toLocaleDateString()}
+                </td>
+                <td className={`${ADMIN_TD} text-right`}>
+                  <div className="flex items-center justify-end gap-1">
+                    <button
+                      onClick={() => handleViewDetails(lead)}
+                      className={ADMIN_ICON_BTN}
+                      title="View details"
+                      aria-label="View details"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleSendEmail(lead)}
+                      className={ADMIN_ICON_BTN}
+                      title="Send email"
+                      aria-label="Send email"
+                    >
+                      <Mail className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleEditLead(lead)}
+                      className={ADMIN_ICON_BTN}
+                      title="Edit lead"
+                      aria-label="Edit lead"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => confirmDeleteLead(lead.id)}
+                      className={`${ADMIN_ICON_BTN} hover:bg-destructive/10 hover:text-destructive`}
+                      title="Delete lead"
+                      aria-label="Delete lead"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {filteredLeads.map((lead) => (
-                <tr key={lead.id} className="hover:bg-secondary/50 transition-colors">
-                  <td className="px-6 py-4">
-                    <div>
-                      <div className="text-sm font-medium text-foreground">{lead.name}</div>
-                      <div className="text-sm text-muted-foreground">{lead.company}</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-sm text-foreground">
-                        <Mail className="w-3 h-3" />
-                        {lead.email}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Phone className="w-3 h-3" />
-                        {lead.phone}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-foreground">{lead.project_type}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    {lead.assigned_user ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-xs font-semibold">
-                          {(lead.assigned_user.full_name || lead.assigned_user.email).charAt(0).toUpperCase()}
-                        </div>
-                        <div className="text-sm text-foreground">
-                          {lead.assigned_user.full_name || lead.assigned_user.email}
-                        </div>
-                      </div>
-                    ) : (
-                      <span className="text-sm text-muted-foreground">Unassigned</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(lead.status)}`}>
-                      {getStatusIcon(lead.status)}
-                      {lead.status.replace('_', ' ').toUpperCase()}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-foreground">{lead.budget}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-muted-foreground">
-                      {new Date(lead.created_at).toLocaleDateString()}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => handleViewDetails(lead)}
-                        className="p-2 text-muted-foreground hover:text-primary transition-colors rounded-lg hover:bg-primary/10"
-                        title="View Details"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleSendEmail(lead)}
-                        className="p-2 text-muted-foreground hover:text-green-600 transition-colors rounded-lg hover:bg-green-50"
-                        title="Send Email"
-                      >
-                        <Mail className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleEditLead(lead)}
-                        className="p-2 text-muted-foreground hover:text-purple-600 transition-colors rounded-lg hover:bg-purple-50"
-                        title="Edit Lead"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => confirmDeleteLead(lead.id)}
-                        className="p-2 text-muted-foreground hover:text-red-600 transition-colors rounded-lg hover:bg-red-50"
-                        title="Delete Lead"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
+
+        {filteredLeads.length === 0 && (
+          <div className={`${ADMIN_EMPTY} border-t border-border`}>
+            <User className="mx-auto mb-4 h-5 w-5 text-muted-foreground" />
+            <p className="font-medium text-foreground">No leads found</p>
+            <p className="mt-1">Get started by adding your first lead.</p>
+            <button onClick={() => setShowAddModal(true)} className={`mt-6 ${ADMIN_BTN_PRIMARY}`}>
+              <Plus className="h-4 w-4" />
+              Add lead
+            </button>
+          </div>
+        )}
       </div>
 
-      {filteredLeads.length === 0 && (
-        <div className="text-center py-12">
-          <User className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-foreground mb-2">No leads found</h3>
-          <p className="text-muted-foreground mb-4">Get started by adding your first lead</p>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200"
-          >
-            <Plus className="w-4 h-4" />
-            Add Lead
-          </button>
-        </div>
-      )}
-
-      {/* Add Lead Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-card rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-border">
-              <h2 className="text-xl font-bold text-foreground">
-                {selectedLead ? 'Edit Lead' : 'Add New Lead'}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/30 p-4">
+          <div className={`${ADMIN_CARD} max-h-[90vh] w-full max-w-2xl overflow-y-auto`}>
+            <div className="border-b border-border px-5 py-4 sm:px-6">
+              <h2 className={ADMIN_H2}>
+                {selectedLead ? 'Edit lead' : 'Add new lead'}
               </h2>
             </div>
-            <form onSubmit={handleAddLead} className="p-6 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form onSubmit={handleAddLead} className={`${ADMIN_CARD_PAD} space-y-5`}>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Name *
-                  </label>
+                  <label className={FIELD_LABEL}>Name *</label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className={ADMIN_INPUT}
                     placeholder="Enter lead name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Email *
-                  </label>
+                  <label className={FIELD_LABEL}>Email *</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className={ADMIN_INPUT}
                     placeholder="Enter email address"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Phone
-                  </label>
+                  <label className={FIELD_LABEL}>Phone</label>
                   <input
                     type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className={ADMIN_INPUT}
                     placeholder="Enter phone number"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Company
-                  </label>
+                  <label className={FIELD_LABEL}>Company</label>
                   <input
                     type="text"
                     name="company"
                     value={formData.company}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className={ADMIN_INPUT}
                     placeholder="Enter company name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Project Type *
-                  </label>
+                  <label className={FIELD_LABEL}>Project type *</label>
                   <select
                     name="project_type"
                     value={formData.project_type}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className={ADMIN_INPUT}
                   >
                     <option value="">Select project type</option>
-                    <option value="Web Development">Web Development</option>
-                    <option value="Mobile App Development">Mobile App Development</option>
-                    <option value="E-commerce Development">E-commerce Development</option>
-                    <option value="UI/UX Design">UI/UX Design</option>
-                    <option value="Digital Marketing">Digital Marketing</option>
-                    <option value="SEO Services">SEO Services</option>
-                    <option value="Custom Software">Custom Software</option>
+                    <option value="Web Development">Web development</option>
+                    <option value="Mobile App Development">Mobile app development</option>
+                    <option value="E-commerce Development">E-commerce development</option>
+                    <option value="UI/UX Design">UI/UX design</option>
+                    <option value="Digital Marketing">Digital marketing</option>
+                    <option value="SEO Services">SEO services</option>
+                    <option value="Custom Software">Custom software</option>
                     <option value="Other">Other</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Budget Range
-                  </label>
+                  <label className={FIELD_LABEL}>Budget range</label>
                   <select
                     name="budget"
                     value={formData.budget}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className={ADMIN_INPUT}
                   >
                     <option value="">Select budget range</option>
                     <option value="$5,000 - $10,000">$5,000 - $10,000</option>
@@ -790,14 +771,12 @@ export default function AdminLeadsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Assign to Employee
-                  </label>
+                  <label className={FIELD_LABEL}>Assign to employee</label>
                   <select
                     name="assigned_to"
                     value={formData.assigned_to}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className={ADMIN_INPUT}
                   >
                     <option value="">Select employee (optional)</option>
                     {employees.map((employee) => (
@@ -809,22 +788,20 @@ export default function AdminLeadsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Project Description
-                </label>
+                <label className={FIELD_LABEL}>Project description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  className={TEXTAREA}
                   placeholder="Describe the project requirements..."
                 ></textarea>
               </div>
 
-              {/* Attachments */}
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className={`${FIELD_LABEL} flex items-center gap-1.5`}>
+                  <Paperclip className="h-3 w-3" />
                   Attachments
                 </label>
                 <div className="space-y-3">
@@ -832,26 +809,23 @@ export default function AdminLeadsPage() {
                     type="file"
                     multiple
                     onChange={handleFileChange}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className={FILE_INPUT}
                     accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif"
                   />
                   <FileUploadPreview files={attachments} onRemove={removeAttachment} />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 pt-4">
+              <div className="flex flex-wrap justify-end gap-2 border-t border-border pt-5">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 text-foreground bg-secondary rounded-lg hover:bg-secondary/80 transition-colors"
+                  className={ADMIN_BTN_GHOST}
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200"
-                >
-                  Add Lead
+                <button type="submit" className={ADMIN_BTN_PRIMARY}>
+                  Add lead
                 </button>
               </div>
             </form>
@@ -859,7 +833,6 @@ export default function AdminLeadsPage() {
         </div>
       )}
 
-      {/* Email Modal */}
       {showEmailModal && emailLead && (
         <SimpleEmailModal
           isOpen={showEmailModal}
@@ -873,109 +846,100 @@ export default function AdminLeadsPage() {
         />
       )}
 
-      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
         onConfirm={() => leadToDelete && handleDeleteLead(leadToDelete)}
-        title="Delete Lead"
+        title="Delete lead"
         message="Are you sure you want to delete this lead? This action cannot be undone."
         confirmText="Delete"
         type="danger"
       />
 
-      {/* Lead Details Modal */}
       <Modal
         isOpen={showDetailsModal}
         onClose={() => setShowDetailsModal(false)}
-        title={`Lead Details - ${selectedLeadDetails?.name}`}
+        title={`Lead details - ${selectedLeadDetails?.name}`}
         size="xl"
       >
-        <div className="p-6 space-y-6">
+        <div className={`${ADMIN_CARD_PAD} space-y-8`}>
           {selectedLeadDetails && (
             <>
-              {/* Lead Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Contact Information</h3>
-                  <div className="space-y-3">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+                  <h3 className="mb-4 text-lg font-semibold text-foreground">Contact information</h3>
+                  <dl className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Name</label>
-                      <p className="text-foreground">{selectedLeadDetails.name}</p>
+                      <dt className={ADMIN_LABEL}>Name</dt>
+                      <dd className="mt-1 text-foreground">{selectedLeadDetails.name}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Email</label>
-                      <p className="text-foreground">{selectedLeadDetails.email}</p>
+                      <dt className={ADMIN_LABEL}>Email</dt>
+                      <dd className="mt-1 break-all text-foreground">{selectedLeadDetails.email}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Phone</label>
-                      <p className="text-foreground">{selectedLeadDetails.phone || 'Not provided'}</p>
+                      <dt className={ADMIN_LABEL}>Phone</dt>
+                      <dd className="mt-1 text-foreground">{selectedLeadDetails.phone || 'Not provided'}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Company</label>
-                      <p className="text-foreground">{selectedLeadDetails.company || 'Not provided'}</p>
+                      <dt className={ADMIN_LABEL}>Company</dt>
+                      <dd className="mt-1 text-foreground">{selectedLeadDetails.company || 'Not provided'}</dd>
                     </div>
-                  </div>
+                  </dl>
                 </div>
 
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Project Information</h3>
-                  <div className="space-y-3">
+                <div className={`${ADMIN_CARD} ${ADMIN_CARD_PAD}`}>
+                  <h3 className="mb-4 text-lg font-semibold text-foreground">Project information</h3>
+                  <dl className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Project Type</label>
-                      <p className="text-foreground">{selectedLeadDetails.project_type}</p>
+                      <dt className={ADMIN_LABEL}>Project type</dt>
+                      <dd className="mt-1 text-foreground">{selectedLeadDetails.project_type}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Budget</label>
-                      <p className="text-foreground">{selectedLeadDetails.budget || 'Not specified'}</p>
+                      <dt className={ADMIN_LABEL}>Budget</dt>
+                      <dd className="mt-1 text-foreground">{selectedLeadDetails.budget || 'Not specified'}</dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Status</label>
-                      <span className={`inline-flex px-2 py-1 text-xs rounded-full ${getStatusColor(selectedLeadDetails.status)}`}>
-                        {selectedLeadDetails.status.charAt(0).toUpperCase() + selectedLeadDetails.status.slice(1)}
-                      </span>
+                      <dt className={ADMIN_LABEL}>Status</dt>
+                      <dd className="mt-1">
+                        <span className={getStatusBadge(selectedLeadDetails.status)}>
+                          {selectedLeadDetails.status.replace('_', ' ')}
+                        </span>
+                      </dd>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Assigned To</label>
-                      <p className="text-foreground">
+                      <dt className={ADMIN_LABEL}>Assigned to</dt>
+                      <dd className="mt-1 text-foreground">
                         {selectedLeadDetails.assigned_user?.full_name || 'Unassigned'}
-                      </p>
+                      </dd>
                     </div>
-                  </div>
+                  </dl>
                 </div>
               </div>
 
-              {/* Description */}
               {selectedLeadDetails.description && (
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Project Description</h3>
-                  <div className="bg-secondary/50 p-4 rounded-lg">
-                    <p className="text-foreground whitespace-pre-wrap">{selectedLeadDetails.description}</p>
+                  <h3 className="mb-3 text-lg font-semibold text-foreground">Project description</h3>
+                  <div className="rounded-xl bg-muted/50 p-4">
+                    <p className="whitespace-pre-wrap text-foreground">{selectedLeadDetails.description}</p>
                   </div>
                 </div>
               )}
 
-              {/* Attachments */}
               <div>
-                <h3 className="text-lg font-semibold text-foreground mb-4">Attachments</h3>
+                <h3 className="mb-3 text-lg font-semibold text-foreground">Attachments</h3>
                 {selectedLeadDetails.attachments && selectedLeadDetails.attachments.length > 0 ? (
                   <AttachmentViewer
                     attachments={selectedLeadDetails.attachments}
                     title=""
                   />
                 ) : (
-                  <div className="text-center py-8 bg-secondary/50 rounded-lg">
-                    <div className="text-muted-foreground">
-                      <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-                      </svg>
-                      <p>No attachments found for this lead</p>
-                    </div>
+                  <div className={`${ADMIN_EMPTY} rounded-xl border border-dashed border-border`}>
+                    <Paperclip className="mx-auto mb-3 h-5 w-5 text-muted-foreground" />
+                    <p>No attachments found for this lead.</p>
                   </div>
                 )}
               </div>
-
-
             </>
           )}
         </div>

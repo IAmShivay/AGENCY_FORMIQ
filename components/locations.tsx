@@ -13,7 +13,7 @@ const OfficeLocationsMap = () => {
         {
             id: 1,
             name: "FormiqStudio System Inc",
-            address: "Arrah Shree Pally, Durgapur, West Bengal 713212",
+            address: "1008, Tagore Park Road, Naskar Hat, Near Picnic Garden, Kolkata, West Bengal 700039",
             phone: "+91 8918349445",
             email: "hello@formiqstudio.in",
             coordinates: { lat: 23.55000000, lng: -87.32000000 },

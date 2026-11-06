@@ -1,11 +1,24 @@
+import { STUDIO_ADDRESS } from '@/lib/studio-facts';
 // SEO utility functions and constants
 
 export const SEO_CONSTANTS = {
   SITE_NAME: 'FormiqStudio',
   SITE_URL: 'https://formiqstudio.in',
   DEFAULT_TITLE: 'FormiqStudio - Website, Ads & Social Media for Local Businesses',
-  DEFAULT_DESCRIPTION: 'FormiqStudio helps local businesses in Kolkata, Durgapur & Asansol get more customers with professional websites, Facebook & Instagram ads, and social media management. Starting Rs 6,999/month.',
+  DEFAULT_DESCRIPTION: 'Independent design and development studio based in India. Brand identity, websites and Shopify stores for growing brands. Fixed quotes, clear timelines.',
+  KEYWORDS: [
+    'design and development studio',
+    'brand identity studio',
+    'Shopify agency',
+    'Next.js website agency',
+    'web design agency for startups',
+    'website design Dubai',
+    'web design agency UK',
+  ],
+  AREA_SERVED: ['European Union', 'United Kingdom', 'United Arab Emirates', 'India'],
   DEFAULT_OG_IMAGE: '/images/og-image.jpg',
+  /** Schema.org price tier; real prices depend on the visitor's currency. */
+  PRICE_RANGE: '$$',
   TWITTER_HANDLE: '@formiqstudio',
   LOGO_URL: '/images/logo.png',
   COMPANY_EMAIL: 'hello@formiqstudio.in',
@@ -110,14 +123,14 @@ export function generateLocalBusinessStructuredData() {
     email: SEO_CONSTANTS.COMPANY_EMAIL,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Arrah Shree Pally',
-      addressLocality: 'Durgapur',
+      streetAddress: `${STUDIO_ADDRESS.street}, ${STUDIO_ADDRESS.locality}`,
+      addressLocality: STUDIO_ADDRESS.city,
       addressRegion: 'West Bengal',
-      postalCode: '713212',
+      postalCode: STUDIO_ADDRESS.postalCode,
       addressCountry: 'IN',
     },
     openingHours: 'Mo-Sa 10:00-19:00',
-    priceRange: 'Rs 6,999 - Rs 14,999',
+    priceRange: SEO_CONSTANTS.PRICE_RANGE,
     sameAs: [
       'https://www.linkedin.com/company/formiqstudio',
       'https://twitter.com/formiqstudio',

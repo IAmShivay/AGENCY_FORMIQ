@@ -3,8 +3,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
 import { getBlogPostsPaginated } from '@/lib/blog';
-import BlogAdUnit from '@/components/ads/BlogAdUnit';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import PageHeader from '@/components/studio/PageHeader';
+import { CONTAINER, EYEBROW, FOCUS_RING } from '@/components/studio/ui';
 
 export const metadata: Metadata = {
   title: 'Blog | formiqstudio - Insights on Web Development, Design & Digital Marketing',
@@ -51,164 +52,105 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const featured = currentPage === 1 && posts.length > 0 ? posts[0] : null;
   const gridPosts = currentPage === 1 ? posts.slice(1) : posts;
 
+  const formatDate = (d: string) =>
+    new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const pageHref = (p: number) => (p === 1 ? '/blog' : `/blog?page=${p}`);
+  const PILL = `inline-flex min-h-11 items-center px-5 rounded-full border text-sm font-medium transition-colors duration-300 ${FOCUS_RING}`;
+
   return (
-    <div className="bg-muted dark:bg-neutral-900 min-h-screen pt-24 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto mb-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary">
-            Our Blog
-          </h1>
-          <p className="text-xl text-muted-foreground dark:text-neutral-400 mb-8">
-            Insights, trends, and tips on web development, design, digital marketing, and technology.
-          </p>
+    <div className="bg-background text-foreground">
+      <PageHeader
+        eyebrow="(01) Journal"
+        title={<>Notes on building for <span className="text-primary">growth</span></>}
+        intro="Insights, trends, and tips on web development, design, digital marketing, and technology."
+      >
+        <nav aria-label="Blog categories" className="mt-10 flex flex-wrap gap-2">
+          {categories.map((category) => (
+            <Link
+              key={category.slug}
+              href={category.slug === 'all' ? '/blog' : `/blog/category/${category.slug}`}
+              aria-current={category.slug === 'all' ? 'page' : undefined}
+              className={`${PILL} ${category.slug === 'all' ? 'bg-foreground text-background border-foreground' : 'border-border hover:border-foreground/40'}`}
+            >
+              {category.name}
+            </Link>
+          ))}
+        </nav>
+      </PageHeader>
 
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {categories.map((category) => (
-              <Link
-                key={category.slug}
-                href={category.slug === 'all' ? '/blog' : `/blog/category/${category.slug}`}
-                className="px-5 py-2 rounded-full bg-card dark:bg-neutral-800 hover:bg-primary hover:text-white transition-colors shadow-sm"
-              >
-                {category.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <BlogAdUnit slot="8265366891" label="Advertisement" className="max-w-4xl mx-auto" />
-
+      <div className={`${CONTAINER} pb-20 sm:pb-28 lg:pb-32`}>
         {posts.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-xl text-muted-foreground dark:text-neutral-400">No blog posts yet. Check back soon!</p>
-          </div>
+          <p className="py-20 text-lg text-muted-foreground">No blog posts yet. Check back soon!</p>
         )}
 
         {featured && (
-          <div className="mb-16">
-            <Link href={`/blog/${featured.slug}`} className="block group">
-              <div className="bg-card dark:bg-neutral-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="grid md:grid-cols-2 gap-0">
-                  <div className="relative h-64 md:h-auto">
-                    <Image
-                      src={featured.coverImage}
-                      alt={featured.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-8 flex flex-col justify-center">
-                    <div className="flex items-center mb-4">
-                      <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                        {featured.category}
-                      </span>
-                      <span className="mx-2 text-muted-foreground">&bull;</span>
-                      <span className="text-muted-foreground dark:text-neutral-400 text-sm">
-                        {new Date(featured.date).toLocaleDateString('en-US', {
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })}
-                      </span>
-                    </div>
-                    <h2 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-primary transition-colors">
-                      {featured.title}
-                    </h2>
-                    <p className="text-muted-foreground dark:text-neutral-400 mb-6">
-                      {featured.excerpt}
-                    </p>
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-full overflow-hidden mr-4">
-                        <Image
-                          src={featured.author.avatar || '/images/default-avatar.svg'}
-                          alt={featured.author.name}
-                          width={40}
-                          height={40}
-                          className="object-cover"
-                        />
-                      </div>
-                      <div>
-                        <p className="font-medium">{featured.author.name}</p>
-                        <p className="text-sm text-muted-foreground dark:text-neutral-400">{featured.author.role}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
+          <Link href={`/blog/${featured.slug}`} className={`group grid gap-6 lg:grid-cols-12 lg:gap-12 lg:items-center mb-16 sm:mb-24 rounded-[22px] ${FOCUS_RING}`}>
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[22px] border border-border bg-muted lg:col-span-7">
+              <Image
+                src={featured.coverImage}
+                alt={featured.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 58vw"
+                className="object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:group-hover:scale-[1.03]"
+              />
+            </div>
+            <div className="lg:col-span-5">
+              <p className={EYEBROW}>
+                {featured.category} <span aria-hidden="true">·</span> {formatDate(featured.date)}
+              </p>
+              <h2 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.02] tracking-[-0.04em]">
+                {featured.title}
+              </h2>
+              <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">{featured.excerpt}</p>
+              <p className="mt-6 text-sm text-muted-foreground">
+                <span className="text-foreground font-medium">{featured.author.name}</span>
+                {featured.author.role && <> · {featured.author.role}</>}
+              </p>
+            </div>
+          </Link>
         )}
 
         {gridPosts.length > 0 && (
-          <BlogAdUnit slot="2206263374" label="Advertisement" className="mb-12" />
-        )}
-
-        {gridPosts.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <ul className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 border-t border-border pt-12 sm:pt-16">
             {gridPosts.map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
-                <div className="bg-card dark:bg-neutral-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
-                  <div className="relative h-56">
+              <li key={post.slug}>
+                <Link href={`/blog/${post.slug}`} className={`group block rounded-[22px] ${FOCUS_RING}`}>
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-[22px] border border-border bg-muted">
                     <Image
                       src={post.coverImage}
                       alt={post.title}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:group-hover:scale-[1.03]"
                     />
                   </div>
-                  <div className="p-6 flex-grow flex flex-col">
-                    <div className="flex items-center mb-3">
-                      <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                        {post.category}
-                      </span>
-                      <span className="ml-auto text-muted-foreground dark:text-neutral-400 text-sm">
-                        {new Date(post.date).toLocaleDateString('en-US', {
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h3>
-                    <p className="text-muted-foreground dark:text-neutral-400 mb-4 flex-grow">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex items-center mt-auto pt-4 border-t border-border dark:border-neutral-700">
-                      <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
-                        <Image
-                          src={post.author.avatar || '/images/default-avatar.svg'}
-                          alt={post.author.name}
-                          width={32}
-                          height={32}
-                          className="object-cover"
-                        />
-                      </div>
-                      <p className="text-sm font-medium">{post.author.name}</p>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+                  <p className={`${EYEBROW} mt-5`}>
+                    {post.category} <span aria-hidden="true">·</span> {formatDate(post.date)}
+                  </p>
+                  <h3 className="mt-3 font-display text-2xl font-semibold leading-tight tracking-[-0.035em]">
+                    <span className="link-draw">{post.title}</span>
+                  </h3>
+                  <p className="mt-3 text-base text-muted-foreground line-clamp-3">{post.excerpt}</p>
+                  <p className="mt-4 text-sm text-muted-foreground">{post.author.name}</p>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
 
         {totalPages > 1 && (
-          <nav aria-label="Blog pagination" className="flex justify-center mt-16">
-            <div className="flex items-center gap-2">
-              {currentPage > 1 ? (
-                <Link
-                  href={currentPage === 2 ? '/blog' : `/blog?page=${currentPage - 1}`}
-                  className="flex items-center gap-1 px-4 py-2 rounded-lg bg-card dark:bg-neutral-800 shadow-sm hover:bg-muted dark:hover:bg-neutral-700 transition-colors text-sm font-medium"
-                >
-                  <ChevronLeft className="w-4 h-4" /> Previous
-                </Link>
-              ) : (
-                <span className="flex items-center gap-1 px-4 py-2 rounded-lg bg-muted dark:bg-neutral-800/50 text-muted-foreground dark:text-neutral-600 text-sm font-medium cursor-not-allowed">
-                  <ChevronLeft className="w-4 h-4" /> Previous
-                </span>
-              )}
+          <nav aria-label="Blog pagination" className="mt-16 sm:mt-20 pt-8 border-t border-border flex flex-wrap items-center justify-between gap-4">
+            {currentPage > 1 ? (
+              <Link href={pageHref(currentPage - 1)} className={`${PILL} gap-1 border-border hover:border-foreground/40`}>
+                <ChevronLeft className="w-4 h-4" aria-hidden="true" /> Previous
+              </Link>
+            ) : (
+              <span className={`${PILL} gap-1 border-border text-muted-foreground opacity-50`} aria-disabled="true">
+                <ChevronLeft className="w-4 h-4" aria-hidden="true" /> Previous
+              </span>
+            )}
 
+            <div className="flex flex-wrap items-center gap-2">
               {Array.from({ length: totalPages }, (_, i) => i + 1)
                 .filter(p => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
                 .reduce<(number | 'ellipsis')[]>((acc, p, idx, arr) => {
@@ -218,41 +160,37 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                 }, [])
                 .map((item, idx) =>
                   item === 'ellipsis' ? (
-                    <span key={`e-${idx}`} className="px-2 text-muted-foreground">...</span>
+                    <span key={`e-${idx}`} className="px-2 text-muted-foreground">…</span>
                   ) : (
                     <Link
                       key={item}
-                      href={item === 1 ? '/blog' : `/blog?page=${item}`}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors ${
-                        item === currentPage
-                          ? 'bg-primary text-white'
-                          : 'bg-card dark:bg-neutral-800 hover:bg-muted dark:hover:bg-neutral-700'
+                      href={pageHref(item)}
+                      aria-current={item === currentPage ? 'page' : undefined}
+                      className={`${PILL} min-w-11 justify-center px-3 ${
+                        item === currentPage ? 'bg-foreground text-background border-foreground' : 'border-border hover:border-foreground/40'
                       }`}
                     >
                       {item}
                     </Link>
                   )
                 )}
-
-              {currentPage < totalPages ? (
-                <Link
-                  href={`/blog?page=${currentPage + 1}`}
-                  className="flex items-center gap-1 px-4 py-2 rounded-lg bg-card dark:bg-neutral-800 shadow-sm hover:bg-muted dark:hover:bg-neutral-700 transition-colors text-sm font-medium"
-                >
-                  Next <ChevronRight className="w-4 h-4" />
-                </Link>
-              ) : (
-                <span className="flex items-center gap-1 px-4 py-2 rounded-lg bg-muted dark:bg-neutral-800/50 text-muted-foreground dark:text-neutral-600 text-sm font-medium cursor-not-allowed">
-                  Next <ChevronRight className="w-4 h-4" />
-                </span>
-              )}
             </div>
+
+            {currentPage < totalPages ? (
+              <Link href={pageHref(currentPage + 1)} className={`${PILL} gap-1 border-border hover:border-foreground/40`}>
+                Next <ChevronRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
+            ) : (
+              <span className={`${PILL} gap-1 border-border text-muted-foreground opacity-50`} aria-disabled="true">
+                Next <ChevronRight className="w-4 h-4" aria-hidden="true" />
+              </span>
+            )}
           </nav>
         )}
 
         {total > 0 && (
-          <p className="text-center text-sm text-muted-foreground dark:text-neutral-400 mt-4">
-            Showing {(currentPage - 1) * perPage + 1}-{Math.min(currentPage * perPage, total)} of {total} posts
+          <p className={`${EYEBROW} mt-6`}>
+            Showing {(currentPage - 1) * perPage + 1}–{Math.min(currentPage * perPage, total)} of {total} posts
           </p>
         )}
       </div>

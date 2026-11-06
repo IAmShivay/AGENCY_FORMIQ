@@ -41,32 +41,32 @@ const features = [
   {
     title: 'Domain Privacy Protection',
     description: 'Keep your personal information private and protect yourself from spam, identity theft, and other online threats.',
-    icon: <Shield className="h-6 w-6 text-white" />
+    icon: <Shield className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Auto-Renewal',
     description: 'Never worry about losing your domain. Our auto-renewal service ensures your domain stays registered.',
-    icon: <Clock className="h-6 w-6 text-white" />
+    icon: <Clock className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Easy DNS Management',
     description: 'User-friendly DNS management interface to configure your domain settings with just a few clicks.',
-    icon: <Zap className="h-6 w-6 text-white" />
+    icon: <Zap className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Domain Forwarding',
     description: 'Redirect visitors from one domain to another seamlessly with our domain forwarding service.',
-    icon: <ArrowRight className="h-6 w-6 text-white" />
+    icon: <ArrowRight className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: 'Email Forwarding',
     description: 'Create professional email addresses with your domain and forward messages to your existing email.',
-    icon: <Mail className="h-6 w-6 text-white" />
+    icon: <Mail className="h-6 w-6 text-primary-foreground" />
   },
   {
     title: '24/7 Support',
     description: 'Our dedicated support team is available around the clock to help you with any domain-related issues.',
-    icon: <Globe className="h-6 w-6 text-white" />
+    icon: <Globe className="h-6 w-6 text-primary-foreground" />
   }
 ];
 
@@ -225,8 +225,8 @@ export default function DomainSearchPage() {
 
       {/* Search Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
-        <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-xl p-6 md:p-8">
-          <h2 className="text-2xl font-bold text-foreground dark:text-white mb-6 text-center">
+        <div className="bg-card rounded-xl shadow-xl p-6 md:p-8">
+          <h2 className="text-2xl font-bold text-foreground mb-6 text-center">
             Search for your domain name
           </h2>
           <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
@@ -238,14 +238,14 @@ export default function DomainSearchPage() {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="focus:ring-primary focus:border-primary block w-full rounded-md pl-10 sm:text-lg border-border dark:border-neutral-700 dark:bg-neutral-700 dark:text-white py-3"
+                className="focus:ring-ring focus:border-ring block w-full rounded-md pl-10 sm:text-lg border-border py-3"
                 placeholder="Enter your domain name"
               />
             </div>
             <button
               type="submit"
               disabled={isSearching}
-              className={`px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${isSearching ? 'opacity-75 cursor-not-allowed' : ''}`}
+              className={`px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring ${isSearching ? 'opacity-75 cursor-not-allowed' : ''}`}
             >
               {isSearching ? 'Searching...' : 'Search'}
             </button>
@@ -258,7 +258,7 @@ export default function DomainSearchPage() {
                   setSearchTerm(searchTerm || 'example');
                   handleSearch({ preventDefault: () => {} } as React.FormEvent);
                 }}
-                className="px-4 py-2 bg-muted dark:bg-neutral-700 rounded-full text-sm font-medium text-foreground dark:text-neutral-300 hover:bg-muted dark:hover:bg-neutral-600 transition-colors"
+                className="px-4 py-2 bg-muted rounded-full text-sm font-medium text-foreground hover:bg-muted transition-colors"
               >
                 {ext.name}
               </button>
@@ -270,12 +270,12 @@ export default function DomainSearchPage() {
       {/* Search Results */}
       {searchResults.length > 0 && (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-          <h2 className="text-2xl font-bold text-foreground dark:text-white mb-6">Search Results</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">Search Results</h2>
 
-          <div className="bg-card dark:bg-neutral-800 shadow-md rounded-lg overflow-hidden">
-            <ul className="divide-y divide-border dark:divide-neutral-700">
+          <div className="bg-card shadow-md rounded-lg overflow-hidden">
+            <ul className="divide-y divide-border">
               {searchResults.map((result) => (
-                <li key={result.domain} className="px-6 py-4 hover:bg-muted dark:hover:bg-neutral-700 transition-colors">
+                <li key={result.domain} className="px-6 py-4 hover:bg-muted transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       {result.available ? (
@@ -283,11 +283,11 @@ export default function DomainSearchPage() {
                       ) : (
                         <X className="h-5 w-5 text-foreground mr-3" />
                       )}
-                      <span className="text-lg font-medium text-foreground dark:text-white">
+                      <span className="text-lg font-medium text-foreground">
                         {result.domain}
                       </span>
                       {result.popular && (
-                        <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary/70 rounded-full">
+                        <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-full">
                           Popular
                         </span>
                       )}
@@ -295,15 +295,15 @@ export default function DomainSearchPage() {
                     <div className="flex items-center">
                       {result.available ? (
                         <>
-                          <span className="text-lg font-medium text-foreground dark:text-white mr-4">
+                          <span className="text-lg font-medium text-foreground mr-4">
                             ${result.price}/year
                           </span>
                           <button
                             onClick={() => toggleDomainSelection(result.domain)}
                             className={`px-4 py-2 rounded-md text-sm font-medium ${
                               selectedDomains.includes(result.domain)
-                                ? 'bg-muted text-foreground dark:bg-neutral-900 dark:text-neutral-200'
-                                : 'bg-primary text-white hover:bg-primary/90'
+                                ? 'bg-muted text-foreground'
+                                : 'bg-primary text-primary-foreground hover:bg-primary/90'
                             } transition-colors`}
                           >
                             {selectedDomains.includes(result.domain) ? 'Selected' : 'Select'}
@@ -323,8 +323,8 @@ export default function DomainSearchPage() {
 
           {/* Selected Domains Summary */}
           {selectedDomains.length > 0 && (
-            <div className="mt-8 bg-primary/10 dark:bg-primary/10 rounded-lg p-6 shadow-md">
-              <h3 className="text-lg font-medium text-primary dark:text-primary/70 mb-4">
+            <div className="mt-8 bg-primary/10 rounded-lg p-6 shadow-md">
+              <h3 className="text-lg font-medium text-primary mb-4">
                 Selected Domains ({selectedDomains.length})
               </h3>
               <ul className="mb-6 space-y-2">
@@ -332,14 +332,14 @@ export default function DomainSearchPage() {
                   const domainInfo = searchResults.find(r => r.domain === domain);
                   return (
                     <li key={domain} className="flex justify-between">
-                      <span className="font-medium text-foreground dark:text-neutral-200">{domain}</span>
-                      <span className="font-medium text-foreground dark:text-neutral-200">${domainInfo?.price}/year</span>
+                      <span className="font-medium text-foreground">{domain}</span>
+                      <span className="font-medium text-foreground">${domainInfo?.price}/year</span>
                     </li>
                   );
                 })}
-                <li className="flex justify-between pt-4 border-t border-primary/20 dark:border-primary/20">
-                  <span className="font-bold text-foreground dark:text-white">Total</span>
-                  <span className="font-bold text-foreground dark:text-white">
+                <li className="flex justify-between pt-4 border-t border-primary/20">
+                  <span className="font-bold text-foreground">Total</span>
+                  <span className="font-bold text-foreground">
                     ${selectedDomains.reduce((sum, domain) => {
                       const domainInfo = searchResults.find(r => r.domain === domain);
                       return sum + (domainInfo?.price || 0);
@@ -348,7 +348,7 @@ export default function DomainSearchPage() {
                 </li>
               </ul>
               <div className="flex justify-end">
-                <Link href="/services/checkout" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                <Link href="/services/checkout" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring">
                   Proceed to Checkout <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </div>
@@ -388,78 +388,78 @@ export default function DomainSearchPage() {
       />
 
       {/* Related Services */}
-      <div className="py-16 bg-card dark:bg-neutral-900">
+      <div className="py-16 bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-base text-primary dark:text-primary/70 font-semibold tracking-wide uppercase">More Services</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-foreground dark:text-white sm:text-4xl">
+            <h2 className="text-base text-primary font-semibold tracking-wide uppercase">More Services</h2>
+            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-foreground sm:text-4xl">
               Complete Your Online Presence
             </p>
-            <p className="mt-4 max-w-2xl text-xl text-muted-foreground dark:text-neutral-300 mx-auto">
+            <p className="mt-4 max-w-2xl text-xl text-muted-foreground mx-auto">
               Explore our other services to enhance your website and reach more customers.
             </p>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {/* Web Hosting */}
-            <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="p-6">
-                <div className="w-12 h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Server className="h-6 w-6 text-primary dark:text-primary/70" />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <Server className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground dark:text-white mb-2">Web Hosting</h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
+                <h3 className="text-xl font-bold text-foreground mb-2">Web Hosting</h3>
+                <p className="text-muted-foreground mb-4">
                   Fast and reliable hosting solutions for your website with 99.9% uptime guarantee.
                 </p>
-                <Link href="/services/hosting" className="text-primary dark:text-primary/70 font-medium hover:text-primary/80 inline-flex items-center">
+                <Link href="/services/hosting" className="text-primary font-medium hover:text-primary/80 inline-flex items-center">
                   Learn more <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </div>
             </div>
 
             {/* Cloud Services */}
-            <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="p-6">
-                <div className="w-12 h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Cloud className="h-6 w-6 text-primary dark:text-primary/70" />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <Cloud className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground dark:text-white mb-2">Cloud Services</h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
+                <h3 className="text-xl font-bold text-foreground mb-2">Cloud Services</h3>
+                <p className="text-muted-foreground mb-4">
                   Scalable cloud solutions for businesses of all sizes with flexible resources.
                 </p>
-                <Link href="/services/cloud" className="text-primary dark:text-primary/70 font-medium hover:text-primary/80 inline-flex items-center">
+                <Link href="/services/cloud" className="text-primary font-medium hover:text-primary/80 inline-flex items-center">
                   Learn more <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </div>
             </div>
 
             {/* Email Services */}
-            <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="p-6">
-                <div className="w-12 h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Mail className="h-6 w-6 text-primary dark:text-primary/70" />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <Mail className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground dark:text-white mb-2">Email Services</h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
+                <h3 className="text-xl font-bold text-foreground mb-2">Email Services</h3>
+                <p className="text-muted-foreground mb-4">
                   Professional email solutions with your domain name for a consistent brand identity.
                 </p>
-                <Link href="/services/email" className="text-primary dark:text-primary/70 font-medium hover:text-primary/80 inline-flex items-center">
+                <Link href="/services/email" className="text-primary font-medium hover:text-primary/80 inline-flex items-center">
                   Learn more <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </div>
             </div>
 
             {/* Marketing Tools */}
-            <div className="bg-card dark:bg-neutral-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="p-6">
-                <div className="w-12 h-12 bg-primary/10 dark:bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <BarChart4 className="h-6 w-6 text-primary dark:text-primary/70" />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <BarChart4 className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground dark:text-white mb-2">Marketing Tools</h3>
-                <p className="text-muted-foreground dark:text-neutral-400 mb-4">
+                <h3 className="text-xl font-bold text-foreground mb-2">Marketing Tools</h3>
+                <p className="text-muted-foreground mb-4">
                   Comprehensive marketing tools to grow your online presence and reach more customers.
                 </p>
-                <Link href="/services/marketing" className="text-primary dark:text-primary/70 font-medium hover:text-primary/80 inline-flex items-center">
+                <Link href="/services/marketing" className="text-primary font-medium hover:text-primary/80 inline-flex items-center">
                   Learn more <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </div>
