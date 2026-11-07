@@ -19,6 +19,19 @@ import { RAIL_ITEM, RAIL_TO_MD } from '@/components/studio/ui';
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 const CTA_LABEL = 'Book a call';
 const RECOMMENDED_LABEL = 'Most chosen';
+const LETTER_CODE = /^([A-Z]{3})\s*/;
+
+const Price = ({ amount, currency }: { amount: number; currency: CurrencyCode }) => {
+  const text = formatPrice(amount, currency);
+  const code = text.match(LETTER_CODE);
+  if (!code) return <>{text}</>;
+  return (
+    <>
+      <span className="mr-[0.12em] align-[0.62em] font-mono text-[0.3em] font-normal tracking-[0.08em]">{code[1]}</span>
+      {text.slice(code[0].length)}
+    </>
+  );
+};
 
 /** Segmented EUR / GBP / AED / USD switch (radiogroup with roving focus). */
 const CurrencyToggle = ({ value, onChange }: { value: CurrencyCode; onChange: (c: CurrencyCode) => void }) => {
@@ -114,8 +127,8 @@ const PricingSection = () => {
 
               <div className="mt-5 md:mt-8">
                 <span className="block font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground mb-2">From</span>
-                <span className="block font-display text-5xl sm:text-6xl lg:text-[4.25rem] font-semibold tracking-[-0.05em] leading-none text-foreground tabular-nums">
-                  {formatPrice(plan.price[currency], currency)}
+                <span className="block whitespace-nowrap font-display text-5xl sm:text-6xl lg:text-[3.5rem] xl:text-[4.25rem] font-semibold tracking-[-0.05em] leading-none text-foreground tabular-nums">
+                  <Price amount={plan.price[currency]} currency={currency} />
                 </span>
               </div>
               <p className="mt-3 md:mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{plan.timeline}</p>
@@ -145,8 +158,8 @@ const PricingSection = () => {
           </div>
           <div className="flex items-baseline gap-2 flex-wrap">
             <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">From</span>
-            <span className="font-display text-4xl sm:text-5xl font-semibold tracking-[-0.05em] leading-none text-foreground tabular-nums">
-              {formatPrice(RETAINER_PLAN.price[currency], currency)}
+            <span className="whitespace-nowrap font-display text-4xl sm:text-5xl font-semibold tracking-[-0.05em] leading-none text-foreground tabular-nums">
+              <Price amount={RETAINER_PLAN.price[currency]} currency={currency} />
             </span>
             <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{RETAINER_PLAN.period}</span>
           </div>
