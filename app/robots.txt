@@ -1,0 +1,71 @@
+# All crawlers, including AI search & LLM crawlers (explicitly allowed for
+# GEO/AI visibility). They share ONE group so every bot gets the same
+# Allow/Disallow rules — a bot that matches a named group ignores the "*" group.
+User-agent: *
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: Google-Extended
+User-agent: GoogleBot
+User-agent: Applebot-Extended
+User-agent: PerplexityBot
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: Bytespider
+User-agent: CCBot
+User-agent: FacebookBot
+Allow: /
+
+# Public pages
+Allow: /about
+Allow: /services
+Allow: /portfolio
+Allow: /blog
+Allow: /contact
+Allow: /web
+Allow: /mobile
+Allow: /marketing
+Allow: /shopify
+Allow: /ecommerce-marketplace
+Allow: /agents
+Allow: /team
+Allow: /privacy
+Allow: /terms
+Allow: /portfolio/websites
+Allow: /portfolio/applications
+Allow: /portfolio/creatives
+Allow: /portfolio/ads-seo
+Allow: /portfolio/design
+
+# Disallow admin and user areas
+Disallow: /admin
+Disallow: /user
+Disallow: /employee
+Disallow: /manager
+Disallow: /login
+Disallow: /signup
+
+# Disallow API routes
+Disallow: /api/
+
+# Disallow legacy / unused routes (kept in code, marked noindex)
+Disallow: /services/checkout
+Disallow: /services/domains
+Disallow: /services/hosting
+Disallow: /services/email
+Disallow: /services/cloud
+Disallow: /services/marketing
+Disallow: /landing
+Disallow: /theme-showcase
+Disallow: /software-tools
+Disallow: /portfolio/designs
+
+# Allow specific static assets
+Allow: /images/
+Allow: /favicon.ico
+Allow: /favicon.svg
+Allow: /_next/static/
+Allow: /llms.txt
+
+# Sitemap location
+Sitemap: https://formiqstudio.in/sitemap.xml

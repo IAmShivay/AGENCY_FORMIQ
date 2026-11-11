@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FormiqStudio Audit</title>
+<style>
+  :root {
+    --bg: #fafaf8; --fg: #141414; --muted: #5f5f5a; --line: #e2e2dc; --card: #ffffff;
+    --crit: #b42318; --high: #b54708; --med: #1d4ed8; --ok: #067647;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0e0e0d; --fg: #f1f1ee; --muted: #a3a39c; --line: #2a2a27; --card: #161614;
+      --crit: #f97066; --high: #fdb022; --med: #84adff; --ok: #47cd89; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 48px 16px 96px; }
+  h1 { font-size: clamp(2rem, 1.4rem + 2.5vw, 3.2rem); line-height: 1.05; letter-spacing: -.03em; margin: 0 0 12px; }
+  h2 { font-size: 1.6rem; letter-spacing: -.02em; margin: 64px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 28px 0 6px; }
+  p, li { color: var(--fg); }
+  .lede { font-size: 1.15rem; color: var(--muted); max-width: 65ch; }
+  .meta { font: 13px ui-monospace, Menlo, Consolas, monospace; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  code { font: .88em ui-monospace, Menlo, Consolas, monospace; background: var(--card); border: 1px solid var(--line); padding: 1px 5px; border-radius: 4px; word-break: break-word; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; margin: 14px 0; }
+  .tag { display: inline-block; font: 600 11px ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; margin-right: 6px; }
+  .crit { color: var(--crit); } .high { color: var(--high); } .med { color: var(--med); } .ok { color: var(--ok); }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 12px 0; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+  th { font: 600 12px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .table-scroll { overflow-x: auto; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .before { color: var(--muted); text-decoration: line-through; }
+  ol li, ul li { margin: 6px 0; }
+  .toc a { color: var(--fg); }
+  blockquote { margin: 12px 0; padding: 4px 16px; border-left: 3px solid var(--fg); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="meta">FormiqStudio · site audit · 5 Nov 2026 · repo D:\PERSONAL\PROJECTS\AGENCY</p>
+<h1>The site looks good. What it sells is wrong for Europe and Dubai.</h1>
+<p class="lede">The new monochrome studio layer (typography, motion, wordmark) is a good base. The problem is underneath it. The words, the numbers and the offer all describe a Rs 6,999/month package for local shops in West Bengal. A buyer in Berlin or Dubai reads it as cheap, templated and unverifiable. That reaction is what "AI-generated" really means here, and the design is not the cause.</p>
+
+<div class="card toc">
+  <strong>Contents</strong>
+  <ol>
+    <li><a href="#fix-now">Fix this week: security, legal, broken pages</a></li>
+    <li><a href="#ai-tells">Why it reads as AI-generated</a></li>
+    <li><a href="#human">How to make it feel human-made</a></li>
+    <li><a href="#position">Positioning for Europe and Dubai</a></li>
+    <li><a href="#structure">New site structure: what to cut, merge and keep</a></li>
+    <li><a href="#homepage">Homepage blueprint, with copy</a></li>
+    <li><a href="#approach">How to actually win EU and Dubai clients</a></li>
+    <li><a href="#roadmap">30-day plan</a></li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="fix-now">1. Fix this week</h2>
+<p>Do these before you send any traffic from Europe. Some of them are risks on their own, separate from the positioning work.</p>
+
+<div class="card">
+  <span class="tag crit">Critical · security</span><strong>Any signed-up user can make themselves admin</strong>
+  <p><code>app/api/admin/setup/route.ts</code> sets <code>is_admin: true, role: 'admin'</code> for whoever is logged in, and <code>components/login.tsx:174</code> allows public sign-up. Supabase row-level security (RLS) may still block the update, so check your <code>users</code> table policies. Either way the route should not exist in production. Delete it, or guard it with a server-side secret or an allow-listed email. The auth redirect in <code>middleware.ts:69-73</code> is also commented out, so <code>/admin</code> is protected only on the client.</p>
+</div>
+
+<div class="card">
+  <span class="tag crit">Critical · EU law</span><strong>Tracking fires with no cookie consent</strong>
+  <p>The Meta Pixel and the Google Ads gtag load on every page in <code>app/layout.tsx:113-145</code>, before any consent. There is no consent banner anywhere. Under GDPR/ePrivacy that is not allowed for EU and UK visitors, and European prospects notice it. Add a consent manager (CookieYes, Cookiebot, or a small custom one with Google Consent Mode v2) and load the pixels only after the visitor opts in.</p>
+</div>
+
+<div class="card">
+  <span class="tag high">High · trust</span><strong>The privacy policy and terms won't pass a European buyer's check</strong>
+  <p>The privacy page says "Last updated January 2024". It does not name a data controller or mention GDPR, UK GDPR or the UAE PDPL, and it doesn't name your processors (Meta, Google, Supabase, Brevo). The terms point only to Indian courts. Rewrite both, name the legal entity, and list your processors. EU clients will also ask you for a <strong>DPA</strong> (data processing agreement), so prepare a template.</p>
+</div>
+
+<div class="card">
+  <span class="tag high">High · credibility</span><strong>AdSense ads on your own blog</strong>
+  <p>There are five ad slots in <code>app/(routes)/blog</code>. A studio that shows Google ads beside its own articles looks like a content farm. Remove them.</p>
+</div>
+
+<div class="card">
+  <span class="tag med">Medium · broken</span><strong>Things a prospect or Google will run into</strong>
+  <ul>
+    <li><code>app/sitemap.ts:196-221</code> lists <code>/portfolio/*/{id}</code> pages that don't exist, so they return 404.</li>
+    <li>The portfolio fallback images in <code>/images/portfolio/*.jpg</code> point to a folder that doesn't exist.</li>
+    <li>The microphone error in <code>AIBookingAgents.tsx:195</code> tells visitors to "Open via http://localhost:3001".</li>
+    <li><code>/theme-showcase</code>, <code>/landing</code> and <code>/services/checkout</code> (a hardcoded $99.99 cart) are all public.</li>
+    <li>The nav says "AI &amp; Ml", and the team page writes "Swagata mahtree" in lowercase.</li>
+    <li>The footer links to <code>llms.txt</code>, Sitemap and Robots. Those are for crawlers, not visitors.</li>
+    <li>The Google site verification is still the placeholder <code>'your-google-verification-code'</code>.</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="ai-tells">2. Why it reads as AI-generated</h2>
+<p>Visitors decide a site is "AI-made" mostly from the copy and the evidence, and only partly from the layout. These are the specific tells on your site:</p>
+
+<h3>Numbers that contradict each other</h3>
+<div class="table-scroll"><table>
+  <tr><th>Claim</th><th>Where</th></tr>
+  <tr><td>50+ clients</td><td>Hero, TrustBar, Testimonials, FinalCTA (about 8 places)</td></tr>
+  <tr><td>25+ clients served</td><td>About page</td></tr>
+  <tr><td>500+ projects delivered</td><td>PortfolioShowcase, BenefitsSection</td></tr>
+  <tr><td>500+ MVPs built</td><td>/landing</td></tr>
+  <tr><td>5M+ user downloads, 12 industry awards</td><td>/portfolio/applications</td></tr>
+  <tr><td>5 industry awards, 99% satisfaction</td><td>/portfolio/websites</td></tr>
+  <tr><td>98% satisfaction, 24/7 support</td><td>PortfolioShowcase, About</td></tr>
+</table></div>
+<p>One careful reader who adds these up will stop trusting everything else on the site. Keep only numbers you can prove, and state each one in a single place.</p>
+
+<h3>People nobody can verify</h3>
+<ul>
+  <li>The hero shows an avatar stack of letters "R / A / S / +47" with no faces.</li>
+  <li>All six testimonials use same-colored initials with no photos, no links and generic business names. They sit under a <strong>"Verified Google Reviews"</strong> label without linking to any review.</li>
+  <li>The team page uses the <strong>same Freepik stock avatar for all four people</strong>, and every social link is <code>#</code>.</li>
+  <li>Two of the testimonials in <code>SocialProof.tsx</code> are credited to "Shivay", the founder.</li>
+  <li>The hosting page has "David Wilson / Jennifer Lee" with randomuser.me portraits, and /portfolio/websites has "Sarah Johnson, TechVision Inc."</li>
+</ul>
+
+<h3>Stock images in place of your own work</h3>
+<p>Every homepage portfolio card uses an Unsplash photo. The "client meetings" image is from Pexels. The hero video file is named <code>gemini_generated_video_…mp4</code>. Two of the three showcased projects live on <code>*.formiqstudio.in</code> subdomains, so they look like your own demos. The third project's link is <code>#</code>.</p>
+
+<h3>Template rhythm</h3>
+<ul>
+  <li><strong>Everything comes in threes:</strong> three steps, three tiers, three projects, three agent cards, three blog cards, three hero bullets, three hero stats, three metrics per project.</li>
+  <li><strong>The same card grid repeats</strong> section after section: a lucide icon, a heading and two lines.</li>
+  <li><strong>The same decorations repeat:</strong> pill eyebrows with a pulsing dot, Sparkles icons, blurred gradient blobs, a "Most Popular" star pill, and random floating orbs (<code>Math.random()</code>).</li>
+  <li><strong>Six service pages share one template</strong> (<code>ServicePageLayout</code>): four cards of four features, four steps, then "Ready to…?".</li>
+</ul>
+
+<h3>Copy that could belong to anyone</h3>
+<p>"Create something amazing together". "Cutting-edge technologies". "Supercharge your digital workflow". "Dominate marketplaces". "Guaranteed ROI". "Real Results from Real Businesses". "Everything you need to grow — all included". Headings are in Title Case. Em dashes are everywhere. None of these sentences would change if a different agency's name were swapped in.</p>
+
+<h3>Selling on discounts</h3>
+<p>The site uses "Starting at just Rs 6,999", "Rs 233/day · Best value", "Same team agencies charge Rs 25,000+ for", a checkmark table against agencies and freelancers, "30-day money-back · no questions asked" and <strong>"2 slots left this month"</strong> (fake scarcity). These convert for price-sensitive local buyers. For a European marketing lead or a Dubai founder they say <em>budget vendor</em>.</p>
+
+<!-- ============================================================ -->
+<h2 id="human">3. How to make it feel human-made</h2>
+<p>Most of this comes from evidence and specifics, not visual effects. A good rule: every section should contain something only you could have written.</p>
+
+<div class="grid">
+  <div class="card"><strong>Faces and names</strong><p>Real photos of you and the team at your desks in Durgapur. Use one photographer and one light setup, not stock. Give each person a name, a role, a one-line opinion and a LinkedIn link. Show fewer people if that's what's real.</p></div>
+  <div class="card"><strong>Your actual work, big</strong><p>Full-width screenshots and screen recordings of the real sites, plus process artefacts: wireframes, rejected logo sketches, Figma boards. Annvaya packaging photographed on a table beats any Unsplash image.</p></div>
+  <div class="card"><strong>Specific numbers, sourced</strong><p>Not "3× lead growth". Write "LuxeHouse went from 11 to 26 enquiries a month in the 90 days after launch (GA4, Jan–Mar)". One true, specific number is worth ten round ones.</p></div>
+  <div class="card"><strong>A voice with opinions</strong><p>Write the way you talk to a client. Short sentences. Say what you <em>don't</em> do. Use sentence case. Cut most em dashes. Read it aloud: if it sounds like a brochure, rewrite it.</p></div>
+  <div class="card"><strong>Fewer, odder sections</strong><p>Break the three-card rhythm. Use one long case-study scroll, a single quote set large, a plain-text list of clients. Drop most icons; a studio's own work is the illustration.</p></div>
+  <div class="card"><strong>Founder presence</strong><p>A short note from you near the bottom of the homepage, with a real signature or photo, saying why the studio exists and who it's for. Link a 60-second Loom of you talking. Nothing makes a site feel human faster.</p></div>
+</div>
+
+<h3>Design layer: keep, trim, remove</h3>
+<div class="table-scroll"><table>
+  <tr><th>Keep</th><th>Trim</th><th>Remove</th></tr>
+  <tr>
+    <td>The monochrome base, Bricolage + Plex Mono, the wordmark, magnetic buttons, the marquee (once), Lenis scrolling</td>
+    <td>Use the preloader only on the first visit and under 1.2s, with a studio line ("Formiq — independent design studio, est. 20XX") in place of a sales slogan. Use the route curtain only between top-level pages.</td>
+    <td>The 16 neon/cyberpunk/matrix themes and their CSS (91 references in <code>globals.css</code>), gradient blobs, pulsing-dot pills, Sparkles icons, random orbs, outline-stroke headline text, the custom cursor on touch devices. Pick one accent color (Cobalt or Ember are the strongest) and drop the picker.</td>
+  </tr>
+</table></div>
+
+<!-- ============================================================ -->
+<h2 id="position">4. Positioning for Europe and Dubai</h2>
+<p>Don't sell your Indian offer in euros. Run <strong>two front doors</strong>. The international site is the studio. The local package (Rs 6,999) moves to its own page or subdomain, for example <code>local.formiqstudio.in</code> or <code>/india</code>, so it stops setting your price anchor.</p>
+
+<h3>Pick a sharp focus</h3>
+<p>"Websites, apps, ads, SEO, Shopify, AI, hosting, domains" is a list that makes a buyer pick the cheapest vendor. Lead with one or two things you can prove, for example:</p>
+<ul>
+  <li><strong>Brand + website for D2C and food/wellness brands.</strong> Annvaya already proves this: packaging, identity, Shopify.</li>
+  <li><strong>Web and product for B2B SaaS startups.</strong> ClearCRM proves this, if you can present it as client-style work.</li>
+  <li><strong>Dubai angle:</strong> websites and booking flows for hospitality, clinics, real estate and F&amp;B, with your AI booking agents as the differentiator. That market spends money and expects things fast.</li>
+</ul>
+
+<h3>Price like a studio</h3>
+<p>Show "Projects typically start from" in EUR, GBP and AED, not monthly subscriptions. These are realistic entry points for a small offshore studio with good work:</p>
+<div class="table-scroll"><table>
+  <tr><th>Offer</th><th>Europe</th><th>Dubai</th></tr>
+  <tr><td>Brand identity</td><td>from €3,500</td><td>from AED 14,000</td></tr>
+  <tr><td>Marketing website (Next.js / Framer / Webflow)</td><td>€5,000–12,000</td><td>AED 20,000–45,000</td></tr>
+  <tr><td>Shopify store</td><td>€6,000–15,000</td><td>AED 25,000–55,000</td></tr>
+  <tr><td>Monthly retainer (design + dev)</td><td>from €1,800/mo</td><td>from AED 7,000/mo</td></tr>
+</table></div>
+<p>Those prices are still 40–60% below a local agency in Amsterdam or Dubai. That is your advantage, but say it as "senior work, efficient team", not "cheap". Remove money-back guarantees, "slots left" and comparison tables.</p>
+
+<h3>Make it feel close</h3>
+<ul>
+  <li><strong>Timezone:</strong> IST is 1.5h ahead of Dubai and 3.5–4.5h ahead of CET/UK. Say so: "Our day overlaps fully with Dubai and covers European mornings and afternoons." Replace the footer's Durgapur clock with a London / Dubai / Durgapur trio.</li>
+  <li><strong>Contact:</strong> email and booking first; WhatsApp is fine for Dubai (people there use it heavily), but drop it for Europe. Get a UAE virtual number and a UK number (Twilio, Aircall or similar).</li>
+  <li><strong>Domain:</strong> a <code>.com</code> or <code>.studio</code> domain for the international site. Keep <code>.in</code> for the local business.</li>
+  <li><strong>Payments and invoicing:</strong> invoice in EUR/GBP/AED through Stripe (the routes already exist) or Wise. File a <strong>GST LUT</strong> so services you export are zero-rated, and remove Cashfree from the international flow.</li>
+  <li><strong>Contact form:</strong> name, company, website, budget band (in the visitor's currency), timeline. Drop the required +91 phone field.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="structure">5. New site structure</h2>
+<p>You have about 35 public routes, with overlapping and placeholder pages. A studio needs about six.</p>
+<div class="table-scroll"><table>
+  <tr><th>New page</th><th>Built from</th><th>Notes</th></tr>
+  <tr><td><strong>Work</strong></td><td>/portfolio + 5 sub-pages</td><td>One grid. Each card opens a case study (problem, process, outcome, screens). Start with 3–4 deep ones, not 20 thin ones.</td></tr>
+  <tr><td><strong>Services</strong></td><td>/web, /shopify, /mobile, /marketing, /agents</td><td>Three offers at most, with a separate page for each, written by hand. No shared template.</td></tr>
+  <tr><td><strong>Studio</strong></td><td>/about + /team</td><td>Founder story, real team photos, process, tools, where you are and how you work remotely.</td></tr>
+  <tr><td><strong>Journal</strong></td><td>/blog</td><td>No ads. Two posts a month on how you made something.</td></tr>
+  <tr><td><strong>Contact</strong></td><td>/contact</td><td>Booking link plus a short brief form.</td></tr>
+  <tr><td><strong>India (local)</strong></td><td>current homepage offer</td><td>The Rs 6,999 package, its city SEO and WhatsApp: everything that works locally today.</td></tr>
+</table></div>
+<p><strong>Delete or noindex:</strong> /services/hosting, /domains, /email, /cloud, /services/marketing, /services/checkout, /software-tools/*, /landing, /ecommerce-marketplace (Amazon, Flipkart and Meesho are India-only), /portfolio/designs (duplicate), /theme-showcase. Also remove the 15 unused components, the <code>console.log</code> calls and the dead fallback arrays of invented case studies.</p>
+
+<!-- ============================================================ -->
+<h2 id="homepage">6. Homepage blueprint</h2>
+<p>Seven sections in place of twelve. Put the work second, not sixth.</p>
+<ol>
+  <li><strong>Hero.</strong> One sentence that says who you are and who you help, plus one piece of real work in motion.
+    <blockquote><span class="before">Get more customers without the confusion.</span><br>
+    "Formiq is a small design and development studio. We build brands and websites for founders who care how things look and how they work."</blockquote>
+    One CTA: "See the work". A secondary text link: "Book a call".</li>
+  <li><strong>Selected work.</strong> 3–4 projects, large and full width, each with a one-line outcome: "Annvaya — identity, 15 packaging SKUs, Shopify. Launched in 6 weeks."</li>
+  <li><strong>What we do.</strong> Three short paragraphs, no icons. What it includes, how long it takes, and who it's for.</li>
+  <li><strong>How we work.</strong> Your real process and timezone overlap, with a photo of the team or a Figma board.</li>
+  <li><strong>Words from clients.</strong> One or two quotes set large, with full name, role, company, photo and a link. Show fewer rather than any you can't verify.</li>
+  <li><strong>Founder note.</strong> About 80 words from you, with a photo and a signature.</li>
+  <li><strong>Contact.</strong> "Have a project in mind?" plus booking and email. Show starting prices here or on the Services page.</li>
+</ol>
+<p>Update the metadata to match: title "Formiq — Design &amp; development studio", OG locale <code>en_GB</code>, schema <code>areaServed</code> covering EU, UK and AE, and the right <code>hreflang</code> once the India page is split off.</p>
+
+<!-- ============================================================ -->
+<h2 id="approach">7. How to win EU and Dubai clients</h2>
+<p>A better site converts the visitors you get, but it won't bring visitors from Europe or Dubai by itself. Most first international clients come from outbound work and platforms.</p>
+
+<div class="grid">
+  <div class="card"><strong>Get listed on agency platforms</strong><p>Clutch, Sortlist (strong in Europe), DesignRush, GoodFirms. Ask 3–5 existing clients for reviews there. These platforms rank for "agency in [city]" searches you can't win on your own.</p></div>
+  <div class="card"><strong>Post work where designers look</strong><p>Behance and Dribbble case studies of Annvaya and LuxeHouse. Submit the new site to Awwwards/CSSDA once it's done. That's how studios get noticed abroad.</p></div>
+  <div class="card"><strong>Send audits on video</strong><p>Pick 20 brands a week (Shopify D2C in DE/NL/UK, clinics or restaurants in Dubai). Record a 2-minute Loom pointing out three concrete fixes on their site. Send it on LinkedIn or by email. Reply rates are many times higher than generic pitches.</p></div>
+  <div class="card"><strong>White-label for local agencies</strong><p>Dubai and European agencies are short of developers. Offer them overflow development and design under their brand. It's often the fastest route to steady euro or dirham revenue, and their clients become your case studies.</p></div>
+  <div class="card"><strong>Founder on LinkedIn</strong><p>Three posts a week: work in progress, before/after shots, short lessons. European and Dubai buyers check the founder before the website.</p></div>
+  <div class="card"><strong>Dubai in person</strong><p>Dubai is a few hours' flight from Kolkata. One trip with 10 pre-booked meetings, or a stand at a startup event (GITEX, Step), often pays for itself. Hospitality and real estate buyers there prefer meeting face to face.</p></div>
+</div>
+
+<h3>What European buyers will check before signing</h3>
+<ul>
+  <li>A registered company name, address and VAT/GST number in the footer and on invoices.</li>
+  <li>A GDPR-compliant site, plus a DPA and a contract template (scope, IP transfer on payment, 50/50 or 40/30/30 milestones).</li>
+  <li>Clear ownership: they own the code, the Figma files and the domain.</li>
+  <li>Reachability during their working hours, with a named person.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="roadmap">8. 30-day plan</h2>
+<div class="table-scroll"><table>
+  <tr><th>Week</th><th>Site</th><th>Business</th></tr>
+  <tr><td><strong>1</strong></td>
+    <td>Kill the admin-setup route. Add cookie consent and gate the pixels. Remove AdSense. Fix the localhost text, the nav typo, the sitemap 404s and the footer links. Remove every unverifiable stat and testimonial.</td>
+    <td>Decide on one or two focus offers. Register a .com domain. Ask clients for written permission to use their names, quotes and photos.</td></tr>
+  <tr><td><strong>2</strong></td>
+    <td>Rewrite the privacy policy and terms. Delete or noindex the dead routes. Strip the neon themes. Move the Rs offer to /india.</td>
+    <td>Team photo shoot (one afternoon). Write three case studies with real numbers and screenshots.</td></tr>
+  <tr><td><strong>3</strong></td>
+    <td>Build the new homepage (7 sections), Work and case-study pages, Studio page, and a brief form with budget bands in EUR/GBP/AED.</td>
+    <td>Set up Clutch/Sortlist profiles, Behance case studies, a Stripe EUR account and a GST LUT.</td></tr>
+  <tr><td><strong>4</strong></td>
+    <td>Services pages written by hand. Metadata, hreflang and schema. Performance pass: cut unused libraries, convert <code>&lt;img&gt;</code> tags to next/image.</td>
+    <td>Start outreach: 20 video audits a week and 5 agency white-label pitches. Post three times a week on LinkedIn.</td></tr>
+</table></div>
+
+<p class="meta" style="margin-top:48px">Based on a code read of homepage components, all app/(routes) pages, layout, sitemap, CSS and API routes. It was not a visual or browser test. Testimonials marked unverifiable may be genuine. If they are, add photos, full names and links.</p>
+</div>
+</body>
+</html>

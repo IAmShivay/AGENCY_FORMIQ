@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Formiq Brand Guidelines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#121212;--paper:#F3EFE7;--ember:#FF5A1F;--stone:#6F6A62;--line:#d9d3c7}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 'Bricolage Grotesque',system-ui,sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+header{padding:96px 0 48px;border-bottom:1px solid var(--line)}
+h1{font-weight:500;font-size:clamp(40px,7vw,88px);line-height:.95;letter-spacing:-.05em;margin:0}h1 em{font-family:'Instrument Serif',serif;font-weight:400;letter-spacing:-.02em}
+h2{font-weight:500;font-size:32px;letter-spacing:-.04em;margin:0 0 8px}
+.eyebrow{font:11px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.16em;color:var(--stone)}
+section{padding:72px 0;border-bottom:1px solid var(--line)}
+p.lead{max-width:60ch;color:#3a3732;margin:0 0 32px}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:760px){.g2,.g3,.g5{grid-template-columns:1fr}}
+.tile{border-radius:20px;padding:48px 32px;display:flex;align-items:center;justify-content:center;min-height:240px;border:1px solid var(--line)}
+.tile.dark{background:var(--ink);border-color:var(--ink)}
+.tile .art{width:100%;max-width:420px;height:auto}.tile.sym .art{width:120px}
+.cap{margin-top:10px}.cap b{font-weight:500}
+.sw{border-radius:16px;overflow:hidden;border:1px solid var(--line)}.sw i{display:block;height:120px}.sw div{padding:12px 14px;font-size:14px}.sw code{font:12px 'IBM Plex Mono',monospace;color:var(--stone)}
+.clear{padding:40px;outline:1px dashed var(--ember);outline-offset:-1px;width:100%;max-width:460px}
+.rules li{margin:6px 0}.dont{color:#9b2c12}
+.sizes{display:flex;align-items:flex-end;gap:40px;flex-wrap:wrap}.sizes .art{height:auto}
+.demo{background:var(--ink);border-radius:20px;min-height:280px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.demo .art{width:min(520px,80%);overflow:hidden}
+.demo .art rect{transform-box:fill-box;transform-origin:center;animation:spark 3.2s cubic-bezier(.19,1,.22,1) infinite}
+.demo .art g path{stroke-dasharray:1 1;animation:draw 3.2s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes draw{0%{stroke-dashoffset:1}35%,80%{stroke-dashoffset:0}100%{stroke-dashoffset:-1}}
+@keyframes spark{0%,15%{transform:translateY(-100px) rotate(-90deg)}40%,80%{transform:none}90%{transform:rotate(45deg) scale(.85)}100%{transform:rotate(90deg)}}
+@media(prefers-reduced-motion:reduce){.demo .art *{animation:none}}
+footer{padding:48px 0 80px;color:var(--stone);font-size:14px}
+</style></head><body>
+<header class="wrap"><p class="eyebrow">Brand guidelines · v1.0 · November 2026</p><h1 style="margin-top:24px;max-width:560px"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Formiq</span><svg class="art" style="width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -50 712.41 204" role="img" aria-label="Formiq">
+  <path fill="#121212" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/><g fill="none" stroke="#121212" stroke-width="24"><path d="M256.81,50A44,44 0 1 1 168.81,50A44,44 0 1 1 256.81,50"/><path d="M298.81,100V0"/><path d="M298.81,40A28,28 0 0 1 326.81,12H336.81"/><path d="M369.21,100V0"/><path d="M369.21,100V48A36,36 0 0 1 441.21,48V100"/><path d="M441.21,48A36,36 0 0 1 513.21,48V100"/><path d="M561.21,100V0"/><path d="M692.41,50A44,44 0 1 1 604.41,50A44,44 0 1 1 692.41,50"/><path d="M692.41,0V150"/></g><rect x="549.21" y="-46" width="24" height="24" fill="#FF5A1F"/>
+</svg>
+</h1></header>
+<main class="wrap">
+<section><p class="eyebrow">01 Logo</p><h2>Symbol and wordmark</h2>
+<p class="lead">The logo reads Formiq. Its capital F is the symbol: three modules on a 3×3 grid, with the top arm ending in a quarter circle. "ormiq" is constructed monoline lettering: every letter is drawn from one stroke weight, circles and straight lines, not typed in a font. One element joins them: the spark, an Ember square that is both the F's middle arm and the dot of the i. It is the part of the logo that never changes.</p>
+<div class="grid g2">
+<div><div class="tile"><svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -50 712.41 204" role="img" aria-label="Formiq">
+  <path fill="#121212" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/><g fill="none" stroke="#121212" stroke-width="24"><path d="M256.81,50A44,44 0 1 1 168.81,50A44,44 0 1 1 256.81,50"/><path d="M298.81,100V0"/><path d="M298.81,40A28,28 0 0 1 326.81,12H336.81"/><path d="M369.21,100V0"/><path d="M369.21,100V48A36,36 0 0 1 441.21,48V100"/><path d="M441.21,48A36,36 0 0 1 513.21,48V100"/><path d="M561.21,100V0"/><path d="M692.41,50A44,44 0 1 1 604.41,50A44,44 0 1 1 692.41,50"/><path d="M692.41,0V150"/></g><rect x="549.21" y="-46" width="24" height="24" fill="#FF5A1F"/>
+</svg>
+</div><p class="cap"><b>Primary</b>: on Paper or white</p></div>
+<div><div class="tile dark"><svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -50 712.41 204" role="img" aria-label="Formiq">
+  <path fill="#F3EFE7" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/><g fill="none" stroke="#F3EFE7" stroke-width="24"><path d="M256.81,50A44,44 0 1 1 168.81,50A44,44 0 1 1 256.81,50"/><path d="M298.81,100V0"/><path d="M298.81,40A28,28 0 0 1 326.81,12H336.81"/><path d="M369.21,100V0"/><path d="M369.21,100V48A36,36 0 0 1 441.21,48V100"/><path d="M441.21,48A36,36 0 0 1 513.21,48V100"/><path d="M561.21,100V0"/><path d="M692.41,50A44,44 0 1 1 604.41,50A44,44 0 1 1 692.41,50"/><path d="M692.41,0V150"/></g><rect x="549.21" y="-46" width="24" height="24" fill="#FF5A1F"/>
+</svg>
+</div><p class="cap"><b>Reversed</b>: on Ink or photography</p></div>
+<div><div class="tile sym"><svg class="art" style="width:90px" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -50 154.01 204" role="img" aria-label="Formiq">
+  <path fill="#121212" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/>
+</svg>
+</div><p class="cap"><b>The F alone</b>: the condensed nav, small spaces</p></div>
+<div><div class="tile dark sym"><svg class="art" style="width:90px" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -50 154.01 204" role="img" aria-label="Formiq">
+  <path fill="#F3EFE7" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/>
+</svg>
+</div><p class="cap"><b>The F alone, reversed</b></p></div>
+</div></section>
+<section><p class="eyebrow">02 Symbol</p><h2>The F and the spark</h2>
+<p class="lead">For favicons, app icons, social avatars, the condensed nav and documents. The F sits on a 3×3 grid: stem, top arm, and the spark as its middle arm.</p>
+<div class="grid g3">
+<div><div class="tile sym"><svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Formiq">
+  <rect width="100" height="100" rx="22" fill="#121212"/><g transform="translate(22 39.64) scale(0.3835)"><path fill="#F3EFE7" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/></g>
+</svg>
+</div><p class="cap"><b>Default</b>: Ink tile</p></div>
+<div><div class="tile sym"><svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Formiq">
+  <rect width="100" height="100" rx="22" fill="#FF5A1F"/><g transform="translate(22 39.64) scale(0.3835)"><path fill="#121212" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#F3EFE7"/></g>
+</svg>
+</div><p class="cap"><b>Ember tile</b>: campaigns and social only</p></div>
+<div><div class="tile sym" style="gap:20px"><svg class="art" style="width:48px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Formiq">
+  <rect width="100" height="100" rx="22" fill="#121212"/><g transform="translate(22 39.64) scale(0.3835)"><path fill="#F3EFE7" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/></g>
+</svg>
+<svg class="art" style="width:32px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Formiq">
+  <rect width="100" height="100" rx="22" fill="#121212"/><g transform="translate(22 39.64) scale(0.3835)"><path fill="#F3EFE7" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/></g>
+</svg>
+<svg class="art" style="width:16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Formiq">
+  <rect width="100" height="100" rx="22" fill="#121212"/><g transform="translate(22 39.64) scale(0.3835)"><path fill="#F3EFE7" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/></g>
+</svg>
+</div><p class="cap"><b>Small sizes</b>: 48, 32 and 16 px. The spark still reads at 16 px.</p></div>
+</div></section>
+<section><p class="eyebrow">03 Space and size</p><h2>Clear space and minimum size</h2>
+<p class="lead">Leave clear space on every side equal to one grid module of the F (a third of its height). The full lockup needs at least 96 px of width on screen (25 mm in print). Below that, use the symbol.</p>
+<div class="grid g2">
+<div class="tile"><div class="clear"><svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -50 712.41 204" role="img" aria-label="Formiq">
+  <path fill="#121212" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/><g fill="none" stroke="#121212" stroke-width="24"><path d="M256.81,50A44,44 0 1 1 168.81,50A44,44 0 1 1 256.81,50"/><path d="M298.81,100V0"/><path d="M298.81,40A28,28 0 0 1 326.81,12H336.81"/><path d="M369.21,100V0"/><path d="M369.21,100V48A36,36 0 0 1 441.21,48V100"/><path d="M441.21,48A36,36 0 0 1 513.21,48V100"/><path d="M561.21,100V0"/><path d="M692.41,50A44,44 0 1 1 604.41,50A44,44 0 1 1 692.41,50"/><path d="M692.41,0V150"/></g><rect x="549.21" y="-46" width="24" height="24" fill="#FF5A1F"/>
+</svg>
+</div></div>
+<div class="tile"><div class="sizes"><svg class="art" style="width:96px" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -50 712.41 204" role="img" aria-label="Formiq">
+  <path fill="#121212" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/><g fill="none" stroke="#121212" stroke-width="24"><path d="M256.81,50A44,44 0 1 1 168.81,50A44,44 0 1 1 256.81,50"/><path d="M298.81,100V0"/><path d="M298.81,40A28,28 0 0 1 326.81,12H336.81"/><path d="M369.21,100V0"/><path d="M369.21,100V48A36,36 0 0 1 441.21,48V100"/><path d="M441.21,48A36,36 0 0 1 513.21,48V100"/><path d="M561.21,100V0"/><path d="M692.41,50A44,44 0 1 1 604.41,50A44,44 0 1 1 692.41,50"/><path d="M692.41,0V150"/></g><rect x="549.21" y="-46" width="24" height="24" fill="#FF5A1F"/>
+</svg>
+<svg class="art" style="width:28px" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -50 154.01 204" role="img" aria-label="Formiq">
+  <path fill="#121212" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/>
+</svg>
+<svg class="art" style="width:24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Formiq">
+  <rect width="100" height="100" rx="22" fill="#121212"/><g transform="translate(22 39.64) scale(0.3835)"><path fill="#F3EFE7" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/></g>
+</svg>
+</div></div>
+</div></section>
+<section><p class="eyebrow">04 Colour</p><h2>Palette</h2>
+<p class="lead">Mostly Ink and Paper. Ember is the spark: use it once per view, for the logo, the main button or a single highlighted word.</p>
+<div class="grid g5"><div class="sw"><i style="background:#121212"></i><div><b>Ink</b><br><code>#121212</code><br>Text, dark surfaces</div></div><div class="sw"><i style="background:#F3EFE7"></i><div><b>Paper</b><br><code>#F3EFE7</code><br>Page background, reversed text</div></div><div class="sw"><i style="background:#FF5A1F"></i><div><b>Ember</b><br><code>#FF5A1F</code><br>The spark. One accent per view</div></div><div class="sw"><i style="background:#E0431A"></i><div><b>Ember deep</b><br><code>#E0431A</code><br>Ember on paper (buttons, links)</div></div><div class="sw"><i style="background:#6F6A62"></i><div><b>Stone</b><br><code>#6F6A62</code><br>Secondary text</div></div></div></section>
+<section><p class="eyebrow">05 Motion</p><h2>How the logo moves</h2>
+<p class="lead">The logo builds itself on every page load: the F's stem rises, the top arm slides out, the quarter circle swings into place and the spark drops in with a quarter-turn. Then "ormiq" draws on stroke by stroke, like a pen, and the i's spark lands last. On hover the F's spark turns through a diamond and the i's spark hops. On a first visit the loading screen goes further: the 3×3 construction grid draws first and the F snaps together on it; then the letters un-draw, the F folds away, its spark stays and grows into an Ember screen, and that screen lifts away to reveal the site. Every movement uses the same ease (expo out), and reduced-motion settings turn all of it off.</p>
+<div class="demo"><svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="-4 -50 712.41 204" role="img" aria-label="Formiq">
+  <path fill="#F3EFE7" d="M0,-46H97.34A48.67,48.67 0 0 1 146.01,2.67H48.67V100.01H0Z"/><rect x="48.67" y="2.67" width="48.67" height="48.67" fill="#FF5A1F"/><g fill="none" stroke="#F3EFE7" stroke-width="24"><path pathLength="1" d="M256.81,50A44,44 0 1 1 168.81,50A44,44 0 1 1 256.81,50"/><path pathLength="1" d="M298.81,100V0"/><path pathLength="1" d="M298.81,40A28,28 0 0 1 326.81,12H336.81"/><path pathLength="1" d="M369.21,100V0"/><path pathLength="1" d="M369.21,100V48A36,36 0 0 1 441.21,48V100"/><path pathLength="1" d="M441.21,48A36,36 0 0 1 513.21,48V100"/><path pathLength="1" d="M561.21,100V0"/><path pathLength="1" d="M692.41,50A44,44 0 1 1 604.41,50A44,44 0 1 1 692.41,50"/><path pathLength="1" d="M692.41,0V150"/></g><rect x="549.21" y="-46" width="24" height="24" fill="#FF5A1F"/>
+</svg>
+</div></section>
+<section><p class="eyebrow">06 Misuse</p><h2>Keep it intact</h2>
+<ul class="rules">
+<li class="dont">Don't recolour the spark or round its corners. It is always a square, always Ember (Paper on an Ember tile).</li>
+<li class="dont">Don't put a second f after the symbol, or retype the lettering in a font. The F is the first letter. In running text, write Formiq (legal name: Formiq Studio).</li>
+<li class="dont">Don't stretch it, outline it, add shadows or gradients, or set the wordmark in another font.</li>
+<li class="dont">Don't place the primary logo on Ember or busy imagery. Use the reversed logo on Ink.</li>
+<li class="dont">Don't change the spacing between the F and "ormiq", or stack them. They are one word.</li>
+</ul></section>
+</main>
+<footer class="wrap">Master artwork: public/brand/ (SVG logos, PNG app icons). Live components: components/studio/Wordmark.tsx and components/FLogo.tsx, both drawn from components/studio/logo-geometry.ts.</footer>
+</body></html>
