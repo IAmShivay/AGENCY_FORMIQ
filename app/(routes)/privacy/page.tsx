@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, Shield, Lock, Calendar, Mail, Eye, Database, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { CONSENT_COOKIE_MAX_AGE_DAYS, PRIVACY_ADVERTISING_ANCHOR } from '@/lib/tracking-config';
+import { MONETAG_PRIVACY_POLICY_URL } from '@/lib/ads/config';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | FormiqStudio',
@@ -156,9 +158,37 @@ export default function PrivacyPage() {
                 </div>
               </section>
 
-              {/* Section 6 */}
+              <section id={PRIVACY_ADVERTISING_ANCHOR} className="scroll-mt-28">
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">6. Advertising</h2>
+                <div className="prose prose-gray max-w-none">
+                  <p className="text-muted-foreground leading-relaxed mb-4">
+                    Our blog articles may show In-Page Push ads served by Monetag (operated by Propeller Ads Ltd and its group companies). These ads load only on blog article pages, and only after you choose "Accept advertising" or switch on "Blog advertising" in our cookie banner. No ads appear on any other page, and we do not use pop-under, interstitial or push-notification ad formats.
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed mb-4">
+                    When an ad loads, the ad network may process:
+                  </p>
+                  <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
+                    <li>Your IP address and approximate location (country or region)</li>
+                    <li>Device, operating system and browser information</li>
+                    <li>The page showing the ad and the referring page</li>
+                    <li>Cookies or similar identifiers set or read by the ad network</li>
+                  </ul>
+                  <p className="text-muted-foreground leading-relaxed mt-4">
+                    Monetag says it uses this data to show relevant ads and to detect fraud. Its own processing is described in the{' '}
+                    <a href={MONETAG_PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer" className="text-foreground underline underline-offset-4">
+                      Monetag privacy policy
+                    </a>
+                    .
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed mt-4">
+                    You can withdraw or change your consent at any time through "Cookie settings" in the site footer. Ads stop from your next page load; an ad script that has already run on the current page cannot be unloaded until you navigate or refresh. We store your choice for {CONSENT_COOKIE_MAX_AGE_DAYS} days in a first-party cookie and in your browser's local storage, and ask again when our list of cookies changes.
+                  </p>
+                </div>
+              </section>
+
+              {/* Section 7 */}
               <section>
-                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">6. Your Rights</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">7. Your Rights</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed mb-4">
                     You have the right to:
@@ -177,9 +207,9 @@ export default function PrivacyPage() {
                 </div>
               </section>
 
-              {/* Section 7 */}
+              {/* Section 8 */}
               <section>
-                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">7. Data Retention</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">8. Data Retention</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     We retain your personal information only as long as necessary to fulfill the purposes outlined in this policy, comply with legal obligations, resolve disputes, and enforce our agreements. When information is no longer needed, we securely delete or anonymize it.
@@ -190,9 +220,9 @@ export default function PrivacyPage() {
                 </div>
               </section>
 
-              {/* Section 8 */}
+              {/* Section 9 */}
               <section>
-                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">8. International Transfers</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">9. International Transfers</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your information in accordance with this privacy policy and applicable laws.
@@ -200,9 +230,9 @@ export default function PrivacyPage() {
                 </div>
               </section>
 
-              {/* Section 9 */}
+              {/* Section 10 */}
               <section>
-                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">9. Children's Privacy</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">10. Children's Privacy</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     Our services are not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware that we have collected such information, we will take steps to delete it promptly.
@@ -210,9 +240,9 @@ export default function PrivacyPage() {
                 </div>
               </section>
 
-              {/* Section 10 */}
+              {/* Section 11 */}
               <section>
-                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">10. Changes to This Policy</h2>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.03em] mb-4 text-foreground">11. Changes to This Policy</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
                     We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last updated" date. We encourage you to review this policy periodically.

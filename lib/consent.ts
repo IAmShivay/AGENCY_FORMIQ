@@ -1,15 +1,20 @@
 import {
   CONSENT_CHANGED_EVENT,
-  CONSENT_STATUS,
-  CONSENT_STORAGE_KEY,
-  CONSENT_VERSION,
   META_PIXEL_ID,
   META_PIXEL_SCRIPT_URL,
   OPEN_COOKIE_SETTINGS_EVENT,
-  type ConsentStatus,
 } from '@/lib/tracking-config';
+import {
+  createConsent,
+  readStoredConsent,
+  writeStoredConsent,
+  type ConsentChoice,
+  type StoredConsent,
+} from '@/lib/consent-storage';
 
-type StoredConsent = { version: number; status: ConsentStatus; updatedAt: string };
+export type { ConsentChoice, StoredConsent } from '@/lib/consent-storage';
+
+export type ConsentChangedDetail = { consent: StoredConsent };
 
 type FbqFn = ((...args: unknown[]) => void) & {
   callMethod?: (...args: unknown[]) => void;
@@ -26,31 +31,14 @@ type TrackingWindow = Window & {
 
 const isBrowser = () => typeof window !== 'undefined';
 
-export const getStoredConsent = (): ConsentStatus | null => {
-  if (!isBrowser()) return null;
-  try {
-    const raw = window.localStorage.getItem(CONSENT_STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as Partial<StoredConsent>;
-    if (parsed.version !== CONSENT_VERSION) return null;
-    if (parsed.status === CONSENT_STATUS.GRANTED || parsed.status === CONSENT_STATUS.DENIED) {
-      return parsed.status;
-    }
-    return null;
-  } catch {
-    return null;
-  }
-};
+export const getStoredConsent = (): StoredConsent | null => readStoredConsent();
 
-export const hasTrackingConsent = () => getStoredConsent() === CONSENT_STATUS.GRANTED;
+export const hasTrackingConsent = () => getStoredConsent()?.measurement === true;
 
-const storeConsent = (status: ConsentStatus) => {
-  try {
-    const value: StoredConsent = { version: CONSENT_VERSION, status, updatedAt: new Date().toISOString() };
-    window.localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(value));
-  } catch {
-  }
-};
+export const hasAdvertisingConsent = () => getStoredConsent()?.advertising === true;
+
+export const needsConsentPrompt = (consent: StoredConsent | null, advertisingOffered: boolean) =>
+  consent === null || (advertisingOffered && consent.advertising === null);
 
 export const loadMetaPixel = () => {
   if (!isBrowser()) return;
@@ -86,17 +74,20 @@ const revokeMetaPixel = () => {
   if (typeof w.fbq === 'function') w.fbq('consent', 'revoke');
 };
 
-export const applyConsent = (status: ConsentStatus) => {
+export const applyConsent = (consent: StoredConsent) => {
   if (!isBrowser()) return;
-  if (status === CONSENT_STATUS.GRANTED) loadMetaPixel();
+  if (consent.measurement) loadMetaPixel();
   else revokeMetaPixel();
 };
 
-export const setConsent = (status: ConsentStatus) => {
+export const setConsent = (choice: ConsentChoice) => {
   if (!isBrowser()) return;
-  storeConsent(status);
-  applyConsent(status);
-  window.dispatchEvent(new CustomEvent(CONSENT_CHANGED_EVENT, { detail: { status } }));
+  const consent = createConsent(choice);
+  writeStoredConsent(consent);
+  applyConsent(consent);
+  window.dispatchEvent(
+    new CustomEvent<ConsentChangedDetail>(CONSENT_CHANGED_EVENT, { detail: { consent } })
+  );
 };
 
 export const openCookieSettings = () => {

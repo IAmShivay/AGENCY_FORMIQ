@@ -60,6 +60,10 @@ The user dashboard offers a personalized experience for regular users with:
 - Content access controls
 - Personalized recommendations
 
+## Monetag ads
+
+Blog article pages can show Monetag **In-Page Push** ads, and only after the visitor consents to advertising. They are off by default (`NEXT_PUBLIC_MONETAG_ENABLED`). OnClick/Popunder, Interstitial, Vignette, Direct Link, MultiTag and Push Notifications are deliberately not supported. See [docs/MONETAG.md](./docs/MONETAG.md) for setup, env keys (`.env.example`), turning ads off, and what to monitor after enabling them.
+
 ## License and Copyright
 
 © 2024 Shiv Kumar Sharma (formiqstudio). All Rights Reserved.

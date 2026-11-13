@@ -7,10 +7,18 @@ import StructuredData from '@/components/seo/StructuredData';
 import CookieConsent from '@/components/CookieConsent';
 import { STUDIO_ADDRESS } from '@/lib/studio-facts';
 import { SEO_CONSTANTS } from '@/lib/seo';
+import { MONETAG_CONFIG, MONETAG_VERIFICATION_META_NAME } from '@/lib/ads/config';
 
 const inter = Inter({ subsets: ['latin'] });
 
 const GOOGLE_SITE_VERIFICATION = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+
+const SITE_VERIFICATION: Metadata['verification'] = {
+  ...(GOOGLE_SITE_VERIFICATION ? { google: GOOGLE_SITE_VERIFICATION } : {}),
+  ...(MONETAG_CONFIG.siteVerification
+    ? { other: { [MONETAG_VERIFICATION_META_NAME]: MONETAG_CONFIG.siteVerification } }
+    : {}),
+};
 
 export const metadata: Metadata = {
   title: {
@@ -78,7 +86,7 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
   },
   manifest: '/manifest.json',
-  ...(GOOGLE_SITE_VERIFICATION ? { verification: { google: GOOGLE_SITE_VERIFICATION } } : {}),
+  ...(Object.keys(SITE_VERIFICATION).length > 0 ? { verification: SITE_VERIFICATION } : {}),
   category: 'Business',
 };
 

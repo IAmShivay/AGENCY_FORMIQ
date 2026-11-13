@@ -12,6 +12,7 @@ export const revalidate = 0;
 import { Calendar, Clock, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
 import NewsletterForm from '../components/NewsletterForm';
 import SidebarNewsletterForm from '../components/SidebarNewsletterForm';
+import BlogAds from '../components/BlogAds';
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = await getBlogPosts();
@@ -426,6 +427,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
         </div>
       </div>
     </div>
+      <BlogAds />
     </>
   );
 }
