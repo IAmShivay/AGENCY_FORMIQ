@@ -8,6 +8,7 @@ import { openLeadSheet } from '@/lib/lead-sheet';
 import { RAIL_ITEM, RAIL_TO_MD, pad2 } from '@/components/studio/ui';
 import { WORK, WORK_ROUTE, WORK_STATUS_LABEL } from '@/lib/work';
 import { WorkCover } from '@/components/work/Frames';
+import CardReel from '@/components/work/CardReel';
 import { useCaseOverlay } from '@/components/work/useCaseOverlay';
 
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
@@ -59,6 +60,7 @@ const PortfolioShowcase = () => {
                       sizes={CARD_SIZES}
                       className="h-full w-full motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.02]"
                     />
+                    {project.reel && <CardReel reel={project.reel} accent={project.accent} />}
                   </div>
 
                   <div className={`lg:col-span-5 ${flipped ? 'lg:col-start-1 lg:row-start-1' : ''}`}>

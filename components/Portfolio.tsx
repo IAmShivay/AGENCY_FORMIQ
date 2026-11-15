@@ -7,6 +7,7 @@ import { ArrowUpRight } from 'lucide-react';
 import PageHeader from './studio/PageHeader';
 import { BTN_EMBER, BTN_OUTLINE, CONTAINER, EYEBROW, FOCUS_RING, H2, SECTION_Y, pad2 } from './studio/ui';
 import { WorkCover } from './work/Frames';
+import CardReel from '@/components/work/CardReel';
 import { useCaseOverlay } from './work/useCaseOverlay';
 import { gsap, prefersReducedMotion } from '@/lib/studio-motion';
 import { openLeadSheet } from '@/lib/lead-sheet';
@@ -121,6 +122,7 @@ const Portfolio = () => {
                         priority={index === 0}
                         className="h-full w-full motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.02]"
                       />
+                      {project.reel && <CardReel reel={project.reel} accent={project.accent} />}
                     </div>
                     <div className="mt-5 sm:mt-6 flex items-start justify-between gap-6">
                       <div className="min-w-0">
