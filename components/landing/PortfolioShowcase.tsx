@@ -6,7 +6,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Magnetic from '@/components/studio/Magnetic';
 import { openLeadSheet } from '@/lib/lead-sheet';
 import { RAIL_ITEM, RAIL_TO_MD, pad2 } from '@/components/studio/ui';
-import { WORK, WORK_ROUTE } from '@/lib/work';
+import { WORK, WORK_ROUTE, WORK_STATUS_LABEL } from '@/lib/work';
 import { WorkCover } from '@/components/work/Frames';
 import { useCaseOverlay } from '@/components/work/useCaseOverlay';
 
@@ -78,7 +78,11 @@ const PortfolioShowcase = () => {
                     </h3>
                     <p className="mt-3 hidden md:block text-lg text-muted-foreground max-w-md">{project.headline}</p>
                     <p className="mt-2 md:mt-6 text-lg md:text-2xl font-display font-semibold tracking-[-0.03em]">
-                      {lead.value} <span className="font-medium text-muted-foreground">{lead.label.toLowerCase()}</span>
+                      {lead ? (
+                        <>{lead.value} <span className="font-medium text-muted-foreground">{lead.label.toLowerCase()}</span></>
+                      ) : (
+                        WORK_STATUS_LABEL[project.status]
+                      )}
                     </p>
                     <p className="mt-3 hidden md:block font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground leading-relaxed">
                       {project.services.join(' / ')}

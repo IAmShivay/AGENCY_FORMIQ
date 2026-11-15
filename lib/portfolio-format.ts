@@ -12,6 +12,8 @@ export const yearOf = (raw: string | undefined) => {
 
 export const validLink = (...links: (string | undefined)[]) => links.find((l) => l && /^https?:\/\//.test(l)) ?? '';
 export const validImage = (src: string | undefined) => (src && src !== '#' ? src : '');
+const VIDEO_URL = /(\.(mp4|webm|mov|m4v)([?#]|$))|\/video\/upload\//i;
+export const isVideo = (src: string) => VIDEO_URL.test(src);
 export const hostOf = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '');
 export const paragraphs = (text: string | undefined) => (text ?? '').split(/\n{2,}|\r\n\r\n/).map((p) => p.trim()).filter(Boolean);
 export const initials = (title: string) => title.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join('');
