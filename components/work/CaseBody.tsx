@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import OpenSheetButton from '@/components/OpenSheetButton';
 import { BTN_EMBER, CONTAINER, EYEBROW, FOCUS_RING, H2, SECTION_Y, pad2 } from '@/components/studio/ui';
-import { WORK_ROUTE, hostOf, nextWork, workIndex, type WorkProject } from '@/lib/work';
+import { WORK_ROUTE, WORK_STATUS_LABEL, WORK_STATUS_NOTE, hostOf, nextWork, workIndex, type WorkProject } from '@/lib/work';
 import { BrowserFrame, PhoneFrame, WorkCover } from './Frames';
+import ReelPlayer from './ReelPlayer';
 
 const COVER_SIZES = { desktop: '(min-width: 1280px) 980px, 76vw', mobile: '(min-width: 1280px) 290px, 22vw' };
 const NEXT_SIZES = { desktop: '(min-width: 768px) 380px, 70vw', mobile: '(min-width: 768px) 110px, 20vw' };
@@ -32,7 +33,9 @@ export default function CaseBody({ project, titleId, asPage = false, onNext, onS
     { label: 'Timeline', value: project.timeline },
     { label: 'Location', value: project.location },
     { label: 'Built with', value: project.stack.join(', ') },
-  ];
+  ].filter((row) => row.value);
+  const statusNote = WORK_STATUS_NOTE[project.status];
+  let section = 0;
 
   const nextInner = (
     <>
@@ -57,7 +60,7 @@ export default function CaseBody({ project, titleId, asPage = false, onNext, onS
 
       <header className={`${CONTAINER} mt-10 sm:mt-16 grid gap-8 lg:grid-cols-12 lg:items-end`}>
         <div className="lg:col-span-8">
-          <p data-case-anim className={EYEBROW}>({pad2(workIndex(project.slug))}) {project.discipline}</p>
+          <p data-case-anim className={EYEBROW}>({pad2(workIndex(project.slug))}) {project.discipline}{statusNote && ` · ${WORK_STATUS_LABEL[project.status]}`}</p>
           <Title id={titleId} data-case-anim className="mt-4 font-display text-[clamp(3.25rem,12vw,10rem)] font-semibold leading-[0.85] tracking-[-0.06em]">
             {project.client}
           </Title>
@@ -67,6 +70,7 @@ export default function CaseBody({ project, titleId, asPage = false, onNext, onS
         </div>
         <div data-case-anim className="lg:col-span-4 lg:pb-2">
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">{project.summary}</p>
+          {statusNote && <p className="mt-4 border-l-2 border-primary pl-4 text-sm text-muted-foreground leading-relaxed">{statusNote}</p>}
           {project.liveUrl && (
             <a
               href={project.liveUrl}
@@ -91,9 +95,27 @@ export default function CaseBody({ project, titleId, asPage = false, onNext, onS
       </dl>
 
       <section className={`${CONTAINER} ${SECTION_Y} grid gap-6 lg:grid-cols-12`}>
-        <Label index={1}>The brief</Label>
+        <Label index={++section}>The brief</Label>
         <p className="lg:col-span-8 font-display text-2xl sm:text-3xl lg:text-4xl font-medium leading-[1.2] tracking-[-0.03em]">{project.brief}</p>
       </section>
+
+      {project.reel && (
+        <figure className={`${CONTAINER} mb-10 sm:mb-16`}>
+          <div className="grid items-center gap-8 rounded-[22px] px-5 py-10 sm:px-14 sm:py-16 md:grid-cols-12" style={{ background: project.accent }}>
+            <div className="md:col-span-5 md:col-start-2 text-white">
+              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/60">In motion</p>
+              <p className="mt-4 font-display text-2xl sm:text-4xl font-medium leading-[1.1] tracking-[-0.035em]">{project.reel.label}</p>
+            </div>
+            <ReelPlayer
+              full={project.reel.full}
+              loop={project.reel.loop}
+              poster={project.reel.poster}
+              title={`${project.client} reel`}
+              className="mx-auto w-full max-w-[320px] aspect-[9/16] rounded-[22px] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)] ring-1 ring-white/10 md:col-span-4 md:col-start-8"
+            />
+          </div>
+        </figure>
+      )}
 
       <figure className={CONTAINER}>
         <BrowserFrame shot={project.desktop[1]} host={host} sizes={FULL_SIZES} />
@@ -112,7 +134,7 @@ export default function CaseBody({ project, titleId, asPage = false, onNext, onS
       </figure>
 
       <section className={`${CONTAINER} ${SECTION_Y} grid gap-6 lg:grid-cols-12`}>
-        <Label index={2}>The approach</Label>
+        <Label index={++section}>The approach</Label>
         <ol className="lg:col-span-8 grid gap-x-10 gap-y-10 sm:grid-cols-2">
           {project.approach.map((step, i) => (
             <li key={step.title} className="border-t border-border pt-5">
@@ -129,20 +151,22 @@ export default function CaseBody({ project, titleId, asPage = false, onNext, onS
         <figcaption className={`${EYEBROW} mt-4`}>{project.desktop[2].label}</figcaption>
       </figure>
 
-      <section className={`${CONTAINER} ${SECTION_Y} grid gap-6 lg:grid-cols-12`}>
-        <Label index={3}>The outcome</Label>
-        <dl className="lg:col-span-8 grid gap-10 sm:grid-cols-2">
-          {project.outcomes.map((o) => (
-            <div key={o.label} className="border-t border-border pt-5">
-              <dt className="sr-only">{o.label}</dt>
-              <dd className="font-display text-6xl sm:text-7xl font-medium tracking-[-0.05em]">{o.value}</dd>
-              <p className="mt-3 text-muted-foreground">{o.label}</p>
-            </div>
-          ))}
-        </dl>
-      </section>
+      {project.outcomes.length > 0 && (
+        <section className={`${CONTAINER} ${SECTION_Y} grid gap-6 lg:grid-cols-12`}>
+          <Label index={++section}>The outcome</Label>
+          <dl className="lg:col-span-8 grid gap-10 sm:grid-cols-2">
+            {project.outcomes.map((o) => (
+              <div key={o.label} className="border-t border-border pt-5">
+                <dt className="sr-only">{o.label}</dt>
+                <dd className="font-display text-6xl sm:text-7xl font-medium tracking-[-0.05em]">{o.value}</dd>
+                <p className="mt-3 text-muted-foreground">{o.label}</p>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
 
-      <section className="border-t border-border">
+      <section className={`border-t border-border ${project.outcomes.length ? '' : 'mt-14 sm:mt-24'}`}>
         <div className={`${CONTAINER} py-14 sm:py-24`}>
           {onNext ? (
             <button type="button" onClick={() => onNext(next.slug)} className={nextClass}>{nextInner}</button>

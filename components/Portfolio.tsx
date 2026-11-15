@@ -10,7 +10,7 @@ import { WorkCover } from './work/Frames';
 import { useCaseOverlay } from './work/useCaseOverlay';
 import { gsap, prefersReducedMotion } from '@/lib/studio-motion';
 import { openLeadSheet } from '@/lib/lead-sheet';
-import { WORK, WORK_ROUTE } from '@/lib/work';
+import { WORK, WORK_ROUTE, WORK_STATUS_LABEL } from '@/lib/work';
 import { caseHref, loadSection, type SectionKey } from '@/lib/portfolio-cases';
 import { NO_YEAR } from '@/lib/portfolio-format';
 
@@ -147,8 +147,14 @@ const Portfolio = () => {
                         <dd className="mt-1 text-sm">{project.services.join(', ')}</dd>
                       </div>
                       <div>
-                        <dt className={EYEBROW}>Result</dt>
-                        <dd className="mt-1 text-sm"><span className="font-semibold">{lead.value}</span> <span className="text-muted-foreground">{lead.label.toLowerCase()}</span></dd>
+                        <dt className={EYEBROW}>{lead ? 'Result' : 'Type'}</dt>
+                        <dd className="mt-1 text-sm">
+                          {lead ? (
+                            <><span className="font-semibold">{lead.value}</span> <span className="text-muted-foreground">{lead.label.toLowerCase()}</span></>
+                          ) : (
+                            WORK_STATUS_LABEL[project.status]
+                          )}
+                        </dd>
                       </div>
                     </dl>
                   </article>

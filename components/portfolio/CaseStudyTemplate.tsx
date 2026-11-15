@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import PageCTA from '@/components/studio/PageCTA';
 import RevealImage from './RevealImage';
+import ReelPlayer from '@/components/work/ReelPlayer';
 import ReadProgress from './ReadProgress';
 import { CONTAINER, EYEBROW, FOCUS_RING, H1, H2, SECTION_Y, pad2 } from '@/components/studio/ui';
 import { SECTIONS, caseHref, type CaseItem } from '@/lib/portfolio-cases';
@@ -155,6 +156,21 @@ export default function CaseStudyTemplate({ item, index, total, next }: CaseStud
                 </li>
               ))}
             </ul>
+          </div>
+        </section>
+      )}
+
+      {item.videos.length > 0 && (
+        <section aria-label="Video" className="pb-14 sm:pb-24 pt-2">
+          <div className={`${CONTAINER} grid gap-4 sm:gap-6 ${item.videos.length > 1 ? 'md:grid-cols-2' : ''}`}>
+            {item.videos.map((src, i) => (
+              <ReelPlayer
+                key={src}
+                full={src}
+                title={`${item.title}, video ${i + 1}`}
+                className="mx-auto w-full max-w-[420px] rounded-[14px] sm:rounded-[18px]"
+              />
+            ))}
           </div>
         </section>
       )}

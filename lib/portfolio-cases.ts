@@ -10,7 +10,7 @@ import {
   type DesignProject,
   type WebsiteProject,
 } from './portfolio';
-import { NO_YEAR, PORTFOLIO_ROUTE, hostOf, paragraphs, validImage, validLink, yearOf } from './portfolio-format';
+import { NO_YEAR, PORTFOLIO_ROUTE, hostOf, isVideo, paragraphs, validImage, validLink, yearOf } from './portfolio-format';
 
 export type SectionKey = 'websites' | 'applications' | 'design' | 'creatives' | 'ads-seo';
 
@@ -36,6 +36,7 @@ export interface CaseItem {
   highlights: { title: string; items: string[] } | null;
   metrics: { value: string; label: string }[];
   gallery: string[];
+  videos: string[];
   quote: string;
 }
 
@@ -57,7 +58,8 @@ export const SECTIONS: Record<SectionKey, SectionConfig> = {
 };
 
 const list = (items: (string | undefined)[] | undefined) => (items ?? []).map((i) => i?.trim() ?? '').filter(Boolean);
-const images = (items: (string | undefined)[] | undefined) => list(items).map(validImage).filter(Boolean);
+const images = (items: (string | undefined)[] | undefined) => list(items).map(validImage).filter((src) => src && !isVideo(src));
+const videos = (items: (string | undefined)[] | undefined) => list(items).filter(isVideo);
 const text = (value: string | undefined) => value?.trim() ?? '';
 
 const withMeta = (rows: (CaseMeta | false)[]) => rows.filter((m): m is CaseMeta => !!m && !!m.value && m.value !== NO_YEAR);
@@ -87,6 +89,7 @@ function fromWebsite(w: WebsiteProject): CaseItem {
     highlights: list(w.features).length ? { title: 'What we built', items: list(w.features) } : null,
     metrics: [],
     gallery: images(w.case_study_screens),
+    videos: videos(w.case_study_screens),
     quote: text(w.case_study_testimonial),
   };
 }
@@ -102,7 +105,7 @@ function fromApp(a: AppProject): CaseItem {
     meta: withMeta([{ label: 'Platforms', value: list(a.platforms).join(', ') }, { label: 'Year', value: year }, { label: 'Built with', value: list(a.tags).join(', ') }, liveMeta(live)]),
     chapters: [],
     highlights: list(a.features).length ? { title: 'Key features', items: list(a.features) } : null,
-    metrics: [], gallery: [], quote: '',
+    metrics: [], gallery: [], videos: [], quote: '',
   };
 }
 
@@ -117,7 +120,7 @@ function fromDesign(d: DesignProject): CaseItem {
     meta: withMeta([{ label: 'Client', value: text(d.client) }, { label: 'Discipline', value: discipline }, { label: 'Year', value: year }, liveMeta(live)]),
     chapters: [],
     highlights: list(d.services).length ? { title: 'Services', items: list(d.services) } : null,
-    metrics: [], gallery: [], quote: '',
+    metrics: [], gallery: [], videos: [], quote: '',
   };
 }
 
@@ -130,7 +133,7 @@ function fromCreative(c: CreativeProject): CaseItem {
     meta: withMeta([{ label: 'Client', value: text(c.client) }, { label: 'Discipline', value: discipline }, { label: 'Tags', value: list(c.tags).join(', ') }]),
     chapters: [],
     highlights: list(c.deliverables).length ? { title: 'Deliverables', items: list(c.deliverables) } : null,
-    metrics: [], gallery: images(c.media_urls), quote: '',
+    metrics: [], gallery: images(c.media_urls), videos: videos(c.media_urls), quote: '',
   };
 }
 
@@ -146,7 +149,7 @@ function fromAdsSeo(a: AdsSeoProject): CaseItem {
     meta: withMeta([{ label: 'Client', value: text(a.client) }, { label: 'Channel', value: discipline }, { label: 'Platform', value: text(a.platform) }]),
     chapters: [],
     highlights: results.length ? { title: 'Results', items: results } : null,
-    metrics, gallery: images(a.media_urls), quote: '',
+    metrics, gallery: images(a.media_urls), videos: videos(a.media_urls), quote: '',
   };
 }
 
