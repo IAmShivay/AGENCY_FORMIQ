@@ -1,11 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Play, X } from 'lucide-react';
 import { FOCUS_RING } from '@/components/studio/ui';
-import { prefersReducedMotion } from '@/lib/studio-motion';
-
-const VISIBLE_RATIO = 0.4;
+import { useInViewPlayback } from './useInViewPlayback';
 
 interface ReelPlayerProps {
   full: string;
@@ -20,16 +18,7 @@ export default function ReelPlayer({ full, loop, poster, title, className = '' }
   const [withSound, setWithSound] = useState(!loop);
   const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
-    const video = ref.current;
-    if (!video || withSound || prefersReducedMotion()) return;
-    const io = new IntersectionObserver(
-      ([entry]) => (entry.isIntersecting ? video.play().catch(() => undefined) : video.pause()),
-      { threshold: VISIBLE_RATIO },
-    );
-    io.observe(video);
-    return () => io.disconnect();
-  }, [withSound]);
+  useInViewPlayback(ref, !withSound);
 
   if (failed) return null;
 

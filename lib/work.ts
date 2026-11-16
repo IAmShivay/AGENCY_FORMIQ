@@ -138,7 +138,7 @@ export const WORK: WorkProject[] = [
       { value: '80%', label: 'Faster first response to new leads' },
       { value: '15+ hrs', label: 'Saved per team, every week' },
     ],
-    liveUrl: 'https://crm.formiqstudio.in',
+    reel: reel('clearcrm', 'A walk through the ClearCRM product site'),
     accent: '#0F1E3D',
     ...shots('clearcrm', 'ClearCRM', ['homepage hero', 'feature overview', 'comparison table'], ['homepage hero', 'feature cards', 'customer stories']),
   },
